@@ -8,7 +8,7 @@
     <Authors>Stef Heyenrath</Authors>
     <Title>FluentBuilder</Title>
     <PackageId>FluentBuilder</PackageId>
-    <Description>This project uses Source Generation to create a FluentBuilder for specified models or DTOs.</Description>
+    <Description>This project uses Source Generation to create a FluentBuilder for specified model or DTO.</Description>
     <PackageTags>Fluent;Builder;FluentBuilder;Model;DTO;SourceGenerator;Analyzer;Generation;Generate</PackageTags>
 
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
