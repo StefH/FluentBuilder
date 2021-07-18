@@ -1,14 +1,12 @@
-﻿using System.Collections.Generic;
+﻿// This source file is based on https://justsimplycode.com/2020/12/06/auto-generate-builders-using-source-generator-in-net-5
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 
-/// <summary>
-/// This source file is based on https://justsimplycode.com/2020/12/06/auto-generate-builders-using-source-generator-in-net-5
-/// </summary>
-namespace FluentBuilder
+namespace FluentBuilderGenerator
 {
     [Generator]
     public class FluentBuilderSourceGenerator : ISourceGenerator

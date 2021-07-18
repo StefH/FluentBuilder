@@ -14,7 +14,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{BDD6F175-13B7-48A1-BFFF-9ABAFF34A10D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluentBuilder", "src\FluentBuilder\FluentBuilder.csproj", "{C96045A0-BC9E-4140-95B1-D2E29964975B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluentBuilderGenerator", "src\FluentBuilderGenerator\FluentBuilderGenerator.csproj", "{C96045A0-BC9E-4140-95B1-D2E29964975B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BuilderConsumer", "src-examples\BuilderConsumer\BuilderConsumer.csproj", "{62B938AC-8830-4F77-8DD9-CE0B927EC8B9}"
 EndProject

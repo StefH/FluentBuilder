@@ -1,12 +1,10 @@
-﻿using System.Collections.Generic;
+﻿// This source file is based on https://justsimplycode.com/2020/12/06/auto-generate-builders-using-source-generator-in-net-5
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-/// <summary>
-/// This source file is based on https://justsimplycode.com/2020/12/06/auto-generate-builders-using-source-generator-in-net-5
-/// </summary>
-namespace FluentBuilder
+namespace FluentBuilderGenerator
 {
     internal class AutoGenerateBuilderSyntaxReceiver : ISyntaxReceiver
     {
