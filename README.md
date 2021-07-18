@@ -4,7 +4,7 @@ A project which uses Source Generation to create a FluentBuilder for a specified
 This project is based on [Tom Phan : "auto-generate-builders-using-source-generator-in-net-5"](https://justsimplycode.com/2020/12/06/auto-generate-builders-using-source-generator-in-net-5/).
 
 # Install
-[![NuGet Badge](https://buildstats.info/nuget/AnyOf)](https://www.nuget.org/packages/AnyOf)
+[![NuGet Badge](https://buildstats.info/nuget/FluentBuilder)](https://www.nuget.org/packages/FluentBuilder)
 
 You can install from NuGet using the following command in the package manager window:
 
@@ -24,10 +24,6 @@ public class UserDto
     public string FirstName { get; set; }
 
     public string LastName { get; set; }
-
-    public EmailDto PrimaryEmail { get; set; }
-
-    public IEnumerable<EmailDto> SecondaryEmails { get; set; }
 
     public DateTime? Date { get; set; }
 }
