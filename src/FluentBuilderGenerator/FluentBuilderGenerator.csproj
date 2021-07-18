@@ -5,7 +5,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <LangVersion>9</LangVersion>
 
-    <Authors>Stef Heyenrath</Authors>
+    <Authors>Tom Phan;Stef Heyenrath</Authors>
     <Title>FluentBuilder</Title>
     <PackageId>FluentBuilder</PackageId>
     <Description>This project uses Source Generation to create a FluentBuilder for specified model or DTO.</Description>
