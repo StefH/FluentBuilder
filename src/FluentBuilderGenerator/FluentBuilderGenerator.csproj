@@ -4,6 +4,7 @@
     <Version>0.0.2</Version>
     <TargetFramework>netstandard2.0</TargetFramework>
     <LangVersion>9</LangVersion>
+    <ProjectGuid>{12344228-91F4-4502-9595-39584E5A9944}</ProjectGuid>
 
     <Authors>Tom Phan;Stef Heyenrath</Authors>
     <Title>FluentBuilder</Title>
@@ -16,9 +17,6 @@
     <PackageProjectUrl>https://github.com/StefH/FluentBuilder</PackageProjectUrl>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/StefH/FluentBuilder</RepositoryUrl>
-
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <ProjectGuid>{12344228-91F4-4502-9595-39584E5A9944}</ProjectGuid>
 
     <IncludeBuildOutput>false</IncludeBuildOutput>
     <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
