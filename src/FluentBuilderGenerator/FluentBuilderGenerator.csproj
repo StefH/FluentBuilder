@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <Version>0.0.1</Version>
+    <Version>0.0.2</Version>
     <TargetFramework>netstandard2.0</TargetFramework>
     <LangVersion>9</LangVersion>
 
@@ -30,12 +30,22 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="bin\**" />
+    <EmbeddedResource Remove="bin\**" />
+    <None Remove="bin\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="3.10.0" PrivateAssets="all" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.10.0" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="bin\$(Configuration)\netstandard2.0\\FluentBuilderGenerator.dll" />
   </ItemGroup>
 
   <ItemGroup>

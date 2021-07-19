@@ -99,7 +99,6 @@ namespace FluentBuilder
             return classSymbols;
         }
 
-
         public static string GetNamespaceFrom(SyntaxNode s) => s.Parent switch
         {
             NamespaceDeclarationSyntax namespaceDeclarationSyntax => namespaceDeclarationSyntax.Name.ToString(),
@@ -108,7 +107,6 @@ namespace FluentBuilder
 
             _ => GetNamespaceFrom(s.Parent)
         };
-
 
         private static IEnumerable<IPropertySymbol> GetProperties(INamedTypeSymbol classSymbol)
         {
@@ -154,7 +152,7 @@ namespace FluentBuilder
             foreach (var property in properties)
             {
                 output.AppendLine($@"
-         private Lazy<{property.Type}> _{CamelCase(property.Name)} = new Lazy<{property.Type}>(default({property.Type}));
+         private Lazy<{property.Type}> _{CamelCase(property.Name)} = new Lazy<{property.Type}>(() => default({property.Type}));
 
          public {classSymbol.Name}Builder With{property.Name}({property.Type} value) => With{property.Name}(() => value);
 
@@ -177,7 +175,7 @@ namespace FluentBuilder
             var properties = GetProperties(classSymbol);
             var output = new StringBuilder();
 
-            output.AppendLine($@"         public override {classSymbol.Name} Build()
+            output.AppendLine($@"       public override {classSymbol.Name} Build()
         {{
             if (Object?.IsValueCreated != true)
             {{
