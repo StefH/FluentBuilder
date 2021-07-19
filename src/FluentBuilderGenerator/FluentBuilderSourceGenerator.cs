@@ -179,7 +179,7 @@ namespace FluentBuilder
         {{
             if (Object?.IsValueCreated != true)
             {{
-                Object = new Lazy<{classSymbol.Name}>(new {classSymbol.Name}
+                Object = new Lazy<{classSymbol.Name}>(() => new {classSymbol.Name}
                 {{");
 
             foreach (var property in properties)
