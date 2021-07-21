@@ -12,10 +12,11 @@ namespace BuilderConsumer
                 .Build();
 
             var user = new FluentBuilder.UserDtoBuilder()
-                        .WithFirstName("Stef")
-                        .WithLastName("Heyenrath")
-                        .WithPrimaryEmail(email)
-                        .Build();
+                .WithAge(99)
+                .WithFirstName("Stef")
+                .WithLastName("Heyenrath")
+                .WithPrimaryEmail(email)
+                .Build();
 
             Console.WriteLine($"{user.FirstName} {user.LastName} {user.PrimaryEmail.Value}");
         }
@@ -24,7 +25,9 @@ namespace BuilderConsumer
     [FluentBuilder.AutoGenerateBuilder]
     public class UserDto
     {
-       public string FirstName { get; set; }
+        public int Age { get; set; }
+
+        public string FirstName { get; set; }
 
         public string LastName { get; set; }
 
