@@ -19,15 +19,18 @@
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/StefH/FluentBuilder</RepositoryUrl>
 
-    <IncludeBuildOutput>false</IncludeBuildOutput>
+    <!-- See https://github.com/amis92/csharp-source-generators -->
+    <IsRoslynComponent>true</IsRoslynComponent>
     <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
     <CompilerGeneratedFilesOutputPath>$(BaseIntermediateOutputPath)Generated</CompilerGeneratedFilesOutputPath>
+
+    <IncludeBuildOutput>false</IncludeBuildOutput>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)' == 'Release'">
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
-  
+
   <ItemGroup>
     <None Include="../../resources/icon.png" Pack="true" PackagePath="" />
   </ItemGroup>

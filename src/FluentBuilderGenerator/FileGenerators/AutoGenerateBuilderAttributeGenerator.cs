@@ -12,14 +12,14 @@ namespace FluentBuilderGenerator.FileGenerators
                 FileName = Name,
                 Text = @"using System;
 
- namespace FluentBuilder
- {
-     [AttributeUsage(AttributeTargets.Class)]
-     sealed class AutoGenerateBuilderAttribute : Attribute
-     {
-         public AutoGenerateBuilderAttribute() {}
-     }
- }"
+namespace FluentBuilder
+{
+    [AttributeUsage(AttributeTargets.Class)]
+    sealed class AutoGenerateBuilderAttribute : Attribute
+    {
+        public AutoGenerateBuilderAttribute() {}
+    }
+}"
             };
         }
     }
