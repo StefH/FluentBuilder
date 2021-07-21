@@ -45,7 +45,7 @@ namespace FluentBuilderGeneratorTests
         [Fact]
         public void GenerateFiles_WhenOneClassIsFoundByReceiver_Should_GenerateOneFile()
         {
-            // Arrange (1)
+            // Arrange : ReceiverMock
             var syntaxTree = CSharpSyntaxTree.ParseText(File.ReadAllText("./DTO/UserDTO.cs"));
             var root = syntaxTree.GetRoot();
             var @namespace = root.ChildNodes().OfType<NamespaceDeclarationSyntax>().Single();
@@ -54,7 +54,7 @@ namespace FluentBuilderGeneratorTests
 
             _receiverMock.SetupGet(r => r.CandidateClasses).Returns(new[] { @class });
 
-            // Arrange (2)
+            // Arrange : ContextMock
             var namespaceSymbolMock = new Mock<INamespaceSymbol>();
             namespaceSymbolMock.Setup(n => n.ToString()).Returns(@namespace.Name.ToString());
 
@@ -69,8 +69,7 @@ namespace FluentBuilderGeneratorTests
 
                 return propertySymbolMock;
             })
-            .Select(p => (ISymbol) p.Object)
-            //.Cast<ISymbol>()
+            .Select(p => (ISymbol)p.Object)
             .ToImmutableArray();
 
             var classSymbolMock = new Mock<INamedTypeSymbol>();
@@ -86,7 +85,7 @@ namespace FluentBuilderGeneratorTests
             // Assert
             result.Should().HaveCount(1);
             result[0].FileName.Should().Be("UserDto_Builder.cs");
-            
+
             var generated = result[0].Text;
             generated.Should().NotBeEmpty();
 
