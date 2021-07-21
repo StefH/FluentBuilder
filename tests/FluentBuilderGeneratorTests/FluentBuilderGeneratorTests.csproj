@@ -26,4 +26,16 @@
     <ProjectReference Include="..\..\src\FluentBuilderGenerator\FluentBuilderGenerator.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="DTO\UserDTO.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="DTO\UserDtoBuilder.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

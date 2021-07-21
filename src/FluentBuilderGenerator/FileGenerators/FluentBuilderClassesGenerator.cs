@@ -33,18 +33,19 @@ namespace FluentBuilderGenerator.FileGenerators
         }
 
         private string CreateBuilderCode(INamedTypeSymbol classSymbol) => $@"using System;
- using FluentBuilder;
- using {classSymbol.ContainingNamespace};
+using FluentBuilder;
+using {classSymbol.ContainingNamespace};
 
- namespace FluentBuilder
- {{
-     public partial class {classSymbol.Name}Builder : Builder<{classSymbol.Name}>
-     {{
- {GeneratePropertiesCode(classSymbol)}
- {GenerateBuildsCode(classSymbol)}
-     }}
- }}";
-        private static string GeneratePropertiesCode(INamedTypeSymbol classSymbol)
+namespace FluentBuilder
+{{
+    public partial class {classSymbol.Name}Builder : Builder<{classSymbol.Name}>
+    {{
+{GenerateWithPropertyCode(classSymbol)}
+{GenerateBuildsCode(classSymbol)}
+    }}
+}}";
+
+        private static string GenerateWithPropertyCode(INamedTypeSymbol classSymbol)
         {
             var properties = GetProperties(classSymbol);
             var output = new StringBuilder();
@@ -99,19 +100,19 @@ namespace FluentBuilderGenerator.FileGenerators
             var properties = GetProperties(classSymbol);
             var output = new StringBuilder();
 
-            output.AppendLine($@"       public override {classSymbol.Name} Build()
+            output.AppendLine($@"         public override {classSymbol.Name} Build()
         {{
             if (Object?.IsValueCreated != true)
             {{
                 Object = new Lazy<{classSymbol.Name}>(() => new {classSymbol.Name}
                 {{");
 
-            foreach (var property in properties)
-            {
-                output.AppendLine($@"                        {property.Name} = _{CamelCase(property.Name)}.Value,");
-            }
+        foreach (var property in properties)
+        {
+            output.AppendLine($@"                        {property.Name} = _{CamelCase(property.Name)}.Value,");
+        }
 
-            output.AppendLine($@"
+        output.AppendLine($@"
                 }});
             }}
 
@@ -120,7 +121,7 @@ namespace FluentBuilderGenerator.FileGenerators
             return Object.Value;
         }}
 
-        public static {classSymbol.Name} Default() => new {classSymbol.Name}();");
+          public static {classSymbol.Name} Default() => new {classSymbol.Name}();");
 
             return output.ToString();
         }
