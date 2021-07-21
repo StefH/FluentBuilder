@@ -3,7 +3,7 @@
 namespace FluentBuilderGeneratorTests.DTO
 {
     // [FluentBuilder.AutoGenerateBuilder]
-    public class UserDto
+    public class User
     {
         public string FirstName { get; set; }
 

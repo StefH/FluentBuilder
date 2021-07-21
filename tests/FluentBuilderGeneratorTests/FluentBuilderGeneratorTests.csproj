@@ -6,6 +6,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="DTO\UserBuilder.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="DTO\UserBuilder.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="FluentAssertions" Version="5.10.3" />
     <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="3.10.0" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.10.0" />
@@ -27,15 +37,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="DTO\UserDTO.cs">
+    <Compile Update="DTO\User.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="DTO\UserDtoBuilder.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
 
 </Project>

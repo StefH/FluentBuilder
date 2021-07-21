@@ -40,13 +40,19 @@ namespace FluentBuilderGeneratorTests
 
             // Assert
             result.Should().BeEmpty();
+
+            // Verify
+            _receiverMock.Verify(r => r.CandidateClasses, Times.Once());
+            _receiverMock.VerifyNoOtherCalls();
+
+            _contextMock.VerifyNoOtherCalls();
         }
 
         [Fact]
         public void GenerateFiles_WhenOneClassIsFoundByReceiver_Should_GenerateOneFile()
         {
             // Arrange : ReceiverMock
-            var syntaxTree = CSharpSyntaxTree.ParseText(File.ReadAllText("./DTO/UserDTO.cs"));
+            var syntaxTree = CSharpSyntaxTree.ParseText(File.ReadAllText("./DTO/User.cs"));
             var root = syntaxTree.GetRoot();
             var @namespace = root.ChildNodes().OfType<NamespaceDeclarationSyntax>().Single();
             var @class = @namespace.ChildNodes().OfType<ClassDeclarationSyntax>().Single();
@@ -62,10 +68,14 @@ namespace FluentBuilderGeneratorTests
             {
                 var setMethodMock = new Mock<IMethodSymbol>();
 
+                var typeSymbol = new Mock<ITypeSymbol>();
+                typeSymbol.Setup(t => t.ToString()).Returns(p.Type.ToString());
+
                 var propertySymbolMock = new Mock<IPropertySymbol>();
                 propertySymbolMock.SetupGet(p => p.CanBeReferencedByName).Returns(true);
                 propertySymbolMock.SetupGet(p => p.Name).Returns(p.Identifier.ValueText);
                 propertySymbolMock.SetupGet(p => p.SetMethod).Returns(setMethodMock.Object);
+                propertySymbolMock.SetupGet(p => p.Type).Returns(typeSymbol.Object);
 
                 return propertySymbolMock;
             })
@@ -84,14 +94,23 @@ namespace FluentBuilderGeneratorTests
 
             // Assert
             result.Should().HaveCount(1);
-            result[0].FileName.Should().Be("UserDto_Builder.cs");
+            result[0].FileName.Should().Be("User_Builder.cs");
 
             var generated = result[0].Text;
             generated.Should().NotBeEmpty();
 
+            // File.WriteAllText("./DTO/UserBuilder.cs", generated);
+
             var generatedCode = CSharpSyntaxTree.ParseText(generated);
-            var expectedCode = CSharpSyntaxTree.ParseText(File.ReadAllText("./DTO/UserDtoBuilder.txt"));
+            var expectedCode = CSharpSyntaxTree.ParseText(File.ReadAllText("./DTO/UserBuilder.cs"));
             generatedCode.Should().BeEquivalentTo(expectedCode);
+
+            // Verify
+            _receiverMock.Verify(r => r.CandidateClasses, Times.Once());
+            _receiverMock.VerifyNoOtherCalls();
+
+            //_contextMock.Verify(c => c.GetTypeByMetadataName(It.IsAny<string>()), Times.Once());
+            //_contextMock.VerifyNoOtherCalls();
         }
     }
 }

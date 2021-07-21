@@ -53,18 +53,18 @@ namespace FluentBuilder
             foreach (var property in properties)
             {
                 output.AppendLine($@"
-         private Lazy<{property.Type}> _{CamelCase(property.Name)} = new Lazy<{property.Type}>(() => default({property.Type}));
+        private Lazy<{property.Type}> _{CamelCase(property.Name)} = new Lazy<{property.Type}>(() => default({property.Type}));
 
-         public {classSymbol.Name}Builder With{property.Name}({property.Type} value) => With{property.Name}(() => value);
+        public {classSymbol.Name}Builder With{property.Name}({property.Type} value) => With{property.Name}(() => value);
 
-         public {classSymbol.Name}Builder With{property.Name}(Func<{property.Type}> func)
-         {{
-             _{CamelCase(property.Name)} = new Lazy<{property.Type}>(func);
+        public {classSymbol.Name}Builder With{property.Name}(Func<{property.Type}> func)
+        {{
+            _{CamelCase(property.Name)} = new Lazy<{property.Type}>(func);
 
-             return this;
-         }}
+            return this;
+        }}
 
-         public {classSymbol.Name}Builder Without{property.Name}() => With{property.Name}(() => default({property.Type}));");
+        public {classSymbol.Name}Builder Without{property.Name}() => With{property.Name}(() => default({property.Type}));");
 
             }
 
@@ -100,19 +100,19 @@ namespace FluentBuilder
             var properties = GetProperties(classSymbol);
             var output = new StringBuilder();
 
-            output.AppendLine($@"         public override {classSymbol.Name} Build()
+            output.AppendLine($@"        public override {classSymbol.Name} Build()
         {{
             if (Object?.IsValueCreated != true)
             {{
                 Object = new Lazy<{classSymbol.Name}>(() => new {classSymbol.Name}
                 {{");
 
-        foreach (var property in properties)
-        {
-            output.AppendLine($@"                        {property.Name} = _{CamelCase(property.Name)}.Value,");
-        }
+            foreach (var property in properties)
+            {
+                output.AppendLine($@"                        {property.Name} = _{CamelCase(property.Name)}.Value,");
+            }
 
-        output.AppendLine($@"
+            output.AppendLine($@"
                 }});
             }}
 
@@ -121,7 +121,7 @@ namespace FluentBuilder
             return Object.Value;
         }}
 
-          public static {classSymbol.Name} Default() => new {classSymbol.Name}();");
+        public static {classSymbol.Name} Default() => new {classSymbol.Name}();");
 
             return output.ToString();
         }
