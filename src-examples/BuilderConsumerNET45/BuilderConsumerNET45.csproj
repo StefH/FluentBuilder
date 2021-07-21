@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="FluentBuilder" Version="0.0.3" />
+    <PackageReference Include="FluentBuilder" Version="0.0.4" />
   </ItemGroup>
 
 </Project>
