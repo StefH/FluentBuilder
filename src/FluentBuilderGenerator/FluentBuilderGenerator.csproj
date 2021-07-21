@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <Version>0.0.4</Version>
+    <Version>0.0.5</Version>
     <TargetFramework>netstandard2.0</TargetFramework>
     <LangVersion>9</LangVersion>
     <Nullable>enable</Nullable>
@@ -10,9 +10,9 @@
     <Authors>Tom Phan;Stef Heyenrath</Authors>
     <Title>FluentBuilder</Title>
     <PackageId>FluentBuilder</PackageId>
-    <Description>This project uses Source Generation to create a FluentBuilder for specified model or DTO.</Description>
-    <PackageTags>Fluent;Builder;FluentBuilder;Model;DTO;SourceGenerator;Analyzer;Generation;Generate</PackageTags>
-
+    <Description>This project uses Source Generation to create a FluentBuilder for a specified model or DTO.</Description>
+    <PackageTags>class;Fluent;Builder;FluentBuilder;Model;DTO;SourceGenerator;Analyzer;Generation;Generate</PackageTags>
+    <PackageIcon>icon.png</PackageIcon>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReleaseNotes>See ReleaseNotes.md</PackageReleaseNotes>
     <PackageProjectUrl>https://github.com/StefH/FluentBuilder</PackageProjectUrl>
@@ -27,6 +27,10 @@
   <PropertyGroup Condition="'$(Configuration)' == 'Release'">
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
+  
+  <ItemGroup>
+    <None Include="../../resources/icon.png" Pack="true" PackagePath="" />
+  </ItemGroup>
 
   <ItemGroup>
     <Compile Remove="bin\**" />
