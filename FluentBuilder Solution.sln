@@ -9,6 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src-examples", "src-example
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{56142EC5-9C2F-4055-A9C8-40F80A6595D6}"
 	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
 		GitHubReleaseNotes.txt = GitHubReleaseNotes.txt
 		README.md = README.md
 		ReleaseNotes.md = ReleaseNotes.md
@@ -22,7 +23,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BuilderConsumer", "src-exam
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BuilderConsumerNET45", "src-examples\BuilderConsumerNET45\BuilderConsumerNET45.csproj", "{6EC20006-A4ED-4331-ACC1-4D23BE8C4C36}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluentBuilderGeneratorTests", "tests\FluentBuilderGeneratorTests\FluentBuilderGeneratorTests.csproj", "{3C0B16B6-AA43-4EC2-AE94-1F776E3F8B1B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluentBuilderGeneratorTests", "tests\FluentBuilderGeneratorTests\FluentBuilderGeneratorTests.csproj", "{3C0B16B6-AA43-4EC2-AE94-1F776E3F8B1B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
