@@ -99,10 +99,10 @@ namespace FluentBuilderGeneratorTests
             var generated = result[0].Text;
             generated.Should().NotBeEmpty();
 
-            // File.WriteAllText("./DTO/UserBuilder.cs", generated);
+            // File.WriteAllText("../../../DTO/UserBuilder.cs", generated);
 
             var generatedCode = CSharpSyntaxTree.ParseText(generated);
-            var expectedCode = CSharpSyntaxTree.ParseText(File.ReadAllText("./DTO/UserBuilder.cs"));
+            var expectedCode = CSharpSyntaxTree.ParseText(File.ReadAllText("../../../DTO/UserBuilder.cs"));
             generatedCode.Should().BeEquivalentTo(expectedCode);
 
             // Verify

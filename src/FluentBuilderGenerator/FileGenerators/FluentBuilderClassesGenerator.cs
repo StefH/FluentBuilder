@@ -1,4 +1,4 @@
-﻿// This source code is based on https://justsimplycode.com/2020/12/06/auto-generate-builders-using-source-generator-in-net-5
+// This source code is based on https://justsimplycode.com/2020/12/06/auto-generate-builders-using-source-generator-in-net-5
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -52,23 +52,28 @@ namespace FluentBuilder
 
             foreach (var property in properties)
             {
-                output.AppendLine($@"
-        private Lazy<{property.Type}> _{CamelCase(property.Name)} = new Lazy<{property.Type}>(() => default({property.Type}));
+                output.AppendLine($"        private Lazy<{property.Type}> _{CamelCase(property.Name)} = new Lazy<{property.Type}>(() => default({property.Type}));");
 
-        public {classSymbol.Name}Builder With{property.Name}({property.Type} value) => With{property.Name}(() => value);
+                output.AppendLine($"        public {classSymbol.Name}Builder With{property.Name}({property.Type} value) => With{property.Name}(() => value);");
 
-        public {classSymbol.Name}Builder With{property.Name}(Func<{property.Type}> func)
-        {{
-            _{CamelCase(property.Name)} = new Lazy<{property.Type}>(func);
+                output.Append(GenerateWithPropertyFuncMethod(classSymbol, property));
 
-            return this;
-        }}
-
-        public {classSymbol.Name}Builder Without{property.Name}() => With{property.Name}(() => default({property.Type}));");
-
+                output.AppendLine($"        public {classSymbol.Name}Builder Without{property.Name}() => With{property.Name}(() => default({property.Type}));");
+                output.AppendLine();
             }
-
+                        
             return output.ToString();
+        }
+
+        private static StringBuilder GenerateWithPropertyFuncMethod(INamedTypeSymbol classSymbol, IPropertySymbol property)
+        {
+            var output = new StringBuilder();
+            output.AppendLine($"        public {classSymbol.Name}Builder With{property.Name}(Func<{property.Type}> func)");
+            output.AppendLine("        {");
+            output.AppendLine($"            _{CamelCase(property.Name)} = new Lazy<{property.Type}>(func);");
+            output.AppendLine("            return this;");
+            output.AppendLine("        }");
+            return output;
         }
 
         private static IEnumerable<IPropertySymbol> GetProperties(INamedTypeSymbol classSymbol)
@@ -109,7 +114,7 @@ namespace FluentBuilder
 
             foreach (var property in properties)
             {
-                output.AppendLine($@"                        {property.Name} = _{CamelCase(property.Name)}.Value,");
+                output.AppendLine($@"                    {property.Name} = _{CamelCase(property.Name)}.Value,");
             }
 
             output.AppendLine($@"
