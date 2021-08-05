@@ -21,9 +21,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluentBuilderGenerator", "s
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BuilderConsumer", "src-examples\BuilderConsumer\BuilderConsumer.csproj", "{62B938AC-8830-4F77-8DD9-CE0B927EC8B9}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BuilderConsumerNET45", "src-examples\BuilderConsumerNET45\BuilderConsumerNET45.csproj", "{6EC20006-A4ED-4331-ACC1-4D23BE8C4C36}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BuilderConsumerNET45_viaNuGet", "src-examples\BuilderConsumerNET45\BuilderConsumerNET45_viaNuGet.csproj", "{6EC20006-A4ED-4331-ACC1-4D23BE8C4C36}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluentBuilderGeneratorTests", "tests\FluentBuilderGeneratorTests\FluentBuilderGeneratorTests.csproj", "{3C0B16B6-AA43-4EC2-AE94-1F776E3F8B1B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BuilderConsumerNET72", "src-examples\BuilderConsumerNET72\BuilderConsumerNET72.csproj", "{9ACC3825-B6D2-4203-BE83-C8EF78519EFB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,6 +49,10 @@ Global
 		{3C0B16B6-AA43-4EC2-AE94-1F776E3F8B1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3C0B16B6-AA43-4EC2-AE94-1F776E3F8B1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3C0B16B6-AA43-4EC2-AE94-1F776E3F8B1B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9ACC3825-B6D2-4203-BE83-C8EF78519EFB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9ACC3825-B6D2-4203-BE83-C8EF78519EFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9ACC3825-B6D2-4203-BE83-C8EF78519EFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9ACC3825-B6D2-4203-BE83-C8EF78519EFB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -56,6 +62,7 @@ Global
 		{62B938AC-8830-4F77-8DD9-CE0B927EC8B9} = {38805E90-A955-4097-97DC-537F7A0CD773}
 		{6EC20006-A4ED-4331-ACC1-4D23BE8C4C36} = {38805E90-A955-4097-97DC-537F7A0CD773}
 		{3C0B16B6-AA43-4EC2-AE94-1F776E3F8B1B} = {BDD6F175-13B7-48A1-BFFF-9ABAFF34A10D}
+		{9ACC3825-B6D2-4203-BE83-C8EF78519EFB} = {38805E90-A955-4097-97DC-537F7A0CD773}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3586BB89-A981-4CD0-88DB-2DF513FE2B90}
