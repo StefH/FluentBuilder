@@ -8,11 +8,11 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Compile Remove="DTO\UserBuilder.cs" />
+        <Compile Remove="DTO\UserBuilder.g.cs" />
     </ItemGroup>
 
     <ItemGroup>
-        <None Include="DTO\UserBuilder.cs">
+        <None Include="DTO\UserBuilder.g.cs">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
     </ItemGroup>
