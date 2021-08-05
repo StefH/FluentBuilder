@@ -17,6 +17,12 @@ namespace FluentBuilderGeneratorTests
             _text = File.ReadAllText(path);
         }
 
+        public CustomAdditionalText(SourceFile source)
+        {
+            Path = source.Path;
+            _text = source.Text;
+        }
+
         public override SourceText GetText(CancellationToken cancellationToken = new CancellationToken())
         {
             return SourceText.From(_text);
