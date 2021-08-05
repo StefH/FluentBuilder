@@ -26,7 +26,7 @@ namespace FluentBuilderGeneratorTests
             _contextMock = new Mock<IGeneratorExecutionContextWrapper>();
             _receiverMock = new Mock<IAutoGenerateBuilderSyntaxReceiver>();
 
-            _sut = new FluentBuilderClassesGenerator(_contextMock.Object, _receiverMock.Object);
+            _sut = new FluentBuilderClassesGenerator(_contextMock.Object, _receiverMock.Object, true);
         }
 
         [Fact]
@@ -103,7 +103,7 @@ namespace FluentBuilderGeneratorTests
             var generated = result[0].Text;
             generated.Should().NotBeEmpty();
 
-            File.WriteAllText("../../../DTO/UserBuilder.g.cs", generated);
+            // File.WriteAllText("../../../DTO/UserBuilder.g.cs", generated);
 
             var generatedCode = CSharpSyntaxTree.ParseText(generated);
             var expectedCode = CSharpSyntaxTree.ParseText(File.ReadAllText("../../../DTO/UserBuilder.g.cs"));
