@@ -1,9 +1,11 @@
 // This source code is based on https://justsimplycode.com/2020/12/06/auto-generate-builders-using-source-generator-in-net-5
+using System;
 using System.Text;
 using FluentBuilderGenerator.FileGenerators;
 using FluentBuilderGenerator.SyntaxReceiver;
 using FluentBuilderGenerator.Wrappers;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Text;
 
 namespace FluentBuilderGenerator
@@ -26,6 +28,11 @@ namespace FluentBuilderGenerator
 
         public void Execute(GeneratorExecutionContext context)
         {
+            if (!(context.ParseOptions is CSharpParseOptions csharpParseOptions))
+            {
+                throw new NotSupportedException("Only C# is supported.");
+            }
+
             InjectAutoGenerateBuilderAttributeClass(context);
             InjectBaseBuilderClass(context);
 
@@ -34,7 +41,11 @@ namespace FluentBuilderGenerator
                 return;
             }
 
-            InjectFluentBuilderClasses(context, receiver);
+            // https://github.com/reactiveui/refit/blob/main/InterfaceStubGenerator.Core/InterfaceStubGenerator.cs
+            var supportsNullable = csharpParseOptions.LanguageVersion >= LanguageVersion.CSharp8;
+            // var nullableEnabled = context.Compilation.Options.NullableContextOptions == NullableContextOptions.Enable;
+
+            InjectFluentBuilderClasses(context, receiver, supportsNullable);
         }
 
         private static void InjectAutoGenerateBuilderAttributeClass(GeneratorExecutionContext context)
@@ -49,11 +60,11 @@ namespace FluentBuilderGenerator
             context.AddSource(data.FileName, SourceText.From(data.Text, Encoding.UTF8));
         }
 
-        private void InjectFluentBuilderClasses(GeneratorExecutionContext context, IAutoGenerateBuilderSyntaxReceiver receiver)
+        private void InjectFluentBuilderClasses(GeneratorExecutionContext context, IAutoGenerateBuilderSyntaxReceiver receiver, bool supportsNullable)
         {
             var contextWrapper = new GeneratorExecutionContextWrapper(context);
 
-            var generator = new FluentBuilderClassesGenerator(contextWrapper, receiver);
+            var generator = new FluentBuilderClassesGenerator(contextWrapper, receiver, supportsNullable);
 
             foreach (var data in generator.GenerateFiles())
             {

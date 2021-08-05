@@ -14,11 +14,13 @@ namespace FluentBuilderGenerator.FileGenerators
     {
         private readonly IGeneratorExecutionContextWrapper _wrapper;
         private readonly IAutoGenerateBuilderSyntaxReceiver _receiver;
+        private readonly bool _supportsNullable;
 
-        public FluentBuilderClassesGenerator(IGeneratorExecutionContextWrapper wrapper, IAutoGenerateBuilderSyntaxReceiver receiver)
+        public FluentBuilderClassesGenerator(IGeneratorExecutionContextWrapper wrapper, IAutoGenerateBuilderSyntaxReceiver receiver, bool supportsNullable)
         {
             _wrapper = wrapper;
             _receiver = receiver;
+            _supportsNullable = supportsNullable;
         }
 
         public IEnumerable<FileData> GenerateFiles()
@@ -44,7 +46,7 @@ namespace FluentBuilderGenerator.FileGenerators
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-#nullable enable
+{(_supportsNullable ? "#nullable enable" : string.Empty)}
 using System;
 using FluentBuilder;
 using {classSymbol.ContainingNamespace};
@@ -57,7 +59,7 @@ namespace FluentBuilder
 {GenerateBuildMethod(classSymbol)}
     }}
 }}
-#nullable disable";
+{(_supportsNullable ? "#nullable disable" : string.Empty)}";
 
         private static string GenerateWithPropertyCode(INamedTypeSymbol classSymbol, IReadOnlyList<INamedTypeSymbol> allClassSymbols)
         {
