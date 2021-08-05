@@ -35,6 +35,9 @@ namespace FluentBuilderGeneratorTests
 
             // Asert
             result.Should().HaveCount(2);
+            //result[1]
+
+            //File.ReadAllText("../../../DTO/UserBuilder.cs");
         }
 
         /// <summary>

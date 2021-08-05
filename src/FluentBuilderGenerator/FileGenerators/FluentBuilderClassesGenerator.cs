@@ -21,13 +21,13 @@ namespace FluentBuilderGenerator.FileGenerators
             _receiver = receiver;
         }
 
-        public IEnumerable<Data> GenerateFiles()
+        public IEnumerable<FileData> GenerateFiles()
         {
             var allClassSymbols = GetClassSymbols();
 
             foreach (var classSymbol in allClassSymbols)
             {
-                yield return new Data
+                yield return new FileData
                 {
                     FileName = $"{classSymbol.Name}_Builder.cs",
                     Text = CreateBuilderCode(classSymbol, allClassSymbols)

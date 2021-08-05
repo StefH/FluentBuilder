@@ -1,13 +1,13 @@
-﻿// This source code is based on https://justsimplycode.com/2020/12/06/auto-generate-builders-using-source-generator-in-net-5
+// This source code is based on https://justsimplycode.com/2020/12/06/auto-generate-builders-using-source-generator-in-net-5
 namespace FluentBuilderGenerator.FileGenerators
 {
     internal class AutoGenerateBuilderAttributeGenerator : IFileGenerator
     {
         private const string Name = "AutoGenerateBuilderAttribute.cs";
 
-        public Data GenerateFile()
+        public FileData GenerateFile()
         {
-            return new Data
+            return new FileData
             {
                 FileName = Name,
                 Text = @"using System;
