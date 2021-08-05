@@ -23,17 +23,24 @@ namespace FluentBuilderGeneratorTests
         [Fact]
         public void GenerateFiles_For1Class_Should_GenerateCorrectFiles()
         {
+            // Arrange
+            var sourceFile = new SourceFile
+            {
+                Path = "./DTO/User.cs",
+                Text = File.ReadAllText("./DTO/User.cs")
+            };
+
             // Act
-            var result = Execute(_sut, new[] { File.ReadAllText("./DTO/User.cs") });
+            var result = Execute(_sut, new[] { sourceFile });
 
             // Asert
-            result.Should().HaveCount(3);
+            result.Should().HaveCount(2);
         }
 
         /// <summary>
         /// Based on https://notanaverageman.github.io/2020/12/07/cs-source-generators-cheatsheet.html
         /// </summary>
-        private static IReadOnlyList<SyntaxTree> Execute(ISourceGenerator sourceGenerator, IEnumerable<string> sources, IEnumerable<string>? additionalTextPaths = null)
+        private static ImmutableArray<SyntaxTree> Execute(ISourceGenerator sourceGenerator, IEnumerable<SourceFile> sources, IEnumerable<string>? additionalTextPaths = null)
         {
             var metadataReferences = new List<MetadataReference>();
             var assemblies = AppDomain.CurrentDomain.GetAssemblies();
@@ -49,9 +56,9 @@ namespace FluentBuilderGeneratorTests
             var syntaxTrees = new List<SyntaxTree>();
             var additionalTexts = new List<AdditionalText>();
 
-            foreach (string source in sources)
+            foreach (var source in sources)
             {
-                var syntaxTree = CSharpSyntaxTree.ParseText(source);
+                var syntaxTree = CSharpSyntaxTree.ParseText(source.Text, null, source.Path);
                 syntaxTrees.Add(syntaxTree);
             }
 
@@ -88,7 +95,7 @@ namespace FluentBuilderGeneratorTests
 
             hasError.Should().BeFalse();
 
-            return outputCompilation.SyntaxTrees.ToList();
+            return ImmutableArray.CreateRange(outputCompilation.SyntaxTrees.Where(st => !sources.Any(s => s.Path == st.FilePath)));
         }
     }
 }
