@@ -9,7 +9,7 @@ using Microsoft.CodeAnalysis.Text;
 namespace FluentBuilderGenerator
 {
     [Generator]
-    public class FluentBuilderSourceGenerator : ISourceGenerator
+    internal class FluentBuilderSourceGenerator : ISourceGenerator
     {
         private static readonly IFileGenerator BaseBuilderGenerator = new BaseBuilderGenerator();
         private static readonly IFileGenerator AutoGenerateBuilderAttributeGenerator = new AutoGenerateBuilderAttributeGenerator();

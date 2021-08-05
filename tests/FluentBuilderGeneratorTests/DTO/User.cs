@@ -2,7 +2,6 @@ using System;
 
 namespace FluentBuilderGeneratorTests.DTO
 {
-    // [FluentBuilder.AutoGenerateBuilder]
     public class User
     {
         public string FirstName { get; set; }

@@ -98,7 +98,7 @@ namespace FluentBuilderGeneratorTests
 
             // Assert
             result.Should().HaveCount(1);
-            result[0].FileName.Should().Be("User_Builder.cs");
+            result[0].FileName.Should().Be("UserBuilder.cs");
 
             var generated = result[0].Text;
             generated.Should().NotBeEmpty();

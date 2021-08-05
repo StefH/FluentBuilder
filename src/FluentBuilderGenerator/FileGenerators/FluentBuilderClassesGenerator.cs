@@ -29,7 +29,7 @@ namespace FluentBuilderGenerator.FileGenerators
             {
                 yield return new FileData
                 {
-                    FileName = $"{classSymbol.Name}_Builder.cs",
+                    FileName = $"{classSymbol.Name}Builder.cs",
                     Text = CreateBuilderCode(classSymbol, allClassSymbols)
                 };
             }

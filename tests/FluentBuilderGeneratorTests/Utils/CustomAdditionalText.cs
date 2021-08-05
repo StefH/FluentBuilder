@@ -3,7 +3,7 @@ using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
 
-namespace FluentBuilderGeneratorTests
+namespace FluentBuilderGeneratorTests.Utils
 {
     public class CustomAdditionalText : AdditionalText
     {
