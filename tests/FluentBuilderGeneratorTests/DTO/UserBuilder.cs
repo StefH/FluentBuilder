@@ -42,8 +42,7 @@ namespace FluentBuilder
                 {
                     FirstName = _firstName.Value,
                     LastName = _lastName.Value,
-                    QuitDate = _quitDate.Value,
-
+                    QuitDate = _quitDate.Value
                 });
             }
 

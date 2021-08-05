@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace FluentBuilderGeneratorTests.DTO
 {
@@ -10,5 +10,7 @@ namespace FluentBuilderGeneratorTests.DTO
         public string LastName { get; set; }
 
         public DateTime? QuitDate { get; set; }
+
+        // public Address Address { get; set; }
     }
 }
