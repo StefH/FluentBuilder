@@ -3,8 +3,8 @@ using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using FluentAssertions;
-using FluentBuilderGenerator;
 using FluentBuilderGenerator.FileGenerators;
+using FluentBuilderGenerator.SyntaxReceiver;
 using FluentBuilderGenerator.Wrappers;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -64,11 +64,15 @@ namespace FluentBuilderGeneratorTests
             var namespaceSymbolMock = new Mock<INamespaceSymbol>();
             namespaceSymbolMock.Setup(n => n.ToString()).Returns(@namespace.Name.ToString());
 
+            var namedTypeSymbolMock = new Mock<INamedTypeSymbol>();
+            namedTypeSymbolMock.SetupGet(n => n.Name).Returns("User");
+
             var membersMock = @properties.Select(p =>
             {
                 var setMethodMock = new Mock<IMethodSymbol>();
 
                 var typeSymbol = new Mock<ITypeSymbol>();
+                typeSymbol.SetupGet(t => t.Name).Returns(p.Type.ToString());
                 typeSymbol.Setup(t => t.ToString()).Returns(p.Type.ToString());
 
                 var propertySymbolMock = new Mock<IPropertySymbol>();
@@ -94,15 +98,15 @@ namespace FluentBuilderGeneratorTests
 
             // Assert
             result.Should().HaveCount(1);
-            result[0].FileName.Should().Be("User_Builder.cs");
+            result[0].FileName.Should().Be("UserBuilder.cs");
 
             var generated = result[0].Text;
             generated.Should().NotBeEmpty();
 
-            // File.WriteAllText("./DTO/UserBuilder.cs", generated);
+            File.WriteAllText("../../../DTO/UserBuilder.cs", generated);
 
             var generatedCode = CSharpSyntaxTree.ParseText(generated);
-            var expectedCode = CSharpSyntaxTree.ParseText(File.ReadAllText("./DTO/UserBuilder.cs"));
+            var expectedCode = CSharpSyntaxTree.ParseText(File.ReadAllText("../../../DTO/UserBuilder.cs"));
             generatedCode.Should().BeEquivalentTo(expectedCode);
 
             // Verify

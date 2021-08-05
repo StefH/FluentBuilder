@@ -1,6 +1,6 @@
 ﻿namespace FluentBuilderGenerator.FileGenerators
 {
-    internal record Data
+    internal record FileData
     {
         public string FileName { get; set; }
 

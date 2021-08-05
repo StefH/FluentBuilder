@@ -1,71 +1,80 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <Version>0.0.5</Version>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <LangVersion>9</LangVersion>
-    <Nullable>enable</Nullable>
-    <ProjectGuid>{12344228-91F4-4502-9595-39584E5A9944}</ProjectGuid>
+    <PropertyGroup>
+        <Version>0.0.5</Version>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <LangVersion>9</LangVersion>
+        <Nullable>enable</Nullable>
+        <ProjectGuid>{12344228-91F4-4502-9595-39584E5A9944}</ProjectGuid>
 
-    <Authors>Tom Phan;Stef Heyenrath</Authors>
-    <Title>FluentBuilder</Title>
-    <PackageId>FluentBuilder</PackageId>
-    <Description>This project uses Source Generation to create a FluentBuilder for a specified model or DTO.</Description>
-    <PackageTags>class;Fluent;Builder;FluentBuilder;Model;DTO;SourceGenerator;Analyzer;Generation;Generate</PackageTags>
-    <PackageIcon>icon.png</PackageIcon>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageReleaseNotes>See ReleaseNotes.md</PackageReleaseNotes>
-    <PackageProjectUrl>https://github.com/StefH/FluentBuilder</PackageProjectUrl>
-    <RepositoryType>git</RepositoryType>
-    <RepositoryUrl>https://github.com/StefH/FluentBuilder</RepositoryUrl>
+        <Authors>Tom Phan;Stef Heyenrath</Authors>
+        <Title>FluentBuilder</Title>
+        <PackageId>FluentBuilder</PackageId>
+        <Description>This project uses Source Generation to create a FluentBuilder for a specified model or DTO.</Description>
+        <PackageTags>class;Fluent;Builder;FluentBuilder;Model;DTO;SourceGenerator;Analyzer;Generation;Generate</PackageTags>
+        <PackageIcon>icon.png</PackageIcon>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageReleaseNotes>See ReleaseNotes.md</PackageReleaseNotes>
+        <PackageProjectUrl>https://github.com/StefH/FluentBuilder</PackageProjectUrl>
+        <RepositoryType>git</RepositoryType>
+        <RepositoryUrl>https://github.com/StefH/FluentBuilder</RepositoryUrl>
 
-    <!-- See https://github.com/amis92/csharp-source-generators -->
-    <IsRoslynComponent>true</IsRoslynComponent>
-    <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
-    <CompilerGeneratedFilesOutputPath>$(BaseIntermediateOutputPath)Generated</CompilerGeneratedFilesOutputPath>
+        <!-- See https://github.com/amis92/csharp-source-generators -->
+        <IsRoslynComponent>true</IsRoslynComponent>
+        <!--<EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>-->
+        <CompilerGeneratedFilesOutputPath>$(BaseIntermediateOutputPath)Generated</CompilerGeneratedFilesOutputPath>
 
-    <IncludeBuildOutput>false</IncludeBuildOutput>
-  </PropertyGroup>
+        <IncludeBuildOutput>false</IncludeBuildOutput>
+    </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-  </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <None Include="../../resources/icon.png" Pack="true" PackagePath="" />
-  </ItemGroup>
+    <ItemGroup>
+        <None Include="../../resources/icon.png" Pack="true" PackagePath="" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <Compile Remove="bin\**" />
-    <EmbeddedResource Remove="bin\**" />
-    <None Remove="bin\**" />
-  </ItemGroup>
+    <ItemGroup>
+        <Compile Remove="bin\**" />
+        <EmbeddedResource Remove="bin\**" />
+        <None Remove="bin\**" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.2">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="3.10.0" PrivateAssets="all" />
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.10.0" PrivateAssets="all" />
-  </ItemGroup>
+    <ItemGroup>
+      <Compile Remove="Extensions\PropertySymbolExtensions.cs" />
+      <Compile Remove="Extensions\SyntaxNodeExtensions.cs" />
+      <Compile Remove="Extensions\TypeSymbolExtensions.cs" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <None Remove="bin\$(Configuration)\netstandard2.0\\FluentBuilderGenerator.dll" />
-  </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.2">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="3.10.0" PrivateAssets="all" />
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.10.0" PrivateAssets="all" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
-  </ItemGroup>
+    <ItemGroup>
+        <None Remove="bin\$(Configuration)\netstandard2.0\\FluentBuilderGenerator.dll" />
+    </ItemGroup>
 
-  <!-- https://www.meziantou.net/declaring-internalsvisibleto-in-the-csproj.htm -->
-  <ItemGroup>
-    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
-      <_Parameter1>FluentBuilderGeneratorTests</_Parameter1>
-    </AssemblyAttribute>
-    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
-      <_Parameter1>DynamicProxyGenAssembly2</_Parameter1>
-    </AssemblyAttribute>
-  </ItemGroup>
+    <ItemGroup>
+        <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+    </ItemGroup>
+
+    <!-- https://www.meziantou.net/declaring-internalsvisibleto-in-the-csproj.htm -->
+    <ItemGroup>
+        <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+            <_Parameter1>FluentBuilderGeneratorTests</_Parameter1>
+        </AssemblyAttribute>
+        <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+            <_Parameter1>DynamicProxyGenAssembly2</_Parameter1>
+        </AssemblyAttribute>
+    </ItemGroup>
+    <ItemGroup>
+      <Folder Include="Extensions\" />
+    </ItemGroup>
 
 </Project>

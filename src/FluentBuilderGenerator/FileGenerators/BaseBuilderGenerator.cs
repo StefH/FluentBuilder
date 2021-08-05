@@ -5,9 +5,9 @@ namespace FluentBuilderGenerator.FileGenerators
     {
         private const string Name = "BaseBuilder.cs";
 
-        public Data GenerateFile()
+        public FileData GenerateFile()
         {
-            return new Data
+            return new FileData
             {
                 FileName = Name,
                 Text = @"using System;

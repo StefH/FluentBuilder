@@ -2,6 +2,6 @@
 {
     internal interface IFileGenerator
     {
-        Data GenerateFile();
+        FileData GenerateFile();
     }
 }
