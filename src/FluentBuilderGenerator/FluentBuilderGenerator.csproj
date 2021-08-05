@@ -21,7 +21,7 @@
 
         <!-- See https://github.com/amis92/csharp-source-generators -->
         <IsRoslynComponent>true</IsRoslynComponent>
-        <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
+        <!--<EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>-->
         <CompilerGeneratedFilesOutputPath>$(BaseIntermediateOutputPath)Generated</CompilerGeneratedFilesOutputPath>
 
         <IncludeBuildOutput>false</IncludeBuildOutput>
