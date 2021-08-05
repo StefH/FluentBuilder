@@ -1,3 +1,7 @@
+# 0.0.5 (05 August 2021)
+- [#4](https://github.com/StefH/FluentBuilder/pull/4) - Add support for Action&lt;builder&gt; [enhancement] contributed by [StefH](https://github.com/StefH)
+- [#3](https://github.com/StefH/FluentBuilder/issues/3) - Add WithProperty overloads that accepts the property's builder when available [enhancement]
+
 # 0.0.4 (21 July 2021)
 - [#2](https://github.com/StefH/FluentBuilder/pull/2) - Make project Unit-Testable [enhancement] contributed by [StefH](https://github.com/StefH)
 
