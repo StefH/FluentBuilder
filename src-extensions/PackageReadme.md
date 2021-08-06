@@ -1,12 +1,7 @@
-# CSharp.SourceGenerators.Extensions
-
-
-[![NuGet Badge](https://buildstats.info/nuget/FluentBuilder)](https://www.nuget.org/packages/CSharp.SourceGenerators.Extensions)
-
-## Info
+# Info
 This package provides an `Execute` extension method on a `ISourceGenerator` which can be directly called in a Unit Test.
 
-### Example
+## Example
 ``` c#
 [Fact]
 public void GenerateFiles_For1Class_Should_GenerateCorrectFiles()
@@ -29,7 +24,6 @@ public void GenerateFiles_For1Class_Should_GenerateCorrectFiles()
 
     var builder = result.Files[2];
     builder.Path.Should().EndWith("FluentBuilderGeneratorTests.DTO.User_Builder.g.cs");
-
     builder.Text.Should().NotBeNullOrEmpty();
 }
 ```

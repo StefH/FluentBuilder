@@ -27,10 +27,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluentBuilderGeneratorTests
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BuilderConsumerNET72", "src-examples\BuilderConsumerNET72\BuilderConsumerNET72.csproj", "{9ACC3825-B6D2-4203-BE83-C8EF78519EFB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSharp.SourceGenerators.Extensions", "src-extensions\CSharp.SourceGenerators.Extensions\CSharp.SourceGenerators.Extensions.csproj", "{58031885-961F-4029-8749-CA9C08BACB26}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSharp.SourceGenerators.Extensions", "src-extensions\CSharp.SourceGenerators.Extensions\CSharp.SourceGenerators.Extensions.csproj", "{58031885-961F-4029-8749-CA9C08BACB26}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src-extensions", "src-extensions", "{A5B3722D-24ED-41C0-A7A7-167DFB5B5DB2}"
 	ProjectSection(SolutionItems) = preProject
+		src-extensions\PackageReadme.md = src-extensions\PackageReadme.md
 		src-extensions\README.md = src-extensions\README.md
 	EndProjectSection
 EndProject

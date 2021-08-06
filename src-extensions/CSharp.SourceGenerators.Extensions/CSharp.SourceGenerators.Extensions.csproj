@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <Version>0.0.1</Version>
+        <Version>0.0.2</Version>
         <TargetFramework>netstandard2.1</TargetFramework>
         <Nullable>enable</Nullable>
         <Authors>Stef Heyenrath</Authors>
@@ -12,6 +12,7 @@
         <PackageProjectUrl>https://github.com/StefH/FluentBuilder/src-extensions</PackageProjectUrl>
         <RepositoryType>git</RepositoryType>
         <RepositoryUrl>https://github.com/StefH/FluentBuilder/src-extensions</RepositoryUrl>
+        <PackageReadmeFile>PackageReadme.md</PackageReadmeFile>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)' == 'Release'">
@@ -20,6 +21,7 @@
 
     <ItemGroup>
         <None Include="../../resources/icon.png" Pack="true" PackagePath="" />
+        <None Include="../PackageReadme.md" Pack="true" PackagePath=""/>
     </ItemGroup>
 
     <ItemGroup>
