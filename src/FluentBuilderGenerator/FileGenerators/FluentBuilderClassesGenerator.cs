@@ -7,7 +7,6 @@ using FluentBuilderGenerator.Extensions;
 using FluentBuilderGenerator.SyntaxReceiver;
 using FluentBuilderGenerator.Wrappers;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace FluentBuilderGenerator.FileGenerators
 {
@@ -64,7 +63,7 @@ namespace FluentBuilder
 
         private static string GenerateWithPropertyCode(INamedTypeSymbol classSymbol, IReadOnlyList<INamedTypeSymbol> allClassSymbols)
         {
-            var allClassNames = allClassSymbols.Select(c => c.Name).ToList();
+            //var allClassNames = allClassSymbols.Select(c => c.Name).ToList();
             var properties = GetProperties(classSymbol);
             var className = classSymbol.GenerateClassName(true);
 
@@ -77,9 +76,10 @@ namespace FluentBuilder
 
                 sb.Append(GenerateWithPropertyFuncMethod(classSymbol, property));
 
-                if (allClassNames.Contains(property.Type.Name.ToString()))
+                var existingClassSymbol = allClassSymbols.FirstOrDefault(c => c.Name == property.Type.Name);
+                if (existingClassSymbol is not null)
                 {
-                    sb.Append(GenerateWithPropertyActionMethod(classSymbol, property));
+                    sb.Append(GenerateWithPropertyActionMethod(classSymbol, property, existingClassSymbol));
                 }
 
                 sb.AppendLine($"        public {className} Without{property.Name}() => With{property.Name}(() => default({property.Type}));");
@@ -102,14 +102,15 @@ namespace FluentBuilder
             return output;
         }
 
-        private static StringBuilder GenerateWithPropertyActionMethod(INamedTypeSymbol classSymbol, IPropertySymbol property)
+        private static StringBuilder GenerateWithPropertyActionMethod(INamedTypeSymbol classSymbol, IPropertySymbol property, INamedTypeSymbol existingClassSymbol)
         {
             var className = classSymbol.GenerateClassName(true);
+            var propertyName = property.Type is INamedTypeSymbol propertyNamedType ? propertyNamedType.GenerateClassName(true) : property.Type.Name + "Builder";
 
             var sb = new StringBuilder();
-            sb.AppendLine($"        public {className} With{property.Name}(Action<FluentBuilder.{property.Type.Name}Builder> action) => With{property.Name}(() =>");
+            sb.AppendLine($"        public {className} With{property.Name}(Action<FluentBuilder.{propertyName}> action) => With{property.Name}(() =>");
             sb.AppendLine("        {");
-            sb.AppendLine($"            var builder = new FluentBuilder.{property.Type.Name}Builder();");
+            sb.AppendLine($"            var builder = new FluentBuilder.{propertyName}();");
             sb.AppendLine("            action(builder);");
             sb.AppendLine("            return builder.Build();");
             sb.AppendLine("        });");

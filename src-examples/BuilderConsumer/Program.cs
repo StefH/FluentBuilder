@@ -30,7 +30,8 @@ namespace BuilderConsumer
                 .WithAge(100)
                 .WithFirstName("User")
                 .WithLastName("Two")
-                .WithPrimaryEmail((e) => e.WithAddress("abc").WithPrimary(true))
+                .WithPrimaryEmail(e => e.WithAddress("abc").WithPrimary(true))
+                .WithUserDtoT(x => x.WithTValue(5))
                 .Build();
             Console.WriteLine(JsonSerializer.Serialize(user2, JsonSerializerOptions));
 
@@ -57,6 +58,8 @@ namespace BuilderConsumer
         public DateTime? QuitDate { get; set; }
 
         public TestDto? Test { get; set; }
+
+        public UserDtoT<long> UserDtoT { get; set; }
     }
 
     [FluentBuilder.AutoGenerateBuilder]
@@ -65,15 +68,15 @@ namespace BuilderConsumer
         public T TValue { get; set; }
     }
 
-    //[FluentBuilder.AutoGenerateBuilder]
-    //public class UserDtoTT<T1, T2>
-    //    where T1 : struct
-    //    where T2 : class
-    //{
-    //    public T1 T1Value { get; set; }
+    [FluentBuilder.AutoGenerateBuilder]
+    public class UserDtoTT<T1, T2>
+        where T1 : struct
+        where T2 : class, new()
+    {
+        public T1 T1Value { get; set; }
 
-    //    public T2 T2Value { get; set; }
-    //}
+        public T2 T2Value { get; set; }
+    }
 
     [FluentBuilder.AutoGenerateBuilder]
     public class EmailDto
