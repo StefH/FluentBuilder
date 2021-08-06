@@ -1,15 +1,22 @@
 using System;
 using System.Collections.Generic;
+using System.Text.Json;
 
 namespace BuilderConsumer
 {
     class Program
     {
+        private static JsonSerializerOptions JsonSerializerOptions = new()
+        {
+            WriteIndented = true
+        };
+
         static void Main(string[] args)
         {
             var email = new FluentBuilder.EmailDtoBuilder()
                 .WithAddress("x@x.nl")
                 .Build();
+            Console.WriteLine(JsonSerializer.Serialize(email, JsonSerializerOptions));
 
             var user1 = new FluentBuilder.UserDtoBuilder()
                 .WithAge(99)
@@ -17,8 +24,7 @@ namespace BuilderConsumer
                 .WithLastName("Heyenrath")
                 .WithPrimaryEmail(email)
                 .Build();
-
-            Console.WriteLine($"user1 : {user1.FirstName} {user1.LastName} {user1.PrimaryEmail.Address} {user1.PrimaryEmail.Primary}");
+            Console.WriteLine(JsonSerializer.Serialize(user1, JsonSerializerOptions));
 
             var user2 = new FluentBuilder.UserDtoBuilder()
                 .WithAge(100)
@@ -26,8 +32,12 @@ namespace BuilderConsumer
                 .WithLastName("Two")
                 .WithPrimaryEmail((e) => e.WithAddress("abc").WithPrimary(true))
                 .Build();
+            Console.WriteLine(JsonSerializer.Serialize(user2, JsonSerializerOptions));
 
-            Console.WriteLine($"user2 : {user2.FirstName} {user2.LastName} {user2.PrimaryEmail.Address} {user2.PrimaryEmail.Primary}");
+            var userT1 = new FluentBuilder.UserDtoTBuilder<int>()
+                .WithTValue(42)
+                .Build();
+            Console.WriteLine(JsonSerializer.Serialize(userT1, JsonSerializerOptions));
         }
     }
 
