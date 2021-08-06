@@ -3,7 +3,7 @@ namespace FluentBuilderGenerator.FileGenerators
 {
     internal class BaseBuilderGenerator : IFileGenerator
     {
-        private const string Name = "BaseBuilder.g.cs";
+        private const string Name = "FluentBuilder.BaseBuilder.g.cs";
 
         public FileData GenerateFile()
         {

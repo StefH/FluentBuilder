@@ -3,7 +3,7 @@ namespace FluentBuilderGenerator.FileGenerators
 {
     internal class AutoGenerateBuilderAttributeGenerator : IFileGenerator
     {
-        private const string Name = "AutoGenerateBuilderAttribute.g.cs";
+        private const string Name = "FluentBuilder.AutoGenerateBuilderAttribute.g.cs";
 
         public FileData GenerateFile()
         {
