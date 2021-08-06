@@ -34,7 +34,11 @@ namespace FluentBuilderGeneratorTests
             result.Valid.Should().BeTrue();
             result.SyntaxTrees.Should().HaveCount(3);
 
-            result.SyntaxTrees[2].FilePath.Should().EndWith("FluentBuilderGeneratorTests.DTO.User_Builder.g.cs");
+            var builder = result.SyntaxTrees[2];
+            builder.FilePath.Should().EndWith("FluentBuilderGeneratorTests.DTO.User_Builder.g.cs");
+
+            var code = builder.ToString();
+            code.Should().NotBeNullOrEmpty();
         }
 
         [Fact]
@@ -57,11 +61,10 @@ namespace FluentBuilderGeneratorTests
             result.SyntaxTrees.Should().HaveCount(3);
 
             var builder = result.SyntaxTrees[2];
-
             builder.FilePath.Should().EndWith("FluentBuilderGeneratorTests_DTO_UserT_T__1_Builder.g.cs");
 
             var code = builder.ToString();
-            code.Should().Be("");
+            code.Should().NotBeNullOrEmpty();
         }
     }
 }
