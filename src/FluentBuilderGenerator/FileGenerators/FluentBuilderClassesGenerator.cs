@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using FluentBuilderGenerator.Extensions;
 using FluentBuilderGenerator.SyntaxReceiver;
 using FluentBuilderGenerator.Wrappers;
 using Microsoft.CodeAnalysis;
@@ -31,7 +32,7 @@ namespace FluentBuilderGenerator.FileGenerators
             {
                 yield return new FileData
                 {
-                    FileName = $"{classSymbol.Name}Builder.g.cs",
+                    FileName = $"{classSymbol.GetFileName()}_Builder.g.cs",
                     Text = CreateBuilderCode(classSymbol, allClassSymbols)
                 };
             }

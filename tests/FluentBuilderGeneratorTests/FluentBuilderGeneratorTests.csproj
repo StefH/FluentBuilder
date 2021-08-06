@@ -8,11 +8,11 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Compile Remove="DTO\UserBuilder.g.cs" />
+        <Compile Remove="DTO\FluentBuilderGeneratorTests.DTO.User_Builder.g.cs" />
     </ItemGroup>
 
     <ItemGroup>
-        <None Include="DTO\UserBuilder.g.cs">
+        <None Include="DTO\FluentBuilderGeneratorTests.DTO.User_Builder.g.cs">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
     </ItemGroup>
@@ -39,6 +39,9 @@
     </ItemGroup>
 
     <ItemGroup>
+        <Compile Update="DTO\UserT.cs">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Compile>
         <Compile Update="DTO\User.cs">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Compile>

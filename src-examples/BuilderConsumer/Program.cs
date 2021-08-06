@@ -50,6 +50,22 @@ namespace BuilderConsumer
     }
 
     [FluentBuilder.AutoGenerateBuilder]
+    public class UserDtoT<T> where T : struct
+    {
+        public T TValue { get; set; }
+    }
+
+    [FluentBuilder.AutoGenerateBuilder]
+    public class UserDtoTT<T1, T2>
+        where T1 : struct
+        where T2 : class
+    {
+        public T1 T1Value { get; set; }
+
+        public T2 T2Value { get; set; }
+    }
+
+    [FluentBuilder.AutoGenerateBuilder]
     public class EmailDto
     {
         public string Address { get; set; }

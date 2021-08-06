@@ -32,6 +32,8 @@ namespace FluentBuilderGeneratorTests
             // Asert
             result.Valid.Should().BeTrue();
             result.SyntaxTrees.Should().HaveCount(3);
+
+            result.SyntaxTrees[2].FilePath.Should().EndWith("FluentBuilderGeneratorTests.DTO.User_Builder.g.cs");
         }
     }
 }

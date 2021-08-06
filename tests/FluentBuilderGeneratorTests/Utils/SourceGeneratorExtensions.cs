@@ -62,7 +62,7 @@ namespace FluentBuilderGeneratorTests.Utils
             return new ExecuteResult
             {
                 ErrorMessages = diagnostics.Where(d => d.Severity == DiagnosticSeverity.Error).Select(d => d.GetMessage()).ToList(),
-                SyntaxTrees = ImmutableArray.CreateRange(outputCompilation.SyntaxTrees.Where(st => !sources.Any(s => s.Path == st.FilePath)))
+                SyntaxTrees = outputCompilation.SyntaxTrees.Where(st => !sources.Any(s => s.Path == st.FilePath)).ToList()
             };
         }
 
