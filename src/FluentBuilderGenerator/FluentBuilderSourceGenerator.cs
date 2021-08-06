@@ -28,7 +28,7 @@ namespace FluentBuilderGenerator
 
         public void Execute(GeneratorExecutionContext context)
         {
-            if (!(context.ParseOptions is CSharpParseOptions csharpParseOptions))
+            if (context.ParseOptions is not CSharpParseOptions csharpParseOptions)
             {
                 throw new NotSupportedException("Only C# is supported.");
             }
