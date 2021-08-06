@@ -1,7 +1,8 @@
 using System.IO;
+using CSharp.SourceGenerators.Extensions;
+using CSharp.SourceGenerators.Extensions.Models;
 using FluentAssertions;
 using FluentBuilderGenerator;
-using FluentBuilderGeneratorTests.Utils;
 using Xunit;
 
 namespace FluentBuilderGeneratorTests

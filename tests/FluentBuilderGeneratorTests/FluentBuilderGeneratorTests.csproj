@@ -8,6 +8,12 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <Compile Remove="Utils\**" />
+      <EmbeddedResource Remove="Utils\**" />
+      <None Remove="Utils\**" />
+    </ItemGroup>
+
+    <ItemGroup>
         <Compile Remove="DTO\FluentBuilderGeneratorTests.DTO.User_Builder.g.cs" />
         <Compile Remove="DTO\FluentBuilderGeneratorTests_DTO_UserTWithAddressT_T__1_Builder.g.cs" />
         <Compile Remove="DTO\FluentBuilderGeneratorTests_DTO_UserT_T__1_Builder.g.cs" />
@@ -47,6 +53,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\..\src-extensions\CSharp.SourceGenerators.Extensions\CSharp.SourceGenerators.Extensions.csproj" />
         <ProjectReference Include="..\..\src\FluentBuilderGenerator\FluentBuilderGenerator.csproj" />
     </ItemGroup>
 
