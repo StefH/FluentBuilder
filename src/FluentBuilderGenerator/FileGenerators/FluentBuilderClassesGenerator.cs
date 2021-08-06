@@ -54,7 +54,7 @@ using {classSymbol.ContainingNamespace};
 
 namespace FluentBuilder
 {{
-    public partial class {classSymbol.Name}Builder : Builder<{classSymbol.Name}>
+    public partial class {classSymbol.GenerateClassName(true)} : Builder<{classSymbol.GenerateClassName()}>{classSymbol.GetWhereStatement()}
     {{
 {GenerateWithPropertyCode(classSymbol, allClassSymbols)}
 {GenerateBuildMethod(classSymbol)}
@@ -66,13 +66,14 @@ namespace FluentBuilder
         {
             var allClassNames = allClassSymbols.Select(c => c.Name).ToList();
             var properties = GetProperties(classSymbol);
-            var sb = new StringBuilder();
+            var className = classSymbol.GenerateClassName(true);
 
+            var sb = new StringBuilder();
             foreach (var property in properties)
             {
                 sb.AppendLine($"        private Lazy<{property.Type}> _{CamelCase(property.Name)} = new Lazy<{property.Type}>(() => default({property.Type}));");
 
-                sb.AppendLine($"        public {classSymbol.Name}Builder With{property.Name}({property.Type} value) => With{property.Name}(() => value);");
+                sb.AppendLine($"        public {className} With{property.Name}({property.Type} value) => With{property.Name}(() => value);");
 
                 sb.Append(GenerateWithPropertyFuncMethod(classSymbol, property));
 
@@ -81,7 +82,7 @@ namespace FluentBuilder
                     sb.Append(GenerateWithPropertyActionMethod(classSymbol, property));
                 }
 
-                sb.AppendLine($"        public {classSymbol.Name}Builder Without{property.Name}() => With{property.Name}(() => default({property.Type}));");
+                sb.AppendLine($"        public {className} Without{property.Name}() => With{property.Name}(() => default({property.Type}));");
                 sb.AppendLine();
             }
 
@@ -90,8 +91,10 @@ namespace FluentBuilder
 
         private static StringBuilder GenerateWithPropertyFuncMethod(INamedTypeSymbol classSymbol, IPropertySymbol property)
         {
+            var className = classSymbol.GenerateClassName(true);
+
             var output = new StringBuilder();
-            output.AppendLine($"        public {classSymbol.Name}Builder With{property.Name}(Func<{property.Type}> func)");
+            output.AppendLine($"        public {className} With{property.Name}(Func<{property.Type}> func)");
             output.AppendLine("        {");
             output.AppendLine($"            _{CamelCase(property.Name)} = new Lazy<{property.Type}>(func);");
             output.AppendLine("            return this;");
@@ -101,8 +104,10 @@ namespace FluentBuilder
 
         private static StringBuilder GenerateWithPropertyActionMethod(INamedTypeSymbol classSymbol, IPropertySymbol property)
         {
+            var className = classSymbol.GenerateClassName(true);
+
             var sb = new StringBuilder();
-            sb.AppendLine($"        public {classSymbol.Name}Builder With{property.Name}(Action<FluentBuilder.{property.Type.Name}Builder> action) => With{property.Name}(() =>");
+            sb.AppendLine($"        public {className} With{property.Name}(Action<FluentBuilder.{property.Type.Name}Builder> action) => With{property.Name}(() =>");
             sb.AppendLine("        {");
             sb.AppendLine($"            var builder = new FluentBuilder.{property.Type.Name}Builder();");
             sb.AppendLine("            action(builder);");
@@ -139,12 +144,13 @@ namespace FluentBuilder
         {
             var properties = GetProperties(classSymbol);
             var output = new StringBuilder();
+            var className = classSymbol.GenerateClassName();
 
-            output.AppendLine($@"        public override {classSymbol.Name} Build()
+            output.AppendLine($@"        public override {className} Build()
         {{
             if (Object?.IsValueCreated != true)
             {{
-                Object = new Lazy<{classSymbol.Name}>(() => new {classSymbol.Name}
+                Object = new Lazy<{className}>(() => new {className}
                 {{");
 
             output.AppendLine(string.Join(",\r\n", properties.Select(property => $@"                    {property.Name} = _{CamelCase(property.Name)}.Value")));
@@ -156,7 +162,7 @@ namespace FluentBuilder
             return Object.Value;
         }}
 
-        public static {classSymbol.Name} Default() => new {classSymbol.Name}();");
+        public static {className} Default() => new {className}();");
 
             return output.ToString();
         }
@@ -166,10 +172,7 @@ namespace FluentBuilder
             var classSymbols = new List<INamedTypeSymbol>();
             foreach (var candidateClass in _receiver.CandidateClasses)
             {
-                var namespaceName = GetNamespaceFrom(candidateClass);
-                var fullClassName = string.IsNullOrWhiteSpace(namespaceName)
-                    ? candidateClass.Identifier.ToString()
-                    : $"{namespaceName}.{candidateClass.Identifier}";
+                var fullClassName = candidateClass.GetFullName();
 
                 var classSymbol = _wrapper.GetTypeByMetadataName(fullClassName);
                 if (classSymbol is not null)
@@ -180,15 +183,6 @@ namespace FluentBuilder
 
             return classSymbols;
         }
-
-        private static string GetNamespaceFrom(SyntaxNode s) => s.Parent switch
-        {
-            NamespaceDeclarationSyntax namespaceDeclarationSyntax => namespaceDeclarationSyntax.Name.ToString(),
-
-            null => string.Empty,
-
-            _ => GetNamespaceFrom(s.Parent)
-        };
 
         private static string CamelCase(string value) => $"{value.Substring(0, 1).ToLowerInvariant()}{value.Substring(1)}";
     }
