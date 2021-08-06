@@ -29,12 +29,12 @@ namespace FluentBuilderGeneratorTests.Utils
             }
 
             var sourceSyntaxTrees = new List<SyntaxTree>();
-            var additionalTexts = new List<AdditionalText>();
             foreach (var source in sources)
             {
                 sourceSyntaxTrees.Add(GetSyntaxTree(source));
             }
 
+            var additionalTexts = new List<AdditionalText>();
             if (additionalTextPaths is not null)
             {
                 foreach (string additionalTextPath in additionalTextPaths)
@@ -62,7 +62,15 @@ namespace FluentBuilderGeneratorTests.Utils
             return new ExecuteResult
             {
                 ErrorMessages = diagnostics.Where(d => d.Severity == DiagnosticSeverity.Error).Select(d => d.GetMessage()).ToList(),
-                SyntaxTrees = outputCompilation.SyntaxTrees.Where(st => !sources.Any(s => s.Path == st.FilePath)).ToList()
+                Files = outputCompilation.SyntaxTrees
+                    .Where(st => !sources.Any(s => s.Path == st.FilePath))
+                    .Select(s => new FileResult
+                    {
+                        SyntaxTree = s,
+                        Path = s.FilePath,
+                        Text = s.ToString()
+                    })
+                    .ToList()
             };
         }
 

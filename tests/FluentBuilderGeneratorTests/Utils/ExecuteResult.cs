@@ -1,11 +1,10 @@
 using System.Collections.Generic;
-using Microsoft.CodeAnalysis;
 
 namespace FluentBuilderGeneratorTests.Utils
 {
     public class ExecuteResult
     {
-        public IReadOnlyList<SyntaxTree>? SyntaxTrees { get; init; }
+        public IReadOnlyList<FileResult> Files { get; init; } = new List<FileResult>();
 
         public IReadOnlyList<string> ErrorMessages { get; init; } = new List<string>();
 

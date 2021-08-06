@@ -32,13 +32,12 @@ namespace FluentBuilderGeneratorTests
 
             // Asert
             result.Valid.Should().BeTrue();
-            result.SyntaxTrees.Should().HaveCount(3);
+            result.Files.Should().HaveCount(3);
 
-            var builder = result.SyntaxTrees[2];
-            builder.FilePath.Should().EndWith("FluentBuilderGeneratorTests.DTO.User_Builder.g.cs");
+            var builder = result.Files[2];
+            builder.Path.Should().EndWith("FluentBuilderGeneratorTests.DTO.User_Builder.g.cs");
 
-            var code = builder.ToString();
-            code.Should().NotBeNullOrEmpty();
+            builder.Text.Should().NotBeNullOrEmpty();
         }
 
         [Fact]
@@ -59,14 +58,13 @@ namespace FluentBuilderGeneratorTests
 
             // Asert
             result.Valid.Should().BeTrue();
-            result.SyntaxTrees.Should().HaveCount(3);
+            result.Files.Should().HaveCount(3);
 
-            var builder = result.SyntaxTrees[2];
-            builder.FilePath.Should().EndWith(builderFileName);
+            var builder = result.Files[2];
+            builder.Path.Should().EndWith(builderFileName);
 
-            var code = builder.ToString();
             // File.WriteAllText($"../../../DTO/{builderFileName}", code);
-            code.Should().Be(File.ReadAllText($"../../../DTO/{builderFileName}"));
+            builder.Text.Should().Be(File.ReadAllText($"../../../DTO/{builderFileName}"));
         }
 
         [Fact]
@@ -95,14 +93,13 @@ namespace FluentBuilderGeneratorTests
 
             // Asert
             result.Valid.Should().BeTrue();
-            result.SyntaxTrees.Should().HaveCount(4);
+            result.Files.Should().HaveCount(4);
 
-            var builderForUserTWithAddressT = result.SyntaxTrees[2];
-            builderForUserTWithAddressT.FilePath.Should().EndWith(builder1FileName);
+            var builderForUserTWithAddressT = result.Files[2];
+            builderForUserTWithAddressT.Path.Should().EndWith(builder1FileName);
 
-            var code = builderForUserTWithAddressT.ToString();
             // File.WriteAllText($"../../../DTO/{builder1FileName}", code);
-            code.Should().Be(File.ReadAllText($"../../../DTO/{builder1FileName}"));
+            builderForUserTWithAddressT.Text.Should().Be(File.ReadAllText($"../../../DTO/{builder1FileName}"));
 
             //var builderForAddressT = result.SyntaxTrees[3];
             //builderForAddressT.FilePath.Should().EndWith("FluentBuilderGeneratorTests_DTO_Address_T__1_Builder.g.cs");
