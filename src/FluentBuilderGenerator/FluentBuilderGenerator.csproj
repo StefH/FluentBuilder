@@ -1,13 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <Version>0.0.8</Version>
+        <Version>0.0.9</Version>
         <TargetFramework>netstandard2.0</TargetFramework>
         <LangVersion>9</LangVersion>
         <Nullable>enable</Nullable>
         <ProjectGuid>{12344228-91F4-4502-9595-39584E5A9944}</ProjectGuid>
-
-        <Authors>Tom Phan;Stef Heyenrath</Authors>
+        <Authors>Stef Heyenrath</Authors>
         <Title>FluentBuilder</Title>
         <PackageId>FluentBuilder</PackageId>
         <Description>This project uses Source Generation to create a FluentBuilder for a specified model or DTO.</Description>
@@ -41,12 +40,7 @@
         <Compile Remove="bin\**" />
         <EmbeddedResource Remove="bin\**" />
         <None Remove="bin\**" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Compile Remove="Extensions\PropertySymbolExtensions.cs" />
-      <Compile Remove="Extensions\SyntaxNodeExtensions.cs" />
-      <Compile Remove="Extensions\TypeSymbolExtensions.cs" />
+        <None Remove="bin\$(Configuration)\netstandard2.0\\FluentBuilderGenerator.dll" />
     </ItemGroup>
 
     <ItemGroup>
@@ -56,10 +50,6 @@
         </PackageReference>
         <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="3.10.0" PrivateAssets="all" />
         <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.10.0" PrivateAssets="all" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <None Remove="bin\$(Configuration)\netstandard2.0\\FluentBuilderGenerator.dll" />
     </ItemGroup>
 
     <ItemGroup>
