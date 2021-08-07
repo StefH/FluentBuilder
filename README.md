@@ -1,9 +1,14 @@
-# FluentBuilder
+# Projects
+
+## CSharp.SourceGenerators.Extensions
+See this [page](https://github.com/StefH/FluentBuilder/tree/main/src-extensions).
+
+## FluentBuilder
 A project which uses Source Generation to create a FluentBuilder for a specified model or DTO.
 
 This project is based on [Tom Phan : "auto-generate-builders-using-source-generator-in-net-5"](https://justsimplycode.com/2020/12/06/auto-generate-builders-using-source-generator-in-net-5/).
 
-# Install
+## Install
 [![NuGet Badge](https://buildstats.info/nuget/FluentBuilder)](https://www.nuget.org/packages/FluentBuilder)
 
 You can install from NuGet using the following command in the package manager window:
@@ -14,7 +19,7 @@ Or via the Visual Studio NuGet package manager or if you use the `dotnet` comman
 
 `dotnet add package FluentBuilder`
 
-# Usage
+## Usage
 ### Annotate
 Annotate a class with `[FluentBuilder.AutoGenerateBuilder]` to indicate that a FluentBuilder should be generated for this class:
 ``` c#
