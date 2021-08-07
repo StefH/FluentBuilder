@@ -7,12 +7,12 @@ namespace CSharp.SourceGenerators.Extensions.Models
         /// <summary>
         /// The source-file path.
         /// </summary>
-        public string Path { get; set; }
+        public string Path { get; init; } = default!;
 
         /// <summary>
         /// The source-file C# code.
         /// </summary>
-        public string Text { get; set; }
+        public string Text { get; init; } = default!;
 
         /// <summary>
         /// Optionally add this attribute to the source-classes.
@@ -22,6 +22,6 @@ namespace CSharp.SourceGenerators.Extensions.Models
         /// - <see cref="string"/> which defines the attribute-name
         /// - <see cref="ClassAttribute"/> which is an class which defines the attribute-name and optionally some parameters
         /// </summary>
-        public AnyOf<string, ClassAttribute>? AttributeToAddToClasses { get; set; }
+        public AnyOf<string, ClassAttribute>? AttributeToAddToClasses { get; init; }
     }
 }

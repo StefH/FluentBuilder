@@ -7,16 +7,16 @@ namespace CSharp.SourceGenerators.Extensions.Models
         /// <summary>
         /// The result-file path.
         /// </summary>
-        public string Path { get; set; }
+        public string Path { get; init; } = default!;
 
         /// <summary>
         /// The result-file C# code.
         /// </summary>
-        public string Text { get; set; }
+        public string Text { get; init; } = default!;
 
         /// <summary>
         /// The complete <see cref="SyntaxTree"/> from the result-file.
         /// </summary>
-        public SyntaxTree SyntaxTree { get; set; }
+        public SyntaxTree SyntaxTree { get; init; } = default!;
     }
 }

@@ -8,13 +8,13 @@ namespace CSharp.SourceGenerators.Extensions.Models
         /// <summary>
         /// The name of the attribute to add
         /// </summary>
-        public string Name { get; set; }
+        public string Name { get; init; } = default!;
 
         /// <summary>
         /// The arguments to add to the argument.
         ///
         /// This can be a <see cref="string"/> or an <see cref="IEnumerable<string>"/>.
         /// </summary>
-        public AnyOf<string, IEnumerable<string>>? ArgumentList { get; set; }
+        public AnyOf<string, IEnumerable<string>>? ArgumentList { get; init; } = default!;
     }
 }
