@@ -1,7 +1,6 @@
 # CSharp.SourceGenerators.Extensions
 
-
-[![NuGet Badge](https://buildstats.info/nuget/FluentBuilder)](https://www.nuget.org/packages/CSharp.SourceGenerators.Extensions)
+[![NuGet Badge](https://buildstats.info/nuget/CSharp.SourceGenerators.Extensions)](https://www.nuget.org/packages/CSharp.SourceGenerators.Extensions)
 
 ## Info
 This package provides an `Execute` extension method on a `ISourceGenerator` which can be directly called in a Unit Test.
@@ -33,3 +32,7 @@ public void GenerateFiles_For1Class_Should_GenerateCorrectFiles()
     builder.Text.Should().NotBeNullOrEmpty();
 }
 ```
+
+## :books: References
+- https://github.com/dotnet/roslyn/blob/main/docs/features/source-generators.cookbook.md
+- https://notanaverageman.github.io/2020/12/07/cs-source-generators-cheatsheet.html

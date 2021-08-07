@@ -1,8 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <Version>0.0.2</Version>
+        <Version>0.0.3</Version>
         <TargetFramework>netstandard2.1</TargetFramework>
+        <LangVersion>9</LangVersion>
         <Nullable>enable</Nullable>
         <Authors>Stef Heyenrath</Authors>
         <Description>Some extensions for a ISourceGenerator which can be used to execute a SourceGenerator manually which makes unit-testing easy.</Description>
@@ -21,10 +22,11 @@
 
     <ItemGroup>
         <None Include="../../resources/icon.png" Pack="true" PackagePath="" />
-        <None Include="../PackageReadme.md" Pack="true" PackagePath=""/>
+        <None Include="../PackageReadme.md" Pack="true" PackagePath="" />
     </ItemGroup>
 
     <ItemGroup>
+      <PackageReference Include="AnyOf" Version="0.0.13" />
       <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="3.10.0" />
       <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.10.0" />
     </ItemGroup>

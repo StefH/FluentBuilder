@@ -4,6 +4,7 @@ using CSharp.SourceGenerators.Extensions.Models;
 using FluentAssertions;
 using FluentBuilderGenerator;
 using Xunit;
+using AnyOfTypes;
 
 namespace FluentBuilderGeneratorTests
 {
@@ -51,7 +52,10 @@ namespace FluentBuilderGeneratorTests
             {
                 Path = path,
                 Text = File.ReadAllText(path),
-                AttributeToAddToClasses = "FluentBuilder.AutoGenerateBuilder"
+                AttributeToAddToClasses = new ClassAttribute
+                {
+                    Name = "FluentBuilder.AutoGenerateBuilder"
+                }
             };
 
             // Act
@@ -78,7 +82,11 @@ namespace FluentBuilderGeneratorTests
             {
                 Path = path1,
                 Text = File.ReadAllText(path1),
-                AttributeToAddToClasses = "FluentBuilder.AutoGenerateBuilder"
+                AttributeToAddToClasses = new ClassAttribute
+                {
+                    Name = "FluentBuilder.AutoGenerateBuilder",
+                    ArgumentList = "dummy"
+                }
             };
 
             var path2 = "./DTO/AddressT.cs";
@@ -86,7 +94,11 @@ namespace FluentBuilderGeneratorTests
             {
                 Path = path2,
                 Text = File.ReadAllText(path2),
-                AttributeToAddToClasses = "FluentBuilder.AutoGenerateBuilder"
+                AttributeToAddToClasses = new ClassAttribute
+                {
+                    Name = "FluentBuilder.AutoGenerateBuilder",
+                    ArgumentList = new[] { "dummy1", "dummy2" }
+                }
             };
 
             // Act

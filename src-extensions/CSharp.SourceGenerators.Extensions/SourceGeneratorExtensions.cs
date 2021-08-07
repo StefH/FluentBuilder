@@ -6,6 +6,7 @@ using CSharp.SourceGenerators.Extensions.Models;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using AnyOfTypes;
 
 namespace CSharp.SourceGenerators.Extensions
 {
@@ -52,11 +53,11 @@ namespace CSharp.SourceGenerators.Extensions
                 ErrorMessages = diagnostics.Where(d => d.Severity == DiagnosticSeverity.Error).Select(d => d.GetMessage()).ToList(),
                 Files = outputCompilation.SyntaxTrees
                     .Where(st => !sources.Any(s => s.Path == st.FilePath))
-                    .Select(s => new FileResult
+                    .Select(st => new FileResult
                     {
-                        SyntaxTree = s,
-                        Path = s.FilePath,
-                        Text = s.ToString()
+                        SyntaxTree = st,
+                        Path = st.FilePath,
+                        Text = st.ToString()
                     })
                     .ToList()
             };
@@ -65,28 +66,48 @@ namespace CSharp.SourceGenerators.Extensions
         private static SyntaxTree GetSyntaxTree(SourceFile source)
         {
             var syntaxTree = CSharpSyntaxTree.ParseText(source.Text, null, source.Path);
-            if (string.IsNullOrEmpty(source.AttributeToAddToClasses))
+            if (source.AttributeToAddToClasses is null)
             {
                 return syntaxTree;
             }
 
-            var root = syntaxTree.GetRoot();
-            foreach (var classDeclaration in root.DescendantNodes().OfType<ClassDeclarationSyntax>())
-            {
-                // https://stackoverflow.com/questions/35927427/how-to-create-an-attributesyntax-with-a-parameter
-                var name = SyntaxFactory.ParseName(source.AttributeToAddToClasses);
-                var attribute = SyntaxFactory.Attribute(name);
-                var attributeList = new SeparatedSyntaxList<AttributeSyntax>().Add(attribute);
+            var attributeToAdd = source.AttributeToAddToClasses.Value;
 
-                var list = SyntaxFactory.AttributeList(attributeList);
-                var newClassDeclaration = classDeclaration.AddAttributeLists(list);
+            var rootSyntaxNode = syntaxTree.GetRoot();
+            foreach (var classDeclaration in rootSyntaxNode.DescendantNodes().OfType<ClassDeclarationSyntax>())
+            {
+                var name = attributeToAdd.IsFirst ? attributeToAdd.First : attributeToAdd.Second.Name;
+
+                // https://stackoverflow.com/questions/35927427/how-to-create-an-attributesyntax-with-a-parameter
+                var nameSyntax = SyntaxFactory.ParseName(name);
+                var attributeArgumentListSyntax = ParseArguments(attributeToAdd);
+
+                var attributeSyntax = SyntaxFactory.Attribute(nameSyntax, attributeArgumentListSyntax);
+                var separatedSyntaxList = new SeparatedSyntaxList<AttributeSyntax>().Add(attributeSyntax);
+
+                var attributeListSyntax = SyntaxFactory.AttributeList(separatedSyntaxList);
+                var newClassDeclarationSyntax = classDeclaration.AddAttributeLists(attributeListSyntax);
 
                 // https://stackoverflow.com/questions/44060524/why-does-syntaxnode-replacenode-change-the-syntaxtree-options
-                root = root.ReplaceNode(classDeclaration, newClassDeclaration);
+                rootSyntaxNode = rootSyntaxNode.ReplaceNode(classDeclaration, newClassDeclarationSyntax);
             }
 
             // https://stackoverflow.com/questions/21754908/cant-update-changes-to-tree-roslyn
-            return CSharpSyntaxTree.ParseText(root.GetText().ToString(), null, source.Path);
+            return CSharpSyntaxTree.ParseText(rootSyntaxNode.GetText().ToString(), null, source.Path);
+        }
+
+        private static AttributeArgumentListSyntax ParseArguments(AnyOf<string, ClassAttribute> attributeToAdd)
+        {
+            string arguments = string.Empty;
+
+            if (attributeToAdd.IsSecond && attributeToAdd.Second.ArgumentList is not null)
+            {
+                arguments = attributeToAdd.Second.ArgumentList.Value.IsFirst ?
+                    attributeToAdd.Second.ArgumentList.Value.First :
+                    string.Join(",", attributeToAdd.Second.ArgumentList.Value.Second);
+            }
+
+            return SyntaxFactory.ParseAttributeArgumentList($"({arguments})");
         }
     }
 }
