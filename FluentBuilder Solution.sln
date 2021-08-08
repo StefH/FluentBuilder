@@ -10,8 +10,10 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{56142EC5-9C2F-4055-A9C8-40F80A6595D6}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
-		GitHubReleaseNotes.txt = GitHubReleaseNotes.txt
+		Generate-ReleaseNotes.bat = Generate-ReleaseNotes.bat
 		PackageReadme.md = PackageReadme.md
+		PackageReleaseNotes.template = PackageReleaseNotes.template
+		PackageReleaseNotes.txt = PackageReleaseNotes.txt
 		README.md = README.md
 		ReleaseNotes.md = ReleaseNotes.md
 	EndProjectSection

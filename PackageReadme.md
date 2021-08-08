@@ -1,6 +1,3 @@
-# Info
-A project which uses Source Generation to create a FluentBuilder for a specified model or DTO.
-
 # Usage
 ### Annotate
 Annotate a class with `[FluentBuilder.AutoGenerateBuilder]` to indicate that a FluentBuilder should be generated for this class:

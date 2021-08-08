@@ -1,3 +1,0 @@
-https://github.com/StefH/GitHubReleaseNotes
-
-GitHubReleaseNotes --output ReleaseNotes.md --skip-empty-releases --exclude-labels question invalid doc --version 0.0.8

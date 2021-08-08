@@ -1,0 +1,4 @@
+# 0.0.8 (06 August 2021)
+- #7 Add support for generics + update generated filename [enhancement]
+
+The full release notes can be found here: https://github.com/StefH/FluentBuilder/blob/main/ReleaseNotes.md
