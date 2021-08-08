@@ -1,7 +1,6 @@
-# Info
 This package provides an `Execute` extension method on a `ISourceGenerator` which can be directly called in a Unit Test.
 
-## Example
+**Example**
 ``` c#
 [Fact]
 public void GenerateFiles_For1Class_Should_GenerateCorrectFiles()
