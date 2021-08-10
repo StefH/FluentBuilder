@@ -26,13 +26,13 @@ namespace FluentBuilderGeneratorTests
             {
                 Path = path,
                 Text = File.ReadAllText(path),
-                AttributeToAddToClasses = "FluentBuilder.AutoGenerateBuilder"
+                AttributeToAddToClass = "FluentBuilder.AutoGenerateBuilder"
             };
 
             // Act
             var result = _sut.Execute(new[] { sourceFile });
 
-            // Asert
+            // Assert
             result.Valid.Should().BeTrue();
             result.Files.Should().HaveCount(3);
 
@@ -52,7 +52,7 @@ namespace FluentBuilderGeneratorTests
             {
                 Path = path,
                 Text = File.ReadAllText(path),
-                AttributeToAddToClasses = new ClassAttribute
+                AttributeToAddToClass = new ExtraAttribute
                 {
                     Name = "FluentBuilder.AutoGenerateBuilder"
                 }
@@ -61,7 +61,7 @@ namespace FluentBuilderGeneratorTests
             // Act
             var result = _sut.Execute(new[] { sourceFile });
 
-            // Asert
+            // Assert
             result.Valid.Should().BeTrue();
             result.Files.Should().HaveCount(3);
 
@@ -82,7 +82,7 @@ namespace FluentBuilderGeneratorTests
             {
                 Path = path1,
                 Text = File.ReadAllText(path1),
-                AttributeToAddToClasses = new ClassAttribute
+                AttributeToAddToClass = new ExtraAttribute
                 {
                     Name = "FluentBuilder.AutoGenerateBuilder",
                     ArgumentList = "dummy"
@@ -94,7 +94,7 @@ namespace FluentBuilderGeneratorTests
             {
                 Path = path2,
                 Text = File.ReadAllText(path2),
-                AttributeToAddToClasses = new ClassAttribute
+                AttributeToAddToClass = new ExtraAttribute
                 {
                     Name = "FluentBuilder.AutoGenerateBuilder",
                     ArgumentList = new[] { "dummy1", "dummy2" }
@@ -104,7 +104,7 @@ namespace FluentBuilderGeneratorTests
             // Act
             var result = _sut.Execute(new[] { sourceFile1, sourceFile2 });
 
-            // Asert
+            // Assert
             result.Valid.Should().BeTrue();
             result.Files.Should().HaveCount(4);
 

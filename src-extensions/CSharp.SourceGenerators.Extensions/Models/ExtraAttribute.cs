@@ -3,7 +3,7 @@ using AnyOfTypes;
 
 namespace CSharp.SourceGenerators.Extensions.Models
 {
-    public class ClassAttribute
+    public class ExtraAttribute
     {
         /// <summary>
         /// The name of the attribute to add

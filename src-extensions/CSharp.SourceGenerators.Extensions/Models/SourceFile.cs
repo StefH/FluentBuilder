@@ -15,13 +15,23 @@ namespace CSharp.SourceGenerators.Extensions.Models
         public string Text { get; init; } = default!;
 
         /// <summary>
-        /// Optionally add this attribute to the source-classes.
-        /// This is useful when your SourceGenerator uses a ISyntaxReceiver to process only files with a certain attribute.
+        /// Optionally add this attribute to the source-class file.
+        /// This is useful when your SourceGenerator uses a ISyntaxReceiver to process only classes with a certain attribute.
         ///
         /// This can be a
         /// - <see cref="string"/> which defines the attribute-name
-        /// - <see cref="ClassAttribute"/> which is an class which defines the attribute-name and optionally some parameters
+        /// - <see cref="ExtraAttribute"/> which is an class which defines the attribute-name and optionally some parameters
         /// </summary>
-        public AnyOf<string, ClassAttribute>? AttributeToAddToClasses { get; init; }
+        public AnyOf<string, ExtraAttribute>? AttributeToAddToClass { get; init; }
+
+        /// <summary>
+        /// Optionally add this attribute to the source-interface file.
+        /// This is useful when your SourceGenerator uses a ISyntaxReceiver to process only interfaces with a certain attribute.
+        ///
+        /// This can be a
+        /// - <see cref="string"/> which defines the attribute-name
+        /// - <see cref="ExtraAttribute"/> which is an class which defines the attribute-name and optionally some parameters
+        /// </summary>
+        public AnyOf<string, ExtraAttribute>? AttributeToAddToInterface { get; init; }
     }
 }

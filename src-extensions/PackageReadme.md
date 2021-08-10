@@ -11,13 +11,13 @@ public void GenerateFiles_For1Class_Should_GenerateCorrectFiles()
     {
         Path = path,
         Text = File.ReadAllText(path),
-        AttributeToAddToClasses = "FluentBuilder.AutoGenerateBuilder"
+        AttributeToAddToClass = "FluentBuilder.AutoGenerateBuilder"
     };
 
     // Act
     var result = _sut.Execute(new[] { sourceFile });
 
-    // Asert
+    // Assert
     result.Valid.Should().BeTrue();
     result.Files.Should().HaveCount(3);
 
