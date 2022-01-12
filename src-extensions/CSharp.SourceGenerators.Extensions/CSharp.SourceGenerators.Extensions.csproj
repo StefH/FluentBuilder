@@ -28,10 +28,7 @@
     <ItemGroup>
         <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="3.10.0" />
         <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.10.0" />
-        <PackageReference Include="AnyOf" Version="0.0.21">
-            <PrivateAssets>all</PrivateAssets>
-            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-        </PackageReference>
+        <PackageReference Include="AnyOf" Version="0.2.0" />
     </ItemGroup>
 
 </Project>

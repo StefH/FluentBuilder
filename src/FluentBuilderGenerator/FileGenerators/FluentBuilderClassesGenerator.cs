@@ -70,6 +70,8 @@ namespace FluentBuilder
             var sb = new StringBuilder();
             foreach (var property in properties)
             {
+                sb.AppendLine($"        private bool _{CamelCase(property.Name)}IsSet;");
+
                 sb.AppendLine($"        private Lazy<{property.Type}> _{CamelCase(property.Name)} = new Lazy<{property.Type}>(() => default({property.Type}));");
 
                 sb.AppendLine($"        public {className} With{property.Name}({property.Type} value) => With{property.Name}(() => value);");
@@ -82,7 +84,12 @@ namespace FluentBuilder
                     sb.Append(GenerateWithPropertyActionMethod(classSymbol, property, existingClassSymbol));
                 }
 
-                sb.AppendLine($"        public {className} Without{property.Name}() => With{property.Name}(() => default({property.Type}));");
+                sb.AppendLine($"        public {className} Without{property.Name}()");
+                sb.AppendLine("        {");
+                sb.AppendLine($"            With{property.Name}(() => default({property.Type}));");
+                sb.AppendLine($"            _{CamelCase(property.Name)}IsSet = false;");
+                sb.AppendLine("            return this;");
+                sb.AppendLine("        }");
                 sb.AppendLine();
             }
 
@@ -97,6 +104,7 @@ namespace FluentBuilder
             output.AppendLine($"        public {className} With{property.Name}(Func<{property.Type}> func)");
             output.AppendLine("        {");
             output.AppendLine($"            _{CamelCase(property.Name)} = new Lazy<{property.Type}>(func);");
+            output.AppendLine($"            _{CamelCase(property.Name)}IsSet = true;");
             output.AppendLine("            return this;");
             output.AppendLine("        }");
             return output;
@@ -143,19 +151,34 @@ namespace FluentBuilder
 
         private static string GenerateBuildMethod(INamedTypeSymbol classSymbol)
         {
-            var properties = GetProperties(classSymbol);
+            var properties = GetProperties(classSymbol).ToArray();
             var output = new StringBuilder();
             var className = classSymbol.GenerateClassName();
 
-            output.AppendLine($@"        public override {className} Build()
+            output.AppendLine($@"        public override {className} Build(bool callDefaultConstructorIfPresent = false)
         {{
             if (Object?.IsValueCreated != true)
             {{
-                Object = new Lazy<{className}>(() => new {className}
-                {{");
+                Object = new Lazy<{className}>(() =>
+                {{
+                    if (typeof({className}).GetConstructor(Type.EmptyTypes) is null)
+                    {{
+                        throw new NotSupportedException(ErrorMessageConstructor);
+                    }}
 
-            output.AppendLine(string.Join(",\r\n", properties.Select(property => $@"                    {property.Name} = _{CamelCase(property.Name)}.Value")));
-            output.AppendLine($@"                }});
+                    if (callDefaultConstructorIfPresent)
+                    {{
+                        var instance = new {className}();");
+            output.AppendLine(string.Join("\r\n", properties.Select(property => $@"                        if (_{CamelCase(property.Name)}IsSet) {{ instance.{property.Name} = _{CamelCase(property.Name)}.Value; }}")));
+            output.AppendLine($@"                        return instance;
+                    }}
+
+                    return new {className}
+                    {{");
+
+            output.AppendLine(string.Join(",\r\n", properties.Select(property => $@"                        {property.Name} = _{CamelCase(property.Name)}.Value")));
+            output.AppendLine($@"                    }};
+                }});
             }}
 
             PostBuild(Object.Value);

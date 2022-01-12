@@ -54,3 +54,40 @@ namespace Test
     }
 }
 ```
+
+### Use FluentBuilder when the class has a default constructor
+``` c#
+[FluentBuilder.AutoGenerateBuilder]
+public class User
+{
+    public string FirstName { get; set; }
+
+    public string LastName { get; set; }
+
+    public DateTime? Date { get; set; }
+
+    public User()
+    {
+        FirstName = "test";
+    }
+}
+```
+
+``` c#
+using System;
+
+namespace Test
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            var user = new FluentBuilder.UserBuilder()
+                .WithLastName("User")
+                .Build(true); // ⭐ Provide `true` here.
+
+            Console.WriteLine($"{user.FirstName} {user.LastName}");
+        }
+    }
+}
+```
