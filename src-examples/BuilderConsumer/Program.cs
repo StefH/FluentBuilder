@@ -6,7 +6,7 @@ namespace BuilderConsumer
 {
     class Program
     {
-        private static JsonSerializerOptions JsonSerializerOptions = new()
+        private static readonly JsonSerializerOptions JsonSerializerOptions = new()
         {
             WriteIndented = true
         };
@@ -25,11 +25,11 @@ namespace BuilderConsumer
 
             var email2b = new FluentBuilder.EmailDtoWithConstructorBuilder()
                 .WithAddress("x@x.nl")
-                .Build(true);
+                .Build(false);
             Console.WriteLine("email2b = " + JsonSerializer.Serialize(email2b, JsonSerializerOptions));
 
             var email2c = new FluentBuilder.EmailDtoWithConstructorBuilder()
-                .Build(true);
+                .Build(false);
             Console.WriteLine("email2c = " + JsonSerializer.Serialize(email2c, JsonSerializerOptions));
 
             var user1 = new FluentBuilder.UserDtoBuilder()

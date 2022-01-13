@@ -155,7 +155,7 @@ namespace FluentBuilder
             var output = new StringBuilder();
             var className = classSymbol.GenerateClassName();
 
-            output.AppendLine($@"        public override {className} Build(bool callDefaultConstructorIfPresent = false)
+            output.AppendLine($@"        public override {className} Build(bool useObjectInitializer = true)
         {{
             if (Object?.IsValueCreated != true)
             {{
@@ -166,18 +166,17 @@ namespace FluentBuilder
                         throw new NotSupportedException(ErrorMessageConstructor);
                     }}
 
-                    if (callDefaultConstructorIfPresent)
+                    if (useObjectInitializer)
                     {{
-                        var instance = new {className}();");
-            output.AppendLine(string.Join("\r\n", properties.Select(property => $@"                        if (_{CamelCase(property.Name)}IsSet) {{ instance.{property.Name} = _{CamelCase(property.Name)}.Value; }}")));
-            output.AppendLine($@"                        return instance;
+                        return new {className}
+                        {{");
+            output.AppendLine(string.Join(",\r\n", properties.Select(property => $@"                            {property.Name} = _{CamelCase(property.Name)}.Value")));
+            output.AppendLine($@"                        }};
                     }}
 
-                    return new {className}
-                    {{");
-
-            output.AppendLine(string.Join(",\r\n", properties.Select(property => $@"                        {property.Name} = _{CamelCase(property.Name)}.Value")));
-            output.AppendLine($@"                    }};
+                    var instance = new {className}();");
+            output.AppendLine(string.Join("\r\n", properties.Select(property => $@"                    if (_{CamelCase(property.Name)}IsSet) {{ instance.{property.Name} = _{CamelCase(property.Name)}.Value; }}")));
+            output.AppendLine($@"                    return instance;
                 }});
             }}
 

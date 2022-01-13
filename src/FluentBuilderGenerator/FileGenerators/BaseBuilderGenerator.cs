@@ -31,7 +31,7 @@ namespace FluentBuilder
 
         protected Lazy<T> Object;
 
-        public abstract T Build(bool callDefaultConstructorIfPresent = false);
+        public abstract T Build(bool useObjectInitializer = false);
 
         public Builder<T> WithObject(T value) => WithObject(() => value);
 

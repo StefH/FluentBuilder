@@ -33,7 +33,7 @@ namespace FluentBuilder
         }
 
 
-        public override UserT<T> Build(bool callDefaultConstructorIfPresent = false)
+        public override UserT<T> Build(bool useObjectInitializer = true)
         {
             if (Object?.IsValueCreated != true)
             {
@@ -44,18 +44,18 @@ namespace FluentBuilder
                         throw new NotSupportedException(ErrorMessageConstructor);
                     }
 
-                    if (callDefaultConstructorIfPresent)
+                    if (useObjectInitializer)
                     {
-                        var instance = new UserT<T>();
-                        if (_tValueIsSet) { instance.TValue = _tValue.Value; }
-                        return instance;
+                        return new UserT<T>
+                        {
+                            TValue = _tValue.Value
+                        };
                     }
 
-                    return new UserT<T>
-                    {
-                        TValue = _tValue.Value
-                    };
-                });
+                    var instance = new UserT<T>();
+                    if (_tValueIsSet) { instance.TValue = _tValue.Value; }
+                    return instance;
+                }
             }
 
             PostBuild(Object.Value);

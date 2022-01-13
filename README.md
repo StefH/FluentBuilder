@@ -84,7 +84,7 @@ namespace Test
         {
             var user = new FluentBuilder.UserBuilder()
                 .WithLastName("User")
-                .Build(true); // ⭐ Provide `true` here.
+                .Build(fallse); // ⭐ Provide `false` for `useObjectInitializer` here.
 
             Console.WriteLine($"{user.FirstName} {user.LastName}");
         }

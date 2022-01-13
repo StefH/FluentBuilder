@@ -65,7 +65,7 @@ namespace FluentBuilder
         }
 
 
-        public override User Build(bool callDefaultConstructorIfPresent = false)
+        public override User Build(bool useObjectInitializer = true)
         {
             if (Object?.IsValueCreated != true)
             {
@@ -76,22 +76,22 @@ namespace FluentBuilder
                         throw new NotSupportedException(ErrorMessageConstructor);
                     }
 
-                    if (callDefaultConstructorIfPresent)
+                    if (useObjectInitializer)
                     {
-                        var instance = new User();
-                        if (_firstNameIsSet) { instance.FirstName = _firstName.Value; }
-                        if (_lastNameIsSet) { instance.LastName = _lastName.Value; }
-                        if (_quitDateIsSet) { instance.QuitDate = _quitDate.Value; }
-                        return instance;
+                        return new User
+                        {
+                            FirstName = _firstName.Value,
+                            LastName = _lastName.Value,
+                            QuitDate = _quitDate.Value
+                        };
                     }
 
-                    return new User
-                    {
-                        FirstName = _firstName.Value,
-                        LastName = _lastName.Value,
-                        QuitDate = _quitDate.Value
-                    };
-                });
+                    var instance = new User();
+                    if (_firstNameIsSet) { instance.FirstName = _firstName.Value; }
+                    if (_lastNameIsSet) { instance.LastName = _lastName.Value; }
+                    if (_quitDateIsSet) { instance.QuitDate = _quitDate.Value; }
+                    return instance;
+                }
             }
 
             PostBuild(Object.Value);

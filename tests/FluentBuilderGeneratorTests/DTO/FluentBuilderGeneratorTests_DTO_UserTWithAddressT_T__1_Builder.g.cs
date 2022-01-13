@@ -55,7 +55,7 @@ namespace FluentBuilder
         }
 
 
-        public override UserTWithAddressT<T> Build(bool callDefaultConstructorIfPresent = false)
+        public override UserTWithAddressT<T> Build(bool useObjectInitializer = true)
         {
             if (Object?.IsValueCreated != true)
             {
@@ -66,20 +66,20 @@ namespace FluentBuilder
                         throw new NotSupportedException(ErrorMessageConstructor);
                     }
 
-                    if (callDefaultConstructorIfPresent)
+                    if (useObjectInitializer)
                     {
-                        var instance = new UserTWithAddressT<T>();
-                        if (_tValueIsSet) { instance.TValue = _tValue.Value; }
-                        if (_addressIsSet) { instance.Address = _address.Value; }
-                        return instance;
+                        return new UserTWithAddressT<T>
+                        {
+                            TValue = _tValue.Value,
+                            Address = _address.Value
+                        };
                     }
 
-                    return new UserTWithAddressT<T>
-                    {
-                        TValue = _tValue.Value,
-                        Address = _address.Value
-                    };
-                });
+                    var instance = new UserTWithAddressT<T>();
+                    if (_tValueIsSet) { instance.TValue = _tValue.Value; }
+                    if (_addressIsSet) { instance.Address = _address.Value; }
+                    return instance;
+                }
             }
 
             PostBuild(Object.Value);

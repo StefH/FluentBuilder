@@ -106,7 +106,7 @@ namespace FluentBuilderGeneratorTests.FileGenerator
             var generated = result[0].Text;
             generated.Should().NotBeEmpty();
 
-            // File.WriteAllText("../../../DTO/FluentBuilderGeneratorTests.DTO.User_Builder.g.cs", generated);
+            File.WriteAllText("../../../DTO/FluentBuilderGeneratorTests.DTO.User_Builder.g.cs", generated);
 
             var generatedCode = CSharpSyntaxTree.ParseText(generated);
             var expectedCode = CSharpSyntaxTree.ParseText(File.ReadAllText("../../../DTO/FluentBuilderGeneratorTests.DTO.User_Builder.g.cs"));

@@ -70,7 +70,7 @@ namespace FluentBuilderGeneratorTests
             var builder = result.Files[2];
             builder.Path.Should().EndWith(builderFileName);
 
-            // File.WriteAllText($"../../../DTO/{builderFileName}", builder.Text);
+            File.WriteAllText($"../../../DTO/{builderFileName}", builder.Text);
             builder.Text.Should().Be(File.ReadAllText($"../../../DTO/{builderFileName}"));
         }
 
@@ -113,7 +113,7 @@ namespace FluentBuilderGeneratorTests
             var builderForUserTWithAddressT = result.Files[2];
             builderForUserTWithAddressT.Path.Should().EndWith(builder1FileName);
 
-            // File.WriteAllText($"../../../DTO/{builder1FileName}", builderForUserTWithAddressT.Text);
+            File.WriteAllText($"../../../DTO/{builder1FileName}", builderForUserTWithAddressT.Text);
             builderForUserTWithAddressT.Text.Should().Be(File.ReadAllText($"../../../DTO/{builder1FileName}"));
 
             //var builderForAddressT = result.SyntaxTrees[3];
@@ -159,7 +159,7 @@ namespace FluentBuilderGeneratorTests
             var builderForUserTWithAddressAndConstructor = result.Files[2];
             builderForUserTWithAddressAndConstructor.Path.Should().EndWith(builder1FileName);
 
-            // File.WriteAllText($"../../../DTO/{builder1FileName}", builderForUserTWithAddressAndConstructor.Text);
+            File.WriteAllText($"../../../DTO/{builder1FileName}", builderForUserTWithAddressAndConstructor.Text);
             builderForUserTWithAddressAndConstructor.Text.Should().Be(File.ReadAllText($"../../../DTO/{builder1FileName}"));
         }
     }
