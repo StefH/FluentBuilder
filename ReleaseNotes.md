@@ -1,3 +1,6 @@
+# 0.1.0 (13 January 2022)
+- [#9](https://github.com/StefH/FluentBuilder/pull/9) - Add support for calling DefaultConstructor instead of using ObjectInitializer  [enhancement] contributed by [StefH](https://github.com/StefH)
+
 # 0.0.11 (10 August 2021)
 - [#8](https://github.com/StefH/FluentBuilder/pull/8) - Add DevelopmentDependency = true to csproj [enhancement] contributed by [StefH](https://github.com/StefH)
 
