@@ -15,6 +15,7 @@
 
     <ItemGroup>
         <Compile Remove="DTO\FluentBuilderGeneratorTests.DTO.User_Builder.g.cs" />
+        <Compile Remove="DTO\FluentBuilderGeneratorTests_DTO_UserTWithAddressAndConstructor_T__1_Builder.g.cs" />
         <Compile Remove="DTO\FluentBuilderGeneratorTests_DTO_UserTWithAddressT_T__1_Builder.g.cs" />
         <Compile Remove="DTO\FluentBuilderGeneratorTests_DTO_UserT_T__1_Builder.g.cs" />
         <Compile Remove="DTO\User.cs" />
@@ -23,6 +24,9 @@
     <ItemGroup>
         <None Include="DTO\FluentBuilderGeneratorTests.DTO.User_Builder.g.cs">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="DTO\FluentBuilderGeneratorTests_DTO_UserTWithAddressAndConstructor_T__1_Builder.g.cs">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
         <None Include="DTO\FluentBuilderGeneratorTests_DTO_UserTWithAddressT_T__1_Builder.g.cs">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -59,6 +63,9 @@
 
     <ItemGroup>
         <Compile Update="DTO\AddressT.cs">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Compile>
+        <Compile Update="DTO\UserTWithAddressAndConstructor.cs">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Compile>
         <Compile Update="DTO\UserTWithAddressT.cs">

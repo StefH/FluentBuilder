@@ -16,23 +16,45 @@ namespace FluentBuilder
 {
     public partial class UserTBuilder<T> : Builder<UserT<T>> where T : struct
     {
+        private bool _tValueIsSet;
         private Lazy<T> _tValue = new Lazy<T>(() => default(T));
         public UserTBuilder<T> WithTValue(T value) => WithTValue(() => value);
         public UserTBuilder<T> WithTValue(Func<T> func)
         {
             _tValue = new Lazy<T>(func);
+            _tValueIsSet = true;
             return this;
         }
-        public UserTBuilder<T> WithoutTValue() => WithTValue(() => default(T));
+        public UserTBuilder<T> WithoutTValue()
+        {
+            WithTValue(() => default(T));
+            _tValueIsSet = false;
+            return this;
+        }
 
 
-        public override UserT<T> Build()
+        public override UserT<T> Build(bool useObjectInitializer = true)
         {
             if (Object?.IsValueCreated != true)
             {
-                Object = new Lazy<UserT<T>>(() => new UserT<T>
+                Object = new Lazy<UserT<T>>(() =>
                 {
-                    TValue = _tValue.Value
+                    if (typeof(UserT<T>).GetConstructor(Type.EmptyTypes) is null)
+                    {
+                        throw new NotSupportedException(ErrorMessageConstructor);
+                    }
+
+                    if (useObjectInitializer)
+                    {
+                        return new UserT<T>
+                        {
+                            TValue = _tValue.Value
+                        };
+                    }
+
+                    var instance = new UserT<T>();
+                    if (_tValueIsSet) { instance.TValue = _tValue.Value; }
+                    return instance;
                 });
             }
 

@@ -12,7 +12,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Moq;
 using Xunit;
 
-namespace FluentBuilderGeneratorTests
+namespace FluentBuilderGeneratorTests.FileGenerator
 {
     public class FluentBuilderClassesGeneratorTests
     {

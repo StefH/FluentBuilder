@@ -6,7 +6,7 @@ namespace BuilderConsumer
 {
     class Program
     {
-        private static JsonSerializerOptions JsonSerializerOptions = new()
+        private static readonly JsonSerializerOptions JsonSerializerOptions = new()
         {
             WriteIndented = true
         };
@@ -16,7 +16,21 @@ namespace BuilderConsumer
             var email = new FluentBuilder.EmailDtoBuilder()
                 .WithAddress("x@x.nl")
                 .Build();
-            Console.WriteLine(JsonSerializer.Serialize(email, JsonSerializerOptions));
+            Console.WriteLine("email = " + JsonSerializer.Serialize(email, JsonSerializerOptions));
+
+            var email2a = new FluentBuilder.EmailDtoWithConstructorBuilder()
+                .WithAddress("x@x.nl")
+                .Build();
+            Console.WriteLine("email2a = " + JsonSerializer.Serialize(email2a, JsonSerializerOptions));
+
+            var email2b = new FluentBuilder.EmailDtoWithConstructorBuilder()
+                .WithAddress("x@x.nl")
+                .Build(false);
+            Console.WriteLine("email2b = " + JsonSerializer.Serialize(email2b, JsonSerializerOptions));
+
+            var email2c = new FluentBuilder.EmailDtoWithConstructorBuilder()
+                .Build(false);
+            Console.WriteLine("email2c = " + JsonSerializer.Serialize(email2c, JsonSerializerOptions));
 
             var user1 = new FluentBuilder.UserDtoBuilder()
                 .WithAge(99)
@@ -84,6 +98,20 @@ namespace BuilderConsumer
         public string Address { get; set; }
 
         public bool Primary { get; set; }
+    }
+
+    [FluentBuilder.AutoGenerateBuilder]
+    public class EmailDtoWithConstructor
+    {
+        public string Address { get; set; }
+
+        public bool Primary { get; set; }
+
+        public EmailDtoWithConstructor()
+        {
+            Address = "initial value";
+            Primary = true;
+        }
     }
 
     public class TestDto
