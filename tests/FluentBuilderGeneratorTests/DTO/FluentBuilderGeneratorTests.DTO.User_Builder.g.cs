@@ -91,7 +91,7 @@ namespace FluentBuilder
                     if (_lastNameIsSet) { instance.LastName = _lastName.Value; }
                     if (_quitDateIsSet) { instance.QuitDate = _quitDate.Value; }
                     return instance;
-                }
+                });
             }
 
             PostBuild(Object.Value);

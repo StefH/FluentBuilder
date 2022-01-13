@@ -79,7 +79,7 @@ namespace FluentBuilder
                     if (_tValueIsSet) { instance.TValue = _tValue.Value; }
                     if (_addressIsSet) { instance.Address = _address.Value; }
                     return instance;
-                }
+                });
             }
 
             PostBuild(Object.Value);

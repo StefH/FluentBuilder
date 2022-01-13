@@ -55,7 +55,7 @@ namespace FluentBuilder
                     var instance = new UserT<T>();
                     if (_tValueIsSet) { instance.TValue = _tValue.Value; }
                     return instance;
-                }
+                });
             }
 
             PostBuild(Object.Value);
