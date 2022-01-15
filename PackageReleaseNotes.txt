@@ -1,4 +1,4 @@
-# 0.1.0 (13 January 2022)
-- #9 Add support for calling DefaultConstructor instead of using ObjectInitializer  [enhancement]
+# 0.1.1 (15 January 2022)
+- #10 Remove runtime check for parameterless constructor [enhancement]
 
 The full release notes can be found here: https://github.com/StefH/FluentBuilder/blob/main/ReleaseNotes.md
