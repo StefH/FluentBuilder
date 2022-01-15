@@ -161,11 +161,6 @@ namespace FluentBuilder
             {{
                 Object = new Lazy<{className}>(() =>
                 {{
-                    if (typeof({className}).GetConstructor(Type.EmptyTypes) is null)
-                    {{
-                        throw new NotSupportedException(ErrorMessageConstructor);
-                    }}
-
                     if (useObjectInitializer)
                     {{
                         return new {className}

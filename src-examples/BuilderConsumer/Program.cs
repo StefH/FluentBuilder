@@ -118,4 +118,14 @@ namespace BuilderConsumer
     {
         public string X { get; set; }
     }
+
+    //[FluentBuilder.AutoGenerateBuilder]
+    //public class Error
+    //{
+    //    public string X { get; set; }
+
+    //    public Error(int x)
+    //    {
+    //    }
+    //}
 }

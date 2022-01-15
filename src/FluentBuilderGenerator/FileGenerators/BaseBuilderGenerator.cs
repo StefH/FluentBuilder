@@ -27,8 +27,6 @@ namespace FluentBuilder
 {
     public abstract class Builder<T> where T : class
     {
-        protected static string ErrorMessageConstructor = ""Only parameterless constructors are supported in FluentBuilder."";
-
         protected Lazy<T> Object;
 
         public abstract T Build(bool useObjectInitializer = false);
