@@ -71,11 +71,6 @@ namespace FluentBuilder
             {
                 Object = new Lazy<User>(() =>
                 {
-                    if (typeof(User).GetConstructor(Type.EmptyTypes) is null)
-                    {
-                        throw new NotSupportedException(ErrorMessageConstructor);
-                    }
-
                     if (useObjectInitializer)
                     {
                         return new User

@@ -41,11 +41,11 @@ namespace FluentBuilder
             _addressIsSet = true;
             return this;
         }
-        public UserTWithAddressAndConstructorBuilder<T> WithAddress(Action<FluentBuilder.AddressBuilder<Int16>> action) => WithAddress(() =>
+        public UserTWithAddressAndConstructorBuilder<T> WithAddress(Action<FluentBuilder.AddressBuilder<Int16>> action, bool useObjectInitializer = true) => WithAddress(() =>
         {
             var builder = new FluentBuilder.AddressBuilder<Int16>();
             action(builder);
-            return builder.Build();
+            return builder.Build(useObjectInitializer);
         });
         public UserTWithAddressAndConstructorBuilder<T> WithoutAddress()
         {
@@ -61,11 +61,6 @@ namespace FluentBuilder
             {
                 Object = new Lazy<UserTWithAddressAndConstructor<T>>(() =>
                 {
-                    if (typeof(UserTWithAddressAndConstructor<T>).GetConstructor(Type.EmptyTypes) is null)
-                    {
-                        throw new NotSupportedException(ErrorMessageConstructor);
-                    }
-
                     if (useObjectInitializer)
                     {
                         return new UserTWithAddressAndConstructor<T>

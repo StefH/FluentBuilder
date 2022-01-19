@@ -16,6 +16,8 @@ namespace FluentBuilderGeneratorTests.FileGenerator
 {
     public class FluentBuilderClassesGeneratorTests
     {
+        private const bool Write = true;
+
         private readonly Mock<IGeneratorExecutionContextWrapper> _contextMock;
         private readonly Mock<IAutoGenerateBuilderSyntaxReceiver> _receiverMock;
 
@@ -106,7 +108,7 @@ namespace FluentBuilderGeneratorTests.FileGenerator
             var generated = result[0].Text;
             generated.Should().NotBeEmpty();
 
-            // File.WriteAllText("../../../DTO/FluentBuilderGeneratorTests.DTO.User_Builder.g.cs", generated);
+            if (Write) File.WriteAllText("../../../DTO/FluentBuilderGeneratorTests.DTO.User_Builder.g.cs", generated);
 
             var generatedCode = CSharpSyntaxTree.ParseText(generated);
             var expectedCode = CSharpSyntaxTree.ParseText(File.ReadAllText("../../../DTO/FluentBuilderGeneratorTests.DTO.User_Builder.g.cs"));
