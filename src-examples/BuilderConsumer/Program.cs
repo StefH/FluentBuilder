@@ -53,6 +53,12 @@ namespace BuilderConsumer
                 .WithTValue(42)
                 .Build();
             Console.WriteLine(JsonSerializer.Serialize(userT1, JsonSerializerOptions));
+
+            var userWithAddress = new FluentBuilder.UserWithEmailDtoBuilder()
+                .WithAge(99)
+                .WithEmailWithConstructor(a => a.WithPrimary(false), false)
+                .Build();
+            Console.WriteLine(JsonSerializer.Serialize(userWithAddress, JsonSerializerOptions));
         }
     }
 
@@ -112,6 +118,16 @@ namespace BuilderConsumer
             Address = "initial value";
             Primary = true;
         }
+    }
+
+    [FluentBuilder.AutoGenerateBuilder]
+    public class UserWithEmailDto
+    {
+        public int Age { get; set; }
+
+        public EmailDto Email { get; set; }
+
+        public EmailDtoWithConstructor EmailWithConstructor { get; set; }
     }
 
     public class TestDto

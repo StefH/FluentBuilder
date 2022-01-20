@@ -116,11 +116,11 @@ namespace FluentBuilder
             var propertyName = property.Type is INamedTypeSymbol propertyNamedType ? propertyNamedType.GenerateClassName(true) : property.Type.Name + "Builder";
 
             var sb = new StringBuilder();
-            sb.AppendLine($"        public {className} With{property.Name}(Action<FluentBuilder.{propertyName}> action) => With{property.Name}(() =>");
+            sb.AppendLine($"        public {className} With{property.Name}(Action<FluentBuilder.{propertyName}> action, bool useObjectInitializer = true) => With{property.Name}(() =>");
             sb.AppendLine("        {");
             sb.AppendLine($"            var builder = new FluentBuilder.{propertyName}();");
             sb.AppendLine("            action(builder);");
-            sb.AppendLine("            return builder.Build();");
+            sb.AppendLine("            return builder.Build(useObjectInitializer);");
             sb.AppendLine("        });");
             return sb;
         }
