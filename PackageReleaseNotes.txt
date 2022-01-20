@@ -1,4 +1,4 @@
-# 0.1.1 (15 January 2022)
-- #10 Remove runtime check for parameterless constructor [enhancement]
+# 0.1.2 (20 January 2022)
+- #11 Also add 'useObjectInitializer' in With* methods [enhancement]
 
 The full release notes can be found here: https://github.com/StefH/FluentBuilder/blob/main/ReleaseNotes.md

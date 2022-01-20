@@ -1,3 +1,6 @@
+# 0.1.2 (20 January 2022)
+- [#11](https://github.com/StefH/FluentBuilder/pull/11) - Also add 'useObjectInitializer' in With* methods [enhancement] contributed by [StefH](https://github.com/StefH)
+
 # 0.1.1 (15 January 2022)
 - [#10](https://github.com/StefH/FluentBuilder/pull/10) - Remove runtime check for parameterless constructor [enhancement] contributed by [StefH](https://github.com/StefH)
 
