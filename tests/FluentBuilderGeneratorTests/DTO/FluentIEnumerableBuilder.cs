@@ -8,12 +8,20 @@ namespace FluentBuilder
     {
         private readonly Lazy<List<T>> _list = new(() => new List<T>());
 
-        public FluentIEnumerableBuilder<T> With(T item)
+        public FluentIEnumerableBuilder<T> With(T item) => With(() => item);
+        public FluentIEnumerableBuilder<T> With(Func<T> func)
         {
-            _list.Value.Add(item);
+            _list.Value.Add(func());
 
             return this;
         }
+
+        //public FluentIEnumerableBuilder<T> With(Action<FluentBuilder.Builder<T>> action, bool useObjectInitializer = true) => With(() =>
+        //{
+        //    var builder = new FluentBuilder.Builder<T>();
+        //    action(builder);
+        //    return builder.Build(useObjectInitializer);
+        //});
 
         public override T[] Build(bool useObjectInitializer = true)
         {

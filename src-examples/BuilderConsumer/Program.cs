@@ -17,6 +17,7 @@ namespace BuilderConsumer
                 .WithIntArray(ib => ib
                     .With(1)
                     .With(2)
+                    .With(() => 3)
                     .Build()
                 )
                 .WithSecondaryEmails(sb => sb
