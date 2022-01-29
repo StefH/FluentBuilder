@@ -37,10 +37,40 @@ namespace FluentBuilderGeneratorTests
             result.Valid.Should().BeTrue();
             result.Files.Should().HaveCount(3);
 
+            var baseBuilder = result.Files[1];
+            if (true) File.WriteAllText($"../../../DTO/Builder.cs", baseBuilder.Text);
+            baseBuilder.Text.Should().Be(File.ReadAllText($"../../../DTO/Builder.cs"));
+
             var builder = result.Files[2];
             builder.Path.Should().EndWith("FluentBuilderGeneratorTests.DTO.User_Builder.g.cs");
-
             builder.Text.Should().NotBeNullOrEmpty();
+        }
+
+        [Fact]
+        public void GenerateFiles_ForClassWithArrayProperty_Should_GenerateCorrectFiles()
+        {
+            // Arrange
+            var builderFileName = "BuilderGeneratorTests.DTO.Address_Builder.g.cs";
+            var path = "./DTO/Address.cs";
+            var sourceFile = new SourceFile
+            {
+                Path = path,
+                Text = File.ReadAllText(path),
+                AttributeToAddToClass = "FluentBuilder.AutoGenerateBuilder"
+            };
+
+            // Act
+            var result = _sut.Execute(new[] { sourceFile });
+
+            // Assert
+            result.Valid.Should().BeTrue();
+            result.Files.Should().HaveCount(4);
+
+            var builder = result.Files[3];
+            builder.Path.Should().EndWith(builderFileName);
+
+            if (true) File.WriteAllText($"../../../DTO/{builderFileName}", builder.Text);
+            builder.Text.Should().Be(File.ReadAllText($"../../../DTO/{builderFileName}"));
         }
 
         [Fact]

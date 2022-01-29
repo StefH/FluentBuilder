@@ -1,9 +1,9 @@
 // This source code is based on https://justsimplycode.com/2020/12/06/auto-generate-builders-using-source-generator-in-net-5
 namespace FluentBuilderGenerator.FileGenerators;
 
-internal class BaseBuilderGenerator : IFileGenerator
+internal class FluentIEnumerableBuilder : IFileGenerator
 {
-    private const string Name = "FluentBuilder.BaseBuilder.g.cs";
+    private const string Name = "FluentBuilder.FluentIEnumerableBuilder.g.cs";
 
     public FileData GenerateFile()
     {
@@ -21,25 +21,34 @@ internal class BaseBuilderGenerator : IFileGenerator
 
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace FluentBuilder
 {
-    public abstract class Builder<T> // where T : class
+    public class FluentIEnumerableBuilder<T> : Builder<T[]>
     {
-        protected Lazy<T> Object;
+        private readonly Lazy<List<T>> _list = new(() => new List<T>());
 
-        public abstract T Build(bool useObjectInitializer = true);
-
-        public Builder<T> WithObject(T value) => WithObject(() => value);
-
-        public Builder<T> WithObject(Func<T> func)
+        public FluentIEnumerableBuilder<T> With(T item)
         {
-            Object = new Lazy<T>(func);
+            _list.Value.Add(item);
+
             return this;
         }
-    
-        protected virtual void PostBuild(T value) {}
+
+        public override T[] Build(bool useObjectInitializer = true)
+        {
+            if (Object?.IsValueCreated != true)
+            {
+                Object = new Lazy<T[]>(() =>
+                {
+                    return _list.Value.ToArray();
+                });
+            }
+
+            PostBuild(Object.Value);
+
+            return Object.Value;
+        }
     }
 }"
         };

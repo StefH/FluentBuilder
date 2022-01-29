@@ -1,10 +1,9 @@
 using Microsoft.CodeAnalysis;
 
-namespace FluentBuilderGenerator.Wrappers
+namespace FluentBuilderGenerator.Wrappers;
+
+internal interface IGeneratorExecutionContextWrapper
 {
-    internal interface IGeneratorExecutionContextWrapper
-    {
-        /// <see cref="Compilation.GetTypeByMetadataName(string)"/>
-        INamedTypeSymbol? GetTypeByMetadataName(string fullyQualifiedMetadataName);
-    }
+    /// <see cref="Compilation.GetTypeByMetadataName(string)"/>
+    INamedTypeSymbol? GetTypeByMetadataName(string fullyQualifiedMetadataName);
 }

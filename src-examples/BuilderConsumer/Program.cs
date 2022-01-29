@@ -13,6 +13,19 @@ namespace BuilderConsumer
 
         static void Main(string[] args)
         {
+            var userWithArray = new FluentBuilder.UserDtoBuilder()
+                .WithIntArray(ib => ib
+                    .With(1)
+                    .With(2)
+                    .Build()
+                )
+                .WithSecondaryEmails(sb => sb
+                    .With(new EmailDto())
+                    .Build()
+                )
+                .Build();
+            Console.WriteLine("userWithArray = " + JsonSerializer.Serialize(userWithArray, JsonSerializerOptions));
+
             var email = new FluentBuilder.EmailDtoBuilder()
                 .WithAddress("x@x.nl")
                 .Build();
@@ -80,6 +93,8 @@ namespace BuilderConsumer
         public TestDto? Test { get; set; }
 
         public UserDtoT<long> UserDtoT { get; set; }
+
+        public int[] IntArray { get; set; }
     }
 
     [FluentBuilder.AutoGenerateBuilder]

@@ -1,9 +1,8 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
-namespace FluentBuilderGenerator.FileGenerators
+namespace FluentBuilderGenerator.FileGenerators;
+
+internal interface IFilesGenerator
 {
-    internal interface IFilesGenerator
-    {
-        IEnumerable<FileData> GenerateFiles();
-    }
+    IEnumerable<FileData> GenerateFiles();
 }

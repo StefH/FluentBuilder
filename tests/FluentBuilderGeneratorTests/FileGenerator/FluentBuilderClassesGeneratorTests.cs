@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.IO;
@@ -58,7 +59,7 @@ namespace FluentBuilderGeneratorTests.FileGenerator
             var root = syntaxTree.GetRoot();
             var @namespace = root.ChildNodes().OfType<NamespaceDeclarationSyntax>().Single();
             var @class = @namespace.ChildNodes().OfType<ClassDeclarationSyntax>().Single();
-            var @properties = @class.ChildNodes().OfType<PropertyDeclarationSyntax>().ToList();
+            var properties = @class.ChildNodes().OfType<PropertyDeclarationSyntax>().ToList();
 
             _receiverMock.SetupGet(r => r.CandidateClasses).Returns(new[] { @class });
 
@@ -69,13 +70,14 @@ namespace FluentBuilderGeneratorTests.FileGenerator
             var namedTypeSymbolMock = new Mock<INamedTypeSymbol>();
             namedTypeSymbolMock.SetupGet(n => n.Name).Returns("User");
 
-            var membersMock = @properties.Select(p =>
+            var membersMock = properties.Select(p =>
             {
                 var setMethodMock = new Mock<IMethodSymbol>();
 
                 var typeSymbol = new Mock<ITypeSymbol>();
                 typeSymbol.SetupGet(t => t.Name).Returns(p.Type.ToString());
                 typeSymbol.Setup(t => t.ToString()).Returns(p.Type.ToString());
+                typeSymbol.SetupGet(ts => ts.AllInterfaces).Returns(new ImmutableArray<INamedTypeSymbol>());
 
                 var propertySymbolMock = new Mock<IPropertySymbol>();
                 propertySymbolMock.SetupGet(p => p.CanBeReferencedByName).Returns(true);
