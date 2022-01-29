@@ -28,8 +28,8 @@ namespace FluentBuilder
     {
         private readonly Lazy<List<T>> _list = new(() => new List<T>());
 
-        public FluentIEnumerableBuilder<T> With(T item) => With(() => item);
-        public FluentIEnumerableBuilder<T> With(Func<T> func)
+        public FluentIEnumerableBuilder<T> Add(T item) => Add(() => item);
+        public FluentIEnumerableBuilder<T> Add(Func<T> func)
         {
             _list.Value.Add(func());
 

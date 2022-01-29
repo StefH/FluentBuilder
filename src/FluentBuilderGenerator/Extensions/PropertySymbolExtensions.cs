@@ -14,6 +14,15 @@ internal static class PropertySymbolExtensions
     {
         if (property.Type.IsEnumerable() && property.Type is INamedTypeSymbol namedTypeSymbol)
         {
+            if (namedTypeSymbol.IsGenericType)
+            {
+                if (namedTypeSymbol.TypeArguments.FirstOrDefault() is INamedTypeSymbol x)
+                {
+                    elementClassName = x.GenerateClassName();
+                    return true;
+                }
+            }
+
             elementClassName = namedTypeSymbol.GenerateClassName();
             return true;
         }

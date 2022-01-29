@@ -1,7 +1,4 @@
 // This source code is based on https://justsimplycode.com/2020/12/06/auto-generate-builders-using-source-generator-in-net-5
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using FluentBuilderGenerator.Extensions;
 using FluentBuilderGenerator.SyntaxReceiver;
@@ -48,6 +45,8 @@ namespace FluentBuilderGenerator.FileGenerators
 
 {(_supportsNullable ? "#nullable enable" : string.Empty)}
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using FluentBuilder;
 using {classSymbol.ContainingNamespace};
 

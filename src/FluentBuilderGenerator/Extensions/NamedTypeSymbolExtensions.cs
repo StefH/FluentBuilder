@@ -66,9 +66,11 @@ namespace FluentBuilderGenerator.Extensions
         public static string GenerateClassName(this INamedTypeSymbol namedTypeSymbol, bool addBuilderPostFix = false)
         {
             var className = $"{namedTypeSymbol.Name}{(addBuilderPostFix ? "Builder" : string.Empty)}";
-            return !namedTypeSymbol.IsGenericType ?
+            var typeArguments = namedTypeSymbol.TypeArguments.Select(ta => ta.Name).ToArray();
+
+            return !namedTypeSymbol.IsGenericType || typeArguments.Length == 0 ?
                 $"{className}" :
-                $"{className}<{string.Join(", ", namedTypeSymbol.TypeArguments.Select(ta => ta.Name))}>";
+                $"{className}<{string.Join(", ", typeArguments)}>";
         }
     }
 }

@@ -15,13 +15,14 @@ namespace BuilderConsumer
         {
             var userWithArray = new FluentBuilder.UserDtoBuilder()
                 .WithIntArray(ib => ib
-                    .With(1)
-                    .With(2)
-                    .With(() => 3)
+                    .Add(1)
+                    .Add(2)
+                    .Add(() => 3)
                     .Build()
                 )
                 .WithSecondaryEmails(sb => sb
-                    .With(new EmailDto())
+                    .Add(new EmailDto())
+                    .Add(() => new EmailDto())
                     .Build()
                 )
                 .Build();

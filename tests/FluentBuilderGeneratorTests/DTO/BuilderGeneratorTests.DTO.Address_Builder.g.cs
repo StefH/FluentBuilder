@@ -9,6 +9,8 @@
 
 #nullable enable
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using FluentBuilder;
 using FluentBuilderGeneratorTests.DTO;
 
@@ -48,129 +50,25 @@ namespace FluentBuilder
             return this;
         }
 
-        private bool _arrayIsSet;
-        private Lazy<string[]> _array = new Lazy<string[]>(() => default(string[]));
-        public AddressBuilder WithArray(string[] value) => WithArray(() => value);
-        public AddressBuilder WithArray(Func<string[]> func)
+        private bool _iListAddressIsSet;
+        private Lazy<System.Collections.Generic.IList<FluentBuilderGeneratorTests.DTO.Address>> _iListAddress = new Lazy<System.Collections.Generic.IList<FluentBuilderGeneratorTests.DTO.Address>>(() => default(System.Collections.Generic.IList<FluentBuilderGeneratorTests.DTO.Address>));
+        public AddressBuilder WithIListAddress(System.Collections.Generic.IList<FluentBuilderGeneratorTests.DTO.Address> value) => WithIListAddress(() => value);
+        public AddressBuilder WithIListAddress(Func<System.Collections.Generic.IList<FluentBuilderGeneratorTests.DTO.Address>> func)
         {
-            _array = new Lazy<string[]>(func);
-            _arrayIsSet = true;
+            _iListAddress = new Lazy<System.Collections.Generic.IList<FluentBuilderGeneratorTests.DTO.Address>>(func);
+            _iListAddressIsSet = true;
             return this;
         }
-        public AddressBuilder WithArray(Action<FluentBuilder.FluentIEnumerableBuilder<String>> action, bool useObjectInitializer = true) => WithArray(() =>
+        public AddressBuilder WithIListAddress(Action<FluentBuilder.FluentIEnumerableBuilder<Address>> action, bool useObjectInitializer = true) => WithIListAddress(() =>
         {
-            var builder = new FluentBuilder.FluentIEnumerableBuilder<String>();
+            var builder = new FluentBuilder.FluentIEnumerableBuilder<Address>();
             action(builder);
             return builder.Build(useObjectInitializer);
         });
-        public AddressBuilder WithoutArray()
+        public AddressBuilder WithoutIListAddress()
         {
-            WithArray(() => default(string[]));
-            _arrayIsSet = false;
-            return this;
-        }
-
-        private bool _matrixIsSet;
-        private Lazy<System.Collections.Generic.List<int>[]> _matrix = new Lazy<System.Collections.Generic.List<int>[]>(() => default(System.Collections.Generic.List<int>[]));
-        public AddressBuilder WithMatrix(System.Collections.Generic.List<int>[] value) => WithMatrix(() => value);
-        public AddressBuilder WithMatrix(Func<System.Collections.Generic.List<int>[]> func)
-        {
-            _matrix = new Lazy<System.Collections.Generic.List<int>[]>(func);
-            _matrixIsSet = true;
-            return this;
-        }
-        public AddressBuilder WithMatrix(Action<FluentBuilder.FluentIEnumerableBuilder<List<Int32>>> action, bool useObjectInitializer = true) => WithMatrix(() =>
-        {
-            var builder = new FluentBuilder.FluentIEnumerableBuilder<List<Int32>>();
-            action(builder);
-            return builder.Build(useObjectInitializer);
-        });
-        public AddressBuilder WithoutMatrix()
-        {
-            WithMatrix(() => default(System.Collections.Generic.List<int>[]));
-            _matrixIsSet = false;
-            return this;
-        }
-
-        private bool _listAddressIsSet;
-        private Lazy<System.Collections.Generic.List<FluentBuilderGeneratorTests.DTO.Address>> _listAddress = new Lazy<System.Collections.Generic.List<FluentBuilderGeneratorTests.DTO.Address>>(() => default(System.Collections.Generic.List<FluentBuilderGeneratorTests.DTO.Address>));
-        public AddressBuilder WithListAddress(System.Collections.Generic.List<FluentBuilderGeneratorTests.DTO.Address> value) => WithListAddress(() => value);
-        public AddressBuilder WithListAddress(Func<System.Collections.Generic.List<FluentBuilderGeneratorTests.DTO.Address>> func)
-        {
-            _listAddress = new Lazy<System.Collections.Generic.List<FluentBuilderGeneratorTests.DTO.Address>>(func);
-            _listAddressIsSet = true;
-            return this;
-        }
-        public AddressBuilder WithListAddress(Action<FluentBuilder.FluentIEnumerableBuilder<List<Address>>> action, bool useObjectInitializer = true) => WithListAddress(() =>
-        {
-            var builder = new FluentBuilder.FluentIEnumerableBuilder<List<Address>>();
-            action(builder);
-            return builder.Build(useObjectInitializer);
-        });
-        public AddressBuilder WithoutListAddress()
-        {
-            WithListAddress(() => default(System.Collections.Generic.List<FluentBuilderGeneratorTests.DTO.Address>));
-            _listAddressIsSet = false;
-            return this;
-        }
-
-        private bool _iEnumerableStringIsSet;
-        private Lazy<System.Collections.Generic.IEnumerable<string>> _iEnumerableString = new Lazy<System.Collections.Generic.IEnumerable<string>>(() => default(System.Collections.Generic.IEnumerable<string>));
-        public AddressBuilder WithIEnumerableString(System.Collections.Generic.IEnumerable<string> value) => WithIEnumerableString(() => value);
-        public AddressBuilder WithIEnumerableString(Func<System.Collections.Generic.IEnumerable<string>> func)
-        {
-            _iEnumerableString = new Lazy<System.Collections.Generic.IEnumerable<string>>(func);
-            _iEnumerableStringIsSet = true;
-            return this;
-        }
-        public AddressBuilder WithIEnumerableString(Action<FluentBuilder.FluentIEnumerableBuilder<IEnumerable<String>>> action, bool useObjectInitializer = true) => WithIEnumerableString(() =>
-        {
-            var builder = new FluentBuilder.FluentIEnumerableBuilder<IEnumerable<String>>();
-            action(builder);
-            return builder.Build(useObjectInitializer);
-        });
-        public AddressBuilder WithoutIEnumerableString()
-        {
-            WithIEnumerableString(() => default(System.Collections.Generic.IEnumerable<string>));
-            _iEnumerableStringIsSet = false;
-            return this;
-        }
-
-        private bool _iEnumerableIsSet;
-        private Lazy<System.Collections.IEnumerable> _iEnumerable = new Lazy<System.Collections.IEnumerable>(() => default(System.Collections.IEnumerable));
-        public AddressBuilder WithIEnumerable(System.Collections.IEnumerable value) => WithIEnumerable(() => value);
-        public AddressBuilder WithIEnumerable(Func<System.Collections.IEnumerable> func)
-        {
-            _iEnumerable = new Lazy<System.Collections.IEnumerable>(func);
-            _iEnumerableIsSet = true;
-            return this;
-        }
-        public AddressBuilder WithoutIEnumerable()
-        {
-            WithIEnumerable(() => default(System.Collections.IEnumerable));
-            _iEnumerableIsSet = false;
-            return this;
-        }
-
-        private bool _iListIsSet;
-        private Lazy<System.Collections.Generic.IList<string>> _iList = new Lazy<System.Collections.Generic.IList<string>>(() => default(System.Collections.Generic.IList<string>));
-        public AddressBuilder WithIList(System.Collections.Generic.IList<string> value) => WithIList(() => value);
-        public AddressBuilder WithIList(Func<System.Collections.Generic.IList<string>> func)
-        {
-            _iList = new Lazy<System.Collections.Generic.IList<string>>(func);
-            _iListIsSet = true;
-            return this;
-        }
-        public AddressBuilder WithIList(Action<FluentBuilder.FluentIEnumerableBuilder<IList<String>>> action, bool useObjectInitializer = true) => WithIList(() =>
-        {
-            var builder = new FluentBuilder.FluentIEnumerableBuilder<IList<String>>();
-            action(builder);
-            return builder.Build(useObjectInitializer);
-        });
-        public AddressBuilder WithoutIList()
-        {
-            WithIList(() => default(System.Collections.Generic.IList<string>));
-            _iListIsSet = false;
+            WithIListAddress(() => default(System.Collections.Generic.IList<FluentBuilderGeneratorTests.DTO.Address>));
+            _iListAddressIsSet = false;
             return this;
         }
 
@@ -187,24 +85,14 @@ namespace FluentBuilder
                         {
                             HouseNumber = _houseNumber.Value,
                             City = _city.Value,
-                            Array = _array.Value,
-                            Matrix = _matrix.Value,
-                            ListAddress = _listAddress.Value,
-                            IEnumerableString = _iEnumerableString.Value,
-                            IEnumerable = _iEnumerable.Value,
-                            IList = _iList.Value
+                            IListAddress = _iListAddress.Value
                         };
                     }
 
                     var instance = new Address();
                     if (_houseNumberIsSet) { instance.HouseNumber = _houseNumber.Value; }
                     if (_cityIsSet) { instance.City = _city.Value; }
-                    if (_arrayIsSet) { instance.Array = _array.Value; }
-                    if (_matrixIsSet) { instance.Matrix = _matrix.Value; }
-                    if (_listAddressIsSet) { instance.ListAddress = _listAddress.Value; }
-                    if (_iEnumerableStringIsSet) { instance.IEnumerableString = _iEnumerableString.Value; }
-                    if (_iEnumerableIsSet) { instance.IEnumerable = _iEnumerable.Value; }
-                    if (_iListIsSet) { instance.IList = _iList.Value; }
+                    if (_iListAddressIsSet) { instance.IListAddress = _iListAddress.Value; }
                     return instance;
                 });
             }
