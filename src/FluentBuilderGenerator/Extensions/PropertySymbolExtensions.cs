@@ -10,11 +10,11 @@ namespace FluentBuilderGenerator.Extensions;
 /// </summary>
 internal static class PropertySymbolExtensions
 {
-    internal static bool TryGetCollectionType(this IPropertySymbol property, out ITypeSymbol? elementType)
+    internal static bool TryGetIEnumerableElementType(this IPropertySymbol property, out string? elementClassName)
     {
         if (property.Type.IsEnumerable() && property.Type is INamedTypeSymbol namedTypeSymbol)
         {
-            elementType = namedTypeSymbol.TypeArguments.FirstOrDefault();
+            elementClassName = namedTypeSymbol.GenerateClassName();
             return true;
         }
 
@@ -22,14 +22,14 @@ internal static class PropertySymbolExtensions
         {
             var elementTypeSymbol = (IArrayTypeSymbol)property.Type;
 
-            if (elementTypeSymbol.ElementType.IsClass() || elementTypeSymbol.ElementType.IsStruct())
+            if ((elementTypeSymbol.ElementType.IsClass() || elementTypeSymbol.ElementType.IsStruct()) && elementTypeSymbol.ElementType is INamedTypeSymbol n)
             {
-                elementType = elementTypeSymbol.ElementType;
+                elementClassName = n.GenerateClassName();
                 return true;
             }
         }
 
-        elementType = null;
+        elementClassName = null;
         return false;
     }
 

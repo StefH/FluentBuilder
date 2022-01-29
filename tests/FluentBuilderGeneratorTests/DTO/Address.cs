@@ -11,6 +11,7 @@ namespace FluentBuilderGeneratorTests.DTO
         public string City { get; set; }
 
         public string[] Array { get; set; }
+        public List<int>[] Matrix { get; set; }
 
         public List<Address> ListAddress { get; set; }
 

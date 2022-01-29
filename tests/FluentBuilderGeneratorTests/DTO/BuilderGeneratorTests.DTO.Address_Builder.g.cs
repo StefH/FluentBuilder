@@ -70,6 +70,28 @@ namespace FluentBuilder
             return this;
         }
 
+        private bool _matrixIsSet;
+        private Lazy<System.Collections.Generic.List<int>[]> _matrix = new Lazy<System.Collections.Generic.List<int>[]>(() => default(System.Collections.Generic.List<int>[]));
+        public AddressBuilder WithMatrix(System.Collections.Generic.List<int>[] value) => WithMatrix(() => value);
+        public AddressBuilder WithMatrix(Func<System.Collections.Generic.List<int>[]> func)
+        {
+            _matrix = new Lazy<System.Collections.Generic.List<int>[]>(func);
+            _matrixIsSet = true;
+            return this;
+        }
+        public AddressBuilder WithMatrix(Action<FluentBuilder.FluentIEnumerableBuilder<List<Int32>>> action, bool useObjectInitializer = true) => WithMatrix(() =>
+        {
+            var builder = new FluentBuilder.FluentIEnumerableBuilder<List<Int32>>();
+            action(builder);
+            return builder.Build(useObjectInitializer);
+        });
+        public AddressBuilder WithoutMatrix()
+        {
+            WithMatrix(() => default(System.Collections.Generic.List<int>[]));
+            _matrixIsSet = false;
+            return this;
+        }
+
         private bool _listAddressIsSet;
         private Lazy<System.Collections.Generic.List<FluentBuilderGeneratorTests.DTO.Address>> _listAddress = new Lazy<System.Collections.Generic.List<FluentBuilderGeneratorTests.DTO.Address>>(() => default(System.Collections.Generic.List<FluentBuilderGeneratorTests.DTO.Address>));
         public AddressBuilder WithListAddress(System.Collections.Generic.List<FluentBuilderGeneratorTests.DTO.Address> value) => WithListAddress(() => value);
@@ -79,9 +101,9 @@ namespace FluentBuilder
             _listAddressIsSet = true;
             return this;
         }
-        public AddressBuilder WithListAddress(Action<FluentBuilder.FluentIEnumerableBuilder<Address>> action, bool useObjectInitializer = true) => WithListAddress(() =>
+        public AddressBuilder WithListAddress(Action<FluentBuilder.FluentIEnumerableBuilder<List<Address>>> action, bool useObjectInitializer = true) => WithListAddress(() =>
         {
-            var builder = new FluentBuilder.FluentIEnumerableBuilder<Address>();
+            var builder = new FluentBuilder.FluentIEnumerableBuilder<List<Address>>();
             action(builder);
             return builder.Build(useObjectInitializer);
         });
@@ -101,9 +123,9 @@ namespace FluentBuilder
             _iEnumerableStringIsSet = true;
             return this;
         }
-        public AddressBuilder WithIEnumerableString(Action<FluentBuilder.FluentIEnumerableBuilder<String>> action, bool useObjectInitializer = true) => WithIEnumerableString(() =>
+        public AddressBuilder WithIEnumerableString(Action<FluentBuilder.FluentIEnumerableBuilder<IEnumerable<String>>> action, bool useObjectInitializer = true) => WithIEnumerableString(() =>
         {
-            var builder = new FluentBuilder.FluentIEnumerableBuilder<String>();
+            var builder = new FluentBuilder.FluentIEnumerableBuilder<IEnumerable<String>>();
             action(builder);
             return builder.Build(useObjectInitializer);
         });
@@ -139,9 +161,9 @@ namespace FluentBuilder
             _iListIsSet = true;
             return this;
         }
-        public AddressBuilder WithIList(Action<FluentBuilder.FluentIEnumerableBuilder<String>> action, bool useObjectInitializer = true) => WithIList(() =>
+        public AddressBuilder WithIList(Action<FluentBuilder.FluentIEnumerableBuilder<IList<String>>> action, bool useObjectInitializer = true) => WithIList(() =>
         {
-            var builder = new FluentBuilder.FluentIEnumerableBuilder<String>();
+            var builder = new FluentBuilder.FluentIEnumerableBuilder<IList<String>>();
             action(builder);
             return builder.Build(useObjectInitializer);
         });
@@ -166,6 +188,7 @@ namespace FluentBuilder
                             HouseNumber = _houseNumber.Value,
                             City = _city.Value,
                             Array = _array.Value,
+                            Matrix = _matrix.Value,
                             ListAddress = _listAddress.Value,
                             IEnumerableString = _iEnumerableString.Value,
                             IEnumerable = _iEnumerable.Value,
@@ -177,6 +200,7 @@ namespace FluentBuilder
                     if (_houseNumberIsSet) { instance.HouseNumber = _houseNumber.Value; }
                     if (_cityIsSet) { instance.City = _city.Value; }
                     if (_arrayIsSet) { instance.Array = _array.Value; }
+                    if (_matrixIsSet) { instance.Matrix = _matrix.Value; }
                     if (_listAddressIsSet) { instance.ListAddress = _listAddress.Value; }
                     if (_iEnumerableStringIsSet) { instance.IEnumerableString = _iEnumerableString.Value; }
                     if (_iEnumerableIsSet) { instance.IEnumerable = _iEnumerable.Value; }

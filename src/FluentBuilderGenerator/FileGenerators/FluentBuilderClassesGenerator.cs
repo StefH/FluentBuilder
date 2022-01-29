@@ -102,9 +102,9 @@ namespace FluentBuilder
                 return GenerateWithPropertyActionMethod(classSymbol, property);
             }
 
-            if (property.TryGetCollectionType(out var elementType))
+            if (property.TryGetIEnumerableElementType(out var elementType))
             {
-                return GenerateWithArrayOrIEnumerablePropertyActionMethod(classSymbol, property, elementType);
+                return GenerateWithFluentIEnumerableBuilderActionMethod(classSymbol, property, elementType);
             }
 
             return new StringBuilder();
@@ -139,11 +139,11 @@ namespace FluentBuilder
             return sb;
         }
 
-        private static StringBuilder GenerateWithArrayOrIEnumerablePropertyActionMethod(INamedTypeSymbol classSymbol, IPropertySymbol property, ITypeSymbol? typeSymbol)
+        private static StringBuilder GenerateWithFluentIEnumerableBuilderActionMethod(INamedTypeSymbol classSymbol, IPropertySymbol property, string? typeSymbol)
         {
             var className = classSymbol.GenerateClassName(true);
             var propertyName = property.Type is INamedTypeSymbol propertyNamedType ? propertyNamedType.GenerateClassName(true) : $"{property.Type.Name}Builder";
-            var arrayBuilderName = $"FluentIEnumerableBuilder{(typeSymbol == null ? string.Empty : "<" + typeSymbol.Name + ">")}";
+            var arrayBuilderName = $"FluentIEnumerableBuilder{(typeSymbol == null ? string.Empty : "<" + typeSymbol + ">")}";
 
             var sb = new StringBuilder();
             sb.AppendLine($"        public {className} With{property.Name}(Action<FluentBuilder.{arrayBuilderName}> action, bool useObjectInitializer = true) => With{property.Name}(() =>");
