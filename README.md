@@ -58,6 +58,43 @@ namespace Test
 ### Use FluentBuilder when the class has a default constructor
 ``` c#
 [FluentBuilder.AutoGenerateBuilder]
+public class User
+{
+    public string FirstName { get; set; }
+
+    public string LastName { get; set; }
+
+    public DateTime? Date { get; set; }
+
+    public User()
+    {
+        FirstName = "test";
+    }
+}
+```
+
+``` c#
+using System;
+
+namespace Test
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            var user = new FluentBuilder.UserBuilder()
+                .WithLastName("User")
+                .Build(false); // ⭐ Provide `false` for `useObjectInitializer` here.
+
+            Console.WriteLine($"{user.FirstName} {user.LastName}");
+        }
+    }
+}
+```
+
+### Using FluentBuilder when a class has an `Array` or `IEnumerable<T>` properties
+``` c#
+[FluentBuilder.AutoGenerateBuilder]
 public class UserDto
 {
     public IEnumerable<EmailDto> SecondaryEmails { get; set; }
@@ -86,25 +123,4 @@ var user = new FluentBuilder.UserDtoBuilder()
         .Build()
     )
     .Build();
-```
-
-### Using FluentBuilder when a class has an `Array` or `IEnumerable<T>` properties
-``` c#
-using System;
-
-namespace Test
-{
-    class Program
-    {
-        static void Main(string[] args)
-        {
-            var user = new FluentBuilder.UserBuilder()
-                .WithFirstName("Test")
-                .WithLastName("User")
-                .Build();
-
-            Console.WriteLine($"{user.FirstName} {user.LastName}");
-        }
-    }
-}
 ```
