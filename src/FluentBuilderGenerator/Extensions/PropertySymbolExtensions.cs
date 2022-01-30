@@ -55,7 +55,10 @@ internal static class PropertySymbolExtensions
             while (curType != null)
             {
                 if (HasAddMethod(curType))
+                {
                     return true;
+                }
+
                 curType = curType.BaseType;
             }
         }
