@@ -63,7 +63,7 @@ internal static class PropertySymbolExtensions
         return false;
     }
 
-    static bool HasAddMethod(ITypeSymbol typeSymbol)
+    private static bool HasAddMethod(ITypeSymbol typeSymbol)
     {
         return typeSymbol
             .GetMembers(WellKnownMemberNames.CollectionInitializerAddMethodName)
@@ -75,27 +75,4 @@ internal static class PropertySymbolExtensions
 
     internal static bool IsStruct(this ITypeSymbol namedType) =>
         namedType.IsValueType && namedType.TypeKind == TypeKind.Struct;
-
-    internal static bool IsPropertyTypeCustom(this IPropertySymbol property) =>
-        property.IsPropertyTypeCustom(property.Type);
-
-    internal static bool IsPropertyTypeCustom(this IPropertySymbol property,
-        ITypeSymbol type) =>
-        type.ToDisplayString().StartsWith(
-            property.ContainingNamespace.ToDisplayString());
-
-    internal static bool IsAtleastOneTypeArgumentCustomType(this IPropertySymbol property)
-    {
-        var typeArgs = (property.Type as INamedTypeSymbol)!.TypeArguments;
-
-        foreach (var type in typeArgs)
-        {
-            var isCustom = property.IsPropertyTypeCustom(type);
-
-            if (isCustom)
-                return true;
-        }
-
-        return false;
-    }
 }

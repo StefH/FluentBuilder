@@ -1,5 +1,6 @@
 // https://stackoverflow.com/questions/61573959/how-to-resolve-error-notnullwhen-attribute-is-inaccessible-due-to-its-protectio
 
+// ReSharper disable once CheckNamespace
 namespace System.Diagnostics.CodeAnalysis;
 
 /// <summary>Specifies that when a method returns <see cref="ReturnValue"/>, the parameter will not be null even if the corresponding type allows it.</summary>

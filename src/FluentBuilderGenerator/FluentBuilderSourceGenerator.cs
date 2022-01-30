@@ -1,5 +1,5 @@
 // This source code is based on https://justsimplycode.com/2020/12/06/auto-generate-builders-using-source-generator-in-net-5
-using System;
+
 using System.Text;
 using FluentBuilderGenerator.FileGenerators;
 using FluentBuilderGenerator.SyntaxReceiver;
