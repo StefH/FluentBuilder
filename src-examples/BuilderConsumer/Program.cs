@@ -103,6 +103,8 @@ namespace BuilderConsumer
         public UserDtoT<long> UserDtoT { get; set; }
 
         public int[] IntArray { get; set; }
+
+        public IDictionary<string, int> Dictionary1 { get; set; }
     }
 
     [FluentBuilder.AutoGenerateBuilder]

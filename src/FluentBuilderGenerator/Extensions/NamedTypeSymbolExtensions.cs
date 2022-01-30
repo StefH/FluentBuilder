@@ -5,6 +5,9 @@ namespace FluentBuilderGenerator.Extensions;
 
 internal static class NamedTypeSymbolExtensions
 {
+    internal static bool IsDictionary(this INamedTypeSymbol namedTypeSymbol) =>
+        namedTypeSymbol.ConstructedFrom.Name.Contains("Dictionary");
+
     public static string GetFileName(this INamedTypeSymbol namedTypeSymbol)
     {
         var typeName = namedTypeSymbol.GetFullType();
