@@ -1,4 +1,3 @@
-using System.ComponentModel.DataAnnotations;
 using System.IO;
 using CSharp.SourceGenerators.Extensions;
 using CSharp.SourceGenerators.Extensions.Models;
@@ -12,7 +11,7 @@ namespace FluentBuilderGeneratorTests
 {
     public class FluentBuilderSourceGeneratorTests
     {
-        private const bool Write = false;
+        private const bool Write = true;
 
         private readonly FluentBuilderSourceGenerator _sut;
 
@@ -53,13 +52,13 @@ namespace FluentBuilderGeneratorTests
 
             // Assert
             result.Valid.Should().BeTrue();
-            result.Files.Should().HaveCount(3);
+            result.Files.Should().HaveCount(4);
 
             var baseBuilder = result.Files[1];
             if (true) File.WriteAllText($"../../../DTO/Builder.cs", baseBuilder.Text);
             baseBuilder.Text.Should().Be(File.ReadAllText($"../../../DTO/Builder.cs"));
 
-            var builder = result.Files[2];
+            var builder = result.Files[3];
             builder.Path.Should().EndWith("FluentBuilderGeneratorTests.DTO.User_Builder.g.cs");
             builder.Text.Should().NotBeNullOrEmpty();
         }
@@ -88,15 +87,15 @@ namespace FluentBuilderGeneratorTests
             var classBuilder = result.Files[3];
             classBuilder.Path.Should().EndWith(builderFileName);
 
-            if (true) File.WriteAllText($"../../../DTO/{builderFileName}", classBuilder.Text);
+            if (Write) File.WriteAllText($"../../../DTO/{builderFileName}", classBuilder.Text);
             classBuilder.Text.Should().Be(File.ReadAllText($"../../../DTO/{builderFileName}"));
 
 
             var arrayBuilder = result.Files[4];
             arrayBuilder.Path.Should().EndWith(arrayFileName);
 
-            if (true) File.WriteAllText($"../../../DTO/{arrayFileName}", arrayBuilder.Text);
-            classBuilder.Text.Should().Be(File.ReadAllText($"../../../DTO/{arrayFileName}"));
+            if (Write) File.WriteAllText($"../../../DTO/{arrayFileName}", arrayBuilder.Text);
+            arrayBuilder.Text.Should().Be(File.ReadAllText($"../../../DTO/{arrayFileName}"));
         }
 
         [Fact]
@@ -120,9 +119,9 @@ namespace FluentBuilderGeneratorTests
 
             // Assert
             result.Valid.Should().BeTrue();
-            result.Files.Should().HaveCount(3);
+            result.Files.Should().HaveCount(4);
 
-            var builder = result.Files[2];
+            var builder = result.Files[3];
             builder.Path.Should().EndWith(builderFileName);
 
             if (Write) File.WriteAllText($"../../../DTO/{builderFileName}", builder.Text);
@@ -163,9 +162,9 @@ namespace FluentBuilderGeneratorTests
 
             // Assert
             result.Valid.Should().BeTrue();
-            result.Files.Should().HaveCount(4);
+            result.Files.Should().HaveCount(5);
 
-            var builderForUserTWithAddressT = result.Files[2];
+            var builderForUserTWithAddressT = result.Files[3];
             builderForUserTWithAddressT.Path.Should().EndWith(builder1FileName);
 
             if (Write) File.WriteAllText($"../../../DTO/{builder1FileName}", builderForUserTWithAddressT.Text);
@@ -209,9 +208,9 @@ namespace FluentBuilderGeneratorTests
 
             // Assert
             result.Valid.Should().BeTrue();
-            result.Files.Should().HaveCount(4);
+            result.Files.Should().HaveCount(5);
 
-            var builderForUserTWithAddressAndConstructor = result.Files[2];
+            var builderForUserTWithAddressAndConstructor = result.Files[3];
             builderForUserTWithAddressAndConstructor.Path.Should().EndWith(builder1FileName);
 
             if (Write) File.WriteAllText($"../../../DTO/{builder1FileName}", builderForUserTWithAddressAndConstructor.Text);

@@ -13,7 +13,7 @@ using System.Text;
 
 namespace FluentBuilder
 {
-    public abstract class Builder<T> //where T : class
+    public abstract class Builder<T> // where T : class
     {
         protected Lazy<T> Object;
 
