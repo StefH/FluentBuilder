@@ -216,17 +216,6 @@ namespace FluentBuilder
     {
         var itemBuilderName = $"{itemClassSymbol.GenerateClassName(true)}";
 
-        /*
-         * public new IEnumerableAddressBuilder Add(Address item) => Add(() => item);
-    public new IEnumerableAddressBuilder Add(Func<Address> func)
-    {
-        _list.Value.Add(func());
-
-        return this;
-    }
-         */
-
-
         var sb = new StringBuilder();
         sb.AppendLine($"        public override {className} Add({itemClassSymbol.Name} item) => Add(() => item);");
 
@@ -235,7 +224,6 @@ namespace FluentBuilder
         sb.AppendLine("            _list.Value.Add(func());");
         sb.AppendLine("            return this;");
         sb.AppendLine("        }");
-
 
         sb.AppendLine($"        public {className} Add(Action<FluentBuilder.{itemBuilderName}> action, bool useObjectInitializer = true)");
         sb.AppendLine("        {");
@@ -246,26 +234,6 @@ namespace FluentBuilder
         sb.AppendLine("        }");
         return sb;
     }
-
-    /*
-     * {
-        var builder = new FluentBuilder.AddressBuilder();
-        action(builder);
-
-        Add(() => builder.Build(useObjectInitializer));
-
-        return this;
-    }
-     */
-
-    /*
-     * public AddressBuilder WithFloors(Action<FluentBuilder.FluentArrayBuilder<string>> action) => WithFloors(() =>
-    {
-        var builder = new FluentBuilder.FluentArrayBuilder<string>();
-        action(builder);
-        return builder.Build();
-    });
-     */
 
     private static IEnumerable<IPropertySymbol> GetProperties(INamedTypeSymbol classSymbol)
     {
