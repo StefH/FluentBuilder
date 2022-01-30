@@ -94,6 +94,22 @@ namespace FluentBuilder
             return this;
         }
 
+        private bool _dictionary1IsSet;
+        private Lazy<System.Collections.Generic.IDictionary<string, int>> _dictionary1 = new Lazy<System.Collections.Generic.IDictionary<string, int>>(() => default(System.Collections.Generic.IDictionary<string, int>));
+        public AddressBuilder WithDictionary1(System.Collections.Generic.IDictionary<string, int> value) => WithDictionary1(() => value);
+        public AddressBuilder WithDictionary1(Func<System.Collections.Generic.IDictionary<string, int>> func)
+        {
+            _dictionary1 = new Lazy<System.Collections.Generic.IDictionary<string, int>>(func);
+            _dictionary1IsSet = true;
+            return this;
+        }
+        public AddressBuilder WithoutDictionary1()
+        {
+            WithDictionary1(() => default(System.Collections.Generic.IDictionary<string, int>));
+            _dictionary1IsSet = false;
+            return this;
+        }
+
 
         public override Address Build(bool useObjectInitializer = true)
         {
@@ -108,7 +124,8 @@ namespace FluentBuilder
                             HouseNumber = _houseNumber.Value,
                             City = _city.Value,
                             Array = _array.Value,
-                            IListAddress = _iListAddress.Value
+                            IListAddress = _iListAddress.Value,
+                            Dictionary1 = _dictionary1.Value
                         };
                     }
 
@@ -117,6 +134,7 @@ namespace FluentBuilder
                     if (_cityIsSet) { instance.City = _city.Value; }
                     if (_arrayIsSet) { instance.Array = _array.Value; }
                     if (_iListAddressIsSet) { instance.IListAddress = _iListAddress.Value; }
+                    if (_dictionary1IsSet) { instance.Dictionary1 = _dictionary1.Value; }
                     return instance;
                 });
             }
