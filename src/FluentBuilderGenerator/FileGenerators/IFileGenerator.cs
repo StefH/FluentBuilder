@@ -1,7 +1,8 @@
-﻿namespace FluentBuilderGenerator.FileGenerators
+using FluentBuilderGenerator.Models;
+
+namespace FluentBuilderGenerator.FileGenerators;
+
+internal interface IFileGenerator
 {
-    internal interface IFileGenerator
-    {
-        FileData GenerateFile();
-    }
+    FileData GenerateFile();
 }

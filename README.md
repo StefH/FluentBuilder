@@ -91,3 +91,36 @@ namespace Test
     }
 }
 ```
+
+### Using FluentBuilder when a class has an `Array` or `IEnumerable<T>` properties
+``` c#
+[FluentBuilder.AutoGenerateBuilder]
+public class UserDto
+{
+    public IEnumerable<EmailDto> SecondaryEmails { get; set; }
+
+    public int[] IntArray { get; set; }
+}
+```
+
+``` c#
+var user = new FluentBuilder.UserDtoBuilder()
+    .WithIntArray(ib => ib         // 👈 Use a Integer Array Builder
+        .Add(1)                    // Add a normal integer
+
+        .Add(() => 2)              // Add an integer with a Func<>
+        .Build()
+    )
+    .WithSecondaryEmails(sb => sb  // 👈 Use a EmailDto IEnumerable Builder
+        .Add(new EmailDto())       // Add a normal EmailDto using new() constructor
+
+        .Add(() => new EmailDto()) // Add an EmailDto using Func<>
+
+        .Add(eb => eb              // 👈 Use a EmailDto IEnumerable Builder to add an EmailDto
+            .WithPrimary(true)
+            .Build()
+        )
+        .Build()
+    )
+    .Build();
+```
