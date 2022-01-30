@@ -14,7 +14,7 @@ namespace FluentBuilderGenerator;
 internal class FluentBuilderSourceGenerator : ISourceGenerator
 {
     private static readonly IFileGenerator BaseBuilderGenerator = new BaseBuilderGenerator();
-    private static readonly IFileGenerator FluentIEnumerableBuilderGenerator = new FluentIEnumerableBuilder();
+    private static readonly IFileGenerator FluentIEnumerableBuilderGenerator = new IEnumerableBuilderGenerator();
     private static readonly IFileGenerator AutoGenerateBuilderAttributeGenerator = new AutoGenerateBuilderAttributeGenerator();
 
     public void Initialize(GeneratorInitializationContext context)

@@ -1,4 +1,4 @@
-﻿namespace FluentBuilderGenerator.Types;
+namespace FluentBuilderGenerator.Types;
 
 internal enum CollectionType
 {
@@ -6,5 +6,6 @@ internal enum CollectionType
 
     Array,
 
+    // ReSharper disable once InconsistentNaming
     IEnumerable
 }

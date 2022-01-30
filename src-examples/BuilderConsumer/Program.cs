@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Reflection.Emit;
 using System.Text.Json;
 
 namespace BuilderConsumer
@@ -23,6 +24,9 @@ namespace BuilderConsumer
                 .WithSecondaryEmails(sb => sb
                     .Add(new EmailDto())
                     .Add(() => new EmailDto())
+                    .Add(emailBuilder => emailBuilder
+                        .WithPrimary(true)
+                        .Build())
                     .Build()
                 )
                 .Build();

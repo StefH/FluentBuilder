@@ -1,8 +1,11 @@
+using System.ComponentModel.DataAnnotations;
 using System.IO;
 using CSharp.SourceGenerators.Extensions;
 using CSharp.SourceGenerators.Extensions.Models;
 using FluentAssertions;
+using FluentBuilder;
 using FluentBuilderGenerator;
+using FluentBuilderGeneratorTests.DTO;
 using Xunit;
 
 namespace FluentBuilderGeneratorTests
@@ -16,6 +19,21 @@ namespace FluentBuilderGeneratorTests
         public FluentBuilderSourceGeneratorTests()
         {
             _sut = new FluentBuilderSourceGenerator();
+
+            var x = new AddressBuilder()
+                .WithArray(ab => ab
+                    .Add("a")
+                    .Add(()=> "b")
+                    .Build()
+                )
+                .WithIListAddress(x => x
+                    .Add(new Address())
+                    .Add(() => new Address())
+                    .Add(e => e
+                        .WithCity("c")
+                        .Build())
+                    .Build())
+                .Build();
         }
 
         [Fact]
@@ -51,6 +69,7 @@ namespace FluentBuilderGeneratorTests
         {
             // Arrange
             var builderFileName = "BuilderGeneratorTests.DTO.Address_Builder.g.cs";
+            var arrayFileName = "BuilderGeneratorTests.DTO.Address_IEnumerableBuilder.g.cs";
             var path = "./DTO/Address.cs";
             var sourceFile = new SourceFile
             {
@@ -64,13 +83,20 @@ namespace FluentBuilderGeneratorTests
 
             // Assert
             result.Valid.Should().BeTrue();
-            result.Files.Should().HaveCount(4);
+            result.Files.Should().HaveCount(5);
 
-            var builder = result.Files[3];
-            builder.Path.Should().EndWith(builderFileName);
+            var classBuilder = result.Files[3];
+            classBuilder.Path.Should().EndWith(builderFileName);
 
-            if (true) File.WriteAllText($"../../../DTO/{builderFileName}", builder.Text);
-            builder.Text.Should().Be(File.ReadAllText($"../../../DTO/{builderFileName}"));
+            if (true) File.WriteAllText($"../../../DTO/{builderFileName}", classBuilder.Text);
+            classBuilder.Text.Should().Be(File.ReadAllText($"../../../DTO/{builderFileName}"));
+
+
+            var arrayBuilder = result.Files[4];
+            arrayBuilder.Path.Should().EndWith(arrayFileName);
+
+            if (true) File.WriteAllText($"../../../DTO/{arrayFileName}", arrayBuilder.Text);
+            classBuilder.Text.Should().Be(File.ReadAllText($"../../../DTO/{arrayFileName}"));
         }
 
         [Fact]

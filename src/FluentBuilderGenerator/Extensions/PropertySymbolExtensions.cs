@@ -1,4 +1,3 @@
-using System.Linq;
 using Microsoft.CodeAnalysis;
 
 namespace FluentBuilderGenerator.Extensions;
@@ -10,20 +9,20 @@ namespace FluentBuilderGenerator.Extensions;
 /// </summary>
 internal static class PropertySymbolExtensions
 {
-    internal static bool TryGetIEnumerableElementType(this IPropertySymbol property, out string? elementClassName)
+    internal static bool TryGetIEnumerableElementType(this IPropertySymbol property, out INamedTypeSymbol? elementClassName)
     {
         if (property.Type.IsEnumerable() && property.Type is INamedTypeSymbol namedTypeSymbol)
         {
             if (namedTypeSymbol.IsGenericType)
             {
-                if (namedTypeSymbol.TypeArguments.FirstOrDefault() is INamedTypeSymbol x)
+                if (namedTypeSymbol.TypeArguments.FirstOrDefault() is INamedTypeSymbol genericNamedTypeSymbol)
                 {
-                    elementClassName = x.GenerateClassName();
+                    elementClassName = genericNamedTypeSymbol;
                     return true;
                 }
             }
 
-            elementClassName = namedTypeSymbol.GenerateClassName();
+            elementClassName = namedTypeSymbol;
             return true;
         }
 
@@ -33,7 +32,7 @@ internal static class PropertySymbolExtensions
 
             if ((elementTypeSymbol.ElementType.IsClass() || elementTypeSymbol.ElementType.IsStruct()) && elementTypeSymbol.ElementType is INamedTypeSymbol n)
             {
-                elementClassName = n.GenerateClassName();
+                elementClassName = n;
                 return true;
             }
         }

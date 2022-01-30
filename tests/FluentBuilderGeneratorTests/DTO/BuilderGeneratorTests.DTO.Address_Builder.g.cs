@@ -50,6 +50,28 @@ namespace FluentBuilder
             return this;
         }
 
+        private bool _arrayIsSet;
+        private Lazy<string[]> _array = new Lazy<string[]>(() => default(string[]));
+        public AddressBuilder WithArray(string[] value) => WithArray(() => value);
+        public AddressBuilder WithArray(Func<string[]> func)
+        {
+            _array = new Lazy<string[]>(func);
+            _arrayIsSet = true;
+            return this;
+        }
+        public AddressBuilder WithArray(Action<FluentBuilder.IEnumerableBuilder<String>> action, bool useObjectInitializer = true) => WithArray(() =>
+        {
+            var builder = new FluentBuilder.IEnumerableBuilder<String>();
+            action(builder);
+            return builder.Build(useObjectInitializer);
+        });
+        public AddressBuilder WithoutArray()
+        {
+            WithArray(() => default(string[]));
+            _arrayIsSet = false;
+            return this;
+        }
+
         private bool _iListAddressIsSet;
         private Lazy<System.Collections.Generic.IList<FluentBuilderGeneratorTests.DTO.Address>> _iListAddress = new Lazy<System.Collections.Generic.IList<FluentBuilderGeneratorTests.DTO.Address>>(() => default(System.Collections.Generic.IList<FluentBuilderGeneratorTests.DTO.Address>));
         public AddressBuilder WithIListAddress(System.Collections.Generic.IList<FluentBuilderGeneratorTests.DTO.Address> value) => WithIListAddress(() => value);
@@ -59,9 +81,9 @@ namespace FluentBuilder
             _iListAddressIsSet = true;
             return this;
         }
-        public AddressBuilder WithIListAddress(Action<FluentBuilder.FluentIEnumerableBuilder<Address>> action, bool useObjectInitializer = true) => WithIListAddress(() =>
+        public AddressBuilder WithIListAddress(Action<FluentBuilder.IEnumerableAddressBuilder> action, bool useObjectInitializer = true) => WithIListAddress(() =>
         {
-            var builder = new FluentBuilder.FluentIEnumerableBuilder<Address>();
+            var builder = new FluentBuilder.IEnumerableAddressBuilder();
             action(builder);
             return builder.Build(useObjectInitializer);
         });
@@ -85,6 +107,7 @@ namespace FluentBuilder
                         {
                             HouseNumber = _houseNumber.Value,
                             City = _city.Value,
+                            Array = _array.Value,
                             IListAddress = _iListAddress.Value
                         };
                     }
@@ -92,6 +115,7 @@ namespace FluentBuilder
                     var instance = new Address();
                     if (_houseNumberIsSet) { instance.HouseNumber = _houseNumber.Value; }
                     if (_cityIsSet) { instance.City = _city.Value; }
+                    if (_arrayIsSet) { instance.Array = _array.Value; }
                     if (_iListAddressIsSet) { instance.IListAddress = _iListAddress.Value; }
                     return instance;
                 });

@@ -1,8 +1,8 @@
-using System.Collections.Generic;
+using FluentBuilderGenerator.Models;
 
 namespace FluentBuilderGenerator.FileGenerators;
 
 internal interface IFilesGenerator
 {
-    IEnumerable<FileData> GenerateFiles();
+    IReadOnlyList<FileData> GenerateFiles();
 }
