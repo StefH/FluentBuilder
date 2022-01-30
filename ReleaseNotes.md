@@ -1,3 +1,6 @@
+# 0.2.0 (30 January 2022)
+- [#12](https://github.com/StefH/FluentBuilder/pull/12) - Add support for Array and IEnumerable [enhancement] contributed by [StefH](https://github.com/StefH)
+
 # 0.1.2 (20 January 2022)
 - [#11](https://github.com/StefH/FluentBuilder/pull/11) - Also add 'useObjectInitializer' in With* methods [enhancement] contributed by [StefH](https://github.com/StefH)
 
