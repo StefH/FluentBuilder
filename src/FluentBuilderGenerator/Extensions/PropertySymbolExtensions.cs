@@ -1,44 +1,40 @@
+using FluentBuilderGenerator.Types;
 using Microsoft.CodeAnalysis;
 
 namespace FluentBuilderGenerator.Extensions;
 
 internal static class PropertySymbolExtensions
 {
-    internal static bool TryGetIEnumerableElementType(this IPropertySymbol property, out INamedTypeSymbol? elementClassName)
+    internal static bool TryGetIEnumerableElementType(this IPropertySymbol property, out INamedTypeSymbol? elementNamedTypeSymbol)
     {
-        elementClassName = null;
+        elementNamedTypeSymbol = null;
 
-        if (property.Type is INamedTypeSymbol nt && nt.IsDictionary())
+        var type = property.Type.GetFluentTypeKind();
+
+        if (type == FluentTypeKind.Array)
         {
-            return false;
+            var elementTypeSymbol = (IArrayTypeSymbol)property.Type;
+            if ((elementTypeSymbol.ElementType.IsClass() || elementTypeSymbol.ElementType.IsStruct()) && elementTypeSymbol.ElementType is INamedTypeSymbol n)
+            {
+                elementNamedTypeSymbol = n;
+                return true;
+            }
         }
-
-        if (property.Type.IsIEnumerable() && property.Type is INamedTypeSymbol namedTypeSymbol)
+        else if (type == FluentTypeKind.IEnumerable && property.Type is INamedTypeSymbol namedTypeSymbol)
         {
             if (namedTypeSymbol.IsGenericType)
             {
                 if (namedTypeSymbol.TypeArguments.FirstOrDefault() is INamedTypeSymbol genericNamedTypeSymbol)
                 {
-                    elementClassName = genericNamedTypeSymbol;
+                    elementNamedTypeSymbol = genericNamedTypeSymbol;
                     return true;
                 }
             }
 
-            elementClassName = namedTypeSymbol;
+            elementNamedTypeSymbol = namedTypeSymbol;
             return true;
         }
-
-        if (property.Type.TypeKind == TypeKind.Array)
-        {
-            var elementTypeSymbol = (IArrayTypeSymbol)property.Type;
-
-            if ((elementTypeSymbol.ElementType.IsClass() || elementTypeSymbol.ElementType.IsStruct()) && elementTypeSymbol.ElementType is INamedTypeSymbol n)
-            {
-                elementClassName = n;
-                return true;
-            }
-        }
-
+        
         return false;
     }
 }

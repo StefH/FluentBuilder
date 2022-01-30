@@ -30,7 +30,7 @@ internal class FluentBuilderClassesGenerator : IFilesGenerator
         var classes = applicableClassSymbols.Select(classSymbol => new FileData
         (
             FileDataType.ClassBuilder,
-            $"{classSymbol.NamedTypeSymbol.GetFileName()}_Builder.g.cs",
+            $"{classSymbol.NamedTypeSymbol.GenerateFileName()}_Builder.g.cs",
             CreateClassBuilderCode(classSymbol.NamedTypeSymbol, extraClassSymbols)
         ));
 
@@ -40,7 +40,7 @@ internal class FluentBuilderClassesGenerator : IFilesGenerator
             .Select(classSymbol => new FileData
             (
                 classSymbol.Type,
-                $"{classSymbol.NamedTypeSymbol.GetFileName()}_IEnumerableBuilder.g.cs",
+                $"{classSymbol.NamedTypeSymbol.GenerateFileName()}_IEnumerableBuilder.g.cs",
                 CreateIEnumerableBuilderCode(classSymbol.ClassName, classSymbol.NamedTypeSymbol)
             ));
 
