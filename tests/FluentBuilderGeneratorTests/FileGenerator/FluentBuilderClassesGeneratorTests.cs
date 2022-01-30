@@ -16,7 +16,7 @@ namespace FluentBuilderGeneratorTests.FileGenerator
 {
     public class FluentBuilderClassesGeneratorTests
     {
-        private const bool Write = false;
+        private const bool Write = true;
 
         private readonly Mock<IGeneratorExecutionContextWrapper> _contextMock;
         private readonly Mock<IAutoGenerateBuilderSyntaxReceiver> _receiverMock;
@@ -50,7 +50,7 @@ namespace FluentBuilderGeneratorTests.FileGenerator
             _contextMock.VerifyNoOtherCalls();
         }
 
-        [Fact(Skip = "skip")]
+        [Fact]
         public void GenerateFiles_WhenOneClassIsFoundByReceiver_Should_GenerateOneFile()
         {
             // Arrange : ReceiverMock
@@ -80,27 +80,26 @@ namespace FluentBuilderGeneratorTests.FileGenerator
                 typeSymbol.SetupGet(ts => ts.AllInterfaces).Returns(ImmutableArray.Create<INamedTypeSymbol>());
 
                 var propertySymbolMock = new Mock<IPropertySymbol>();
-                propertySymbolMock.SetupGet(p => p.CanBeReferencedByName).Returns(true);
-                propertySymbolMock.SetupGet(p => p.Name).Returns(p.Identifier.ValueText);
-                propertySymbolMock.SetupGet(p => p.SetMethod).Returns(setMethodMock.Object);
-                propertySymbolMock.SetupGet(p => p.Type).Returns(typeSymbol.Object);
+                propertySymbolMock.SetupGet(pt => pt.CanBeReferencedByName).Returns(true);
+                propertySymbolMock.SetupGet(pt => pt.Name).Returns(p.Identifier.ValueText);
+                propertySymbolMock.SetupGet(pt => pt.SetMethod).Returns(setMethodMock.Object);
+                propertySymbolMock.SetupGet(pt => pt.Type).Returns(typeSymbol.Object);
 
                 return propertySymbolMock;
             })
             .Select(p => (ISymbol)p.Object)
             .ToImmutableArray();
 
+            var originalDefinitionMock = new Mock<INamedTypeSymbol>();
+            originalDefinitionMock.Setup(o => o.ToString()).Returns("FluentBuilderGeneratorTests.DTO.User");
+
             var classSymbolMock = new Mock<INamedTypeSymbol>();
             classSymbolMock.SetupGet(n => n.ContainingNamespace).Returns(namespaceSymbolMock.Object);
             classSymbolMock.SetupGet(n => n.Name).Returns(@class.Identifier.Value.ToString());
+            classSymbolMock.SetupGet(n => n.OriginalDefinition).Returns(originalDefinitionMock.Object);
+            classSymbolMock.Setup(n => n.GetMembers()).Returns(membersMock);
             classSymbolMock.SetupGet(n => n.TypeArguments).Returns(ImmutableArray.Create<ITypeSymbol>());
 
-            var originalDefinitionMock = new Mock<INamedTypeSymbol>();
-            originalDefinitionMock.Setup(o => o.ToString()).Returns("FluentBuilderGeneratorTests.DTO.User");
-            originalDefinitionMock.Setup(n => n.GetMembers()).Returns(membersMock);
-
-            classSymbolMock.SetupGet(n => n.OriginalDefinition).Returns(originalDefinitionMock.Object);
-            
             _contextMock.Setup(c => c.GetTypeByMetadataName(It.IsAny<string>())).Returns(classSymbolMock.Object);
 
             // Act
