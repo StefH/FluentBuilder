@@ -72,6 +72,28 @@ namespace FluentBuilder
             return this;
         }
 
+        private bool _listIsSet;
+        private Lazy<System.Collections.Generic.List<string>> _list = new Lazy<System.Collections.Generic.List<string>>(() => default(System.Collections.Generic.List<string>));
+        public AddressBuilder WithList(System.Collections.Generic.List<string> value) => WithList(() => value);
+        public AddressBuilder WithList(Func<System.Collections.Generic.List<string>> func)
+        {
+            _list = new Lazy<System.Collections.Generic.List<string>>(func);
+            _listIsSet = true;
+            return this;
+        }
+        public AddressBuilder WithList(Action<FluentBuilder.IEnumerableBuilder<String>> action, bool useObjectInitializer = true) => WithList(() =>
+        {
+            var builder = new FluentBuilder.IEnumerableBuilder<String>();
+            action(builder);
+            return (System.Collections.Generic.List<string>) builder.Build(useObjectInitializer);
+        });
+        public AddressBuilder WithoutList()
+        {
+            WithList(() => default(System.Collections.Generic.List<string>));
+            _listIsSet = false;
+            return this;
+        }
+
         private bool _iListAddressIsSet;
         private Lazy<System.Collections.Generic.IList<FluentBuilderGeneratorTests.DTO.Address>> _iListAddress = new Lazy<System.Collections.Generic.IList<FluentBuilderGeneratorTests.DTO.Address>>(() => default(System.Collections.Generic.IList<FluentBuilderGeneratorTests.DTO.Address>));
         public AddressBuilder WithIListAddress(System.Collections.Generic.IList<FluentBuilderGeneratorTests.DTO.Address> value) => WithIListAddress(() => value);
@@ -85,7 +107,7 @@ namespace FluentBuilder
         {
             var builder = new FluentBuilder.IEnumerableAddressBuilder();
             action(builder);
-            return (IList<Address>) builder.Build(useObjectInitializer);
+            return (System.Collections.Generic.IList<FluentBuilderGeneratorTests.DTO.Address>) builder.Build(useObjectInitializer);
         });
         public AddressBuilder WithoutIListAddress()
         {
@@ -146,6 +168,7 @@ namespace FluentBuilder
                             HouseNumber = _houseNumber.Value,
                             City = _city.Value,
                             Array = _array.Value,
+                            List = _list.Value,
                             IListAddress = _iListAddress.Value,
                             Dictionary = _dictionary.Value,
                             Dictionary2 = _dictionary2.Value
@@ -156,6 +179,7 @@ namespace FluentBuilder
                     if (_houseNumberIsSet) { instance.HouseNumber = _houseNumber.Value; }
                     if (_cityIsSet) { instance.City = _city.Value; }
                     if (_arrayIsSet) { instance.Array = _array.Value; }
+                    if (_listIsSet) { instance.List = _list.Value; }
                     if (_iListAddressIsSet) { instance.IListAddress = _iListAddress.Value; }
                     if (_dictionaryIsSet) { instance.Dictionary = _dictionary.Value; }
                     if (_dictionary2IsSet) { instance.Dictionary2 = _dictionary2.Value; }

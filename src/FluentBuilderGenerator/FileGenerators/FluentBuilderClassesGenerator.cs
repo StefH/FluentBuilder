@@ -251,7 +251,7 @@ namespace FluentBuilder
         sb.AppendLine("        {");
         sb.AppendLine($"            var builder = new FluentBuilder.{builderName}();");
         sb.AppendLine("            action(builder);");
-        sb.AppendLine("            return builder.Build(useObjectInitializer);");
+        sb.AppendLine($"            return ({property.Type}) builder.Build(useObjectInitializer);");
         sb.AppendLine("        });");
         return sb;
     }
