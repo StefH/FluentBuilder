@@ -1,5 +1,4 @@
-# 0.2.1 (30 January 2022)
-- #12 Add support for Array and IEnumerable [enhancement]
-- #13 Skip Dictionary for IEnumerableBuilder logic [bug]
+# 0.2.2 (31 January 2022)
+- #14 Add support for IDictionary [enhancement]
 
 The full release notes can be found here: https://github.com/StefH/FluentBuilder/blob/main/ReleaseNotes.md

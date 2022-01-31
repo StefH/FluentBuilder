@@ -1,3 +1,6 @@
+# 0.2.2 (31 January 2022)
+- [#14](https://github.com/StefH/FluentBuilder/pull/14) - Add support for IDictionary [enhancement] contributed by [StefH](https://github.com/StefH)
+
 # 0.2.1 (30 January 2022)
 - [#12](https://github.com/StefH/FluentBuilder/pull/12) - Add support for Array and IEnumerable [enhancement] contributed by [StefH](https://github.com/StefH)
 - [#13](https://github.com/StefH/FluentBuilder/pull/13) - Skip Dictionary for IEnumerableBuilder logic [bug] contributed by [StefH](https://github.com/StefH)
