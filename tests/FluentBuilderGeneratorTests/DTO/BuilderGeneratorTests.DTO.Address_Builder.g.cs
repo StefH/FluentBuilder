@@ -103,6 +103,12 @@ namespace FluentBuilder
             _dictionary1IsSet = true;
             return this;
         }
+        public AddressBuilder WithDictionary1(Action<FluentBuilder.IDictionaryBuilder<String, Int32>> action, bool useObjectInitializer = true) => WithDictionary1(() =>
+        {
+            var builder = new FluentBuilder.IDictionaryBuilder<String, Int32>();
+            action(builder);
+            return builder.Build(useObjectInitializer);
+        });
         public AddressBuilder WithoutDictionary1()
         {
             WithDictionary1(() => default(System.Collections.Generic.IDictionary<string, int>));
