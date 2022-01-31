@@ -199,7 +199,6 @@ namespace FluentBuilder
         }
 
         string dictionaryBuilderName = $"IDictionaryBuilder{(tuple == null ? string.Empty : "<" + types + ">")}";
-        
 
         var sb = new StringBuilder();
         sb.AppendLine($"        public {className} With{property.Name}(Action<FluentBuilder.{dictionaryBuilderName}> action, bool useObjectInitializer = true) => With{property.Name}(() =>");
