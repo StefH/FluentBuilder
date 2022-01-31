@@ -41,7 +41,7 @@ namespace FluentBuilder
             return this;
         }
 
-        public override IDictionary<TKey, TValue> Build(bool useObjectInitializer = true)
+        public override IDictionary<TKey, TValue> Build()
         {
             if (Object?.IsValueCreated != true)
             {

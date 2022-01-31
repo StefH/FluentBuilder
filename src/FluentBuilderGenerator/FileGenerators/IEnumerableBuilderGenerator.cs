@@ -40,7 +40,7 @@ namespace FluentBuilder
             return this;
         }
 
-        public override T[] Build(bool useObjectInitializer = true)
+        public override T[] Build()
         {
             if (Object?.IsValueCreated != true)
             {
