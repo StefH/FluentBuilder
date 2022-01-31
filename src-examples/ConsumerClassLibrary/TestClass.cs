@@ -7,6 +7,6 @@ namespace ConsumerClassLibrary
     {
         public int Id { get; set; }
 
-        public IEnumerable<string> Values { get; set; }
+        public List<string> Values { get; set; }
     }
 }

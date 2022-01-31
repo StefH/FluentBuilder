@@ -15,7 +15,7 @@ internal static class TypeSymbolExtensions
     {
         if (typeSymbol.SpecialType == SpecialType.System_String)
         {
-            return FluentTypeKind.Other;
+            return FluentTypeKind.String;
         }
 
         if (typeSymbol.TypeKind == TypeKind.Array)
@@ -27,6 +27,11 @@ internal static class TypeSymbolExtensions
         {
             return FluentTypeKind.IDictionary;
         }
+
+        //if (typeSymbol.ImplementsInterfaceOrBaseClass(typeof(ICollection<>)) || typeSymbol.ImplementsInterfaceOrBaseClass(typeof(ICollection)))
+        //{
+        //    return FluentTypeKind.ICollection;
+        //}
 
         if (typeSymbol.AllInterfaces.Any(i => i.SpecialType == SpecialType.System_Collections_IEnumerable))
         {

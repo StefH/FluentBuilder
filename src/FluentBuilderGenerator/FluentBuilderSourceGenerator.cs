@@ -13,10 +13,14 @@ namespace FluentBuilderGenerator;
 [Generator]
 internal class FluentBuilderSourceGenerator : ISourceGenerator
 {
-    private static readonly IFileGenerator BaseBuilderGenerator = new BaseBuilderGenerator();
-    private static readonly IFileGenerator FluentIEnumerableBuilderGenerator = new IEnumerableBuilderGenerator();
-    private static readonly IFileGenerator FluentIDictionaryBuilderGenerator = new IDictionaryBuilderGenerator();
-    private static readonly IFileGenerator AutoGenerateBuilderAttributeGenerator = new AutoGenerateBuilderAttributeGenerator();
+    private static readonly IFileGenerator[] Generators =
+    {
+        new AutoGenerateBuilderAttributeGenerator(),
+        new BaseBuilderGenerator(),
+        new IEnumerableBuilderGenerator(),
+        // new ICollectionBuilderGenerator(),
+        new IDictionaryBuilderGenerator()
+    };
 
     public void Initialize(GeneratorInitializationContext context)
     {
@@ -35,10 +39,7 @@ internal class FluentBuilderSourceGenerator : ISourceGenerator
             throw new NotSupportedException("Only C# is supported.");
         }
 
-        InjectAutoGenerateBuilderAttributeClass(context);
-        InjectBaseBuilderClass(context);
-        InjectFluentIEnumerableBuilderClass(context);
-        InjectFluentIDictionaryBuilderClass(context);
+        InjectGeneratedClasses(context);
 
         if (context.SyntaxReceiver is not AutoGenerateBuilderSyntaxReceiver receiver)
         {
@@ -52,28 +53,13 @@ internal class FluentBuilderSourceGenerator : ISourceGenerator
         InjectFluentBuilderClasses(context, receiver, supportsNullable);
     }
 
-    private static void InjectAutoGenerateBuilderAttributeClass(GeneratorExecutionContext context)
+    private static void InjectGeneratedClasses(GeneratorExecutionContext context)
     {
-        var data = AutoGenerateBuilderAttributeGenerator.GenerateFile();
-        context.AddSource(data.FileName, SourceText.From(data.Text, Encoding.UTF8));
-    }
-
-    private static void InjectBaseBuilderClass(GeneratorExecutionContext context)
-    {
-        var data = BaseBuilderGenerator.GenerateFile();
-        context.AddSource(data.FileName, SourceText.From(data.Text, Encoding.UTF8));
-    }
-
-    private static void InjectFluentIEnumerableBuilderClass(GeneratorExecutionContext context)
-    {
-        var data = FluentIEnumerableBuilderGenerator.GenerateFile();
-        context.AddSource(data.FileName, SourceText.From(data.Text, Encoding.UTF8));
-    }
-
-    private static void InjectFluentIDictionaryBuilderClass(GeneratorExecutionContext context)
-    {
-        var data = FluentIDictionaryBuilderGenerator.GenerateFile();
-        context.AddSource(data.FileName, SourceText.From(data.Text, Encoding.UTF8));
+        foreach (var generator in Generators)
+        {
+            var data = generator.GenerateFile();
+            context.AddSource(data.FileName, SourceText.From(data.Text, Encoding.UTF8));
+        }
     }
 
     private static void InjectFluentBuilderClasses(GeneratorExecutionContext context, IAutoGenerateBuilderSyntaxReceiver receiver, bool supportsNullable)

@@ -72,9 +72,12 @@ namespace FluentBuilderGeneratorTests
         {
             // Arrange
             var builderFileName = "BuilderGeneratorTests.DTO.Address_Builder.g.cs";
-            var addressIEnumerableBuilderFileName = "BuilderGeneratorTests.DTO.Address_IEnumerableBuilder.g.cs";
             var enumerableFileName = "FluentBuilder.IEnumerableBuilder.g.cs";
+            // var collectionFileName = "FluentBuilder.ICollectionBuilder.g.cs";
             var dictFileName = "FluentBuilder.IDictionaryBuilder.g.cs";
+            var addressIEnumerableBuilderFileName = "BuilderGeneratorTests.DTO.Address_IEnumerableBuilder.g.cs";
+            var addressICollectionBuilderFileName = "BuilderGeneratorTests.DTO.Address_ICollectionBuilder.g.cs";
+
             var path = "./DTO/Address.cs";
             var sourceFile = new SourceFile
             {
@@ -95,6 +98,11 @@ namespace FluentBuilderGeneratorTests
             if (Write) File.WriteAllText($"../../../DTO/{enumerableFileName}", ienumerableBuilder.Text);
             ienumerableBuilder.Text.Should().Be(File.ReadAllText($"../../../DTO/{enumerableFileName}"));
 
+            //var icollectionBuilder = result.Files[3];
+            //icollectionBuilder.Path.Should().EndWith(collectionFileName);
+            //if (Write) File.WriteAllText($"../../../DTO/{collectionFileName}", icollectionBuilder.Text);
+            //icollectionBuilder.Text.Should().Be(File.ReadAllText($"../../../DTO/{collectionFileName}"));
+
             var dictBuilder = result.Files[3];
             dictBuilder.Path.Should().EndWith(dictFileName);
             if (Write) File.WriteAllText($"../../../DTO/{dictFileName}", dictBuilder.Text);
@@ -109,6 +117,11 @@ namespace FluentBuilderGeneratorTests
             addressIEnumerableBuilder.Path.Should().EndWith(addressIEnumerableBuilderFileName);
             if (Write) File.WriteAllText($"../../../DTO/{addressIEnumerableBuilderFileName}", addressIEnumerableBuilder.Text);
             addressIEnumerableBuilder.Text.Should().Be(File.ReadAllText($"../../../DTO/{addressIEnumerableBuilderFileName}"));
+
+            //var addressICollectionBuilder = result.Files[6];
+            //addressICollectionBuilder.Path.Should().EndWith(addressICollectionBuilderFileName);
+            //if (Write) File.WriteAllText($"../../../DTO/{addressICollectionBuilderFileName}", addressICollectionBuilder.Text);
+            //addressICollectionBuilder.Text.Should().Be(File.ReadAllText($"../../../DTO/{addressICollectionBuilderFileName}"));
         }
 
         [Fact]

@@ -29,18 +29,19 @@ internal class FluentBuilderClassesGenerator : IFilesGenerator
 
         var classes = applicableClassSymbols.Select(classSymbol => new FileData
         (
-            FileDataType.ClassBuilder,
+            FileDataType.Builder,
             $"{classSymbol.NamedTypeSymbol.GenerateFileName()}_Builder.g.cs",
             CreateClassBuilderCode(classSymbol.NamedTypeSymbol, extraClassSymbols)
         ));
 
         // Extra
         var extra = extraClassSymbols
-            .Where(e => e.Type == FileDataType.IEnumerableClassBuilder)
+            .Where(e => e.Type is FileDataType.IEnumerableBuilder or FileDataType.ICollectionBuilder)
+            .OrderBy(e => e.Type)
             .Select(classSymbol => new FileData
             (
                 classSymbol.Type,
-                $"{classSymbol.NamedTypeSymbol.GenerateFileName()}_IEnumerableBuilder.g.cs",
+                $"{classSymbol.NamedTypeSymbol.GenerateFileName()}_{classSymbol.Type}.g.cs",
                 CreateIEnumerableBuilderCode(classSymbol.ClassName, classSymbol.NamedTypeSymbol)
             ));
 
@@ -144,9 +145,14 @@ namespace FluentBuilder
             return GenerateWithIDictionaryBuilderActionMethod(classSymbol, property, dictionaryTypes);
         }
 
-        if (property.TryGetIEnumerableElementType(out var elementType))
+        if (property.TryGetIEnumerableElementType(out var elementType, out var kind))
         {
-            return GenerateWithIEnumerableBuilderActionMethod(classSymbol, property, elementType, allClassSymbols);
+            if (kind == FluentTypeKind.Array)
+            {
+                kind = FluentTypeKind.IEnumerable;
+            }
+
+            return GenerateWithIEnumerableBuilderActionMethod(kind, classSymbol, property, elementType, allClassSymbols);
         }
 
         return new StringBuilder();
@@ -211,6 +217,7 @@ namespace FluentBuilder
     }
 
     private static StringBuilder GenerateWithIEnumerableBuilderActionMethod(
+        FluentTypeKind kind,
         INamedTypeSymbol classSymbol,
         IPropertySymbol property,
         INamedTypeSymbol? typeSymbol,
@@ -221,25 +228,28 @@ namespace FluentBuilder
         var existingClassSymbol = allClassSymbols.FirstOrDefault(c => c.NamedTypeSymbol.Name == typeSymbolClassName);
 
         string @class = string.Empty;
-        string enumerableBuilderName;
+        string builderName;
         if (existingClassSymbol != null && typeSymbolClassName != null && typeSymbol != null)
         {
-            enumerableBuilderName = $"IEnumerable{typeSymbolClassName}Builder";
-            if (allClassSymbols.All(cs => cs.NamedTypeSymbol.Name != enumerableBuilderName))
+            builderName = $"{kind}{typeSymbolClassName}Builder";
+            if (allClassSymbols.All(cs => cs.NamedTypeSymbol.Name != builderName))
             {
-                allClassSymbols.Add(new ClassSymbol(FileDataType.IEnumerableClassBuilder, enumerableBuilderName, typeSymbol));
+                var fileDataType = kind == FluentTypeKind.IEnumerable
+                    ? FileDataType.IEnumerableBuilder
+                    : FileDataType.ICollectionBuilder;
+                allClassSymbols.Add(new ClassSymbol(fileDataType, builderName, typeSymbol));
             }
         }
         else
         {
             // Normal
-            enumerableBuilderName = $"IEnumerable{@class}Builder{(typeSymbolClassName == null ? string.Empty : "<" + typeSymbolClassName + ">")}";
+            builderName = $"{kind}{@class}Builder{(typeSymbolClassName == null ? string.Empty : "<" + typeSymbolClassName + ">")}";
         }
 
         var sb = new StringBuilder();
-        sb.AppendLine($"        public {className} With{property.Name}(Action<FluentBuilder.{enumerableBuilderName}> action, bool useObjectInitializer = true) => With{property.Name}(() =>");
+        sb.AppendLine($"        public {className} With{property.Name}(Action<FluentBuilder.{builderName}> action, bool useObjectInitializer = true) => With{property.Name}(() =>");
         sb.AppendLine("        {");
-        sb.AppendLine($"            var builder = new FluentBuilder.{enumerableBuilderName}();");
+        sb.AppendLine($"            var builder = new FluentBuilder.{builderName}();");
         sb.AppendLine("            action(builder);");
         sb.AppendLine("            return builder.Build(useObjectInitializer);");
         sb.AppendLine("        });");
@@ -339,7 +349,7 @@ namespace FluentBuilder
             var classSymbol = _wrapper.GetTypeByMetadataName(fullClassName);
             if (classSymbol is not null)
             {
-                classSymbols.Add(new ClassSymbol(FileDataType.ClassBuilder, classSymbol.GenerateClassName(), classSymbol));
+                classSymbols.Add(new ClassSymbol(FileDataType.Builder, classSymbol.GenerateClassName(), classSymbol));
             }
         }
 

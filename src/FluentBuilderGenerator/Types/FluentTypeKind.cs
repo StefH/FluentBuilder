@@ -1,5 +1,3 @@
-using Microsoft.CodeAnalysis;
-
 namespace FluentBuilderGenerator.Types;
 
 internal enum FluentTypeKind
@@ -10,5 +8,9 @@ internal enum FluentTypeKind
 
     IDictionary,
 
-    Other
+    Other,
+
+    String,
+
+    ICollection
 }

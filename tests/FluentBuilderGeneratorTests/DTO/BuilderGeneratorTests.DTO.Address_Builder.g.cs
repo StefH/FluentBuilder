@@ -63,7 +63,7 @@ namespace FluentBuilder
         {
             var builder = new FluentBuilder.IEnumerableBuilder<String>();
             action(builder);
-            return builder.Build(useObjectInitializer);
+            return (string[]) builder.Build(useObjectInitializer);
         });
         public AddressBuilder WithoutArray()
         {
@@ -85,7 +85,7 @@ namespace FluentBuilder
         {
             var builder = new FluentBuilder.IEnumerableAddressBuilder();
             action(builder);
-            return builder.Build(useObjectInitializer);
+            return (IList<Address>) builder.Build(useObjectInitializer);
         });
         public AddressBuilder WithoutIListAddress()
         {

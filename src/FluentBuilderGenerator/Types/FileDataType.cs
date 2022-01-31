@@ -6,11 +6,14 @@ internal enum FileDataType
 
     Base,
 
-    ClassBuilder,
+    Builder,
 
     // ReSharper disable once InconsistentNaming
-    IEnumerableClassBuilder,
+    IEnumerableBuilder,
+    
+    // ReSharper disable once InconsistentNaming
+    ICollectionBuilder,
 
     // ReSharper disable once InconsistentNaming
-    IDictionaryClassBuilder
+    IDictionaryBuilder,
 }

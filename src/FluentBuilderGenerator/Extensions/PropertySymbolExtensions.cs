@@ -25,13 +25,15 @@ internal static class PropertySymbolExtensions
         return false;
     }
 
-    internal static bool TryGetIEnumerableElementType(this IPropertySymbol property, out INamedTypeSymbol? elementNamedTypeSymbol)
+    internal static bool TryGetIEnumerableElementType(
+        this IPropertySymbol property,
+        out INamedTypeSymbol? elementNamedTypeSymbol,
+        out FluentTypeKind kind)
     {
         elementNamedTypeSymbol = null;
+        kind = property.Type.GetFluentTypeKind();
 
-        var type = property.Type.GetFluentTypeKind();
-
-        if (type == FluentTypeKind.Array)
+        if (kind == FluentTypeKind.Array)
         {
             var elementTypeSymbol = (IArrayTypeSymbol)property.Type;
             if ((elementTypeSymbol.ElementType.IsClass() || elementTypeSymbol.ElementType.IsStruct()) && elementTypeSymbol.ElementType is INamedTypeSymbol n)
@@ -40,7 +42,7 @@ internal static class PropertySymbolExtensions
                 return true;
             }
         }
-        else if (type == FluentTypeKind.IEnumerable && property.Type is INamedTypeSymbol namedTypeSymbol)
+        else if (kind is FluentTypeKind.IEnumerable or FluentTypeKind.ICollection && property.Type is INamedTypeSymbol namedTypeSymbol)
         {
             if (namedTypeSymbol.IsGenericType)
             {
