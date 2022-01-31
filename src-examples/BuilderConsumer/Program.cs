@@ -13,6 +13,14 @@ namespace BuilderConsumer
 
         static void Main(string[] args)
         {
+            var test = new FluentBuilder.TestClassBuilder()
+                .WithId(100)
+                .WithValues(eb => eb
+                    .Add("abc")
+                    .Build())
+                .Build();
+            Console.WriteLine("test = " + JsonSerializer.Serialize(test, JsonSerializerOptions));
+
             var user = new FluentBuilder.UserDtoBuilder()
                 .WithDictionary1(db => db      // 👈 Use a Dictionary<TKey, TValue> Builder
                     .Add("test", 123)          // Add a key with value

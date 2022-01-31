@@ -30,7 +30,7 @@ namespace FluentBuilder
 {
     public partial class IEnumerableBuilder<T> : Builder<T[]>
     {
-        protected readonly Lazy<List<T>> _list = new(() => new List<T>());
+        protected readonly Lazy<List<T>> _list = new Lazy<List<T>>(() => new List<T>());
 
         public virtual IEnumerableBuilder<T> Add(T item) => Add(() => item);
         public virtual IEnumerableBuilder<T> Add(Func<T> func)
@@ -40,7 +40,7 @@ namespace FluentBuilder
             return this;
         }
 
-        public override T[] Build()
+        public override T[] Build(bool useObjectInitializer = true)
         {
             if (Object?.IsValueCreated != true)
             {

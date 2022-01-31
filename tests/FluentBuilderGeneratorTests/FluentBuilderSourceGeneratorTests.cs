@@ -11,7 +11,7 @@ namespace FluentBuilderGeneratorTests
 {
     public class FluentBuilderSourceGeneratorTests
     {
-        private const bool Write = false;
+        private const bool Write = true;
 
         private readonly FluentBuilderSourceGenerator _sut;
 
