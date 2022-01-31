@@ -18,6 +18,8 @@
         <Compile Remove="DTO\FluentBuilderGeneratorTests_DTO_UserTWithAddressAndConstructor_T__1_Builder.g.cs" />
         <Compile Remove="DTO\FluentBuilderGeneratorTests_DTO_UserTWithAddressT_T__1_Builder.g.cs" />
         <Compile Remove="DTO\FluentBuilderGeneratorTests_DTO_UserT_T__1_Builder.g.cs" />
+        <Compile Remove="DTO\IDictionaryBuilder.cs" />
+        <Compile Remove="DTO\IEnumerableBuilder.cs" />
         <Compile Remove="DTO\User.cs" />
     </ItemGroup>
 

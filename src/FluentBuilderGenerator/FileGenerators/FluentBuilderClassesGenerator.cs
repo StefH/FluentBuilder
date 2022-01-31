@@ -30,7 +30,7 @@ internal class FluentBuilderClassesGenerator : IFilesGenerator
         var classes = applicableClassSymbols.Select(classSymbol => new FileData
         (
             FileDataType.ClassBuilder,
-            $"{classSymbol.NamedTypeSymbol.GetFileName()}_Builder.g.cs",
+            $"{classSymbol.NamedTypeSymbol.GenerateFileName()}_Builder.g.cs",
             CreateClassBuilderCode(classSymbol.NamedTypeSymbol, extraClassSymbols)
         ));
 
@@ -40,7 +40,7 @@ internal class FluentBuilderClassesGenerator : IFilesGenerator
             .Select(classSymbol => new FileData
             (
                 classSymbol.Type,
-                $"{classSymbol.NamedTypeSymbol.GetFileName()}_IEnumerableBuilder.g.cs",
+                $"{classSymbol.NamedTypeSymbol.GenerateFileName()}_IEnumerableBuilder.g.cs",
                 CreateIEnumerableBuilderCode(classSymbol.ClassName, classSymbol.NamedTypeSymbol)
             ));
 
@@ -139,6 +139,11 @@ namespace FluentBuilder
             return GenerateWithPropertyActionMethod(classSymbol, property);
         }
 
+        if (property.TryGetIDictionaryElementTypes(out var dictionaryTypes))
+        {
+            return GenerateWithIDictionaryBuilderActionMethod(classSymbol, property, dictionaryTypes);
+        }
+
         if (property.TryGetIEnumerableElementType(out var elementType))
         {
             return GenerateWithIEnumerableBuilderActionMethod(classSymbol, property, elementType, allClassSymbols);
@@ -170,6 +175,35 @@ namespace FluentBuilder
         sb.AppendLine($"        public {className} With{property.Name}(Action<FluentBuilder.{propertyName}> action, bool useObjectInitializer = true) => With{property.Name}(() =>");
         sb.AppendLine("        {");
         sb.AppendLine($"            var builder = new FluentBuilder.{propertyName}();");
+        sb.AppendLine("            action(builder);");
+        sb.AppendLine("            return builder.Build(useObjectInitializer);");
+        sb.AppendLine("        });");
+        return sb;
+    }
+
+    private static StringBuilder GenerateWithIDictionaryBuilderActionMethod(
+        INamedTypeSymbol classSymbol,
+        IPropertySymbol property,
+        (INamedTypeSymbol key, INamedTypeSymbol value)? tuple
+    )
+    {
+        var className = classSymbol.GenerateClassName(true);
+
+        string types = string.Empty;
+        if (tuple != null)
+        {
+            var keyClassName = tuple?.key?.GenerateClassName() ?? "object";
+            var valueClassName = tuple?.value?.GenerateClassName() ?? "object";
+
+            types = $"{keyClassName}, {valueClassName}";
+        }
+
+        string dictionaryBuilderName = $"IDictionaryBuilder{(tuple == null ? string.Empty : "<" + types + ">")}";
+
+        var sb = new StringBuilder();
+        sb.AppendLine($"        public {className} With{property.Name}(Action<FluentBuilder.{dictionaryBuilderName}> action, bool useObjectInitializer = true) => With{property.Name}(() =>");
+        sb.AppendLine("        {");
+        sb.AppendLine($"            var builder = new FluentBuilder.{dictionaryBuilderName}();");
         sb.AppendLine("            action(builder);");
         sb.AppendLine("            return builder.Build(useObjectInitializer);");
         sb.AppendLine("        });");

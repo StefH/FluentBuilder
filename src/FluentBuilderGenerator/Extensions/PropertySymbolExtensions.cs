@@ -1,42 +1,58 @@
+using FluentBuilderGenerator.Types;
 using Microsoft.CodeAnalysis;
 
 namespace FluentBuilderGenerator.Extensions;
 
 internal static class PropertySymbolExtensions
 {
-    internal static bool TryGetIEnumerableElementType(this IPropertySymbol property, out INamedTypeSymbol? elementClassName)
+    internal static bool TryGetIDictionaryElementTypes(this IPropertySymbol property, out (INamedTypeSymbol key, INamedTypeSymbol value)? tuple)
     {
-        elementClassName = null;
+        var type = property.Type.GetFluentTypeKind();
 
-        if (property.Type is INamedTypeSymbol nt && nt.IsDictionary())
+        if (type == FluentTypeKind.IDictionary && property.Type is INamedTypeSymbol namedTypeSymbol)
         {
-            return false;
+            if (namedTypeSymbol.IsGenericType && namedTypeSymbol.TypeArguments.Length == 2)
+            {
+                if (namedTypeSymbol.TypeArguments[0] is INamedTypeSymbol key && namedTypeSymbol.TypeArguments[1] is INamedTypeSymbol value)
+                {
+                    tuple = new(key, value);
+                    return true;
+                }
+            }
         }
 
-        if (property.Type.IsIEnumerable() && property.Type is INamedTypeSymbol namedTypeSymbol)
+        tuple = default;
+        return false;
+    }
+
+    internal static bool TryGetIEnumerableElementType(this IPropertySymbol property, out INamedTypeSymbol? elementNamedTypeSymbol)
+    {
+        elementNamedTypeSymbol = null;
+
+        var type = property.Type.GetFluentTypeKind();
+
+        if (type == FluentTypeKind.Array)
+        {
+            var elementTypeSymbol = (IArrayTypeSymbol)property.Type;
+            if ((elementTypeSymbol.ElementType.IsClass() || elementTypeSymbol.ElementType.IsStruct()) && elementTypeSymbol.ElementType is INamedTypeSymbol n)
+            {
+                elementNamedTypeSymbol = n;
+                return true;
+            }
+        }
+        else if (type == FluentTypeKind.IEnumerable && property.Type is INamedTypeSymbol namedTypeSymbol)
         {
             if (namedTypeSymbol.IsGenericType)
             {
                 if (namedTypeSymbol.TypeArguments.FirstOrDefault() is INamedTypeSymbol genericNamedTypeSymbol)
                 {
-                    elementClassName = genericNamedTypeSymbol;
+                    elementNamedTypeSymbol = genericNamedTypeSymbol;
                     return true;
                 }
             }
 
-            elementClassName = namedTypeSymbol;
+            elementNamedTypeSymbol = namedTypeSymbol;
             return true;
-        }
-
-        if (property.Type.TypeKind == TypeKind.Array)
-        {
-            var elementTypeSymbol = (IArrayTypeSymbol)property.Type;
-
-            if ((elementTypeSymbol.ElementType.IsClass() || elementTypeSymbol.ElementType.IsStruct()) && elementTypeSymbol.ElementType is INamedTypeSymbol n)
-            {
-                elementClassName = n;
-                return true;
-            }
         }
 
         return false;

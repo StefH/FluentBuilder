@@ -9,5 +9,8 @@ internal enum FileDataType
     ClassBuilder,
 
     // ReSharper disable once InconsistentNaming
-    IEnumerableClassBuilder
+    IEnumerableClassBuilder,
+
+    // ReSharper disable once InconsistentNaming
+    IDictionaryClassBuilder
 }

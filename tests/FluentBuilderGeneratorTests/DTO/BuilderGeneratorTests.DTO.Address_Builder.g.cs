@@ -94,19 +94,41 @@ namespace FluentBuilder
             return this;
         }
 
-        private bool _dictionary1IsSet;
-        private Lazy<System.Collections.Generic.IDictionary<string, int>> _dictionary1 = new Lazy<System.Collections.Generic.IDictionary<string, int>>(() => default(System.Collections.Generic.IDictionary<string, int>));
-        public AddressBuilder WithDictionary1(System.Collections.Generic.IDictionary<string, int> value) => WithDictionary1(() => value);
-        public AddressBuilder WithDictionary1(Func<System.Collections.Generic.IDictionary<string, int>> func)
+        private bool _dictionaryIsSet;
+        private Lazy<System.Collections.IDictionary> _dictionary = new Lazy<System.Collections.IDictionary>(() => default(System.Collections.IDictionary));
+        public AddressBuilder WithDictionary(System.Collections.IDictionary value) => WithDictionary(() => value);
+        public AddressBuilder WithDictionary(Func<System.Collections.IDictionary> func)
         {
-            _dictionary1 = new Lazy<System.Collections.Generic.IDictionary<string, int>>(func);
-            _dictionary1IsSet = true;
+            _dictionary = new Lazy<System.Collections.IDictionary>(func);
+            _dictionaryIsSet = true;
             return this;
         }
-        public AddressBuilder WithoutDictionary1()
+        public AddressBuilder WithoutDictionary()
         {
-            WithDictionary1(() => default(System.Collections.Generic.IDictionary<string, int>));
-            _dictionary1IsSet = false;
+            WithDictionary(() => default(System.Collections.IDictionary));
+            _dictionaryIsSet = false;
+            return this;
+        }
+
+        private bool _dictionary2IsSet;
+        private Lazy<System.Collections.Generic.IDictionary<string, int>> _dictionary2 = new Lazy<System.Collections.Generic.IDictionary<string, int>>(() => default(System.Collections.Generic.IDictionary<string, int>));
+        public AddressBuilder WithDictionary2(System.Collections.Generic.IDictionary<string, int> value) => WithDictionary2(() => value);
+        public AddressBuilder WithDictionary2(Func<System.Collections.Generic.IDictionary<string, int>> func)
+        {
+            _dictionary2 = new Lazy<System.Collections.Generic.IDictionary<string, int>>(func);
+            _dictionary2IsSet = true;
+            return this;
+        }
+        public AddressBuilder WithDictionary2(Action<FluentBuilder.IDictionaryBuilder<String, Int32>> action, bool useObjectInitializer = true) => WithDictionary2(() =>
+        {
+            var builder = new FluentBuilder.IDictionaryBuilder<String, Int32>();
+            action(builder);
+            return builder.Build(useObjectInitializer);
+        });
+        public AddressBuilder WithoutDictionary2()
+        {
+            WithDictionary2(() => default(System.Collections.Generic.IDictionary<string, int>));
+            _dictionary2IsSet = false;
             return this;
         }
 
@@ -125,7 +147,8 @@ namespace FluentBuilder
                             City = _city.Value,
                             Array = _array.Value,
                             IListAddress = _iListAddress.Value,
-                            Dictionary1 = _dictionary1.Value
+                            Dictionary = _dictionary.Value,
+                            Dictionary2 = _dictionary2.Value
                         };
                     }
 
@@ -134,7 +157,8 @@ namespace FluentBuilder
                     if (_cityIsSet) { instance.City = _city.Value; }
                     if (_arrayIsSet) { instance.Array = _array.Value; }
                     if (_iListAddressIsSet) { instance.IListAddress = _iListAddress.Value; }
-                    if (_dictionary1IsSet) { instance.Dictionary1 = _dictionary1.Value; }
+                    if (_dictionaryIsSet) { instance.Dictionary = _dictionary.Value; }
+                    if (_dictionary2IsSet) { instance.Dictionary2 = _dictionary2.Value; }
                     return instance;
                 });
             }

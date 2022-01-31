@@ -14,12 +14,20 @@ namespace BuilderConsumer
         static void Main(string[] args)
         {
             var user = new FluentBuilder.UserDtoBuilder()
+                .WithDictionary1(db => db      // 👈 Use a Dictionary<TKey, TValue> Builder
+                    .Add("test", 123)          // Add a key with value
+
+                    .Add(() => new KeyValuePair<string, int>("x", 42)) // Add a KeyValuePair with a Func<>
+                    .Build()
+                )
+
                 .WithIntArray(ib => ib         // 👈 Use a Integer Array Builder
                     .Add(1)                    // Add a normal integer
 
                     .Add(() => 2)              // Add an integer with a Func<>
                     .Build()
                 )
+
                 .WithSecondaryEmails(sb => sb  // 👈 Use a EmailDto IEnumerable Builder
                     .Add(new EmailDto())       // Add a normal EmailDto using new() constructor
 

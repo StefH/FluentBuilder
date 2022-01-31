@@ -23,6 +23,8 @@ namespace FluentBuilderGeneratorTests.DTO
 
         public IList<Address> IListAddress { get; set; }
 
-        public IDictionary<string, int> Dictionary1 { get; set; }
+        public IDictionary Dictionary { get; set; }
+
+        public IDictionary<string, int> Dictionary2 { get; set; }
     }
 }
