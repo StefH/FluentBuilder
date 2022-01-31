@@ -92,7 +92,7 @@ namespace Test
 }
 ```
 
-### Using FluentBuilder when a class has an `Array` or `IEnumerable<T>` properties
+### Using FluentBuilder when a class has an `Array` or `IEnumerable<T>` property
 ``` c#
 [FluentBuilder.AutoGenerateBuilder]
 public class UserDto
@@ -120,6 +120,26 @@ var user = new FluentBuilder.UserDtoBuilder()
             .WithPrimary(true)
             .Build()
         )
+        .Build()
+    )
+    .Build();
+```
+
+### Using FluentBuilder when a class has an `IDictionary<Ket, TValueT>` property
+``` c#
+[FluentBuilder.AutoGenerateBuilder]
+public class UserDto
+{
+    public IDictionary<string, int> Tags { get; set; }
+}
+```
+
+``` c#
+var user = new FluentBuilder.UserDtoBuilder()
+    .WithTags(db => db      // 👈 Use a Dictionary<TKey, TValue> Builder
+        .Add("test", 123)   // Add a key with value
+
+        .Add(() => new KeyValuePair<string, int>("x", 42)) // Add a KeyValuePair with a Func<>
         .Build()
     )
     .Build();

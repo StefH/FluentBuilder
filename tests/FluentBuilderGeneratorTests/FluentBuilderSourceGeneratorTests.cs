@@ -25,6 +25,10 @@ namespace FluentBuilderGeneratorTests
                     .Add(()=> "b")
                     .Build()
                 )
+                .WithDictionary1(db => db
+                    .Add("a", 1)
+                    .Build()
+                )
                 .WithIListAddress(x => x
                     .Add(new Address())
                     .Add(() => new Address())
