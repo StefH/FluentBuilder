@@ -19,24 +19,24 @@ namespace FluentBuilderGeneratorTests
         {
             _sut = new FluentBuilderSourceGenerator();
 
-            var x = new AddressBuilder()
-                .WithArray(ab => ab
-                    .Add("a")
-                    .Add(()=> "b")
-                    .Build()
-                )
-                .WithDictionary1(db => db
-                    .Add("a", 1)
-                    .Build()
-                )
-                .WithIListAddress(x => x
-                    .Add(new Address())
-                    .Add(() => new Address())
-                    .Add(e => e
-                        .WithCity("c")
-                        .Build())
-                    .Build())
-                .Build();
+            //var x = new AddressBuilder()
+            //    .WithArray(ab => ab
+            //        .Add("a")
+            //        .Add(()=> "b")
+            //        .Build()
+            //    )
+            //    .WithDictionary1(db => db
+            //        .Add("a", 1)
+            //        .Build()
+            //    )
+            //    .WithIListAddress(x => x
+            //        .Add(new Address())
+            //        .Add(() => new Address())
+            //        .Add(e => e
+            //            .WithCity("c")
+            //            .Build())
+            //        .Build())
+            //    .Build();
         }
 
         [Fact]
