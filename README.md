@@ -125,7 +125,7 @@ var user = new FluentBuilder.UserDtoBuilder()
     .Build();
 ```
 
-### Using FluentBuilder when a class has an `IDictionary<Ket, TValueT>` property
+### Using FluentBuilder when a class has an `IDictionary<TKey, TValue>` property
 ``` c#
 [FluentBuilder.AutoGenerateBuilder]
 public class UserDto
