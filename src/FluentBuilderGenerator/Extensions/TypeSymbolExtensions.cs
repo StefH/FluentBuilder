@@ -28,10 +28,15 @@ internal static class TypeSymbolExtensions
             return FluentTypeKind.IDictionary;
         }
 
-        //if (typeSymbol.ImplementsInterfaceOrBaseClass(typeof(ICollection<>)) || typeSymbol.ImplementsInterfaceOrBaseClass(typeof(ICollection)))
-        //{
-        //    return FluentTypeKind.ICollection;
-        //}
+        if (typeSymbol.ImplementsInterfaceOrBaseClass(typeof(IList<>)) || typeSymbol.ImplementsInterfaceOrBaseClass(typeof(IList)))
+        {
+            return FluentTypeKind.IList;
+        }
+
+        if (typeSymbol.ImplementsInterfaceOrBaseClass(typeof(ICollection<>)) || typeSymbol.ImplementsInterfaceOrBaseClass(typeof(ICollection)))
+        {
+            return FluentTypeKind.ICollection;
+        }
 
         if (typeSymbol.AllInterfaces.Any(i => i.SpecialType == SpecialType.System_Collections_IEnumerable))
         {

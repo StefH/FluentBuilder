@@ -12,25 +12,25 @@ using System.Collections.Generic;
 
 namespace FluentBuilder
 {
-    public partial class IEnumerableBuilder<T> : Builder<IEnumerable<T>>
+    public partial class ArrayBuilder<T> : Builder<T[]>
     {
         protected readonly Lazy<List<T>> _list = new Lazy<List<T>>(() => new List<T>());
 
-        public virtual IEnumerableBuilder<T> Add(T item) => Add(() => item);
-        public virtual IEnumerableBuilder<T> Add(Func<T> func)
+        public virtual ArrayBuilder<T> Add(T item) => Add(() => item);
+        public virtual ArrayBuilder<T> Add(Func<T> func)
         {
             _list.Value.Add(func());
 
             return this;
         }
 
-        public override IEnumerable<T> Build(bool useObjectInitializer = true)
+        public override T[] Build(bool useObjectInitializer = true)
         {
             if (Object?.IsValueCreated != true)
             {
-                Object = new Lazy<IEnumerable<T>>(() =>
+                Object = new Lazy<T[]>(() =>
                 {
-                    return _list.Value;
+                    return _list.Value.ToArray();
                 });
             }
 

@@ -1,10 +1,9 @@
 using System.IO;
+using System.Linq;
 using CSharp.SourceGenerators.Extensions;
 using CSharp.SourceGenerators.Extensions.Models;
 using FluentAssertions;
-using FluentBuilder;
 using FluentBuilderGenerator;
-using FluentBuilderGeneratorTests.DTO;
 using Xunit;
 
 namespace FluentBuilderGeneratorTests
@@ -71,12 +70,23 @@ namespace FluentBuilderGeneratorTests
         public void GenerateFiles_ForClassWithArrayAndDictionaryProperty_Should_GenerateCorrectFiles()
         {
             // Arrange
-            var builderFileName = "BuilderGeneratorTests.DTO.Address_Builder.g.cs";
-            var enumerableFileName = "FluentBuilder.IEnumerableBuilder.g.cs";
-            // var collectionFileName = "FluentBuilder.ICollectionBuilder.g.cs";
-            var dictFileName = "FluentBuilder.IDictionaryBuilder.g.cs";
-            var addressIEnumerableBuilderFileName = "BuilderGeneratorTests.DTO.Address_IEnumerableBuilder.g.cs";
-            var addressICollectionBuilderFileName = "BuilderGeneratorTests.DTO.Address_ICollectionBuilder.g.cs";
+            var fileNames = new[]
+            {
+                "FluentBuilder.AutoGenerateBuilderAttribute.g.cs",
+                "FluentBuilder.BaseBuilder.g.cs",
+
+                "FluentBuilder.ArrayBuilder.g.cs",
+                "FluentBuilder.IEnumerableBuilder.g.cs",
+                "FluentBuilder.IListBuilder.g.cs",
+                "FluentBuilder.ICollectionBuilder.g.cs",
+                "FluentBuilder.IDictionaryBuilder.g.cs",
+
+                "BuilderGeneratorTests.DTO.Address_Builder.g.cs",
+                "BuilderGeneratorTests.DTO.Address_ArrayBuilder.g.cs",
+                "BuilderGeneratorTests.DTO.Address_IEnumerableBuilder.g.cs",
+                "BuilderGeneratorTests.DTO.Address_IListBuilder.g.cs",
+                "BuilderGeneratorTests.DTO.Address_ICollectionBuilder.g.cs"
+            };
 
             var path = "./DTO/Address.cs";
             var sourceFile = new SourceFile
@@ -91,37 +101,15 @@ namespace FluentBuilderGeneratorTests
 
             // Assert
             result.Valid.Should().BeTrue();
-            result.Files.Should().HaveCount(6);
+            result.Files.Should().HaveCount(fileNames.Length);
 
-            var ienumerableBuilder = result.Files[2];
-            ienumerableBuilder.Path.Should().EndWith(enumerableFileName);
-            if (Write) File.WriteAllText($"../../../DTO/{enumerableFileName}", ienumerableBuilder.Text);
-            ienumerableBuilder.Text.Should().Be(File.ReadAllText($"../../../DTO/{enumerableFileName}"));
-
-            //var icollectionBuilder = result.Files[3];
-            //icollectionBuilder.Path.Should().EndWith(collectionFileName);
-            //if (Write) File.WriteAllText($"../../../DTO/{collectionFileName}", icollectionBuilder.Text);
-            //icollectionBuilder.Text.Should().Be(File.ReadAllText($"../../../DTO/{collectionFileName}"));
-
-            var dictBuilder = result.Files[3];
-            dictBuilder.Path.Should().EndWith(dictFileName);
-            if (Write) File.WriteAllText($"../../../DTO/{dictFileName}", dictBuilder.Text);
-            dictBuilder.Text.Should().Be(File.ReadAllText($"../../../DTO/{dictFileName}"));
-
-            var classBuilder = result.Files[4];
-            classBuilder.Path.Should().EndWith(builderFileName);
-            if (Write) File.WriteAllText($"../../../DTO/{builderFileName}", classBuilder.Text);
-            classBuilder.Text.Should().Be(File.ReadAllText($"../../../DTO/{builderFileName}"));
-            
-            var addressIEnumerableBuilder = result.Files[5];
-            addressIEnumerableBuilder.Path.Should().EndWith(addressIEnumerableBuilderFileName);
-            if (Write) File.WriteAllText($"../../../DTO/{addressIEnumerableBuilderFileName}", addressIEnumerableBuilder.Text);
-            addressIEnumerableBuilder.Text.Should().Be(File.ReadAllText($"../../../DTO/{addressIEnumerableBuilderFileName}"));
-
-            //var addressICollectionBuilder = result.Files[6];
-            //addressICollectionBuilder.Path.Should().EndWith(addressICollectionBuilderFileName);
-            //if (Write) File.WriteAllText($"../../../DTO/{addressICollectionBuilderFileName}", addressICollectionBuilder.Text);
-            //addressICollectionBuilder.Text.Should().Be(File.ReadAllText($"../../../DTO/{addressICollectionBuilderFileName}"));
+            foreach (var x in fileNames.Select((fileName, index) => new { fileName, index }))
+            {
+                var builder = result.Files[x.index];
+                builder.Path.Should().EndWith(x.fileName);
+                if (Write) File.WriteAllText($"../../../DTO/{x.fileName}", builder.Text);
+                builder.Text.Should().Be(File.ReadAllText($"../../../DTO/{x.fileName}"));
+            }
         }
 
         [Fact]

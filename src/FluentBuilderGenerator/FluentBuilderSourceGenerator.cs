@@ -3,6 +3,7 @@
 using System.Text;
 using FluentBuilderGenerator.FileGenerators;
 using FluentBuilderGenerator.SyntaxReceiver;
+using FluentBuilderGenerator.Types;
 using FluentBuilderGenerator.Wrappers;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -17,8 +18,10 @@ internal class FluentBuilderSourceGenerator : ISourceGenerator
     {
         new AutoGenerateBuilderAttributeGenerator(),
         new BaseBuilderGenerator(),
-        new IEnumerableBuilderGenerator(),
-        // new ICollectionBuilderGenerator(),
+        new IEnumerableBuilderGenerator(FileDataType.ArrayBuilder),
+        new IEnumerableBuilderGenerator(FileDataType.IEnumerableBuilder),
+        new IEnumerableBuilderGenerator(FileDataType.IListBuilder),
+        new IEnumerableBuilderGenerator(FileDataType.ICollectionBuilder),
         new IDictionaryBuilderGenerator()
     };
 

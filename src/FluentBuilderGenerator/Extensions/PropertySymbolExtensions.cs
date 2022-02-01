@@ -5,6 +5,14 @@ namespace FluentBuilderGenerator.Extensions;
 
 internal static class PropertySymbolExtensions
 {
+    // ReSharper disable once InconsistentNaming
+    private static readonly FluentTypeKind[] IEnumerableKinds =
+    {
+        FluentTypeKind.IEnumerable,
+        FluentTypeKind.IList,
+        FluentTypeKind.ICollection
+    };
+
     internal static bool TryGetIDictionaryElementTypes(this IPropertySymbol property, out (INamedTypeSymbol key, INamedTypeSymbol value)? tuple)
     {
         var type = property.Type.GetFluentTypeKind();
@@ -42,7 +50,7 @@ internal static class PropertySymbolExtensions
                 return true;
             }
         }
-        else if (kind is FluentTypeKind.IEnumerable or FluentTypeKind.ICollection && property.Type is INamedTypeSymbol namedTypeSymbol)
+        else if (IEnumerableKinds.Contains(kind) && property.Type is INamedTypeSymbol namedTypeSymbol)
         {
             if (namedTypeSymbol.IsGenericType)
             {

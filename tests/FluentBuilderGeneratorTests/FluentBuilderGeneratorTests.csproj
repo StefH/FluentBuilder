@@ -14,6 +14,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <Compile Remove="DTO\Builder.cs" />
         <Compile Remove="DTO\FluentBuilderGeneratorTests.DTO.User_Builder.g.cs" />
         <Compile Remove="DTO\FluentBuilderGeneratorTests_DTO_UserTWithAddressAndConstructor_T__1_Builder.g.cs" />
         <Compile Remove="DTO\FluentBuilderGeneratorTests_DTO_UserTWithAddressT_T__1_Builder.g.cs" />

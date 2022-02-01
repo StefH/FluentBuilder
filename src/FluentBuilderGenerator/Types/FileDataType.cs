@@ -1,19 +1,23 @@
+// ReSharper disable InconsistentNaming
 namespace FluentBuilderGenerator.Types;
 
-internal enum FileDataType
+internal enum FileDataType : byte
 {
+    None,
+
     Attribute,
 
     Base,
 
     Builder,
 
-    // ReSharper disable once InconsistentNaming
+    ArrayBuilder,
+
     IEnumerableBuilder,
-    
-    // ReSharper disable once InconsistentNaming
+
+    IListBuilder,
+
     ICollectionBuilder,
 
-    // ReSharper disable once InconsistentNaming
     IDictionaryBuilder,
 }
