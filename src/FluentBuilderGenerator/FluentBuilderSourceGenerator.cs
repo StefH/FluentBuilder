@@ -14,17 +14,6 @@ namespace FluentBuilderGenerator;
 [Generator]
 internal class FluentBuilderSourceGenerator : ISourceGenerator
 {
-    private static readonly IFileGenerator[] Generators =
-    {
-        new AutoGenerateBuilderAttributeGenerator(),
-        new BaseBuilderGenerator(),
-        new IEnumerableBuilderGenerator(FileDataType.ArrayBuilder),
-        new IEnumerableBuilderGenerator(FileDataType.IEnumerableBuilder),
-        new IEnumerableBuilderGenerator(FileDataType.IListBuilder),
-        new IEnumerableBuilderGenerator(FileDataType.ICollectionBuilder),
-        new IDictionaryBuilderGenerator()
-    };
-
     public void Initialize(GeneratorInitializationContext context)
     {
         //if (!System.Diagnostics.Debugger.IsAttached)
@@ -42,23 +31,34 @@ internal class FluentBuilderSourceGenerator : ISourceGenerator
             throw new NotSupportedException("Only C# is supported.");
         }
 
-        InjectGeneratedClasses(context);
+        // https://github.com/reactiveui/refit/blob/main/InterfaceStubGenerator.Core/InterfaceStubGenerator.cs
+        var supportsNullable = csharpParseOptions.LanguageVersion >= LanguageVersion.CSharp8;
+        // var nullableEnabled = context.Compilation.Options.NullableContextOptions == NullableContextOptions.Enable;
+
+        InjectGeneratedClasses(context, supportsNullable);
 
         if (context.SyntaxReceiver is not AutoGenerateBuilderSyntaxReceiver receiver)
         {
             return;
         }
 
-        // https://github.com/reactiveui/refit/blob/main/InterfaceStubGenerator.Core/InterfaceStubGenerator.cs
-        var supportsNullable = csharpParseOptions.LanguageVersion >= LanguageVersion.CSharp8;
-        // var nullableEnabled = context.Compilation.Options.NullableContextOptions == NullableContextOptions.Enable;
-
         InjectFluentBuilderClasses(context, receiver, supportsNullable);
     }
 
-    private static void InjectGeneratedClasses(GeneratorExecutionContext context)
+    private static void InjectGeneratedClasses(GeneratorExecutionContext context, bool supportsNullable)
     {
-        foreach (var generator in Generators)
+        var generators = new IFileGenerator[]
+        {
+            new AutoGenerateBuilderAttributeGenerator(),
+            new BaseBuilderGenerator(),
+            new IEnumerableBuilderGenerator(FileDataType.ArrayBuilder, supportsNullable),
+            new IEnumerableBuilderGenerator(FileDataType.IEnumerableBuilder, supportsNullable),
+            new IEnumerableBuilderGenerator(FileDataType.IListBuilder, supportsNullable),
+            new IEnumerableBuilderGenerator(FileDataType.ICollectionBuilder, supportsNullable),
+            new IDictionaryBuilderGenerator(supportsNullable)
+        };
+
+        foreach (var generator in generators)
         {
             var data = generator.GenerateFile();
             context.AddSource(data.FileName, SourceText.From(data.Text, Encoding.UTF8));

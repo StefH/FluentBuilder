@@ -7,6 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+#nullable enable
 using System;
 using System.Collections.Generic;
 
@@ -40,3 +41,4 @@ namespace FluentBuilder
         }
     }
 }
+#nullable disable

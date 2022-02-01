@@ -76,7 +76,7 @@ namespace FluentBuilder
 {{
     public partial class {classSymbol.ClassName} : {classSymbol.Type}<{classSymbol.NamedTypeSymbol.GenerateClassName()}>{classSymbol.NamedTypeSymbol.GetWhereStatement()}
     {{
-{GenerateAddMethods(classSymbol.ClassName, classSymbol.NamedTypeSymbol)}
+{GenerateAddMethods(classSymbol.ClassName, classSymbol.NamedTypeSymbol, _supportsNullable)}
     }}
 }}
 {(_supportsNullable ? "#nullable disable" : string.Empty)}";
@@ -256,14 +256,16 @@ namespace FluentBuilder
         return sb;
     }
 
-    private static StringBuilder GenerateAddMethods(string className, INamedTypeSymbol itemClassSymbol)
+    private static StringBuilder GenerateAddMethods(string className, INamedTypeSymbol itemClassSymbol, bool supportsNullable)
     {
         var itemBuilderName = $"{itemClassSymbol.GenerateClassName(true)}";
 
-        var sb = new StringBuilder();
-        sb.AppendLine($"        public override {className} Add({itemClassSymbol.Name} item) => Add(() => item);");
+        var @override = supportsNullable ? "override" : "new";
 
-        sb.AppendLine($"        public override {className} Add(Func<{itemClassSymbol.Name}> func)");
+        var sb = new StringBuilder();
+        sb.AppendLine($"        public {@override} {className} Add({itemClassSymbol.Name} item) => Add(() => item);");
+
+        sb.AppendLine($"        public {@override} {className} Add(Func<{itemClassSymbol.Name}> func)");
         sb.AppendLine("        {");
         sb.AppendLine("            _list.Value.Add(func());");
         sb.AppendLine("            return this;");

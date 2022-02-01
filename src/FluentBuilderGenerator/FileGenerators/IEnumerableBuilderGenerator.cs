@@ -7,13 +7,15 @@ namespace FluentBuilderGenerator.FileGenerators;
 internal class IEnumerableBuilderGenerator : IFileGenerator
 {
     private readonly FileDataType _dataType;
+    private readonly bool _supportsNullable;
     private readonly string _className;
     private readonly string _genericType;
     private readonly string _toArray;
 
-    public IEnumerableBuilderGenerator(FileDataType dataType)
+    public IEnumerableBuilderGenerator(FileDataType dataType, bool supportsNullable)
     {
         _dataType = dataType;
+        _supportsNullable = supportsNullable;
         _className = dataType.ToString();
 
         switch (dataType)
@@ -58,6 +60,7 @@ internal class IEnumerableBuilderGenerator : IFileGenerator
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+{(_supportsNullable ? "#nullable enable" : string.Empty)}
 using System;
 using System.Collections.Generic;
 
@@ -90,7 +93,8 @@ namespace FluentBuilder
             return Object.Value;
         }}
     }}
-}}"
+}}
+{(_supportsNullable ? "#nullable disable" : string.Empty)}"
         );
     }
 }
