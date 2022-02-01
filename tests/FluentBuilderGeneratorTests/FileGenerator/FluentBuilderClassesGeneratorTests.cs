@@ -16,7 +16,7 @@ namespace FluentBuilderGeneratorTests.FileGenerator
 {
     public class FluentBuilderClassesGeneratorTests
     {
-        private const bool Write = false;
+        private const bool Write = true;
 
         private readonly Mock<IGeneratorExecutionContextWrapper> _contextMock;
         private readonly Mock<IAutoGenerateBuilderSyntaxReceiver> _receiverMock;

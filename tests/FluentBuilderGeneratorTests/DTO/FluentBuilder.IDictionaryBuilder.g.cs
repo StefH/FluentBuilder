@@ -7,6 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+#nullable enable
 using System;
 using System.Collections.Generic;
 
@@ -14,7 +15,7 @@ namespace FluentBuilder
 {
     public partial class IDictionaryBuilder<TKey, TValue> : Builder<IDictionary<TKey, TValue>> where TKey : notnull
     {
-        protected readonly Lazy<IDictionary<TKey, TValue>> _dictionary = new(() => new Dictionary<TKey, TValue>());
+        protected readonly Lazy<IDictionary<TKey, TValue>> _dictionary = new Lazy<IDictionary<TKey, TValue>>(() => new Dictionary<TKey, TValue>());
 
         public virtual IDictionaryBuilder<TKey, TValue> Add(TKey key, TValue value) => Add(() => new KeyValuePair<TKey, TValue>(key, value));
         public virtual IDictionaryBuilder<TKey, TValue> Add(Func<KeyValuePair<TKey, TValue>> func)
@@ -41,3 +42,4 @@ namespace FluentBuilder
         }
     }
 }
+#nullable disable

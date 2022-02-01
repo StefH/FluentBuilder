@@ -3,6 +3,7 @@
 using System.Text;
 using FluentBuilderGenerator.FileGenerators;
 using FluentBuilderGenerator.SyntaxReceiver;
+using FluentBuilderGenerator.Types;
 using FluentBuilderGenerator.Wrappers;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -13,11 +14,6 @@ namespace FluentBuilderGenerator;
 [Generator]
 internal class FluentBuilderSourceGenerator : ISourceGenerator
 {
-    private static readonly IFileGenerator BaseBuilderGenerator = new BaseBuilderGenerator();
-    private static readonly IFileGenerator FluentIEnumerableBuilderGenerator = new IEnumerableBuilderGenerator();
-    private static readonly IFileGenerator FluentIDictionaryBuilderGenerator = new IDictionaryBuilderGenerator();
-    private static readonly IFileGenerator AutoGenerateBuilderAttributeGenerator = new AutoGenerateBuilderAttributeGenerator();
-
     public void Initialize(GeneratorInitializationContext context)
     {
         //if (!System.Diagnostics.Debugger.IsAttached)
@@ -35,45 +31,38 @@ internal class FluentBuilderSourceGenerator : ISourceGenerator
             throw new NotSupportedException("Only C# is supported.");
         }
 
-        InjectAutoGenerateBuilderAttributeClass(context);
-        InjectBaseBuilderClass(context);
-        InjectFluentIEnumerableBuilderClass(context);
-        InjectFluentIDictionaryBuilderClass(context);
+        // https://github.com/reactiveui/refit/blob/main/InterfaceStubGenerator.Core/InterfaceStubGenerator.cs
+        var supportsNullable = csharpParseOptions.LanguageVersion >= LanguageVersion.CSharp8;
+        // var nullableEnabled = context.Compilation.Options.NullableContextOptions == NullableContextOptions.Enable;
+
+        InjectGeneratedClasses(context, supportsNullable);
 
         if (context.SyntaxReceiver is not AutoGenerateBuilderSyntaxReceiver receiver)
         {
             return;
         }
 
-        // https://github.com/reactiveui/refit/blob/main/InterfaceStubGenerator.Core/InterfaceStubGenerator.cs
-        var supportsNullable = csharpParseOptions.LanguageVersion >= LanguageVersion.CSharp8;
-        // var nullableEnabled = context.Compilation.Options.NullableContextOptions == NullableContextOptions.Enable;
-
         InjectFluentBuilderClasses(context, receiver, supportsNullable);
     }
 
-    private static void InjectAutoGenerateBuilderAttributeClass(GeneratorExecutionContext context)
+    private static void InjectGeneratedClasses(GeneratorExecutionContext context, bool supportsNullable)
     {
-        var data = AutoGenerateBuilderAttributeGenerator.GenerateFile();
-        context.AddSource(data.FileName, SourceText.From(data.Text, Encoding.UTF8));
-    }
+        var generators = new IFileGenerator[]
+        {
+            new AutoGenerateBuilderAttributeGenerator(),
+            new BaseBuilderGenerator(),
+            new IEnumerableBuilderGenerator(FileDataType.ArrayBuilder, supportsNullable),
+            new IEnumerableBuilderGenerator(FileDataType.IEnumerableBuilder, supportsNullable),
+            new IEnumerableBuilderGenerator(FileDataType.IListBuilder, supportsNullable),
+            new IEnumerableBuilderGenerator(FileDataType.ICollectionBuilder, supportsNullable),
+            new IDictionaryBuilderGenerator(supportsNullable)
+        };
 
-    private static void InjectBaseBuilderClass(GeneratorExecutionContext context)
-    {
-        var data = BaseBuilderGenerator.GenerateFile();
-        context.AddSource(data.FileName, SourceText.From(data.Text, Encoding.UTF8));
-    }
-
-    private static void InjectFluentIEnumerableBuilderClass(GeneratorExecutionContext context)
-    {
-        var data = FluentIEnumerableBuilderGenerator.GenerateFile();
-        context.AddSource(data.FileName, SourceText.From(data.Text, Encoding.UTF8));
-    }
-
-    private static void InjectFluentIDictionaryBuilderClass(GeneratorExecutionContext context)
-    {
-        var data = FluentIDictionaryBuilderGenerator.GenerateFile();
-        context.AddSource(data.FileName, SourceText.From(data.Text, Encoding.UTF8));
+        foreach (var generator in generators)
+        {
+            var data = generator.GenerateFile();
+            context.AddSource(data.FileName, SourceText.From(data.Text, Encoding.UTF8));
+        }
     }
 
     private static void InjectFluentBuilderClasses(GeneratorExecutionContext context, IAutoGenerateBuilderSyntaxReceiver receiver, bool supportsNullable)

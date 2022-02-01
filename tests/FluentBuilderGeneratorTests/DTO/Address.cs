@@ -11,17 +11,20 @@ namespace FluentBuilderGeneratorTests.DTO
         public string City { get; set; }
 
         public string[] Array { get; set; }
-        //public List<int>[] Matrix { get; set; }
 
-        //public List<Address> ListAddress { get; set; }
+        public Address[] Array2 { get; set; }
 
-        //public IEnumerable<string> IEnumerableString { get; set; }
+        public IEnumerable<byte> Enumerable { get; set; }
 
-        //public IEnumerable IEnumerable { get; set; }
+        public IEnumerable<Address> Enumerable2 { get; set; }
 
-        //public IList<string> IList { get; set; }
+        public List<string> List { get; set; }
 
-        public IList<Address> IListAddress { get; set; }
+        public List<Address> List2 { get; set; }
+
+        public ICollection<long> Collection { get; set; }
+
+        public ICollection<Address> Collection2 { get; set; }
 
         public IDictionary Dictionary { get; set; }
 

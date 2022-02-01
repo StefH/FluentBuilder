@@ -5,6 +5,14 @@ namespace FluentBuilderGenerator.Extensions;
 
 internal static class PropertySymbolExtensions
 {
+    // ReSharper disable once InconsistentNaming
+    private static readonly FluentTypeKind[] IEnumerableKinds =
+    {
+        FluentTypeKind.IEnumerable,
+        FluentTypeKind.IList,
+        FluentTypeKind.ICollection
+    };
+
     internal static bool TryGetIDictionaryElementTypes(this IPropertySymbol property, out (INamedTypeSymbol key, INamedTypeSymbol value)? tuple)
     {
         var type = property.Type.GetFluentTypeKind();
@@ -25,13 +33,15 @@ internal static class PropertySymbolExtensions
         return false;
     }
 
-    internal static bool TryGetIEnumerableElementType(this IPropertySymbol property, out INamedTypeSymbol? elementNamedTypeSymbol)
+    internal static bool TryGetIEnumerableElementType(
+        this IPropertySymbol property,
+        out INamedTypeSymbol? elementNamedTypeSymbol,
+        out FluentTypeKind kind)
     {
         elementNamedTypeSymbol = null;
+        kind = property.Type.GetFluentTypeKind();
 
-        var type = property.Type.GetFluentTypeKind();
-
-        if (type == FluentTypeKind.Array)
+        if (kind == FluentTypeKind.Array)
         {
             var elementTypeSymbol = (IArrayTypeSymbol)property.Type;
             if ((elementTypeSymbol.ElementType.IsClass() || elementTypeSymbol.ElementType.IsStruct()) && elementTypeSymbol.ElementType is INamedTypeSymbol n)
@@ -40,7 +50,7 @@ internal static class PropertySymbolExtensions
                 return true;
             }
         }
-        else if (type == FluentTypeKind.IEnumerable && property.Type is INamedTypeSymbol namedTypeSymbol)
+        else if (IEnumerableKinds.Contains(kind) && property.Type is INamedTypeSymbol namedTypeSymbol)
         {
             if (namedTypeSymbol.IsGenericType)
             {

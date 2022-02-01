@@ -15,7 +15,7 @@ internal static class TypeSymbolExtensions
     {
         if (typeSymbol.SpecialType == SpecialType.System_String)
         {
-            return FluentTypeKind.Other;
+            return FluentTypeKind.String;
         }
 
         if (typeSymbol.TypeKind == TypeKind.Array)
@@ -26,6 +26,16 @@ internal static class TypeSymbolExtensions
         if (typeSymbol.ImplementsInterfaceOrBaseClass(typeof(IDictionary<,>)) || typeSymbol.ImplementsInterfaceOrBaseClass(typeof(IDictionary)))
         {
             return FluentTypeKind.IDictionary;
+        }
+
+        if (typeSymbol.ImplementsInterfaceOrBaseClass(typeof(IList<>)) || typeSymbol.ImplementsInterfaceOrBaseClass(typeof(IList)))
+        {
+            return FluentTypeKind.IList;
+        }
+
+        if (typeSymbol.ImplementsInterfaceOrBaseClass(typeof(ICollection<>)) || typeSymbol.ImplementsInterfaceOrBaseClass(typeof(ICollection)))
+        {
+            return FluentTypeKind.ICollection;
         }
 
         if (typeSymbol.AllInterfaces.Any(i => i.SpecialType == SpecialType.System_Collections_IEnumerable))
@@ -58,12 +68,6 @@ internal static class TypeSymbolExtensions
         }
 
         return false;
-    }
-
-    public static bool IsIEnumerable(this ITypeSymbol typeSymbol)
-    {
-        return typeSymbol.SpecialType != SpecialType.System_String &&
-               typeSymbol.AllInterfaces.Any(i => i.SpecialType == SpecialType.System_Collections_IEnumerable);
     }
 
     public static bool CanSupportCollectionInitializer(this ITypeSymbol typeSymbol)
