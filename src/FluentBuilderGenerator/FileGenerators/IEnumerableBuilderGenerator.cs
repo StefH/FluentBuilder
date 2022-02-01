@@ -41,7 +41,6 @@ internal class IEnumerableBuilderGenerator : IFileGenerator
             default:
                 throw new ArgumentException();
         }
-       
     }
 
     public FileData GenerateFile()

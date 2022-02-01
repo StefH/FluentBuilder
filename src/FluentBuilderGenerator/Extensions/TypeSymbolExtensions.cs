@@ -70,12 +70,6 @@ internal static class TypeSymbolExtensions
         return false;
     }
 
-    public static bool IsIEnumerable(this ITypeSymbol typeSymbol)
-    {
-        return typeSymbol.SpecialType != SpecialType.System_String &&
-               typeSymbol.AllInterfaces.Any(i => i.SpecialType == SpecialType.System_Collections_IEnumerable);
-    }
-
     public static bool CanSupportCollectionInitializer(this ITypeSymbol typeSymbol)
     {
         if (typeSymbol.AllInterfaces.Any(i => i.SpecialType == SpecialType.System_Collections_IEnumerable))
