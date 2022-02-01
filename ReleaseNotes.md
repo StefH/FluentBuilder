@@ -1,3 +1,6 @@
+# 0.2.3 (01 February 2022)
+- [#15](https://github.com/StefH/FluentBuilder/pull/15) - Refactor IEumerable builders [enhancement] contributed by [StefH](https://github.com/StefH)
+
 # 0.2.2 (31 January 2022)
 - [#14](https://github.com/StefH/FluentBuilder/pull/14) - Add support for IDictionary [enhancement] contributed by [StefH](https://github.com/StefH)
 
