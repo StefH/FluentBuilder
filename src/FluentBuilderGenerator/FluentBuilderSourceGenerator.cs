@@ -42,7 +42,21 @@ internal class FluentBuilderSourceGenerator : ISourceGenerator
             return;
         }
 
-        InjectFluentBuilderClasses(context, receiver, supportsNullable);
+        try
+        {
+            InjectFluentBuilderClasses(context, receiver, supportsNullable);
+        }
+        catch (Exception exception)
+        {
+            GenerateError(context, exception);
+            throw;
+        }
+    }
+
+    private static void GenerateError(GeneratorExecutionContext context, Exception exception)
+    {
+        var message = $"/*\r\n{nameof(FluentBuilderSourceGenerator)}\r\n\r\n{exception}\r\n\r\n{exception.StackTrace}*/";
+        context.AddSource("Error.g", SourceText.From(message, Encoding.UTF8));
     }
 
     private static void InjectGeneratedClasses(GeneratorExecutionContext context, bool supportsNullable)
