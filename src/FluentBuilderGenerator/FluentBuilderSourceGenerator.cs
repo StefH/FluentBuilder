@@ -26,24 +26,24 @@ internal class FluentBuilderSourceGenerator : ISourceGenerator
 
     public void Execute(GeneratorExecutionContext context)
     {
-        if (context.ParseOptions is not CSharpParseOptions csharpParseOptions)
-        {
-            throw new NotSupportedException("Only C# is supported.");
-        }
-
-        // https://github.com/reactiveui/refit/blob/main/InterfaceStubGenerator.Core/InterfaceStubGenerator.cs
-        var supportsNullable = csharpParseOptions.LanguageVersion >= LanguageVersion.CSharp8;
-        // var nullableEnabled = context.Compilation.Options.NullableContextOptions == NullableContextOptions.Enable;
-
-        InjectGeneratedClasses(context, supportsNullable);
-
-        if (context.SyntaxReceiver is not AutoGenerateBuilderSyntaxReceiver receiver)
-        {
-            return;
-        }
-
         try
         {
+            if (context.ParseOptions is not CSharpParseOptions csharpParseOptions)
+            {
+                throw new NotSupportedException("Only C# is supported.");
+            }
+
+            // https://github.com/reactiveui/refit/blob/main/InterfaceStubGenerator.Core/InterfaceStubGenerator.cs
+            var supportsNullable = csharpParseOptions.LanguageVersion >= LanguageVersion.CSharp8;
+            // var nullableEnabled = context.Compilation.Options.NullableContextOptions == NullableContextOptions.Enable;
+
+            InjectGeneratedClasses(context, supportsNullable);
+
+            if (context.SyntaxReceiver is not AutoGenerateBuilderSyntaxReceiver receiver)
+            {
+                return;
+            }
+
             InjectFluentBuilderClasses(context, receiver, supportsNullable);
         }
         catch (Exception exception)
@@ -55,7 +55,7 @@ internal class FluentBuilderSourceGenerator : ISourceGenerator
 
     private static void GenerateError(GeneratorExecutionContext context, Exception exception)
     {
-        var message = $"/*\r\n{nameof(FluentBuilderSourceGenerator)}\r\n\r\n{exception}\r\n\r\n{exception.StackTrace}*/";
+        var message = $"/*\r\n{nameof(FluentBuilderSourceGenerator)}\r\n\r\n[Exception]\r\n{exception}\r\n\r\n[StackTrace]\r\n{exception.StackTrace}*/";
         context.AddSource("Error.g", SourceText.From(message, Encoding.UTF8));
     }
 
