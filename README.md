@@ -1,5 +1,7 @@
 # Projects
 
+See also this blog: [mstack.nl - source-generators](https://mstack.nl/blog/20210801-source-generators).
+
 ## CSharp.SourceGenerators.Extensions
 See this [page](https://github.com/StefH/FluentBuilder/tree/main/src-extensions).
 
