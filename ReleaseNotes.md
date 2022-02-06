@@ -1,3 +1,6 @@
+# 0.2.4 (06 February 2022)
+- [#16](https://github.com/StefH/FluentBuilder/pull/16) - Fix support for normal Dictionary&lt;,&gt; [bug] contributed by [StefH](https://github.com/StefH)
+
 # 0.2.3 (01 February 2022)
 - [#15](https://github.com/StefH/FluentBuilder/pull/15) - Refactor IEumerable builders [enhancement] contributed by [StefH](https://github.com/StefH)
 

@@ -1,4 +1,4 @@
-# 0.2.3 (01 February 2022)
-- #15 Refactor IEumerable builders [enhancement]
+# 0.2.4 (06 February 2022)
+- #16 Fix support for normal Dictionary&lt;,&gt; [bug]
 
 The full release notes can be found here: https://github.com/StefH/FluentBuilder/blob/main/ReleaseNotes.md
