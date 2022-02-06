@@ -26,8 +26,10 @@ namespace FluentBuilderGeneratorTests.DTO
 
         public ICollection<Address> Collection2 { get; set; }
 
-        public IDictionary Dictionary { get; set; }
+        public IDictionary IDictionary { get; set; }
 
-        public IDictionary<string, int> Dictionary2 { get; set; }
+        public IDictionary<string, int> IDictionary2 { get; set; }
+
+        public Dictionary<string, int> Dictionary2 { get; set; }
     }
 }
