@@ -201,20 +201,23 @@ namespace FluentBuilder
         string types = string.Empty;
         if (tuple != null)
         {
-            var keyClassName = tuple?.key?.GenerateClassName() ?? "object";
-            var valueClassName = tuple?.value?.GenerateClassName() ?? "object";
+            var keyClassName = tuple.Value.key?.GenerateClassName() ?? "object";
+            var valueClassName = tuple.Value.value?.GenerateClassName() ?? "object";
 
             types = $"{keyClassName}, {valueClassName}";
         }
 
         string dictionaryBuilderName = $"IDictionaryBuilder{(tuple == null ? string.Empty : "<" + types + ">")}";
 
+        // If the property.Type is an interface, no cast is needed. Else cast the interface to the real type.
+        var cast = property.Type.TypeKind == TypeKind.Interface ? "" : $"({property.Type}) ";
+
         var sb = new StringBuilder();
         sb.AppendLine($"        public {className} With{property.Name}(Action<FluentBuilder.{dictionaryBuilderName}> action, bool useObjectInitializer = true) => With{property.Name}(() =>");
         sb.AppendLine("        {");
         sb.AppendLine($"            var builder = new FluentBuilder.{dictionaryBuilderName}();");
         sb.AppendLine("            action(builder);");
-        sb.AppendLine("            return builder.Build(useObjectInitializer);");
+        sb.AppendLine($"            return {cast}builder.Build(useObjectInitializer);");
         sb.AppendLine("        });");
         return sb;
     }
@@ -246,12 +249,15 @@ namespace FluentBuilder
             builderName = $"{kind}Builder{(typeSymbolClassName == null ? string.Empty : "<" + typeSymbolClassName + ">")}";
         }
 
+        // If the property.Type is an interface, no cast is needed. Else cast the interface to the real type.
+        var cast = property.Type.TypeKind == TypeKind.Interface ? "" : $"({property.Type}) ";
+
         var sb = new StringBuilder();
         sb.AppendLine($"        public {className} With{property.Name}(Action<FluentBuilder.{builderName}> action, bool useObjectInitializer = true) => With{property.Name}(() =>");
         sb.AppendLine("        {");
         sb.AppendLine($"            var builder = new FluentBuilder.{builderName}();");
         sb.AppendLine("            action(builder);");
-        sb.AppendLine($"            return ({property.Type}) builder.Build(useObjectInitializer);");
+        sb.AppendLine($"            return {cast}builder.Build(useObjectInitializer);");
         sb.AppendLine("        });");
         return sb;
     }
