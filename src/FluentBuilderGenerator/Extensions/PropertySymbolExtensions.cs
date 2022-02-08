@@ -44,9 +44,9 @@ internal static class PropertySymbolExtensions
         if (kind == FluentTypeKind.Array)
         {
             var elementTypeSymbol = (IArrayTypeSymbol)property.Type;
-            if ((elementTypeSymbol.ElementType.IsClass() || elementTypeSymbol.ElementType.IsStruct()) && elementTypeSymbol.ElementType is INamedTypeSymbol n)
+            if ((elementTypeSymbol.ElementType.IsClass() || elementTypeSymbol.ElementType.IsStruct()) && elementTypeSymbol.ElementType is INamedTypeSymbol arrayNamedTypedSymbol)
             {
-                elementNamedTypeSymbol = n;
+                elementNamedTypeSymbol = arrayNamedTypedSymbol;
                 return true;
             }
         }

@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <Version>0.2.4</Version>
+        <Version>0.2.5</Version>
         <TargetFramework>netstandard2.0</TargetFramework>
         <LangVersion>10.0</LangVersion>
         <Nullable>enable</Nullable>
@@ -65,9 +65,6 @@
         <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
             <_Parameter1>DynamicProxyGenAssembly2</_Parameter1>
         </AssemblyAttribute>
-    </ItemGroup>
-    <ItemGroup>
-      <Folder Include="Utils\" />
     </ItemGroup>
 
 </Project>
