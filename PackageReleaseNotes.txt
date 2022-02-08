@@ -1,4 +1,4 @@
-# 0.2.4 (06 February 2022)
-- #16 Fix support for normal Dictionary&lt;,&gt; [bug]
+# 0.2.5 (08 February 2022)
+- #17 For interface or array, no cast is needed [bug]
 
 The full release notes can be found here: https://github.com/StefH/FluentBuilder/blob/main/ReleaseNotes.md
