@@ -249,8 +249,10 @@ namespace FluentBuilder
             builderName = $"{kind}Builder{(typeSymbolClassName == null ? string.Empty : "<" + typeSymbolClassName + ">")}";
         }
 
-        // If the property.Type is an interface, no cast is needed. Else cast the interface to the real type.
-        var cast = property.Type.TypeKind == TypeKind.Interface ? "" : $"({property.Type}) ";
+        // If the property.Type is an interface or array, no cast is needed. Else cast the interface to the real type.
+        var cast = property.Type.TypeKind is TypeKind.Interface or TypeKind.Array ?
+            string.Empty :
+            $"({property.Type}) ";
 
         var sb = new StringBuilder();
         sb.AppendLine($"        public {className} With{property.Name}(Action<FluentBuilder.{builderName}> action, bool useObjectInitializer = true) => With{property.Name}(() =>");

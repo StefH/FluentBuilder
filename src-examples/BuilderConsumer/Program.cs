@@ -74,6 +74,8 @@ namespace BuilderConsumer
                 .WithFirstName("Stef")
                 .WithLastName("Heyenrath")
                 .WithPrimaryEmail(email)
+                .WithIntArray(() => new[] { 7 })
+                .WithEmailDtoArray(() => new[] { new EmailDto() })
                 .Build();
             Console.WriteLine(JsonSerializer.Serialize(user1, JsonSerializerOptions));
 
@@ -119,6 +121,8 @@ namespace BuilderConsumer
         public UserDtoT<long> UserDtoT { get; set; }
 
         public int[] IntArray { get; set; }
+
+        public EmailDto[] EmailDtoArray { get; set; }
 
         public IDictionary<string, int> Dictionary1 { get; set; }
     }
