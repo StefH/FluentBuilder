@@ -1,4 +1,4 @@
-namespace FluentBuilderGeneratorTests.DTO
+namespace FluentBuilderGeneratorTests.DTO2
 {
     public partial class MyAddressBuilder
     {

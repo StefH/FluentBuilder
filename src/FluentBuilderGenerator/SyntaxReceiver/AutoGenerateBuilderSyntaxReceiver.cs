@@ -1,6 +1,7 @@
 // This source code is based on https://justsimplycode.com/2020/12/06/auto-generate-builders-using-source-generator-in-net-5
 
 using System.Diagnostics.CodeAnalysis;
+using FluentBuilderGenerator.Extensions;
 using FluentBuilderGenerator.Models;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -9,7 +10,7 @@ namespace FluentBuilderGenerator.SyntaxReceiver;
 
 internal class AutoGenerateBuilderSyntaxReceiver : IAutoGenerateBuilderSyntaxReceiver
 {
-    public IList<ClassDeclarationSyntax> CandidateClasses { get; } = new List<ClassDeclarationSyntax>();
+    // public IList<ClassDeclarationSyntax> CandidateClasses { get; } = new List<ClassDeclarationSyntax>();
 
     public IList<FluentData> CandidateFluentDataItems { get; } = new List<FluentData>();
 
@@ -18,16 +19,9 @@ internal class AutoGenerateBuilderSyntaxReceiver : IAutoGenerateBuilderSyntaxRec
     /// </summary>
     public void OnVisitSyntaxNode(SyntaxNode syntaxNode)
     {
-        if (syntaxNode is ClassDeclarationSyntax classDeclarationSyntax)
+        if (syntaxNode is ClassDeclarationSyntax classDeclarationSyntax && TryGet(classDeclarationSyntax, out var data))
         {
-            if (TryGet(classDeclarationSyntax, out var data))
-            {
-                CandidateFluentDataItems.Add(data);
-            }
-            else
-            {
-                CandidateClasses.Add(classDeclarationSyntax);
-            }
+            CandidateFluentDataItems.Add(data);
         }
     }
 
@@ -62,23 +56,35 @@ internal class AutoGenerateBuilderSyntaxReceiver : IAutoGenerateBuilderSyntaxRec
         if (argumentList != null && argumentList.Arguments.Any())
         {
             var typeSyntax = ((TypeOfExpressionSyntax)argumentList.Arguments[0].Expression).Type;
-            string rawTypeName = typeSyntax.ToString();
+            var rawTypeName = typeSyntax.ToString();
 
             data = new
             (
                 ns, // NameSpace
-                classDeclarationSyntax.Identifier.ToString(), // ShortClassName
-                $"{ns}.{classDeclarationSyntax.Identifier}", // FullClassName
+                $"{classDeclarationSyntax.Identifier}", // ShortBuilderClassName
+                $"{ns}.{classDeclarationSyntax.Identifier}", // FullBuilderClassName
                 rawTypeName, // RawTypeName
                 ConvertTypeName(rawTypeName).Split('.').Last(), // ShortTypeName
                 ConvertTypeName(rawTypeName), // FullTypeName
                 usings
             );
-
-            return true;
+        }
+        else
+        {
+            var rawTypeName = classDeclarationSyntax.GetFullName();
+            data = new
+            (
+                ns, // NameSpace
+                $"{classDeclarationSyntax.Identifier.ToString().Split('.').Last()}Builder", // ShortBuilderClassName
+                $"{ns}.{classDeclarationSyntax.Identifier}Builder", // FullBuilderClassName
+                rawTypeName, // RawTypeName
+                ConvertTypeName(rawTypeName).Split('.').Last(), // ShortTypeName
+                ConvertTypeName(rawTypeName), // FullTypeName
+                usings
+            );
         }
 
-        return false;
+        return true;
     }
 
     private static string ConvertTypeName(string typeName)

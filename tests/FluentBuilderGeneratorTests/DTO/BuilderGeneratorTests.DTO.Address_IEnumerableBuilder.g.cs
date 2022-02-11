@@ -14,7 +14,7 @@ using System.Collections.Generic;
 using FluentBuilder;
 using FluentBuilderGeneratorTests.DTO;
 
-namespace FluentBuilder
+namespace FluentBuilderGeneratorTests.DTO
 {
     public partial class IEnumerableAddressBuilder : IEnumerableBuilder<Address>
     {
@@ -24,9 +24,9 @@ namespace FluentBuilder
             _list.Value.Add(func());
             return this;
         }
-        public IEnumerableAddressBuilder Add(Action<FluentBuilder.AddressBuilder> action, bool useObjectInitializer = true)
+        public IEnumerableAddressBuilder Add(Action<AddressBuilder> action, bool useObjectInitializer = true)
         {
-            var builder = new FluentBuilder.AddressBuilder();
+            var builder = new AddressBuilder();
             action(builder);
             Add(() => builder.Build(useObjectInitializer));
             return this;

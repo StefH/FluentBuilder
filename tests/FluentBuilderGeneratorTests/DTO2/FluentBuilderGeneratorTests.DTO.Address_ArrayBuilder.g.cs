@@ -14,17 +14,17 @@ using System.Collections.Generic;
 using FluentBuilder;
 using FluentBuilderGeneratorTests.DTO;
 
-namespace FluentBuilderGeneratorTests.DTO
+namespace FluentBuilderGeneratorTests.DTO2
 {
-    public partial class ICollectionAddressBuilder : ICollectionBuilder<Address>
+    public partial class ArrayAddressBuilder : ArrayBuilder<Address>
     {
-        public override ICollectionAddressBuilder Add(Address item) => Add(() => item);
-        public override ICollectionAddressBuilder Add(Func<Address> func)
+        public override ArrayAddressBuilder Add(Address item) => Add(() => item);
+        public override ArrayAddressBuilder Add(Func<Address> func)
         {
             _list.Value.Add(func());
             return this;
         }
-        public ICollectionAddressBuilder Add(Action<AddressBuilder> action, bool useObjectInitializer = true)
+        public ArrayAddressBuilder Add(Action<AddressBuilder> action, bool useObjectInitializer = true)
         {
             var builder = new AddressBuilder();
             action(builder);

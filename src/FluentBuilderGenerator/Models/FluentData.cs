@@ -3,8 +3,8 @@ namespace FluentBuilderGenerator.Models;
 internal record FluentData
 (
     string Namespace,
-    string ShortClassName,
-    string FullClassName,
+    string ShortBuilderClassName,
+    string FullBuilderClassName,
     string FullRawTypeName,
     string ShortTypeName,
     string FullTypeName,

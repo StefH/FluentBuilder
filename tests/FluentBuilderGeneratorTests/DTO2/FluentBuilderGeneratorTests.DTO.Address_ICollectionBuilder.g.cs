@@ -14,7 +14,7 @@ using System.Collections.Generic;
 using FluentBuilder;
 using FluentBuilderGeneratorTests.DTO;
 
-namespace FluentBuilderGeneratorTests.DTO
+namespace FluentBuilderGeneratorTests.DTO2
 {
     public partial class ICollectionAddressBuilder : ICollectionBuilder<Address>
     {
