@@ -25,9 +25,9 @@ internal class AutoGenerateBuilderSyntaxReceiver : IAutoGenerateBuilderSyntaxRec
         }
     }
 
-    private static bool TryGet(ClassDeclarationSyntax classDeclarationSyntax, [NotNullWhen(true)] out FluentData? data)
+    private static bool TryGet(ClassDeclarationSyntax classDeclarationSyntax, [NotNullWhen(true)] out FluentData data)
     {
-        data = null;
+        data = default;
 
         var attributeLists = classDeclarationSyntax.AttributeLists.FirstOrDefault(x => x.Attributes.Any(a => a.Name.ToString().Equals("FluentBuilder.AutoGenerateBuilder")));
         if (attributeLists is null)
@@ -58,32 +58,33 @@ internal class AutoGenerateBuilderSyntaxReceiver : IAutoGenerateBuilderSyntaxRec
             var typeSyntax = ((TypeOfExpressionSyntax)argumentList.Arguments[0].Expression).Type;
             var rawTypeName = typeSyntax.ToString();
 
-            data = new
-            (
-                ns, // NameSpace
-                $"{classDeclarationSyntax.Identifier}", // ShortBuilderClassName
-                $"{ns}.{classDeclarationSyntax.Identifier}", // FullBuilderClassName
-                rawTypeName, // RawTypeName
-                ConvertTypeName(rawTypeName).Split('.').Last(), // ShortTypeName
-                ConvertTypeName(rawTypeName), // FullMetadataName
-                usings
-            );
+            data = new FluentData
+            {
+                Namespace = ns,
+                ShortBuilderClassName = $"{classDeclarationSyntax.Identifier}",
+                FullBuilderClassName = $"{ns}.{classDeclarationSyntax.Identifier}",
+                FullRawTypeName = rawTypeName,
+                ShortTypeName = ConvertTypeName(rawTypeName).Split('.').Last(),
+                MetadataName = ConvertTypeName(rawTypeName),
+                Usings = usings
+            };
         }
         else
         {
             var fullType = GetFullType(ns, classDeclarationSyntax, false); // FluentBuilderGeneratorTests.DTO.UserT<T>
             var fullBuilderType = GetFullType(ns, classDeclarationSyntax, true);
             var metadataName = classDeclarationSyntax.GetMetadataName();
-            data = new
-            (
-                ns, // NameSpace
-                $"{fullBuilderType.Split('.').Last()}", // ShortBuilderClassName (UserTBuilder)
-                fullBuilderType, // FullBuilderClassName (FluentBuilderGeneratorTests.DTO.UserTBuilder)
-                fullType, // RawTypeName (FluentBuilderGeneratorTests.DTO.UserT<T>)
-                ConvertTypeName(fullType).Split('.').Last(), // ShortTypeName (UserT<T>)
-                metadataName, // FullMetadataName (FluentBuilderGeneratorTests.DTO.UserT`1)
-                usings
-            );
+
+            data = new FluentData
+            {
+                Namespace = ns,
+                ShortBuilderClassName = $"{fullBuilderType.Split('.').Last()}",
+                FullBuilderClassName = fullBuilderType,
+                FullRawTypeName = fullType,
+                ShortTypeName = ConvertTypeName(fullType).Split('.').Last(),
+                MetadataName = metadataName,
+                Usings = usings
+            };
         }
 
         return true;

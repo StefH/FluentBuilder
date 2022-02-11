@@ -17,14 +17,6 @@
         <Compile Remove="DTO\Builder.cs" />
         <Compile Remove="DTO\IDictionaryBuilder.cs" />
         <Compile Remove="DTO\IEnumerableBuilder.cs" />
-        <Compile Remove="DTO\User.cs" />
-        <Compile Remove="FileGenerator\FluentBuilderClassesGeneratorTests.cs" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <None Include="DTO\User.cs">
-          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </None>
     </ItemGroup>
 
     <ItemGroup>
@@ -59,6 +51,9 @@
         <Compile Update="DTO2\MyAddressBuilder.cs">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Compile>
+        <Compile Update="DTO\User.cs">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Compile>
         <Compile Update="DTO\UserTWithAddressAndConstructor.cs">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Compile>
@@ -68,10 +63,6 @@
         <Compile Update="DTO\UserT.cs">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Compile>
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="FileGenerator\" />
     </ItemGroup>
 
 </Project>

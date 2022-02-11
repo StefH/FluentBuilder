@@ -1,12 +1,12 @@
 namespace FluentBuilderGenerator.Models;
 
-internal record FluentData
-(
-    string Namespace,
-    string ShortBuilderClassName,
-    string FullBuilderClassName,
-    string FullRawTypeName,
-    string ShortTypeName,
-    string MetadataName,
-    List<string> Usings
-);
+internal struct FluentData
+{
+    public string Namespace { get; init; }
+    public string ShortBuilderClassName { get; init; }
+    public string FullBuilderClassName { get; init; }
+    public string FullRawTypeName { get; init; }
+    public string ShortTypeName { get; init; }
+    public string MetadataName { get; init; }
+    public List<string> Usings { get; init; }
+}
