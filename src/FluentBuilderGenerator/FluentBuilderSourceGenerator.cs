@@ -63,7 +63,7 @@ internal class FluentBuilderSourceGenerator : ISourceGenerator
     {
         var generators = new IFileGenerator[]
         {
-            new AutoGenerateBuilderAttributeGenerator(),
+            new AutoGenerateBuilderAttributeGenerator(supportsNullable),
             new BaseBuilderGenerator(),
             new IEnumerableBuilderGenerator(FileDataType.ArrayBuilder, supportsNullable),
             new IEnumerableBuilderGenerator(FileDataType.IEnumerableBuilder, supportsNullable),

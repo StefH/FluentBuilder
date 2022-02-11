@@ -150,8 +150,7 @@ namespace FluentBuilderGeneratorTests
                 Text = File.ReadAllText(path1),
                 AttributeToAddToClass = new ExtraAttribute
                 {
-                    Name = "FluentBuilder.AutoGenerateBuilder",
-                    ArgumentList = "dummy"
+                    Name = "FluentBuilder.AutoGenerateBuilder"
                 }
             };
 
@@ -162,8 +161,7 @@ namespace FluentBuilderGeneratorTests
                 Text = File.ReadAllText(path2),
                 AttributeToAddToClass = new ExtraAttribute
                 {
-                    Name = "FluentBuilder.AutoGenerateBuilder",
-                    ArgumentList = new[] { "dummy1", "dummy2" }
+                    Name = "FluentBuilder.AutoGenerateBuilder"
                 }
             };
 
@@ -193,8 +191,7 @@ namespace FluentBuilderGeneratorTests
                 Text = File.ReadAllText(path1),
                 AttributeToAddToClass = new ExtraAttribute
                 {
-                    Name = "FluentBuilder.AutoGenerateBuilder",
-                    ArgumentList = "dummy"
+                    Name = "FluentBuilder.AutoGenerateBuilder"
                 }
             };
 
@@ -205,8 +202,7 @@ namespace FluentBuilderGeneratorTests
                 Text = File.ReadAllText(path2),
                 AttributeToAddToClass = new ExtraAttribute
                 {
-                    Name = "FluentBuilder.AutoGenerateBuilder",
-                    ArgumentList = new[] { "dummy1", "dummy2" }
+                    Name = "FluentBuilder.AutoGenerateBuilder"
                 }
             };
 
