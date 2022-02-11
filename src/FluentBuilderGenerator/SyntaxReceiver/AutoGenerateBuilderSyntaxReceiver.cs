@@ -65,26 +65,40 @@ internal class AutoGenerateBuilderSyntaxReceiver : IAutoGenerateBuilderSyntaxRec
                 $"{ns}.{classDeclarationSyntax.Identifier}", // FullBuilderClassName
                 rawTypeName, // RawTypeName
                 ConvertTypeName(rawTypeName).Split('.').Last(), // ShortTypeName
-                ConvertTypeName(rawTypeName), // FullTypeName
+                ConvertTypeName(rawTypeName), // FullMetadataName
                 usings
             );
         }
         else
         {
-            var rawTypeName = classDeclarationSyntax.GetFullName();
+            var fullType = GetFullType(ns, classDeclarationSyntax, false); // FluentBuilderGeneratorTests.DTO.UserT<T>
+            var fullBuilderType = GetFullType(ns, classDeclarationSyntax, true);
+            var metadataName = classDeclarationSyntax.GetMetadataName();
             data = new
             (
                 ns, // NameSpace
-                $"{classDeclarationSyntax.Identifier.ToString().Split('.').Last()}Builder", // ShortBuilderClassName
-                $"{ns}.{classDeclarationSyntax.Identifier}Builder", // FullBuilderClassName
-                rawTypeName, // RawTypeName
-                ConvertTypeName(rawTypeName).Split('.').Last(), // ShortTypeName
-                ConvertTypeName(rawTypeName), // FullTypeName
+                $"{fullBuilderType.Split('.').Last()}", // ShortBuilderClassName (UserTBuilder)
+                fullBuilderType, // FullBuilderClassName (FluentBuilderGeneratorTests.DTO.UserTBuilder)
+                fullType, // RawTypeName (FluentBuilderGeneratorTests.DTO.UserT<T>)
+                ConvertTypeName(fullType).Split('.').Last(), // ShortTypeName (UserT<T>)
+                metadataName, // FullMetadataName (FluentBuilderGeneratorTests.DTO.UserT`1)
                 usings
             );
         }
 
         return true;
+    }
+
+    private static string GetFullType(string ns, ClassDeclarationSyntax classDeclarationSyntax, bool addBuilderPostfix)
+    {
+        var type = $"{ns}.{classDeclarationSyntax.Identifier}{(addBuilderPostfix ? "Builder" : string.Empty)}";
+        if (classDeclarationSyntax.TypeParameterList != null)
+        {
+            var list = classDeclarationSyntax.TypeParameterList.Parameters.Select(p => p.Identifier.ToString());
+            return $"{type}<{string.Join(",", list)}>";
+        }
+
+        return type;
     }
 
     private static string ConvertTypeName(string typeName)

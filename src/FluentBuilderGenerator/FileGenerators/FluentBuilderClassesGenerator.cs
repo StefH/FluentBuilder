@@ -38,7 +38,7 @@ internal class FluentBuilderClassesGenerator : IFilesGenerator
         var classes = applicableClassSymbols.Select(classSymbol => new FileData
         (
             FileDataType.Builder,
-            $"{classSymbol.FullBuilderClassName}.g.cs",
+            $"{classSymbol.FullBuilderClassName.Replace('<', '_').Replace('>','_')}.g.cs",
             CreateClassBuilderCode(classSymbol, extraClassSymbols)
         ));
 
@@ -366,15 +366,18 @@ namespace {classSymbol.BuilderNamespace}
 
         foreach (var fluentDataItem in _receiver.CandidateFluentDataItems)
         {
-            var targetClassSymbol = _wrapper.GetTypeByMetadataName(fluentDataItem.FullTypeName);
+            var targetClassSymbol = _wrapper.GetTypeByMetadataName(fluentDataItem.MetadataName);
             if (targetClassSymbol is not null)
             {
-                classSymbols.Add(new ClassSymbol(
+                classSymbols.Add(new
+                (
                     FileDataType.Builder,
                     fluentDataItem.Namespace,
-                    fluentDataItem.ShortBuilderClassName,
+                    fluentDataItem.ShortBuilderClassName, //targetClassSymbol.GenerateClassName(true),
                     fluentDataItem.FullBuilderClassName,
-                    targetClassSymbol));
+                    targetClassSymbol
+                    )
+                );
             }
         }
 

@@ -108,11 +108,11 @@ namespace FluentBuilderGeneratorTests
             }
         }
 
-        [Fact(Skip = "TODO : Generic")]
+        [Fact]
         public void GenerateFiles_For1GenericClass_Should_GenerateCorrectFiles()
         {
             // Arrange
-            var builderFileName = "FluentBuilderGeneratorTests.DTO.UserTBuilder.g.cs";
+            var builderFileName = "FluentBuilderGeneratorTests.DTO.UserTBuilder_T_.g.cs";
             var path = "./DTO/UserT.cs";
             var sourceFile = new SourceFile
             {

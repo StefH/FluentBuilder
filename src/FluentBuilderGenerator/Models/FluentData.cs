@@ -7,6 +7,6 @@ internal record FluentData
     string FullBuilderClassName,
     string FullRawTypeName,
     string ShortTypeName,
-    string FullTypeName,
+    string MetadataName,
     List<string> Usings
 );
