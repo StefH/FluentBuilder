@@ -1,6 +1,5 @@
 // This source code is based on https://justsimplycode.com/2020/12/06/auto-generate-builders-using-source-generator-in-net-5
 
-using System.Diagnostics.CodeAnalysis;
 using FluentBuilderGenerator.Extensions;
 using FluentBuilderGenerator.Models;
 using Microsoft.CodeAnalysis;
@@ -10,8 +9,6 @@ namespace FluentBuilderGenerator.SyntaxReceiver;
 
 internal class AutoGenerateBuilderSyntaxReceiver : IAutoGenerateBuilderSyntaxReceiver
 {
-    // public IList<ClassDeclarationSyntax> CandidateClasses { get; } = new List<ClassDeclarationSyntax>();
-
     public IList<FluentData> CandidateFluentDataItems { get; } = new List<FluentData>();
 
     /// <summary>
@@ -25,7 +22,7 @@ internal class AutoGenerateBuilderSyntaxReceiver : IAutoGenerateBuilderSyntaxRec
         }
     }
 
-    private static bool TryGet(ClassDeclarationSyntax classDeclarationSyntax, [NotNullWhen(true)] out FluentData data)
+    private static bool TryGet(ClassDeclarationSyntax classDeclarationSyntax, out FluentData data)
     {
         data = default;
 

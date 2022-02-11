@@ -38,7 +38,7 @@ internal class FluentBuilderClassesGenerator : IFilesGenerator
         var classes = applicableClassSymbols.Select(classSymbol => new FileData
         (
             FileDataType.Builder,
-            $"{classSymbol.FullBuilderClassName.Replace('<', '_').Replace('>','_')}.g.cs",
+            $"{classSymbol.FullBuilderClassName.Replace('<', '_').Replace('>', '_')}.g.cs",
             CreateClassBuilderCode(classSymbol, extraClassSymbols)
         ));
 
@@ -110,7 +110,7 @@ namespace {classSymbol.BuilderNamespace}
     private static string GenerateWithPropertyCode(ClassSymbol classSymbol, List<ClassSymbol> allClassSymbols)
     {
         var properties = GetProperties(classSymbol);
-        var className = classSymbol.BuilderClassName; //.NamedTypeSymbol.GenerateClassName(true);
+        var className = classSymbol.BuilderClassName;
 
         var sb = new StringBuilder();
         foreach (var property in properties)
@@ -163,7 +163,7 @@ namespace {classSymbol.BuilderNamespace}
 
     private static StringBuilder GenerateWithPropertyFuncMethod(ClassSymbol classSymbol, IPropertySymbol property)
     {
-        var className = classSymbol.BuilderClassName; //.NamedTypeSymbol.GenerateClassName(true);
+        var className = classSymbol.BuilderClassName;
 
         var output = new StringBuilder();
         output.AppendLine($"        public {className} With{property.Name}(Func<{property.Type}> func)");
@@ -177,7 +177,7 @@ namespace {classSymbol.BuilderNamespace}
 
     private static StringBuilder GenerateWithPropertyActionMethod(ClassSymbol classSymbol, IPropertySymbol property)
     {
-        var className = classSymbol.BuilderClassName; //.NamedTypeSymbol.GenerateClassName(true);
+        var className = classSymbol.BuilderClassName;
         var propertyName = property.Type is INamedTypeSymbol propertyNamedType ? propertyNamedType.GenerateClassName(true) : $"{property.Type.Name}Builder";
 
         var sb = new StringBuilder();
@@ -196,7 +196,7 @@ namespace {classSymbol.BuilderNamespace}
         (INamedTypeSymbol key, INamedTypeSymbol value)? tuple
     )
     {
-        var className = classSymbol.BuilderClassName; //.NamedTypeSymbol.GenerateClassName(true);
+        var className = classSymbol.BuilderClassName;
 
         string types = string.Empty;
         if (tuple != null)
@@ -229,7 +229,7 @@ namespace {classSymbol.BuilderNamespace}
         INamedTypeSymbol? typeSymbol,
         List<ClassSymbol> allClassSymbols)
     {
-        var className = classSymbol.BuilderClassName; //.NamedTypeSymbol.GenerateClassName(true);
+        var className = classSymbol.BuilderClassName;
         var typeSymbolClassName = typeSymbol?.GenerateClassName();
         var existingClassSymbol = allClassSymbols.FirstOrDefault(c => c.NamedTypeSymbol.Name == typeSymbolClassName);
 
@@ -266,7 +266,6 @@ namespace {classSymbol.BuilderNamespace}
 
     private static StringBuilder GenerateAddMethods(string className, INamedTypeSymbol itemClassSymbol, bool supportsNullable)
     {
-        // var itemBuilderName = $"{itemClassSymbol.GenerateClassName(true)}";
         var itemBuilderName = $"{itemClassSymbol.GenerateClassName(true)}";
 
         var @override = supportsNullable ? "override" : "new";
@@ -353,17 +352,6 @@ namespace {classSymbol.BuilderNamespace}
     private IReadOnlyList<ClassSymbol> GetClassSymbols()
     {
         var classSymbols = new List<ClassSymbol>();
-        //foreach (var candidateClass in _receiver.CandidateClasses)
-        //{
-        //    var fullClassName = candidateClass.GetFullName();
-
-        //    var classSymbol = _wrapper.GetTypeByMetadataName(fullClassName);
-        //    if (classSymbol is not null)
-        //    {
-        //        classSymbols.Add(new ClassSymbol(FileDataType.Builder, classSymbol.GenerateClassName(), classSymbol));
-        //    }
-        //}
-
         foreach (var fluentDataItem in _receiver.CandidateFluentDataItems)
         {
             var targetClassSymbol = _wrapper.GetTypeByMetadataName(fluentDataItem.MetadataName);
@@ -373,7 +361,7 @@ namespace {classSymbol.BuilderNamespace}
                 (
                     FileDataType.Builder,
                     fluentDataItem.Namespace,
-                    fluentDataItem.ShortBuilderClassName, //targetClassSymbol.GenerateClassName(true),
+                    fluentDataItem.ShortBuilderClassName,
                     fluentDataItem.FullBuilderClassName,
                     targetClassSymbol
                     )
