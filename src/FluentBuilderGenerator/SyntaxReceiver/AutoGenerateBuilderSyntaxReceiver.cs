@@ -26,12 +26,6 @@ internal class AutoGenerateBuilderSyntaxReceiver : IAutoGenerateBuilderSyntaxRec
     {
         data = default;
 
-        var attributeLists = classDeclarationSyntax.AttributeLists.FirstOrDefault(x => x.Attributes.Any(a => a.Name.ToString().Equals("FluentBuilder.AutoGenerateBuilder")));
-        if (attributeLists is null)
-        {
-            return false;
-        }
-
         var usings = new List<string>();
 
         string ns = string.Empty;
@@ -47,6 +41,18 @@ internal class AutoGenerateBuilderSyntaxReceiver : IAutoGenerateBuilderSyntaxRec
             {
                 usings.Add(@using.Name.ToString());
             }
+        }
+
+        var autoGenerateBuilderAttributes = new []
+        {
+            "FluentBuilder.AutoGenerateBuilder",
+            "AutoGenerateBuilder"
+        };
+
+        var attributeLists = classDeclarationSyntax.AttributeLists.FirstOrDefault(x => x.Attributes.Any(a => autoGenerateBuilderAttributes.Contains(a.Name.ToString())));
+        if (attributeLists is null)
+        {
+            return false;
         }
 
         var argumentList = attributeLists.Attributes.FirstOrDefault()?.ArgumentList;
