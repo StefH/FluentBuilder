@@ -106,7 +106,7 @@ namespace FluentBuilderGeneratorTests.FileGenerator
 
             var classSymbolMock = new Mock<INamedTypeSymbol>();
             classSymbolMock.SetupGet(n => n.ContainingNamespace).Returns(namespaceSymbolMock.Object);
-            classSymbolMock.SetupGet(n => n.Name).Returns(@class.Identifier.Value.ToString());
+            classSymbolMock.SetupGet(n => n.Name).Returns("User");
             classSymbolMock.SetupGet(n => n.OriginalDefinition).Returns(originalDefinitionMock.Object);
             classSymbolMock.Setup(n => n.GetMembers()).Returns(membersMock);
             classSymbolMock.SetupGet(n => n.TypeArguments).Returns(ImmutableArray.Create<ITypeSymbol>());
