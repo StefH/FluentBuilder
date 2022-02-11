@@ -363,6 +363,15 @@ namespace FluentBuilder
             }
         }
 
+        foreach (var fluentDataItem in _receiver.CandidateFluentDataItems)
+        {
+            var classSymbol = _wrapper.GetTypeByMetadataName(fluentDataItem.FullTypeName);
+            if (classSymbol is not null)
+            {
+                classSymbols.Add(new ClassSymbol(FileDataType.Builder, fluentDataItem.FullClassName, classSymbol));
+            }
+        }
+
         return classSymbols;
     }
 

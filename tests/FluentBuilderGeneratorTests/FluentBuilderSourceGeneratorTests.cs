@@ -219,5 +219,33 @@ namespace FluentBuilderGeneratorTests
             if (Write) File.WriteAllText($"../../../DTO/{builder1FileName}", builderForUserTWithAddressAndConstructor.Text);
             builderForUserTWithAddressAndConstructor.Text.Should().Be(File.ReadAllText($"../../../DTO/{builder1FileName}"));
         }
+
+        [Fact]
+        public void GenerateFiles_ForFluentBuilder_Should_GenerateCorrectFiles()
+        {
+            // Arrange
+            var path = "./DTO/MyAddressBuilder.cs";
+            var sourceFile = new SourceFile
+            {
+                Path = path,
+                Text = File.ReadAllText(path),
+                AttributeToAddToClass = new ExtraAttribute
+                {
+                    Name = "FluentBuilder.AutoGenerateBuilder",
+                    ArgumentList = "typeof(FluentBuilderGeneratorTests.DTO.Address)"
+                }
+            };
+
+            // Act
+            var result = _sut.Execute(new[] { sourceFile });
+
+            // Assert
+            result.Valid.Should().BeTrue();
+            result.Files.Should().HaveCount(12);
+
+            var builder = result.Files[7];
+            builder.Path.Should().EndWith("FluentBuilderGeneratorTests.DTO.User_Builder.g.cs");
+            builder.Text.Should().NotBeNullOrEmpty();
+        }
     }
 }

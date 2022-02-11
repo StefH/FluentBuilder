@@ -67,8 +67,8 @@ internal class AutoGenerateBuilderSyntaxReceiver : IAutoGenerateBuilderSyntaxRec
             data = new
             (
                 ns, // NameSpace
-                classDeclarationSyntax.Identifier.ToString(), // ShortInterfaceName
-                $"{ns}.{classDeclarationSyntax.Identifier}", // FullInterfaceName
+                classDeclarationSyntax.Identifier.ToString(), // ShortClassName
+                $"{ns}.{classDeclarationSyntax.Identifier}", // FullClassName
                 rawTypeName, // RawTypeName
                 ConvertTypeName(rawTypeName).Split('.').Last(), // ShortTypeName
                 ConvertTypeName(rawTypeName), // FullTypeName
