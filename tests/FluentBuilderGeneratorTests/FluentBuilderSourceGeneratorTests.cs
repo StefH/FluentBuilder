@@ -163,6 +163,36 @@ namespace FluentBuilderGeneratorTests
         }
 
         [Fact]
+        public void GenerateFiles_For1GenericClassTT_Should_GenerateCorrectFiles()
+        {
+            // Arrange
+            var builderFileName = "FluentBuilderGeneratorTests.DTO.AddressTTBuilder_T1,T2_.g.cs";
+            var path = "./DTO/AddressTT.cs";
+            var sourceFile = new SourceFile
+            {
+                Path = path,
+                Text = File.ReadAllText(path),
+                AttributeToAddToClass = new ExtraAttribute
+                {
+                    Name = "FluentBuilder.AutoGenerateBuilder"
+                }
+            };
+
+            // Act
+            var result = _sut.Execute(new[] { sourceFile });
+
+            // Assert
+            result.Valid.Should().BeTrue();
+            result.Files.Should().HaveCount(8);
+
+            var builder = result.Files[7];
+            builder.Path.Should().EndWith(builderFileName);
+
+            if (Write) File.WriteAllText($"../../../DTO/{builderFileName}", builder.Text);
+            builder.Text.Should().Be(File.ReadAllText($"../../../DTO/{builderFileName}"));
+        }
+
+        [Fact]
         public void GenerateFiles_For2GenericClasses_Should_GenerateCorrectFiles()
         {
             // Arrange
