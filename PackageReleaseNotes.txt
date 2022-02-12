@@ -1,4 +1,4 @@
-# 0.2.5 (08 February 2022)
-- #17 For interface or array, no cast is needed [bug]
+# 0.3.0 (12 February 2022)
+- #18 Add support to use this FluentBuilder for all classes [enhancement]
 
 The full release notes can be found here: https://github.com/StefH/FluentBuilder/blob/main/ReleaseNotes.md
