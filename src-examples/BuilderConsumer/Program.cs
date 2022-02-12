@@ -213,13 +213,9 @@ namespace BuilderConsumer
 
     }
 
-    //[FluentBuilder.AutoGenerateBuilder]
-    //public class Error
+    //[AutoGenerateBuilder(typeof(AppDomain))]
+    //public partial class MyAppDomainBuilder
     //{
-    //    public string X { get; set; }
 
-    //    public Error(int x)
-    //    {
-    //    }
     //}
 }

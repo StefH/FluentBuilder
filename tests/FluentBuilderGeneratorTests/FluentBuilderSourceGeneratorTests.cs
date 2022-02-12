@@ -21,7 +21,7 @@ namespace FluentBuilderGeneratorTests
         }
 
         [Fact]
-        public void GenerateFiles_ForAClassWithoutAValidConstructor_Should_Throw_Exception()
+        public void GenerateFiles_ForAClassWithoutAValidConstructor_Should_Create_ErrorFile()
         {
             // Arrange
             var path = "./DTO2/MyAppDomainBuilder.cs";
@@ -37,8 +37,11 @@ namespace FluentBuilderGeneratorTests
             };
 
             // Act
-            Action a = () => _sut.Execute(new[] { sourceFile });
-            a.Should().Throw<Exception>();
+            var result = _sut.Execute(new[] { sourceFile });
+
+            // Assert
+            result.Files.Should().HaveCount(8);
+            result.Files[7].Path.Should().EndWith("Error.g.cs");
         }
 
         [Fact]

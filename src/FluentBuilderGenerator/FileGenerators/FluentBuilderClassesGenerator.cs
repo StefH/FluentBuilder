@@ -329,6 +329,11 @@ namespace {classSymbol.BuilderNamespace}
 
     private static string GenerateBuildMethod(ClassSymbol classSymbol)
     {
+        if (classSymbol.NamedTypeSymbol.Constructors.IsEmpty)
+        {
+            throw new NotSupportedException($"Unable to generate a FluentBuilder for he class '{classSymbol.NamedTypeSymbol}' because no public constructor is defined.");
+        }
+
         var properties = GetProperties(classSymbol).ToArray();
         var output = new StringBuilder();
         var className = classSymbol.NamedTypeSymbol.GenerateClassName();
