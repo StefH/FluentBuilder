@@ -177,8 +177,15 @@ namespace {classSymbol.BuilderNamespace}
 
     private static StringBuilder GenerateWithPropertyActionMethod(ClassSymbol classSymbol, ClassSymbol propertyClassSymbol, IPropertySymbol property)
     {
-        var className = classSymbol.BuilderClassName;
+        var className = classSymbol.BuilderClassName; // hier
         var builderName = propertyClassSymbol.BuilderClassName; // property.Type is INamedTypeSymbol propertyNamedType ? propertyNamedType.GenerateClassName(true) : $"{property.Type.Name}Builder";
+
+        // Replace MyAddressBuilder<T> by MyAddressBuilder<short>
+        if (property.Type is INamedTypeSymbol propertyNamedType && builderName.TryGetGenericTypeArguments(out var genericTypeArgumentValue))
+        {
+            var list = propertyNamedType.TypeArguments.Select(t => t.ToString());
+            builderName = builderName.Replace($"<{genericTypeArgumentValue}>", $"<{string.Join(", ", list)}>");
+        }
 
         var sb = new StringBuilder();
         sb.AppendLine($"        public {className} With{property.Name}(Action<{builderName}> action, bool useObjectInitializer = true) => With{property.Name}(() =>");

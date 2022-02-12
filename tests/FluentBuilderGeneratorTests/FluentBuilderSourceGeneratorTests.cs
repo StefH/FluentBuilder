@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.Linq;
 using CSharp.SourceGenerators.Extensions;
@@ -19,29 +20,26 @@ namespace FluentBuilderGeneratorTests
             _sut = new FluentBuilderSourceGenerator();
         }
 
-        //[Fact]
-        //public void GenerateFiles_For1Class_Should_GenerateCorrectFiles()
-        //{
-        //    // Arrange
-        //    var path = "./DTO/User.cs";
-        //    var sourceFile = new SourceFile
-        //    {
-        //        Path = path,
-        //        Text = File.ReadAllText(path),
-        //        AttributeToAddToClass = "FluentBuilder.AutoGenerateBuilder"
-        //    };
+        [Fact]
+        public void GenerateFiles_ForAClassWithoutAValidConstructor_Should_Throw_Exception()
+        {
+            // Arrange
+            var path = "./DTO2/MyAppDomainBuilder.cs";
+            var sourceFile = new SourceFile
+            {
+                Path = path,
+                Text = File.ReadAllText(path),
+                AttributeToAddToClass = new ExtraAttribute
+                {
+                    Name = "AutoGenerateBuilder",
+                    ArgumentList = "typeof(AppDomain)"
+                }
+            };
 
-        //    // Act
-        //    var result = _sut.Execute(new[] { sourceFile });
-
-        //    // Assert
-        //    result.Valid.Should().BeTrue();
-        //    result.Files.Should().HaveCount(8);
-
-        //    var builder = result.Files[7];
-        //    builder.Path.Should().EndWith("FluentBuilderGeneratorTests.DTO.UserBuilder.g.cs");
-        //    builder.Text.Should().NotBeNullOrEmpty();
-        //}
+            // Act
+            Action a = () => _sut.Execute(new[] { sourceFile });
+            a.Should().Throw<Exception>();
+        }
 
         [Fact]
         public void GenerateFiles_For2Classes_Should_GenerateCorrectFiles()

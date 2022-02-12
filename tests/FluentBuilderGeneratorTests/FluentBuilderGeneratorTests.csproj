@@ -42,6 +42,9 @@
     </ItemGroup>
 
     <ItemGroup>
+        <Compile Update="DTO2\MyAppDomainBuilder.cs">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Compile>
         <Compile Update="DTO\Address.cs">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Compile>

@@ -43,9 +43,9 @@ namespace FluentBuilderGeneratorTests.DTO
             _addressIsSet = true;
             return this;
         }
-        public UserTWithAddressTBuilder<T> WithAddress(Action<AddressBuilder<T>> action, bool useObjectInitializer = true) => WithAddress(() =>
+        public UserTWithAddressTBuilder<T> WithAddress(Action<AddressBuilder<short>> action, bool useObjectInitializer = true) => WithAddress(() =>
         {
-            var builder = new AddressBuilder<T>();
+            var builder = new AddressBuilder<short>();
             action(builder);
             return builder.Build(useObjectInitializer);
         });
