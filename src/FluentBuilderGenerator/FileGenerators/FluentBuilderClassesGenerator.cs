@@ -239,8 +239,15 @@ namespace {classSymbol.BuilderNamespace}
             builderName = $"{kind}{typeSymbolClassName}Builder";
             if (allClassSymbols.All(cs => cs.NamedTypeSymbol.Name != builderName))
             {
-                var fileDataType = kind.ToFileDataType();
-                allClassSymbols.Add(new ClassSymbol(fileDataType, existingClassSymbol.BuilderNamespace, builderName, builderName, typeSymbol));
+                var fileDataType = kind.ToFileDataType(); // (fileDataType, existingClassSymbol.BuilderNamespace, builderName, builderName, typeSymbol)
+                allClassSymbols.Add(new ClassSymbol
+                {
+                    Type = fileDataType,
+                    BuilderNamespace = existingClassSymbol.BuilderNamespace,
+                    BuilderClassName = builderName,
+                    FullBuilderClassName = builderName,
+                    NamedTypeSymbol = typeSymbol
+                });
             }
         }
         else
@@ -354,18 +361,9 @@ namespace {classSymbol.BuilderNamespace}
         var classSymbols = new List<ClassSymbol>();
         foreach (var fluentDataItem in _receiver.CandidateFluentDataItems)
         {
-            var targetClassSymbol = _wrapper.GetTypeByMetadataName(fluentDataItem.MetadataName);
-            if (targetClassSymbol is not null)
+            if (_wrapper.TryGetNamedTypeSymbolByFullMetadataName(fluentDataItem, out var classSymbol))
             {
-                classSymbols.Add(new
-                (
-                    FileDataType.Builder,
-                    fluentDataItem.Namespace,
-                    fluentDataItem.ShortBuilderClassName,
-                    fluentDataItem.FullBuilderClassName,
-                    targetClassSymbol
-                    )
-                );
+                classSymbols.Add(classSymbol);
             }
         }
 

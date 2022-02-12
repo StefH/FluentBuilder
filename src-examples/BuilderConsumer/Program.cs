@@ -14,6 +14,11 @@ namespace BuilderConsumer
 
         static void Main(string[] args)
         {
+            var ut = new MyCustomTestDtoBuilder()
+                .WithName("MyCustomTestDtoBuilder")
+                .Build();
+            Console.WriteLine("ut = " + JsonSerializer.Serialize(ut, JsonSerializerOptions));
+
             var test = new TestClassBuilder()
                 .WithId(100)
                 .WithValues(eb => eb
@@ -179,6 +184,19 @@ namespace BuilderConsumer
     public class TestDto
     {
         public string X { get; set; }
+    }
+
+    public class MyTestDto
+    {
+        public int Id { get; set; }
+
+        public string? Name { get; set; }
+    }
+
+    [AutoGenerateBuilder(typeof(MyTestDto))]
+    public partial class MyCustomTestDtoBuilder
+    {
+
     }
 
     //[FluentBuilder.AutoGenerateBuilder]

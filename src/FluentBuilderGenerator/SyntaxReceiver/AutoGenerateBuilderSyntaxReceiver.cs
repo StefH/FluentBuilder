@@ -9,6 +9,9 @@ namespace FluentBuilderGenerator.SyntaxReceiver;
 
 internal class AutoGenerateBuilderSyntaxReceiver : IAutoGenerateBuilderSyntaxReceiver
 {
+    private static readonly string[] Modifiers = { "public", "partial" };
+    private static readonly string[] AutoGenerateBuilderAttributes = { "FluentBuilder.AutoGenerateBuilder", "AutoGenerateBuilder" };
+
     public IList<FluentData> CandidateFluentDataItems { get; } = new List<FluentData>();
 
     /// <summary>
@@ -25,6 +28,19 @@ internal class AutoGenerateBuilderSyntaxReceiver : IAutoGenerateBuilderSyntaxRec
     private static bool TryGet(ClassDeclarationSyntax classDeclarationSyntax, out FluentData data)
     {
         data = default;
+
+        if (classDeclarationSyntax.Modifiers.Select(m => m.ToString()).Except(Modifiers).Count() != 0)
+        {
+            // ClassDeclarationSyntax should be "public" and "partial"
+            return false;
+        }
+
+        var attributeLists = classDeclarationSyntax.AttributeLists.FirstOrDefault(x => x.Attributes.Any(a => AutoGenerateBuilderAttributes.Contains(a.Name.ToString())));
+        if (attributeLists is null)
+        {
+            // ClassDeclarationSyntax should have the correct atttibute
+            return false;
+        }
 
         var usings = new List<string>();
 
@@ -43,21 +59,10 @@ internal class AutoGenerateBuilderSyntaxReceiver : IAutoGenerateBuilderSyntaxRec
             }
         }
 
-        var autoGenerateBuilderAttributes = new []
-        {
-            "FluentBuilder.AutoGenerateBuilder",
-            "AutoGenerateBuilder"
-        };
-
-        var attributeLists = classDeclarationSyntax.AttributeLists.FirstOrDefault(x => x.Attributes.Any(a => autoGenerateBuilderAttributes.Contains(a.Name.ToString())));
-        if (attributeLists is null)
-        {
-            return false;
-        }
-
         var argumentList = attributeLists.Attributes.FirstOrDefault()?.ArgumentList;
         if (argumentList != null && argumentList.Arguments.Any())
         {
+            // The class which needs to be processed by the Builder is provided as type
             var typeSyntax = ((TypeOfExpressionSyntax)argumentList.Arguments[0].Expression).Type;
             var rawTypeName = typeSyntax.ToString();
 

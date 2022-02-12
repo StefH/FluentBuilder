@@ -6,6 +6,7 @@ using FluentAssertions;
 using FluentBuilderGenerator.FileGenerators;
 using FluentBuilderGenerator.Models;
 using FluentBuilderGenerator.SyntaxReceiver;
+using FluentBuilderGenerator.Types;
 using FluentBuilderGenerator.Wrappers;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -111,7 +112,17 @@ namespace FluentBuilderGeneratorTests.FileGenerator
             classSymbolMock.Setup(n => n.GetMembers()).Returns(membersMock);
             classSymbolMock.SetupGet(n => n.TypeArguments).Returns(ImmutableArray.Create<ITypeSymbol>());
 
-            _contextMock.Setup(c => c.GetTypeByMetadataName(It.IsAny<string>())).Returns(classSymbolMock.Object);
+            // _contextMock.Setup(c => c.GetTypeByMetadataName(It.IsAny<string>())).Returns(classSymbolMock.Object);
+            var x = new ClassSymbol
+            {
+                Type = FileDataType.Builder,
+                BuilderNamespace = fluentData.Namespace,
+                BuilderClassName = fluentData.ShortBuilderClassName,
+                FullBuilderClassName = fluentData.FullBuilderClassName,
+                NamedTypeSymbol = classSymbolMock.Object
+            };
+
+            _contextMock.Setup(c => c.TryGetNamedTypeSymbolByFullMetadataName(It.IsAny<FluentData>(), out x)).Returns(true);
 
             // Act
             var result = _sut.GenerateFiles().ToList();
