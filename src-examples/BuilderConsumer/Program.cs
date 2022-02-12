@@ -14,6 +14,9 @@ namespace BuilderConsumer
 
         static void Main(string[] args)
         {
+            var s = new MyVersionBuilder().Build();
+            Console.WriteLine("s = " + JsonSerializer.Serialize(s, JsonSerializerOptions));
+
             var ut = new MyCustomTestDtoBuilder()
                 .WithName("MyCustomTestDtoBuilder")
                 .Build();
@@ -195,6 +198,17 @@ namespace BuilderConsumer
 
     [AutoGenerateBuilder(typeof(MyTestDto))]
     public partial class MyCustomTestDtoBuilder
+    {
+
+    }
+
+    public class MyDummyVersion
+    {
+        public long Minor { get; set; }
+    }
+
+    [AutoGenerateBuilder(typeof(MyDummyVersion))]
+    public partial class MyVersionBuilder
     {
 
     }

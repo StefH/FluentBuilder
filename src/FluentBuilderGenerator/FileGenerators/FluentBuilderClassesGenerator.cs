@@ -145,7 +145,7 @@ namespace {classSymbol.BuilderNamespace}
         var existingClassSymbol = allClassSymbols.FirstOrDefault(c => c.NamedTypeSymbol.Name == property.Type.Name);
         if (existingClassSymbol is not null)
         {
-            return GenerateWithPropertyActionMethod(classSymbol, property);
+            return GenerateWithPropertyActionMethod(classSymbol, existingClassSymbol, property);
         }
 
         if (property.TryGetIDictionaryElementTypes(out var dictionaryTypes))
@@ -175,15 +175,15 @@ namespace {classSymbol.BuilderNamespace}
         return output;
     }
 
-    private static StringBuilder GenerateWithPropertyActionMethod(ClassSymbol classSymbol, IPropertySymbol property)
+    private static StringBuilder GenerateWithPropertyActionMethod(ClassSymbol classSymbol, ClassSymbol propertyClassSymbol, IPropertySymbol property)
     {
         var className = classSymbol.BuilderClassName;
-        var propertyName = property.Type is INamedTypeSymbol propertyNamedType ? propertyNamedType.GenerateClassName(true) : $"{property.Type.Name}Builder";
+        var builderName = propertyClassSymbol.BuilderClassName; // property.Type is INamedTypeSymbol propertyNamedType ? propertyNamedType.GenerateClassName(true) : $"{property.Type.Name}Builder";
 
         var sb = new StringBuilder();
-        sb.AppendLine($"        public {className} With{property.Name}(Action<{propertyName}> action, bool useObjectInitializer = true) => With{property.Name}(() =>");
+        sb.AppendLine($"        public {className} With{property.Name}(Action<{builderName}> action, bool useObjectInitializer = true) => With{property.Name}(() =>");
         sb.AppendLine("        {");
-        sb.AppendLine($"            var builder = new {propertyName}();");
+        sb.AppendLine($"            var builder = new {builderName}();");
         sb.AppendLine("            action(builder);");
         sb.AppendLine("            return builder.Build(useObjectInitializer);");
         sb.AppendLine("        });");
@@ -239,7 +239,7 @@ namespace {classSymbol.BuilderNamespace}
             builderName = $"{kind}{typeSymbolClassName}Builder";
             if (allClassSymbols.All(cs => cs.NamedTypeSymbol.Name != builderName))
             {
-                var fileDataType = kind.ToFileDataType(); // (fileDataType, existingClassSymbol.BuilderNamespace, builderName, builderName, typeSymbol)
+                var fileDataType = kind.ToFileDataType();
                 allClassSymbols.Add(new ClassSymbol
                 {
                     Type = fileDataType,

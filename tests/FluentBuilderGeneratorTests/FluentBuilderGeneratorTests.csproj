@@ -51,6 +51,12 @@
         <Compile Update="DTO2\MyAddressBuilder.cs">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Compile>
+        <Compile Update="DTO\DummyClass.cs">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Compile>
+        <Compile Update="DTO\MyDummyClassBuilder.cs">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Compile>
         <Compile Update="DTO\User.cs">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Compile>

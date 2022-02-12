@@ -51,18 +51,40 @@ namespace FluentBuilderGeneratorTests.DTO
         }
 
         private bool _quitDateIsSet;
-        private Lazy<DateTime?> _quitDate = new Lazy<DateTime?>(() => default(DateTime?));
-        public UserBuilder WithQuitDate(DateTime? value) => WithQuitDate(() => value);
-        public UserBuilder WithQuitDate(Func<DateTime?> func)
+        private Lazy<System.DateTime?> _quitDate = new Lazy<System.DateTime?>(() => default(System.DateTime?));
+        public UserBuilder WithQuitDate(System.DateTime? value) => WithQuitDate(() => value);
+        public UserBuilder WithQuitDate(Func<System.DateTime?> func)
         {
-            _quitDate = new Lazy<DateTime?>(func);
+            _quitDate = new Lazy<System.DateTime?>(func);
             _quitDateIsSet = true;
             return this;
         }
         public UserBuilder WithoutQuitDate()
         {
-            WithQuitDate(() => default(DateTime?));
+            WithQuitDate(() => default(System.DateTime?));
             _quitDateIsSet = false;
+            return this;
+        }
+
+        private bool _testDummyClassIsSet;
+        private Lazy<FluentBuilderGeneratorTests.DTO.DummyClass> _testDummyClass = new Lazy<FluentBuilderGeneratorTests.DTO.DummyClass>(() => default(FluentBuilderGeneratorTests.DTO.DummyClass));
+        public UserBuilder WithTestDummyClass(FluentBuilderGeneratorTests.DTO.DummyClass value) => WithTestDummyClass(() => value);
+        public UserBuilder WithTestDummyClass(Func<FluentBuilderGeneratorTests.DTO.DummyClass> func)
+        {
+            _testDummyClass = new Lazy<FluentBuilderGeneratorTests.DTO.DummyClass>(func);
+            _testDummyClassIsSet = true;
+            return this;
+        }
+        public UserBuilder WithTestDummyClass(Action<MyDummyClassBuilder> action, bool useObjectInitializer = true) => WithTestDummyClass(() =>
+        {
+            var builder = new MyDummyClassBuilder();
+            action(builder);
+            return builder.Build(useObjectInitializer);
+        });
+        public UserBuilder WithoutTestDummyClass()
+        {
+            WithTestDummyClass(() => default(FluentBuilderGeneratorTests.DTO.DummyClass));
+            _testDummyClassIsSet = false;
             return this;
         }
 
@@ -79,7 +101,8 @@ namespace FluentBuilderGeneratorTests.DTO
                         {
                             FirstName = _firstName.Value,
                             LastName = _lastName.Value,
-                            QuitDate = _quitDate.Value
+                            QuitDate = _quitDate.Value,
+                            TestDummyClass = _testDummyClass.Value
                         };
                     }
 
@@ -87,6 +110,7 @@ namespace FluentBuilderGeneratorTests.DTO
                     if (_firstNameIsSet) { instance.FirstName = _firstName.Value; }
                     if (_lastNameIsSet) { instance.LastName = _lastName.Value; }
                     if (_quitDateIsSet) { instance.QuitDate = _quitDate.Value; }
+                    if (_testDummyClassIsSet) { instance.TestDummyClass = _testDummyClass.Value; }
                     return instance;
                 });
             }
