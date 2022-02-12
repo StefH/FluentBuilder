@@ -14,20 +14,20 @@ using System.Collections.Generic;
 using FluentBuilder;
 using FluentBuilderGeneratorTests.DTO;
 
-namespace FluentBuilder
+namespace FluentBuilderGeneratorTests.DTO
 {
-    public partial class UserTWithAddressAndConstructorBuilder<T> : Builder<UserTWithAddressAndConstructor<T>> where T : struct
+    public partial class UserTWithAddressTBuilder<T> : Builder<UserTWithAddressT<T>> where T : struct
     {
         private bool _tValueIsSet;
         private Lazy<T> _tValue = new Lazy<T>(() => default(T));
-        public UserTWithAddressAndConstructorBuilder<T> WithTValue(T value) => WithTValue(() => value);
-        public UserTWithAddressAndConstructorBuilder<T> WithTValue(Func<T> func)
+        public UserTWithAddressTBuilder<T> WithTValue(T value) => WithTValue(() => value);
+        public UserTWithAddressTBuilder<T> WithTValue(Func<T> func)
         {
             _tValue = new Lazy<T>(func);
             _tValueIsSet = true;
             return this;
         }
-        public UserTWithAddressAndConstructorBuilder<T> WithoutTValue()
+        public UserTWithAddressTBuilder<T> WithoutTValue()
         {
             WithTValue(() => default(T));
             _tValueIsSet = false;
@@ -36,20 +36,20 @@ namespace FluentBuilder
 
         private bool _addressIsSet;
         private Lazy<FluentBuilderGeneratorTests.DTO.Address<short>> _address = new Lazy<FluentBuilderGeneratorTests.DTO.Address<short>>(() => default(FluentBuilderGeneratorTests.DTO.Address<short>));
-        public UserTWithAddressAndConstructorBuilder<T> WithAddress(FluentBuilderGeneratorTests.DTO.Address<short> value) => WithAddress(() => value);
-        public UserTWithAddressAndConstructorBuilder<T> WithAddress(Func<FluentBuilderGeneratorTests.DTO.Address<short>> func)
+        public UserTWithAddressTBuilder<T> WithAddress(FluentBuilderGeneratorTests.DTO.Address<short> value) => WithAddress(() => value);
+        public UserTWithAddressTBuilder<T> WithAddress(Func<FluentBuilderGeneratorTests.DTO.Address<short>> func)
         {
             _address = new Lazy<FluentBuilderGeneratorTests.DTO.Address<short>>(func);
             _addressIsSet = true;
             return this;
         }
-        public UserTWithAddressAndConstructorBuilder<T> WithAddress(Action<FluentBuilder.AddressBuilder<Int16>> action, bool useObjectInitializer = true) => WithAddress(() =>
+        public UserTWithAddressTBuilder<T> WithAddress(Action<AddressBuilder<short>> action, bool useObjectInitializer = true) => WithAddress(() =>
         {
-            var builder = new FluentBuilder.AddressBuilder<Int16>();
+            var builder = new AddressBuilder<short>();
             action(builder);
             return builder.Build(useObjectInitializer);
         });
-        public UserTWithAddressAndConstructorBuilder<T> WithoutAddress()
+        public UserTWithAddressTBuilder<T> WithoutAddress()
         {
             WithAddress(() => default(FluentBuilderGeneratorTests.DTO.Address<short>));
             _addressIsSet = false;
@@ -57,22 +57,22 @@ namespace FluentBuilder
         }
 
 
-        public override UserTWithAddressAndConstructor<T> Build(bool useObjectInitializer = true)
+        public override UserTWithAddressT<T> Build(bool useObjectInitializer = true)
         {
             if (Object?.IsValueCreated != true)
             {
-                Object = new Lazy<UserTWithAddressAndConstructor<T>>(() =>
+                Object = new Lazy<UserTWithAddressT<T>>(() =>
                 {
                     if (useObjectInitializer)
                     {
-                        return new UserTWithAddressAndConstructor<T>
+                        return new UserTWithAddressT<T>
                         {
                             TValue = _tValue.Value,
                             Address = _address.Value
                         };
                     }
 
-                    var instance = new UserTWithAddressAndConstructor<T>();
+                    var instance = new UserTWithAddressT<T>();
                     if (_tValueIsSet) { instance.TValue = _tValue.Value; }
                     if (_addressIsSet) { instance.Address = _address.Value; }
                     return instance;
@@ -84,7 +84,7 @@ namespace FluentBuilder
             return Object.Value;
         }
 
-        public static UserTWithAddressAndConstructor<T> Default() => new UserTWithAddressAndConstructor<T>();
+        public static UserTWithAddressT<T> Default() => new UserTWithAddressT<T>();
 
     }
 }

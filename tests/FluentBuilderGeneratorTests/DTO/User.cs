@@ -10,6 +10,6 @@ namespace FluentBuilderGeneratorTests.DTO
 
         public DateTime? QuitDate { get; set; }
 
-        // public Address Address { get; set; }
+        public DummyClass TestDummyClass { get; set; }
     }
 }

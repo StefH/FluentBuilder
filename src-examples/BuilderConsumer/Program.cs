@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text.Json;
+using FluentBuilder;
 
 namespace BuilderConsumer
 {
@@ -13,7 +14,15 @@ namespace BuilderConsumer
 
         static void Main(string[] args)
         {
-            var test = new FluentBuilder.TestClassBuilder()
+            var s = new MyVersionBuilder().Build();
+            Console.WriteLine("s = " + JsonSerializer.Serialize(s, JsonSerializerOptions));
+
+            var ut = new MyCustomTestDtoBuilder()
+                .WithName("MyCustomTestDtoBuilder")
+                .Build();
+            Console.WriteLine("ut = " + JsonSerializer.Serialize(ut, JsonSerializerOptions));
+
+            var test = new TestClassBuilder()
                 .WithId(100)
                 .WithValues(eb => eb
                     .Add("abc")
@@ -21,7 +30,7 @@ namespace BuilderConsumer
                 .Build();
             Console.WriteLine("test = " + JsonSerializer.Serialize(test, JsonSerializerOptions));
 
-            var user = new FluentBuilder.UserDtoBuilder()
+            var user = new UserDtoBuilder()
                 .WithDictionary1(db => db      // 👈 Use a Dictionary<TKey, TValue> Builder
                     .Add("test", 123)          // Add a key with value
 
@@ -50,26 +59,26 @@ namespace BuilderConsumer
                 .Build();
             Console.WriteLine("userWithArray = " + JsonSerializer.Serialize(user, JsonSerializerOptions));
 
-            var email = new FluentBuilder.EmailDtoBuilder()
+            var email = new EmailDtoBuilder()
                 .WithAddress("x@x.nl")
                 .Build();
             Console.WriteLine("email = " + JsonSerializer.Serialize(email, JsonSerializerOptions));
 
-            var email2a = new FluentBuilder.EmailDtoWithConstructorBuilder()
+            var email2a = new EmailDtoWithConstructorBuilder()
                 .WithAddress("x@x.nl")
                 .Build();
             Console.WriteLine("email2a = " + JsonSerializer.Serialize(email2a, JsonSerializerOptions));
 
-            var email2b = new FluentBuilder.EmailDtoWithConstructorBuilder()
+            var email2b = new EmailDtoWithConstructorBuilder()
                 .WithAddress("x@x.nl")
                 .Build(false);
             Console.WriteLine("email2b = " + JsonSerializer.Serialize(email2b, JsonSerializerOptions));
 
-            var email2c = new FluentBuilder.EmailDtoWithConstructorBuilder()
+            var email2c = new EmailDtoWithConstructorBuilder()
                 .Build(false);
             Console.WriteLine("email2c = " + JsonSerializer.Serialize(email2c, JsonSerializerOptions));
 
-            var user1 = new FluentBuilder.UserDtoBuilder()
+            var user1 = new UserDtoBuilder()
                 .WithAge(99)
                 .WithFirstName("Stef")
                 .WithLastName("Heyenrath")
@@ -79,7 +88,7 @@ namespace BuilderConsumer
                 .Build();
             Console.WriteLine(JsonSerializer.Serialize(user1, JsonSerializerOptions));
 
-            var user2 = new FluentBuilder.UserDtoBuilder()
+            var user2 = new UserDtoBuilder()
                 .WithAge(100)
                 .WithFirstName("User")
                 .WithLastName("Two")
@@ -88,12 +97,12 @@ namespace BuilderConsumer
                 .Build();
             Console.WriteLine(JsonSerializer.Serialize(user2, JsonSerializerOptions));
 
-            var userT1 = new FluentBuilder.UserDtoTBuilder<int>()
+            var userT1 = new UserDtoTBuilder<int>()
                 .WithTValue(42)
                 .Build();
             Console.WriteLine(JsonSerializer.Serialize(userT1, JsonSerializerOptions));
 
-            var userWithAddress = new FluentBuilder.UserWithEmailDtoBuilder()
+            var userWithAddress = new UserWithEmailDtoBuilder()
                 .WithAge(99)
                 .WithEmailWithConstructor(a => a.WithPrimary(false), false)
                 .Build();
@@ -180,13 +189,33 @@ namespace BuilderConsumer
         public string X { get; set; }
     }
 
-    //[FluentBuilder.AutoGenerateBuilder]
-    //public class Error
-    //{
-    //    public string X { get; set; }
+    public class MyTestDto
+    {
+        public int Id { get; set; }
 
-    //    public Error(int x)
-    //    {
-    //    }
+        public string? Name { get; set; }
+    }
+
+    [AutoGenerateBuilder(typeof(MyTestDto))]
+    public partial class MyCustomTestDtoBuilder
+    {
+
+    }
+
+    public class MyDummyVersion
+    {
+        public long Minor { get; set; }
+    }
+
+    [AutoGenerateBuilder(typeof(MyDummyVersion))]
+    public partial class MyVersionBuilder
+    {
+
+    }
+
+    //[AutoGenerateBuilder(typeof(AppDomain))]
+    //public partial class MyAppDomainBuilder
+    //{
+
     //}
 }

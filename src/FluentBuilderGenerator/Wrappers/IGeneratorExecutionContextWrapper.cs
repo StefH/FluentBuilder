@@ -1,9 +1,9 @@
-using Microsoft.CodeAnalysis;
+using System.Diagnostics.CodeAnalysis;
+using FluentBuilderGenerator.Models;
 
 namespace FluentBuilderGenerator.Wrappers;
 
 internal interface IGeneratorExecutionContextWrapper
 {
-    /// <see cref="Compilation.GetTypeByMetadataName(string)"/>
-    INamedTypeSymbol? GetTypeByMetadataName(string fullyQualifiedMetadataName);
+    bool TryGetNamedTypeSymbolByFullMetadataName(FluentData fluentDataItem, [NotNullWhen(true)] out ClassSymbol? classSymbol);
 }

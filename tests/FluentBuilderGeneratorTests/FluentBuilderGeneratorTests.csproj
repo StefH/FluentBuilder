@@ -15,31 +15,8 @@
 
     <ItemGroup>
         <Compile Remove="DTO\Builder.cs" />
-        <Compile Remove="DTO\FluentBuilderGeneratorTests.DTO.User_Builder.g.cs" />
-        <Compile Remove="DTO\FluentBuilderGeneratorTests_DTO_UserTWithAddressAndConstructor_T__1_Builder.g.cs" />
-        <Compile Remove="DTO\FluentBuilderGeneratorTests_DTO_UserTWithAddressT_T__1_Builder.g.cs" />
-        <Compile Remove="DTO\FluentBuilderGeneratorTests_DTO_UserT_T__1_Builder.g.cs" />
         <Compile Remove="DTO\IDictionaryBuilder.cs" />
         <Compile Remove="DTO\IEnumerableBuilder.cs" />
-        <Compile Remove="DTO\User.cs" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <None Include="DTO\FluentBuilderGeneratorTests.DTO.User_Builder.g.cs">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </None>
-        <None Include="DTO\FluentBuilderGeneratorTests_DTO_UserTWithAddressAndConstructor_T__1_Builder.g.cs">
-          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </None>
-        <None Include="DTO\FluentBuilderGeneratorTests_DTO_UserTWithAddressT_T__1_Builder.g.cs">
-          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </None>
-        <None Include="DTO\FluentBuilderGeneratorTests_DTO_UserT_T__1_Builder.g.cs">
-          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </None>
-        <None Include="DTO\User.cs">
-          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </None>
     </ItemGroup>
 
     <ItemGroup>
@@ -65,10 +42,28 @@
     </ItemGroup>
 
     <ItemGroup>
+        <Compile Update="DTO2\MyAppDomainBuilder.cs">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Compile>
         <Compile Update="DTO\Address.cs">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Compile>
+        <Compile Update="DTO\AddressTT.cs">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Compile>
         <Compile Update="DTO\AddressT.cs">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Compile>
+        <Compile Update="DTO2\MyAddressBuilder.cs">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Compile>
+        <Compile Update="DTO\DummyClass.cs">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Compile>
+        <Compile Update="DTO\MyDummyClassBuilder.cs">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Compile>
+        <Compile Update="DTO\User.cs">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Compile>
         <Compile Update="DTO\UserTWithAddressAndConstructor.cs">

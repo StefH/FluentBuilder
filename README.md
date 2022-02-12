@@ -21,9 +21,9 @@ Or via the Visual Studio NuGet package manager or if you use the `dotnet` comman
 
 `dotnet add package FluentBuilder`
 
-## Usage
-### Annotate
-Annotate a class with `[FluentBuilder.AutoGenerateBuilder]` to indicate that a FluentBuilder should be generated for this class:
+## :one: Usage on a existing class
+### Annotate a class
+Annotate an existing class with `[FluentBuilder.AutoGenerateBuilder]` to indicate that a FluentBuilder should be generated for this class:
 ``` c#
 [FluentBuilder.AutoGenerateBuilder]
 public class User
@@ -145,4 +145,37 @@ var user = new FluentBuilder.UserDtoBuilder()
         .Build()
     )
     .Build();
+```
+
+## :two: Define a class which needs to act as a builder
+This scenario is very usefull when you cannot modify the class to annotate it.
+
+### Create a public and partial builder class
+And annotate this class with `[FluentBuilder.AutoGenerateBuilder(typeof(XXX))]` where `XXX` is the type for which you want to generate a FluentBuilder.
+``` c#
+[FluentBuilder.AutoGenerateBuilder(typeof(UserDto))]
+public partial class MyUserDtoBuilder
+{
+}
+```
+
+### Use FluentBuilder
+``` c#
+using System;
+
+namespace Test
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            var user = new MyUserDtoBuilder() // 👈 Just use your own Builder
+                .WithFirstName("Test")
+                .WithLastName("User")
+                .Build();
+
+            Console.WriteLine($"{user.FirstName} {user.LastName}");
+        }
+    }
+}
 ```

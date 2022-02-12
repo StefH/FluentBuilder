@@ -7,6 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+#nullable enable
 using System;
 
 namespace FluentBuilder
@@ -14,6 +15,12 @@ namespace FluentBuilder
     [AttributeUsage(AttributeTargets.Class)]
     sealed class AutoGenerateBuilderAttribute : Attribute
     {
-        public AutoGenerateBuilderAttribute() {}
+        public Type? Type { get; }
+
+        public AutoGenerateBuilderAttribute(Type? type = null)
+        {
+            Type = type;
+        }
     }
 }
+#nullable disable

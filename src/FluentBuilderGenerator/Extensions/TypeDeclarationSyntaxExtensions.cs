@@ -12,7 +12,7 @@ internal static class TypeDeclarationSyntaxExtensions
     const char NAMESPACE_CLASS_DELIMITER = '.';
     const char TYPEPARAMETER_CLASS_DELIMITER = '`';
 
-    public static string GetFullName(this TypeDeclarationSyntax source)
+    public static string GetMetadataName(this TypeDeclarationSyntax source)
     {
         var namespaces = new LinkedList<NamespaceDeclarationSyntax>();
         var types = new LinkedList<TypeDeclarationSyntax>();

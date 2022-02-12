@@ -68,7 +68,7 @@ internal static class NamedTypeSymbolExtensions
         var typeArguments = namedTypeSymbol.TypeArguments.Select(ta => ta.Name).ToArray();
 
         return !namedTypeSymbol.IsGenericType || typeArguments.Length == 0 ?
-            $"{className}" :
+            className :
             $"{className}<{string.Join(", ", typeArguments)}>";
     }
 }
