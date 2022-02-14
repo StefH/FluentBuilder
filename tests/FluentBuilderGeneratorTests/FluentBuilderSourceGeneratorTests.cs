@@ -21,7 +21,7 @@ namespace FluentBuilderGeneratorTests
         }
 
         [Fact]
-        public void GenerateFiles_ForAClassWithoutAValidConstructor_Should_Create_ErrorFile()
+        public void GenerateFiles_ForAClassWithoutAPublicConstructor_Should_Create_ErrorFile()
         {
             // Arrange
             var path = "./DTO2/MyAppDomainBuilder.cs";
@@ -33,6 +33,30 @@ namespace FluentBuilderGeneratorTests
                 {
                     Name = "AutoGenerateBuilder",
                     ArgumentList = "typeof(AppDomain)"
+                }
+            };
+
+            // Act
+            var result = _sut.Execute(new[] { sourceFile });
+
+            // Assert
+            result.Files.Should().HaveCount(8);
+            result.Files[7].Path.Should().EndWith("Error.g.cs");
+        }
+
+        [Fact]
+        public void GenerateFiles_ForAClassWithout_Public_Parameterless_Constructor_Should_Create_ErrorFile()
+        {
+            // Arrange
+            var path = "./DTO2/MyDateTimeBuilder.cs";
+            var sourceFile = new SourceFile
+            {
+                Path = path,
+                Text = File.ReadAllText(path),
+                AttributeToAddToClass = new ExtraAttribute
+                {
+                    Name = "AutoGenerateBuilder",
+                    ArgumentList = "typeof(DateTime)"
                 }
             };
 
