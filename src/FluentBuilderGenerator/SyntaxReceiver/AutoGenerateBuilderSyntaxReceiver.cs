@@ -38,7 +38,7 @@ internal class AutoGenerateBuilderSyntaxReceiver : IAutoGenerateBuilderSyntaxRec
         var attributeLists = classDeclarationSyntax.AttributeLists.FirstOrDefault(x => x.Attributes.Any(a => AutoGenerateBuilderAttributes.Contains(a.Name.ToString())));
         if (attributeLists is null)
         {
-            // ClassDeclarationSyntax should have the correct atttibute
+            // ClassDeclarationSyntax should have the correct attribute
             return false;
         }
 
@@ -53,10 +53,7 @@ internal class AutoGenerateBuilderSyntaxReceiver : IAutoGenerateBuilderSyntaxRec
 
         if (classDeclarationSyntax.TryGetParentSyntax(out CompilationUnitSyntax? cc))
         {
-            foreach (var @using in cc.Usings)
-            {
-                usings.Add(@using.Name.ToString());
-            }
+            usings.AddRange(cc.Usings.Select(@using => @using.Name.ToString()));
         }
 
         var argumentList = attributeLists.Attributes.FirstOrDefault()?.ArgumentList;
