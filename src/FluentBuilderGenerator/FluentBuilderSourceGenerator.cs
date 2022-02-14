@@ -49,7 +49,6 @@ internal class FluentBuilderSourceGenerator : ISourceGenerator
         catch (Exception exception)
         {
             GenerateError(context, exception);
-            // throw;
         }
     }
 

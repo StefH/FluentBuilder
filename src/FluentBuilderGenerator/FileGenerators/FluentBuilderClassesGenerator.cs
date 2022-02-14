@@ -329,9 +329,9 @@ namespace {classSymbol.BuilderNamespace}
 
     private static string GenerateBuildMethod(ClassSymbol classSymbol)
     {
-        if (classSymbol.NamedTypeSymbol.Constructors.IsEmpty)
+        if (classSymbol.NamedTypeSymbol.Constructors.IsEmpty || classSymbol.NamedTypeSymbol.Constructors.Any(c => !c.Parameters.IsEmpty))
         {
-            throw new NotSupportedException($"Unable to generate a FluentBuilder for he class '{classSymbol.NamedTypeSymbol}' because no public constructor is defined.");
+            throw new NotSupportedException($"Unable to generate a FluentBuilder for the class '{classSymbol.NamedTypeSymbol}' because no public parameterless constructor is defined.");
         }
 
         var properties = GetProperties(classSymbol).ToArray();
