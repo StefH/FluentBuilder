@@ -1,3 +1,6 @@
+# 0.3.1 (14 February 2022)
+- [#19](https://github.com/StefH/FluentBuilder/pull/19) - Generate Error.g.cs file in case no public and parameterless constructor is present in the target class contributed by [StefH](https://github.com/StefH)
+
 # 0.3.0 (12 February 2022)
 - [#18](https://github.com/StefH/FluentBuilder/pull/18) - Add support to use this FluentBuilder for all classes [enhancement] contributed by [StefH](https://github.com/StefH)
 
