@@ -16,9 +16,9 @@ using FluentBuilderGeneratorTests.DTO;
 
 namespace FluentBuilderGeneratorTests.DTO
 {
-    public partial class ArrayAddressBuilder : Builder<Address[]>
+    public partial class ArrayAddressBuilder : Builder<FluentBuilderGeneratorTests.DTO.Address[]>
     {
-        private readonly Lazy<List<Address>> _list = new Lazy<List<Address>>(() => new List<Address>());
+        private readonly Lazy<List<FluentBuilderGeneratorTests.DTO.Address>> _list = new Lazy<List<FluentBuilderGeneratorTests.DTO.Address>>(() => new List<FluentBuilderGeneratorTests.DTO.Address>());
         public ArrayAddressBuilder Add(Address item) => Add(() => item);
         public ArrayAddressBuilder Add(Func<Address> func)
         {
@@ -34,11 +34,11 @@ namespace FluentBuilderGeneratorTests.DTO
         }
 
 
-        public override Address[] Build(bool useObjectInitializer = true)
+        public override FluentBuilderGeneratorTests.DTO.Address[] Build(bool useObjectInitializer = true)
         {
             if (Object?.IsValueCreated != true)
             {
-                Object = new Lazy<Address[]>(() =>
+                Object = new Lazy<FluentBuilderGeneratorTests.DTO.Address[]>(() =>
                 {
                     return _list.Value.ToArray();
                 });

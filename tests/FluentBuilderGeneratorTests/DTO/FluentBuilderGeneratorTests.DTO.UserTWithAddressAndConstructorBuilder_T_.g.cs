@@ -16,7 +16,7 @@ using FluentBuilderGeneratorTests.DTO;
 
 namespace FluentBuilderGeneratorTests.DTO
 {
-    public partial class UserTWithAddressAndConstructorBuilder<T> : Builder<UserTWithAddressAndConstructor<T>> where T : struct
+    public partial class UserTWithAddressAndConstructorBuilder<T> : Builder<FluentBuilderGeneratorTests.DTO.UserTWithAddressAndConstructor<T>> where T : struct
     {
         private bool _tValueIsSet;
         private Lazy<T> _tValue = new Lazy<T>(() => default(T));
@@ -43,9 +43,9 @@ namespace FluentBuilderGeneratorTests.DTO
             _addressIsSet = true;
             return this;
         }
-        public UserTWithAddressAndConstructorBuilder<T> WithAddress(Action<AddressBuilder<short>> action, bool useObjectInitializer = true) => WithAddress(() =>
+        public UserTWithAddressAndConstructorBuilder<T> WithAddress(Action<FluentBuilderGeneratorTests.DTO.AddressBuilder<short>> action, bool useObjectInitializer = true) => WithAddress(() =>
         {
-            var builder = new AddressBuilder<short>();
+            var builder = new FluentBuilderGeneratorTests.DTO.AddressBuilder<short>();
             action(builder);
             return builder.Build(useObjectInitializer);
         });

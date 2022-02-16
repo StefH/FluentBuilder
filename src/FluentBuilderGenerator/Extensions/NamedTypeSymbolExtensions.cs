@@ -62,7 +62,7 @@ internal static class NamedTypeSymbolExtensions
     /// <summary>
     /// See https://stackoverflow.com/questions/24157101/roslyns-gettypebymetadataname-and-generic-types
     /// </summary>
-    public static string GenerateClassName(this INamedTypeSymbol namedTypeSymbol, bool addBuilderPostFix = false)
+    public static string GenerateShortTypeName(this INamedTypeSymbol namedTypeSymbol, bool addBuilderPostFix = false)
     {
         var className = $"{namedTypeSymbol.Name}{(addBuilderPostFix ? "Builder" : string.Empty)}";
         var typeArguments = namedTypeSymbol.TypeArguments.Select(ta => ta.Name).ToArray();
@@ -70,5 +70,10 @@ internal static class NamedTypeSymbolExtensions
         return !namedTypeSymbol.IsGenericType || typeArguments.Length == 0 ?
             className :
             $"{className}<{string.Join(", ", typeArguments)}>";
+    }
+
+    public static string GenerateFullTypeName(this INamedTypeSymbol namedTypeSymbol, bool addBuilderPostFix = false)
+    {
+        return $"{namedTypeSymbol}{(addBuilderPostFix ? "Builder" : string.Empty)}";
     }
 }

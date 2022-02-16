@@ -16,7 +16,7 @@ using FluentBuilderGeneratorTests.DTO;
 
 namespace FluentBuilderGeneratorTests.DTO
 {
-    public partial class AddressTTBuilder<T1,T2> : Builder<AddressTT<T1, T2>> where T1 : struct where T2 : class, new()
+    public partial class AddressTTBuilder<T1,T2> : Builder<FluentBuilderGeneratorTests.DTO.AddressTT<T1, T2>> where T1 : struct where T2 : class, new()
     {
         private bool _testValue1IsSet;
         private Lazy<T1> _testValue1 = new Lazy<T1>(() => default(T1));

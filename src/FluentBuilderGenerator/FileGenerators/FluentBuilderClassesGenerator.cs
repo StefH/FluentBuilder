@@ -59,7 +59,7 @@ internal partial class FluentBuilderClassesGenerator : IFilesGenerator
 
     private string CreateIEnumerableBuilderCode(ClassSymbol classSymbol)
     {
-        var type = classSymbol.NamedTypeSymbol.GenerateClassName();
+        var type = classSymbol.NamedTypeSymbol.ToString();
         var t = IEnumerableBuilderHelper.GetGenericTypeAndToArray(classSymbol.Type, type).GenericType;
 
         return $@"//------------------------------------------------------------------------------
@@ -109,7 +109,7 @@ using {classSymbol.NamedTypeSymbol.ContainingNamespace};
 
 namespace {classSymbol.BuilderNamespace}
 {{
-    public partial class {classSymbol.BuilderClassName} : Builder<{classSymbol.NamedTypeSymbol.GenerateClassName()}>{classSymbol.NamedTypeSymbol.GetWhereStatement()}
+    public partial class {classSymbol.BuilderClassName} : Builder<{classSymbol.NamedTypeSymbol}>{classSymbol.NamedTypeSymbol.GetWhereStatement()}
     {{
 {GenerateWithPropertyCode(classSymbol, allClassSymbols)}
 {GenerateBuildMethod(classSymbol)}
@@ -188,7 +188,7 @@ namespace {classSymbol.BuilderNamespace}
     private static StringBuilder GenerateWithPropertyActionMethod(ClassSymbol classSymbol, ClassSymbol propertyClassSymbol, IPropertySymbol property)
     {
         var className = classSymbol.BuilderClassName;
-        var builderName = propertyClassSymbol.BuilderClassName;
+        var builderName = propertyClassSymbol.FullBuilderClassName;
 
         // Replace MyAddressBuilder<T> by MyAddressBuilder<short>
         if (property.Type is INamedTypeSymbol propertyNamedType && builderName.TryGetGenericTypeArguments(out var genericTypeArgumentValue))
@@ -218,8 +218,8 @@ namespace {classSymbol.BuilderNamespace}
         string types = string.Empty;
         if (tuple != null)
         {
-            var keyClassName = tuple.Value.key?.GenerateClassName() ?? "object";
-            var valueClassName = tuple.Value.value?.GenerateClassName() ?? "object";
+            var keyClassName = tuple.Value.key?.GenerateFullTypeName() ?? "object";
+            var valueClassName = tuple.Value.value?.GenerateFullTypeName() ?? "object";
 
             types = $"{keyClassName}, {valueClassName}";
         }
@@ -247,22 +247,23 @@ namespace {classSymbol.BuilderNamespace}
         List<ClassSymbol> allClassSymbols)
     {
         var className = classSymbol.BuilderClassName;
-        var typeSymbolClassName = typeSymbol?.GenerateClassName();
+        var typeSymbolClassName = typeSymbol?.GenerateShortTypeName();
         var existingClassSymbol = allClassSymbols.FirstOrDefault(c => c.NamedTypeSymbol.Name == typeSymbolClassName);
 
-        string builderName;
-        if (existingClassSymbol != null && typeSymbolClassName != null && typeSymbol != null)
+        string fullBuilderName;
+        if (existingClassSymbol != null && typeSymbol != null)
         {
-            builderName = $"{kind}{typeSymbolClassName}Builder";
-            if (allClassSymbols.All(cs => cs.NamedTypeSymbol.Name != builderName))
+            var shortBuilderName = $"{kind}{typeSymbol.GenerateShortTypeName(true)}";
+            fullBuilderName = $"{typeSymbol.ContainingNamespace}.{shortBuilderName}";
+            if (allClassSymbols.All(cs => cs.NamedTypeSymbol.Name != shortBuilderName))
             {
                 var fileDataType = kind.ToFileDataType();
                 allClassSymbols.Add(new ClassSymbol
                 {
                     Type = fileDataType,
                     BuilderNamespace = existingClassSymbol.BuilderNamespace,
-                    BuilderClassName = builderName,
-                    FullBuilderClassName = builderName,
+                    BuilderClassName = shortBuilderName,
+                    FullBuilderClassName = fullBuilderName,
                     NamedTypeSymbol = typeSymbol
                 });
             }
@@ -270,7 +271,7 @@ namespace {classSymbol.BuilderNamespace}
         else
         {
             // Normal
-            builderName = $"{kind}Builder{(typeSymbolClassName == null ? string.Empty : "<" + typeSymbolClassName + ">")}";
+            fullBuilderName = $"{kind}Builder{(typeSymbol == null ? string.Empty : "<" + typeSymbol.GenerateFullTypeName() + ">")}";
         }
 
         // If the property.Type is an interface or array, no cast is needed. Else cast the interface to the real type.
@@ -279,9 +280,9 @@ namespace {classSymbol.BuilderNamespace}
             $"({property.Type}) ";
 
         var sb = new StringBuilder();
-        sb.AppendLine($"        public {className} With{property.Name}(Action<{builderName}> action, bool useObjectInitializer = true) => With{property.Name}(() =>");
+        sb.AppendLine($"        public {className} With{property.Name}(Action<{fullBuilderName}> action, bool useObjectInitializer = true) => With{property.Name}(() =>");
         sb.AppendLine("        {");
-        sb.AppendLine($"            var builder = new {builderName}();");
+        sb.AppendLine($"            var builder = new {fullBuilderName}();");
         sb.AppendLine("            action(builder);");
         sb.AppendLine($"            return {cast}builder.Build(useObjectInitializer);");
         sb.AppendLine("        });");
@@ -290,7 +291,7 @@ namespace {classSymbol.BuilderNamespace}
 
     private static StringBuilder GenerateAddMethodsForIEnumerableBuilder(string className, INamedTypeSymbol itemClassSymbol)
     {
-        var itemBuilderName = $"{itemClassSymbol.GenerateClassName(true)}";
+        var itemBuilderName = $"{itemClassSymbol.GenerateShortTypeName(true)}";
 
         var sb = new StringBuilder();
         sb.AppendLine($"        public {className} Add({itemClassSymbol.Name} item) => Add(() => item);");
@@ -313,7 +314,7 @@ namespace {classSymbol.BuilderNamespace}
 
     private static string GenerateBuildMethodsForIEnumerableBuilder(ClassSymbol classSymbol)
     {
-        var (genericType, toArray) = IEnumerableBuilderHelper.GetGenericTypeAndToArray(classSymbol.Type, classSymbol.NamedTypeSymbol.GenerateClassName());
+        var (genericType, toArray) = IEnumerableBuilderHelper.GetGenericTypeAndToArray(classSymbol.Type, classSymbol.NamedTypeSymbol.ToString());
 
         return $@"        public override {genericType} Build(bool useObjectInitializer = true)
         {{
@@ -365,7 +366,7 @@ namespace {classSymbol.BuilderNamespace}
 
         var properties = GetProperties(classSymbol).ToArray();
         var output = new StringBuilder();
-        var className = classSymbol.NamedTypeSymbol.GenerateClassName();
+        var className = classSymbol.NamedTypeSymbol.GenerateShortTypeName();
 
         output.AppendLine($@"        public override {className} Build(bool useObjectInitializer = true)
         {{

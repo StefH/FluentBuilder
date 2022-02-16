@@ -16,9 +16,9 @@ using FluentBuilderGeneratorTests.DTO;
 
 namespace FluentBuilderGeneratorTests.DTO
 {
-    public partial class IEnumerableAddressBuilder : Builder<IEnumerable<Address>>
+    public partial class IEnumerableAddressBuilder : Builder<IEnumerable<FluentBuilderGeneratorTests.DTO.Address>>
     {
-        private readonly Lazy<List<Address>> _list = new Lazy<List<Address>>(() => new List<Address>());
+        private readonly Lazy<List<FluentBuilderGeneratorTests.DTO.Address>> _list = new Lazy<List<FluentBuilderGeneratorTests.DTO.Address>>(() => new List<FluentBuilderGeneratorTests.DTO.Address>());
         public IEnumerableAddressBuilder Add(Address item) => Add(() => item);
         public IEnumerableAddressBuilder Add(Func<Address> func)
         {
@@ -34,11 +34,11 @@ namespace FluentBuilderGeneratorTests.DTO
         }
 
 
-        public override IEnumerable<Address> Build(bool useObjectInitializer = true)
+        public override IEnumerable<FluentBuilderGeneratorTests.DTO.Address> Build(bool useObjectInitializer = true)
         {
             if (Object?.IsValueCreated != true)
             {
-                Object = new Lazy<IEnumerable<Address>>(() =>
+                Object = new Lazy<IEnumerable<FluentBuilderGeneratorTests.DTO.Address>>(() =>
                 {
                     return _list.Value;
                 });
