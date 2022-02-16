@@ -1,3 +1,6 @@
+# 0.3.2 (16 February 2022)
+- [#20](https://github.com/StefH/FluentBuilder/pull/20) - Do not inherit IEnumerableBuilder anymore [enhancement] contributed by [StefH](https://github.com/StefH)
+
 # 0.3.1 (14 February 2022)
 - [#19](https://github.com/StefH/FluentBuilder/pull/19) - Generate Error.g.cs file in case no public and parameterless constructor is present in the target class contributed by [StefH](https://github.com/StefH)
 
