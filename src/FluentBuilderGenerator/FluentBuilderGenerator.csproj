@@ -44,12 +44,6 @@
         <None Remove="bin\$(Configuration)\netstandard2.0\\FluentBuilderGenerator.dll" />
     </ItemGroup>
 
-    <!--<ItemGroup>
-        <Compile Include="FluentBuilderClassesGenerator.x">
-            <DependentUpon>FluentBuilderClassesGenerator</DependentUpon>
-        </Compile>
-    </ItemGroup>-->
-
     <ItemGroup>
         <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.2">
             <PrivateAssets>all</PrivateAssets>
