@@ -15,10 +15,10 @@ namespace FluentBuilder
 {
     public partial class IListBuilder<T> : Builder<IList<T>>
     {
-        protected readonly Lazy<List<T>> _list = new Lazy<List<T>>(() => new List<T>());
+        private readonly Lazy<List<T>> _list = new Lazy<List<T>>(() => new List<T>());
 
-        public virtual IListBuilder<T> Add(T item) => Add(() => item);
-        public virtual IListBuilder<T> Add(Func<T> func)
+        public IListBuilder<T> Add(T item) => Add(() => item);
+        public IListBuilder<T> Add(Func<T> func)
         {
             _list.Value.Add(func());
 

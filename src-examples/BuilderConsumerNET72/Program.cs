@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using FluentBuilder;
 
 namespace BuilderConsumerNET72
 {
@@ -7,11 +8,11 @@ namespace BuilderConsumerNET72
     {
         static void Main(string[] args)
         {
-            var email = new FluentBuilder.EmailDtoBuilder()
+            var email = new EmailDtoBuilder()
                 .WithValue("x@x.nl")
                 .Build();
 
-            var user = new FluentBuilder.UserDtoBuilder()
+            var user = new UserDtoBuilder()
                         .WithFirstName("Stef")
                         .WithLastName("Heyenrath")
                         .WithPrimaryEmail(email)

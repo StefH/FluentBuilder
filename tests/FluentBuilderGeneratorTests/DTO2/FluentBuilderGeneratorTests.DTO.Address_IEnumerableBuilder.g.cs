@@ -16,10 +16,11 @@ using FluentBuilderGeneratorTests.DTO;
 
 namespace FluentBuilderGeneratorTests.DTO2
 {
-    public partial class IEnumerableAddressBuilder : IEnumerableBuilder<Address>
+    public partial class IEnumerableAddressBuilder : Builder<IEnumerable<Address>>
     {
-        public override IEnumerableAddressBuilder Add(Address item) => Add(() => item);
-        public override IEnumerableAddressBuilder Add(Func<Address> func)
+        private readonly Lazy<List<Address>> _list = new Lazy<List<Address>>(() => new List<Address>());
+        public IEnumerableAddressBuilder Add(Address item) => Add(() => item);
+        public IEnumerableAddressBuilder Add(Func<Address> func)
         {
             _list.Value.Add(func());
             return this;
@@ -30,6 +31,22 @@ namespace FluentBuilderGeneratorTests.DTO2
             action(builder);
             Add(() => builder.Build(useObjectInitializer));
             return this;
+        }
+
+
+        public override IEnumerable<Address> Build(bool useObjectInitializer = true)
+        {
+            if (Object?.IsValueCreated != true)
+            {
+                Object = new Lazy<IEnumerable<Address>>(() =>
+                {
+                    return _list.Value;
+                });
+            }
+
+            PostBuild(Object.Value);
+
+            return Object.Value;
         }
 
     }
