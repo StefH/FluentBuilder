@@ -15,10 +15,10 @@ namespace FluentBuilder
 {
     public partial class ArrayBuilder<T> : Builder<T[]>
     {
-        protected readonly Lazy<List<T>> _list = new Lazy<List<T>>(() => new List<T>());
+        private readonly Lazy<List<T>> _list = new Lazy<List<T>>(() => new List<T>());
 
-        public virtual ArrayBuilder<T> Add(T item) => Add(() => item);
-        public virtual ArrayBuilder<T> Add(Func<T> func)
+        public ArrayBuilder<T> Add(T item) => Add(() => item);
+        public ArrayBuilder<T> Add(Func<T> func)
         {
             _list.Value.Add(func());
 

@@ -1,3 +1,4 @@
+using FluentBuilderGenerator.Helpers;
 using FluentBuilderGenerator.Models;
 using FluentBuilderGenerator.Types;
 
@@ -18,31 +19,7 @@ internal class IEnumerableBuilderGenerator : IFileGenerator
         _supportsNullable = supportsNullable;
         _className = dataType.ToString();
 
-        switch (dataType)
-        {
-            case FileDataType.ArrayBuilder:
-                _genericType = "T[]";
-                _toArray = ".ToArray()";
-                break;
-
-            case FileDataType.IEnumerableBuilder:
-                _genericType = "IEnumerable<T>";
-                _toArray = string.Empty;
-                break;
-
-            case FileDataType.ICollectionBuilder:
-                _genericType = "ICollection<T>";
-                _toArray = string.Empty;
-                break;
-
-            case FileDataType.IListBuilder:
-                _genericType = "IList<T>";
-                _toArray = string.Empty;
-                break;
-
-            default:
-                throw new ArgumentException();
-        }
+        (_genericType, _toArray) = IEnumerableBuilderHelper.GetGenericTypeAndToArray(dataType);
     }
 
     public FileData GenerateFile()
@@ -68,10 +45,10 @@ namespace FluentBuilder
 {{
     public partial class {_className}<T> : Builder<{_genericType}>
     {{
-        protected readonly Lazy<List<T>> _list = new Lazy<List<T>>(() => new List<T>());
+        private readonly Lazy<List<T>> _list = new Lazy<List<T>>(() => new List<T>());
 
-        public virtual {_className}<T> Add(T item) => Add(() => item);
-        public virtual {_className}<T> Add(Func<T> func)
+        public {_className}<T> Add(T item) => Add(() => item);
+        public {_className}<T> Add(Func<T> func)
         {{
             _list.Value.Add(func());
 
