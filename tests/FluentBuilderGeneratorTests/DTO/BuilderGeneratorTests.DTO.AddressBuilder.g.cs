@@ -286,27 +286,7 @@ namespace FluentBuilderGeneratorTests.DTO
             return this;
         }
 
-        private bool _dictionaryWireMockListStringIsSet;
-        private Lazy<System.Collections.Generic.Dictionary<long, WireMock.Types.WireMockList<string>>> _dictionaryWireMockListString = new Lazy<System.Collections.Generic.Dictionary<long, WireMock.Types.WireMockList<string>>>(() => default(System.Collections.Generic.Dictionary<long, WireMock.Types.WireMockList<string>>));
-        public AddressBuilder WithDictionaryWireMockListString(System.Collections.Generic.Dictionary<long, WireMock.Types.WireMockList<string>> value) => WithDictionaryWireMockListString(() => value);
-        public AddressBuilder WithDictionaryWireMockListString(Func<System.Collections.Generic.Dictionary<long, WireMock.Types.WireMockList<string>>> func)
-        {
-            _dictionaryWireMockListString = new Lazy<System.Collections.Generic.Dictionary<long, WireMock.Types.WireMockList<string>>>(func);
-            _dictionaryWireMockListStringIsSet = true;
-            return this;
-        }
-        public AddressBuilder WithDictionaryWireMockListString(Action<FluentBuilder.IDictionaryBuilder<long, WireMock.Types.WireMockList<string>>> action, bool useObjectInitializer = true) => WithDictionaryWireMockListString(() =>
-        {
-            var builder = new FluentBuilder.IDictionaryBuilder<long, WireMock.Types.WireMockList<string>>();
-            action(builder);
-            return (System.Collections.Generic.Dictionary<long, WireMock.Types.WireMockList<string>>) builder.Build(useObjectInitializer);
-        });
-        public AddressBuilder WithoutDictionaryWireMockListString()
-        {
-            WithDictionaryWireMockListString(() => default(System.Collections.Generic.Dictionary<long, WireMock.Types.WireMockList<string>>));
-            _dictionaryWireMockListStringIsSet = false;
-            return this;
-        }
+       
 
 
         public override Address Build(bool useObjectInitializer = true)
@@ -332,7 +312,7 @@ namespace FluentBuilderGeneratorTests.DTO
                             IDictionary = _iDictionary.Value,
                             IDictionary2 = _iDictionary2.Value,
                             Dictionary2 = _dictionary2.Value,
-                            DictionaryWireMockListString = _dictionaryWireMockListString.Value
+                            //DictionaryWireMockListString = _dictionaryWireMockListString.Value
                         };
                     }
 
@@ -350,7 +330,7 @@ namespace FluentBuilderGeneratorTests.DTO
                     if (_iDictionaryIsSet) { instance.IDictionary = _iDictionary.Value; }
                     if (_iDictionary2IsSet) { instance.IDictionary2 = _iDictionary2.Value; }
                     if (_dictionary2IsSet) { instance.Dictionary2 = _dictionary2.Value; }
-                    if (_dictionaryWireMockListStringIsSet) { instance.DictionaryWireMockListString = _dictionaryWireMockListString.Value; }
+                   // if (_dictionaryWireMockListStringIsSet) { instance.DictionaryWireMockListString = _dictionaryWireMockListString.Value; }
                     return instance;
                 });
             }

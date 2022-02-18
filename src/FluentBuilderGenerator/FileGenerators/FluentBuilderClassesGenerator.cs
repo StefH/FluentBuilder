@@ -171,7 +171,7 @@ namespace {classSymbol.BuilderNamespace}
             .AppendLine("        });");
     }
 
-    private static StringBuilder GenerateWithIEnumerableBuilderActionMethod(
+    private StringBuilder GenerateWithIEnumerableBuilderActionMethod(
         FluentTypeKind kind,
         ClassSymbol classSymbol,
         IPropertySymbol property,
@@ -203,7 +203,7 @@ namespace {classSymbol.BuilderNamespace}
         else
         {
             // Normal
-            fullBuilderName = $"{kind}Builder{(typeSymbol == null ? string.Empty : "<" + typeSymbol.GenerateFullTypeName() + ">")}";
+            fullBuilderName = $"{_context.AssemblyName}.FluentBuilder.{kind}Builder{(typeSymbol == null ? string.Empty : "<" + typeSymbol.GenerateFullTypeName() + ">")}";
         }
 
         // If the property.Type is an interface or array, no cast is needed. Else cast the interface to the real type.

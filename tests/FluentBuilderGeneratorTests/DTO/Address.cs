@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using WireMock.Types;
 
 namespace FluentBuilderGeneratorTests.DTO
 {
@@ -33,6 +32,6 @@ namespace FluentBuilderGeneratorTests.DTO
 
         public Dictionary<string, int> Dictionary2 { get; set; }
 
-        public Dictionary<long, WireMockList<string>> DictionaryWireMockListString { get; set; }
+        // public Dictionary<long, WireMockList<string>> DictionaryWireMockListString { get; set; }
     }
 }
