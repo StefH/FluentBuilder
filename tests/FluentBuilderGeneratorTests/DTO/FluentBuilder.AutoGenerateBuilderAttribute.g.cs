@@ -10,10 +10,10 @@
 #nullable enable
 using System;
 
-namespace FluentBuilderGeneratorTests.FluentBuilder
+namespace FluentBuilder
 {
     [AttributeUsage(AttributeTargets.Class)]
-    public sealed class AutoGenerateBuilderAttribute : Attribute
+    internal sealed class AutoGenerateBuilderAttribute : Attribute
     {
         public Type? Type { get; }
 

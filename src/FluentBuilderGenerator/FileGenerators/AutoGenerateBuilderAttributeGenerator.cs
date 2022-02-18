@@ -36,10 +36,10 @@ internal class AutoGenerateBuilderAttributeGenerator : IFileGenerator
 {(_supportsNullable ? "#nullable enable" : string.Empty)}
 using System;
 
-namespace {_assemblyName}.FluentBuilder
+namespace FluentBuilder
 {{
     [AttributeUsage(AttributeTargets.Class)]
-    public sealed class AutoGenerateBuilderAttribute : Attribute
+    internal sealed class AutoGenerateBuilderAttribute : Attribute
     {{
         public Type{(_supportsNullable ? "?" : string.Empty)} Type {{ get; }}
 
