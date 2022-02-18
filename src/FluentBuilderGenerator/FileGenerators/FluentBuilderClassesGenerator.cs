@@ -19,15 +19,13 @@ internal partial class FluentBuilderClassesGenerator : IFilesGenerator
         FileDataType.ICollectionBuilder
     };
 
-    private readonly IGeneratorExecutionContextWrapper _wrapper;
+    private readonly IGeneratorExecutionContextWrapper _context;
     private readonly IAutoGenerateBuilderSyntaxReceiver _receiver;
-    private readonly bool _supportsNullable;
 
-    public FluentBuilderClassesGenerator(IGeneratorExecutionContextWrapper wrapper, IAutoGenerateBuilderSyntaxReceiver receiver, bool supportsNullable)
+    public FluentBuilderClassesGenerator(IGeneratorExecutionContextWrapper context, IAutoGenerateBuilderSyntaxReceiver receiver)
     {
-        _wrapper = wrapper;
+        _context = context;
         _receiver = receiver;
-        _supportsNullable = supportsNullable;
     }
 
     public IReadOnlyList<FileData> GenerateFiles()
@@ -67,7 +65,7 @@ internal partial class FluentBuilderClassesGenerator : IFilesGenerator
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-{(_supportsNullable ? "#nullable enable" : string.Empty)}
+{(_context.SupportsNullable ? "#nullable enable" : string.Empty)}
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -82,10 +80,10 @@ namespace {classSymbol.BuilderNamespace}
 {GenerateBuildMethod(classSymbol)}
     }}
 }}
-{(_supportsNullable ? "#nullable disable" : string.Empty)}";
+{(_context.SupportsNullable ? "#nullable disable" : string.Empty)}";
     }
 
-    private static StringBuilder GenerateWithPropertyCode(ClassSymbol classSymbol, List<ClassSymbol> allClassSymbols)
+    private StringBuilder GenerateWithPropertyCode(ClassSymbol classSymbol, List<ClassSymbol> allClassSymbols)
     {
         var properties = GetProperties(classSymbol);
         var className = classSymbol.BuilderClassName;
@@ -115,7 +113,7 @@ namespace {classSymbol.BuilderNamespace}
         return sb;
     }
 
-    private static StringBuilder GeneratePropertyActionMethodIfApplicable(
+    private StringBuilder GeneratePropertyActionMethodIfApplicable(
         ClassSymbol classSymbol,
         IPropertySymbol property,
         List<ClassSymbol> allClassSymbols)
@@ -292,7 +290,7 @@ namespace {classSymbol.BuilderNamespace}
         var classSymbols = new List<ClassSymbol>();
         foreach (var fluentDataItem in _receiver.CandidateFluentDataItems)
         {
-            if (_wrapper.TryGetNamedTypeSymbolByFullMetadataName(fluentDataItem, out var classSymbol))
+            if (_context.TryGetNamedTypeSymbolByFullMetadataName(fluentDataItem, out var classSymbol))
             {
                 classSymbols.Add(classSymbol);
             }

@@ -22,7 +22,7 @@ internal partial class FluentBuilderClassesGenerator
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-{(_supportsNullable ? "#nullable enable" : string.Empty)}
+{(_context.SupportsNullable ? "#nullable enable" : string.Empty)}
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -39,7 +39,7 @@ namespace {classSymbol.BuilderNamespace}
 {GenerateBuildMethodForIEnumerableBuilder(classSymbol)}
     }}
 }}
-{(_supportsNullable ? "#nullable disable" : string.Empty)}";
+{(_context.SupportsNullable ? "#nullable disable" : string.Empty)}";
     }
 
     private static StringBuilder GenerateAddMethodsForIEnumerableBuilder(string className, INamedTypeSymbol itemClassSymbol)

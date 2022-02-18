@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <Version>0.0.6</Version>
+        <Version>0.0.7</Version>
         <TargetFramework>netstandard2.1</TargetFramework>
         <LangVersion>9</LangVersion>
         <Nullable>enable</Nullable>
@@ -14,6 +14,7 @@
         <RepositoryType>git</RepositoryType>
         <RepositoryUrl>https://github.com/StefH/FluentBuilder/src-extensions</RepositoryUrl>
         <PackageReadmeFile>PackageReadme.md</PackageReadmeFile>
+        <Configurations>Debug;Release;DebugAttach</Configurations>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)' == 'Release'">
@@ -28,7 +29,7 @@
     <ItemGroup>
         <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="3.10.0" />
         <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.10.0" />
-        <PackageReference Include="AnyOf" Version="0.2.0" />
+        <PackageReference Include="AnyOf" Version="0.3.0" />
     </ItemGroup>
 
 </Project>

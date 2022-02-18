@@ -8,10 +8,12 @@ internal class IDictionaryBuilderGenerator : IFileGenerator
 {
     private const string Name = "FluentBuilder.IDictionaryBuilder.g.cs";
 
+    private readonly string _assemblyName;
     private readonly bool _supportsNullable;
 
-    public IDictionaryBuilderGenerator(bool supportsNullable)
+    public IDictionaryBuilderGenerator(string assemblyName, bool supportsNullable)
     {
+        _assemblyName = assemblyName;
         _supportsNullable = supportsNullable;
     }
 
@@ -34,7 +36,7 @@ internal class IDictionaryBuilderGenerator : IFileGenerator
 using System;
 using System.Collections.Generic;
 
-namespace FluentBuilder
+namespace {_assemblyName}.FluentBuilder
 {{
     public partial class IDictionaryBuilder<TKey, TValue> : Builder<IDictionary<TKey, TValue>>{(_supportsNullable ? " where TKey : notnull" : string.Empty)}
     {{

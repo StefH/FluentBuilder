@@ -26,6 +26,7 @@
         <IncludeBuildOutput>false</IncludeBuildOutput>
         <DevelopmentDependency>true</DevelopmentDependency>
         <ImplicitUsings>enable</ImplicitUsings>
+        <Configurations>Debug;Release;DebugAttach</Configurations>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)' == 'Release'">
@@ -46,7 +47,7 @@
 
     <ItemGroup>
         <Compile Update="FileGenerators\FluentBuilderClassesGenerator.*.cs">
-            <DependentUpon>FileGenerators\FluentBuilderClassesGenerator.cs</DependentUpon>
+            <DependentUpon>FluentBuilderClassesGenerator.cs</DependentUpon>
         </Compile>
     </ItemGroup>
 

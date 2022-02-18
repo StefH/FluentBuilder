@@ -22,7 +22,7 @@ namespace CSharp.SourceGenerators.Extensions
         /// <param name="sources">Provide a list of sources which need to be analyzed and processed.</param>
         /// <param name="additionalTextPaths">A list of additional files.</param>
         /// <returns><see cref="ExecuteResult"/></returns>
-        public static ExecuteResult Execute(this ISourceGenerator sourceGenerator, IEnumerable<SourceFile> sources, IEnumerable<string>? additionalTextPaths = null)
+        public static ExecuteResult Execute(this ISourceGenerator sourceGenerator, IReadOnlyList<SourceFile> sources, IReadOnlyList<string>? additionalTextPaths = null)
         {
             var metadataReferences = AppDomain.CurrentDomain.GetAssemblies()
                 .Where(a => !a.IsDynamic)

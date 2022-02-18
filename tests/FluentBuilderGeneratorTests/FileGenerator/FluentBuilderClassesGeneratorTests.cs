@@ -28,9 +28,13 @@ namespace FluentBuilderGeneratorTests.FileGenerator
         public FluentBuilderClassesGeneratorTests()
         {
             _contextMock = new Mock<IGeneratorExecutionContextWrapper>();
+            _contextMock.SetupGet(c => c.AssemblyName).Returns("FluentBuilderGeneratorTests");
+            _contextMock.SetupGet(c => c.SupportsNullable).Returns(true);
+            _contextMock.SetupGet(c => c.NullableEnabled).Returns(true);
+
             _receiverMock = new Mock<IAutoGenerateBuilderSyntaxReceiver>();
 
-            _sut = new FluentBuilderClassesGenerator(_contextMock.Object, _receiverMock.Object, true);
+            _sut = new FluentBuilderClassesGenerator(_contextMock.Object, _receiverMock.Object);
         }
 
         [Fact]

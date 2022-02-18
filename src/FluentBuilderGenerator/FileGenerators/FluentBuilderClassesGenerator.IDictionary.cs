@@ -7,7 +7,7 @@ namespace FluentBuilderGenerator.FileGenerators;
 
 internal partial class FluentBuilderClassesGenerator
 {
-    private static StringBuilder GenerateWithIDictionaryBuilderActionMethod(
+    private StringBuilder GenerateWithIDictionaryBuilderActionMethod(
         ClassSymbol classSymbol,
         IPropertySymbol property,
         (INamedTypeSymbol key, INamedTypeSymbol value)? tuple)
@@ -29,9 +29,9 @@ internal partial class FluentBuilderClassesGenerator
         var cast = property.Type.TypeKind == TypeKind.Interface ? "" : $"({property.Type}) ";
 
         var sb = new StringBuilder();
-        sb.AppendLine($"        public {className} With{property.Name}(Action<FluentBuilder.{dictionaryBuilderName}> action, bool useObjectInitializer = true) => With{property.Name}(() =>");
+        sb.AppendLine($"        public {className} With{property.Name}(Action<{_context.AssemblyName}.FluentBuilder.{dictionaryBuilderName}> action, bool useObjectInitializer = true) => With{property.Name}(() =>");
         sb.AppendLine("        {");
-        sb.AppendLine($"            var builder = new FluentBuilder.{dictionaryBuilderName}();");
+        sb.AppendLine($"            var builder = new {_context.AssemblyName}.FluentBuilder.{dictionaryBuilderName}();");
         sb.AppendLine("            action(builder);");
         sb.AppendLine($"            return {cast}builder.Build(useObjectInitializer);");
         sb.AppendLine("        });");
