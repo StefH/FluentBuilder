@@ -1,3 +1,6 @@
+# 0.4.0 (18 February 2022)
+- [#21](https://github.com/StefH/FluentBuilder/pull/21) - Use full type name + change namespace from builders [bug] contributed by [StefH](https://github.com/StefH)
+
 # 0.3.2 (16 February 2022)
 - [#20](https://github.com/StefH/FluentBuilder/pull/20) - Do not inherit IEnumerableBuilder anymore [enhancement] contributed by [StefH](https://github.com/StefH)
 
