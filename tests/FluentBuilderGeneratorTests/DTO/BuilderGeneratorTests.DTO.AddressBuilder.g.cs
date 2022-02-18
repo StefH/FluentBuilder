@@ -11,7 +11,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using FluentBuilder;
+using FluentBuilderGeneratorTests.FluentBuilder;
 using FluentBuilderGeneratorTests.DTO;
 
 namespace FluentBuilderGeneratorTests.DTO
@@ -59,9 +59,9 @@ namespace FluentBuilderGeneratorTests.DTO
             _arrayIsSet = true;
             return this;
         }
-        public AddressBuilder WithArray(Action<ArrayBuilder<string>> action, bool useObjectInitializer = true) => WithArray(() =>
+        public AddressBuilder WithArray(Action<FluentBuilderGeneratorTests.FluentBuilder.ArrayBuilder<string>> action, bool useObjectInitializer = true) => WithArray(() =>
         {
-            var builder = new ArrayBuilder<string>();
+            var builder = new FluentBuilderGeneratorTests.FluentBuilder.ArrayBuilder<string>();
             action(builder);
             return builder.Build(useObjectInitializer);
         });
@@ -103,9 +103,9 @@ namespace FluentBuilderGeneratorTests.DTO
             _enumerableIsSet = true;
             return this;
         }
-        public AddressBuilder WithEnumerable(Action<IEnumerableBuilder<byte>> action, bool useObjectInitializer = true) => WithEnumerable(() =>
+        public AddressBuilder WithEnumerable(Action<FluentBuilderGeneratorTests.FluentBuilder.IEnumerableBuilder<byte>> action, bool useObjectInitializer = true) => WithEnumerable(() =>
         {
-            var builder = new IEnumerableBuilder<byte>();
+            var builder = new FluentBuilderGeneratorTests.FluentBuilder.IEnumerableBuilder<byte>();
             action(builder);
             return builder.Build(useObjectInitializer);
         });
@@ -147,9 +147,9 @@ namespace FluentBuilderGeneratorTests.DTO
             _listIsSet = true;
             return this;
         }
-        public AddressBuilder WithList(Action<IListBuilder<string>> action, bool useObjectInitializer = true) => WithList(() =>
+        public AddressBuilder WithList(Action<FluentBuilderGeneratorTests.FluentBuilder.IListBuilder<string>> action, bool useObjectInitializer = true) => WithList(() =>
         {
-            var builder = new IListBuilder<string>();
+            var builder = new FluentBuilderGeneratorTests.FluentBuilder.IListBuilder<string>();
             action(builder);
             return (System.Collections.Generic.List<string>) builder.Build(useObjectInitializer);
         });
@@ -191,9 +191,9 @@ namespace FluentBuilderGeneratorTests.DTO
             _collectionIsSet = true;
             return this;
         }
-        public AddressBuilder WithCollection(Action<ICollectionBuilder<long>> action, bool useObjectInitializer = true) => WithCollection(() =>
+        public AddressBuilder WithCollection(Action<FluentBuilderGeneratorTests.FluentBuilder.ICollectionBuilder<long>> action, bool useObjectInitializer = true) => WithCollection(() =>
         {
-            var builder = new ICollectionBuilder<long>();
+            var builder = new FluentBuilderGeneratorTests.FluentBuilder.ICollectionBuilder<long>();
             action(builder);
             return builder.Build(useObjectInitializer);
         });
@@ -251,9 +251,9 @@ namespace FluentBuilderGeneratorTests.DTO
             _iDictionary2IsSet = true;
             return this;
         }
-        public AddressBuilder WithIDictionary2(Action<FluentBuilder.IDictionaryBuilder<string, int>> action, bool useObjectInitializer = true) => WithIDictionary2(() =>
+        public AddressBuilder WithIDictionary2(Action<FluentBuilderGeneratorTests.FluentBuilder.IDictionaryBuilder<string, int>> action, bool useObjectInitializer = true) => WithIDictionary2(() =>
         {
-            var builder = new FluentBuilder.IDictionaryBuilder<string, int>();
+            var builder = new FluentBuilderGeneratorTests.FluentBuilder.IDictionaryBuilder<string, int>();
             action(builder);
             return builder.Build(useObjectInitializer);
         });
@@ -273,9 +273,9 @@ namespace FluentBuilderGeneratorTests.DTO
             _dictionary2IsSet = true;
             return this;
         }
-        public AddressBuilder WithDictionary2(Action<FluentBuilder.IDictionaryBuilder<string, int>> action, bool useObjectInitializer = true) => WithDictionary2(() =>
+        public AddressBuilder WithDictionary2(Action<FluentBuilderGeneratorTests.FluentBuilder.IDictionaryBuilder<string, int>> action, bool useObjectInitializer = true) => WithDictionary2(() =>
         {
-            var builder = new FluentBuilder.IDictionaryBuilder<string, int>();
+            var builder = new FluentBuilderGeneratorTests.FluentBuilder.IDictionaryBuilder<string, int>();
             action(builder);
             return (System.Collections.Generic.Dictionary<string, int>) builder.Build(useObjectInitializer);
         });
@@ -285,8 +285,6 @@ namespace FluentBuilderGeneratorTests.DTO
             _dictionary2IsSet = false;
             return this;
         }
-
-       
 
 
         public override Address Build(bool useObjectInitializer = true)
@@ -311,8 +309,7 @@ namespace FluentBuilderGeneratorTests.DTO
                             Collection2 = _collection2.Value,
                             IDictionary = _iDictionary.Value,
                             IDictionary2 = _iDictionary2.Value,
-                            Dictionary2 = _dictionary2.Value,
-                            //DictionaryWireMockListString = _dictionaryWireMockListString.Value
+                            Dictionary2 = _dictionary2.Value
                         };
                     }
 
@@ -330,7 +327,6 @@ namespace FluentBuilderGeneratorTests.DTO
                     if (_iDictionaryIsSet) { instance.IDictionary = _iDictionary.Value; }
                     if (_iDictionary2IsSet) { instance.IDictionary2 = _iDictionary2.Value; }
                     if (_dictionary2IsSet) { instance.Dictionary2 = _dictionary2.Value; }
-                   // if (_dictionaryWireMockListStringIsSet) { instance.DictionaryWireMockListString = _dictionaryWireMockListString.Value; }
                     return instance;
                 });
             }

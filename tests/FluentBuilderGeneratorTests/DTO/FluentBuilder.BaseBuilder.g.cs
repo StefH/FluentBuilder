@@ -9,7 +9,7 @@
 
 using System;
 
-namespace FluentBuilder
+namespace FluentBuilderGeneratorTests.FluentBuilder
 {
     public abstract class Builder<T>
     {

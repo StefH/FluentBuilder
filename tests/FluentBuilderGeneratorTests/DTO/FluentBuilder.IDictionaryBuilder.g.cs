@@ -11,7 +11,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace FluentBuilder
+namespace FluentBuilderGeneratorTests.FluentBuilder
 {
     public partial class IDictionaryBuilder<TKey, TValue> : Builder<IDictionary<TKey, TValue>> where TKey : notnull
     {

@@ -26,7 +26,7 @@ internal partial class FluentBuilderClassesGenerator
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using FluentBuilder;
+using {_context.AssemblyName}.FluentBuilder;
 using {classSymbol.NamedTypeSymbol.ContainingNamespace};
 
 namespace {classSymbol.BuilderNamespace}

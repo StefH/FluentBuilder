@@ -39,7 +39,7 @@ using System;
 namespace {_assemblyName}.FluentBuilder
 {{
     [AttributeUsage(AttributeTargets.Class)]
-    sealed class AutoGenerateBuilderAttribute : Attribute
+    public sealed class AutoGenerateBuilderAttribute : Attribute
     {{
         public Type{(_supportsNullable ? "?" : string.Empty)} Type {{ get; }}
 

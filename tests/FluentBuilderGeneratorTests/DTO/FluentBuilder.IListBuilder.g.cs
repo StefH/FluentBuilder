@@ -11,7 +11,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace FluentBuilder
+namespace FluentBuilderGeneratorTests.FluentBuilder
 {
     public partial class IListBuilder<T> : Builder<IList<T>>
     {
