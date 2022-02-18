@@ -22,7 +22,29 @@ namespace CSharp.SourceGenerators.Extensions
         /// <param name="sources">Provide a list of sources which need to be analyzed and processed.</param>
         /// <param name="additionalTextPaths">A list of additional files.</param>
         /// <returns><see cref="ExecuteResult"/></returns>
-        public static ExecuteResult Execute(this ISourceGenerator sourceGenerator, IReadOnlyList<SourceFile> sources, IReadOnlyList<string>? additionalTextPaths = null)
+        public static ExecuteResult Execute(
+            this ISourceGenerator sourceGenerator,
+            IReadOnlyList<SourceFile> sources,
+            IReadOnlyList<string>? additionalTextPaths = null
+        )
+        {
+            return Execute(sourceGenerator, $"GeneratedNamespace_{Guid.NewGuid().ToString().Replace("-", "")}", sources, additionalTextPaths);
+        }
+
+        /// <summary>
+        /// Executes and runs the specified <see cref="ISourceGenerator"/>.
+        /// </summary>
+        /// <param name="sourceGenerator">The SourceGenerator to execute.</param>
+        /// <param name="assemblyName">The assembly name.</param>
+        /// <param name="sources">Provide a list of sources which need to be analyzed and processed.</param>
+        /// <param name="additionalTextPaths">A list of additional files.</param>
+        /// <returns><see cref="ExecuteResult"/></returns>
+        public static ExecuteResult Execute(
+            this ISourceGenerator sourceGenerator,
+            string assemblyName,
+            IReadOnlyList<SourceFile> sources,
+            IReadOnlyList<string>? additionalTextPaths = null
+        )
         {
             var metadataReferences = AppDomain.CurrentDomain.GetAssemblies()
                 .Where(a => !a.IsDynamic)
@@ -33,7 +55,7 @@ namespace CSharp.SourceGenerators.Extensions
             var additionalTexts = additionalTextPaths?.Select(tp => new CustomAdditionalText(tp)) ?? Enumerable.Empty<AdditionalText>();
 
             var compilation = CSharpCompilation.Create(
-                $"original-{Guid.NewGuid()}",
+                assemblyName,
                 sourceSyntaxTrees,
                 metadataReferences,
                 new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
