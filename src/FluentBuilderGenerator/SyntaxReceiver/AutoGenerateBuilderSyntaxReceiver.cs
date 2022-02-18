@@ -9,7 +9,6 @@ namespace FluentBuilderGenerator.SyntaxReceiver;
 
 internal class AutoGenerateBuilderSyntaxReceiver : IAutoGenerateBuilderSyntaxReceiver
 {
-    private static readonly string[] Modifiers = { "public", "partial" };
     private static readonly string[] AutoGenerateBuilderAttributes = { "FluentBuilder.AutoGenerateBuilder", "AutoGenerateBuilder" };
 
     public IList<FluentData> CandidateFluentDataItems { get; } = new List<FluentData>();
@@ -28,12 +27,6 @@ internal class AutoGenerateBuilderSyntaxReceiver : IAutoGenerateBuilderSyntaxRec
     private static bool TryGet(ClassDeclarationSyntax classDeclarationSyntax, out FluentData data)
     {
         data = default;
-
-        if (classDeclarationSyntax.Modifiers.Select(m => m.ToString()).Except(Modifiers).Count() != 0)
-        {
-            // ClassDeclarationSyntax should be "public" and "partial"
-            return false;
-        }
 
         var attributeLists = classDeclarationSyntax.AttributeLists.FirstOrDefault(x => x.Attributes.Any(a => AutoGenerateBuilderAttributes.Contains(a.Name.ToString())));
         if (attributeLists is null)
@@ -59,6 +52,13 @@ internal class AutoGenerateBuilderSyntaxReceiver : IAutoGenerateBuilderSyntaxRec
         var argumentList = attributeLists.Attributes.FirstOrDefault()?.ArgumentList;
         if (argumentList != null && argumentList.Arguments.Any())
         {
+            var modifiers = classDeclarationSyntax.Modifiers.Select(m => m.ToString()).ToArray();
+            if (!(modifiers.Contains("public") && modifiers.Contains("partial")))
+            {
+                // ClassDeclarationSyntax should be "public" + "partial"
+                return false;
+            }
+
             // The class which needs to be processed by the Builder is provided as type
             var typeSyntax = ((TypeOfExpressionSyntax)argumentList.Arguments[0].Expression).Type;
             var rawTypeName = typeSyntax.ToString();

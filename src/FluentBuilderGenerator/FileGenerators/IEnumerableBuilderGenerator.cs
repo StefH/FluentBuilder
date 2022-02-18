@@ -7,14 +7,16 @@ namespace FluentBuilderGenerator.FileGenerators;
 // ReSharper disable once InconsistentNaming
 internal class IEnumerableBuilderGenerator : IFileGenerator
 {
+    private readonly string _assemblyName;
     private readonly FileDataType _dataType;
     private readonly bool _supportsNullable;
     private readonly string _className;
     private readonly string _genericType;
     private readonly string _toArray;
 
-    public IEnumerableBuilderGenerator(FileDataType dataType, bool supportsNullable)
+    public IEnumerableBuilderGenerator(string assemblyName, FileDataType dataType, bool supportsNullable)
     {
+        _assemblyName = assemblyName;
         _dataType = dataType;
         _supportsNullable = supportsNullable;
         _className = dataType.ToString();
@@ -41,7 +43,7 @@ internal class IEnumerableBuilderGenerator : IFileGenerator
 using System;
 using System.Collections.Generic;
 
-namespace FluentBuilder
+namespace {_assemblyName}.FluentBuilder
 {{
     public partial class {_className}<T> : Builder<{_genericType}>
     {{

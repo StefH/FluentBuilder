@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <Version>0.3.2</Version>
+        <Version>0.4.0</Version>
         <TargetFramework>netstandard2.0</TargetFramework>
         <LangVersion>10.0</LangVersion>
         <Nullable>enable</Nullable>
@@ -26,6 +26,7 @@
         <IncludeBuildOutput>false</IncludeBuildOutput>
         <DevelopmentDependency>true</DevelopmentDependency>
         <ImplicitUsings>enable</ImplicitUsings>
+        <Configurations>Debug;Release;DebugAttach</Configurations>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)' == 'Release'">
@@ -42,6 +43,12 @@
         <EmbeddedResource Remove="bin\**" />
         <None Remove="bin\**" />
         <None Remove="bin\$(Configuration)\netstandard2.0\\FluentBuilderGenerator.dll" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Compile Update="FileGenerators\FluentBuilderClassesGenerator.*.cs">
+            <DependentUpon>FluentBuilderClassesGenerator.cs</DependentUpon>
+        </Compile>
     </ItemGroup>
 
     <ItemGroup>

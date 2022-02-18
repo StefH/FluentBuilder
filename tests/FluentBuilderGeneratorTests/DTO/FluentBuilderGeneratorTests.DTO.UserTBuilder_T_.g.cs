@@ -11,12 +11,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using FluentBuilder;
+using FluentBuilderGeneratorTests.FluentBuilder;
 using FluentBuilderGeneratorTests.DTO;
 
 namespace FluentBuilderGeneratorTests.DTO
 {
-    public partial class UserTBuilder<T> : Builder<UserT<T>> where T : struct
+    public partial class UserTBuilder<T> : Builder<FluentBuilderGeneratorTests.DTO.UserT<T>> where T : struct
     {
         private bool _tValueIsSet;
         private Lazy<T> _tValue = new Lazy<T>(() => default(T));

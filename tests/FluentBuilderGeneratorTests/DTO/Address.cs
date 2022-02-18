@@ -31,5 +31,7 @@ namespace FluentBuilderGeneratorTests.DTO
         public IDictionary<string, int> IDictionary2 { get; set; }
 
         public Dictionary<string, int> Dictionary2 { get; set; }
+
+        // public Dictionary<long, WireMockList<string>> DictionaryWireMockListString { get; set; }
     }
 }

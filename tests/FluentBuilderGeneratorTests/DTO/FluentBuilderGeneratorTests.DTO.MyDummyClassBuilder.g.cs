@@ -11,12 +11,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using FluentBuilder;
+using FluentBuilderGeneratorTests.FluentBuilder;
 using FluentBuilderGeneratorTests.DTO;
 
 namespace FluentBuilderGeneratorTests.DTO
 {
-    public partial class MyDummyClassBuilder : Builder<DummyClass>
+    public partial class MyDummyClassBuilder : Builder<FluentBuilderGeneratorTests.DTO.DummyClass>
     {
         private bool _idIsSet;
         private Lazy<int> _id = new Lazy<int>(() => default(int));

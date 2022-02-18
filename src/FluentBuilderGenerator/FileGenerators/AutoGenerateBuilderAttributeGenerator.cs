@@ -7,11 +7,14 @@ namespace FluentBuilderGenerator.FileGenerators;
 
 internal class AutoGenerateBuilderAttributeGenerator : IFileGenerator
 {
-    private readonly bool _supportsNullable;
     private const string Name = "FluentBuilder.AutoGenerateBuilderAttribute.g.cs";
 
-    public AutoGenerateBuilderAttributeGenerator(bool supportsNullable)
+    private readonly string _assemblyName;
+    private readonly bool _supportsNullable;
+    
+    public AutoGenerateBuilderAttributeGenerator(string assemblyName, bool supportsNullable)
     {
+        _assemblyName = assemblyName;
         _supportsNullable = supportsNullable;
     }
 
@@ -33,10 +36,10 @@ internal class AutoGenerateBuilderAttributeGenerator : IFileGenerator
 {(_supportsNullable ? "#nullable enable" : string.Empty)}
 using System;
 
-namespace FluentBuilder
+namespace {_assemblyName}.FluentBuilder
 {{
     [AttributeUsage(AttributeTargets.Class)]
-    sealed class AutoGenerateBuilderAttribute : Attribute
+    public sealed class AutoGenerateBuilderAttribute : Attribute
     {{
         public Type{(_supportsNullable ? "?" : string.Empty)} Type {{ get; }}
 

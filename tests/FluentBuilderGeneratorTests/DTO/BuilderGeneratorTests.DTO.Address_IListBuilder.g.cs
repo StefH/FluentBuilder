@@ -11,14 +11,14 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using FluentBuilder;
+using FluentBuilderGeneratorTests.FluentBuilder;
 using FluentBuilderGeneratorTests.DTO;
 
 namespace FluentBuilderGeneratorTests.DTO
 {
-    public partial class IListAddressBuilder : Builder<IList<Address>>
+    public partial class IListAddressBuilder : Builder<IList<FluentBuilderGeneratorTests.DTO.Address>>
     {
-        private readonly Lazy<List<Address>> _list = new Lazy<List<Address>>(() => new List<Address>());
+        private readonly Lazy<List<FluentBuilderGeneratorTests.DTO.Address>> _list = new Lazy<List<FluentBuilderGeneratorTests.DTO.Address>>(() => new List<FluentBuilderGeneratorTests.DTO.Address>());
         public IListAddressBuilder Add(Address item) => Add(() => item);
         public IListAddressBuilder Add(Func<Address> func)
         {
@@ -34,11 +34,11 @@ namespace FluentBuilderGeneratorTests.DTO
         }
 
 
-        public override IList<Address> Build(bool useObjectInitializer = true)
+        public override IList<FluentBuilderGeneratorTests.DTO.Address> Build(bool useObjectInitializer = true)
         {
             if (Object?.IsValueCreated != true)
             {
-                Object = new Lazy<IList<Address>>(() =>
+                Object = new Lazy<IList<FluentBuilderGeneratorTests.DTO.Address>>(() =>
                 {
                     return _list.Value;
                 });

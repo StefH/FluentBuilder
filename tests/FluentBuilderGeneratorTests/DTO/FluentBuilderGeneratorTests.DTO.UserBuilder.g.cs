@@ -11,12 +11,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using FluentBuilder;
+using FluentBuilderGeneratorTests.FluentBuilder;
 using FluentBuilderGeneratorTests.DTO;
 
 namespace FluentBuilderGeneratorTests.DTO
 {
-    public partial class UserBuilder : Builder<User>
+    public partial class UserBuilder : Builder<FluentBuilderGeneratorTests.DTO.User>
     {
         private bool _firstNameIsSet;
         private Lazy<string> _firstName = new Lazy<string>(() => default(string));
@@ -75,9 +75,9 @@ namespace FluentBuilderGeneratorTests.DTO
             _testDummyClassIsSet = true;
             return this;
         }
-        public UserBuilder WithTestDummyClass(Action<MyDummyClassBuilder> action, bool useObjectInitializer = true) => WithTestDummyClass(() =>
+        public UserBuilder WithTestDummyClass(Action<FluentBuilderGeneratorTests.DTO.MyDummyClassBuilder> action, bool useObjectInitializer = true) => WithTestDummyClass(() =>
         {
-            var builder = new MyDummyClassBuilder();
+            var builder = new FluentBuilderGeneratorTests.DTO.MyDummyClassBuilder();
             action(builder);
             return builder.Build(useObjectInitializer);
         });
