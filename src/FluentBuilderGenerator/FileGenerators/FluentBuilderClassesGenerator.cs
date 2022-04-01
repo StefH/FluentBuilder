@@ -6,7 +6,6 @@ using FluentBuilderGenerator.SyntaxReceiver;
 using FluentBuilderGenerator.Types;
 using FluentBuilderGenerator.Wrappers;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace FluentBuilderGenerator.FileGenerators;
 
