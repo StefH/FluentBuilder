@@ -46,7 +46,7 @@ namespace Test
     {
         static void Main(string[] args)
         {
-            var user = new FluentBuilder.UserBuilder()
+            var user = new UserBuilder()
                 .WithFirstName("Test")
                 .WithLastName("User")
                 .Build();

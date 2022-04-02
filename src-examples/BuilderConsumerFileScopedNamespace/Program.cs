@@ -1,3 +1,5 @@
+using BuilderConsumerFileScopedNamespace;
+
 var user = new UserBuilder()
     .WithFirstName("Test")
     .WithLastName("User")
