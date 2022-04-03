@@ -1,4 +1,4 @@
-# 0.4.0 (18 February 2022)
-- #21 Use full type name + change namespace from builders [bug]
+# 0.4.2 (03 April 2022)
+- #23 Add support for file scoped namespaces [enhancement]
 
 The full release notes can be found here: https://github.com/StefH/FluentBuilder/blob/main/ReleaseNotes.md

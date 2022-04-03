@@ -84,7 +84,7 @@ namespace Test
     {
         static void Main(string[] args)
         {
-            var user = new FluentBuilder.UserBuilder()
+            var user = new UserBuilder()
                 .WithLastName("User")
                 .Build(false); // ⭐ Provide `false` for `useObjectInitializer` here.
 
@@ -96,7 +96,7 @@ namespace Test
 
 ### Using FluentBuilder when a class has an `Array` or `IEnumerable<T>` property
 ``` c#
-[FluentBuilder.AutoGenerateBuilder]
+[AutoGenerateBuilder]
 public class UserDto
 {
     public IEnumerable<EmailDto> SecondaryEmails { get; set; }
@@ -106,7 +106,7 @@ public class UserDto
 ```
 
 ``` c#
-var user = new FluentBuilder.UserDtoBuilder()
+var user = new UserDtoBuilder()
     .WithIntArray(ib => ib         // 👈 Use a Integer Array Builder
         .Add(1)                    // Add a normal integer
 
@@ -129,7 +129,7 @@ var user = new FluentBuilder.UserDtoBuilder()
 
 ### Using FluentBuilder when a class has an `IDictionary<TKey, TValue>` property
 ``` c#
-[FluentBuilder.AutoGenerateBuilder]
+[AutoGenerateBuilder]
 public class UserDto
 {
     public IDictionary<string, int> Tags { get; set; }
@@ -137,7 +137,7 @@ public class UserDto
 ```
 
 ``` c#
-var user = new FluentBuilder.UserDtoBuilder()
+var user = new UserDtoBuilder()
     .WithTags(db => db      // 👈 Use a Dictionary<TKey, TValue> Builder
         .Add("test", 123)   // Add a key with value
 
@@ -151,9 +151,9 @@ var user = new FluentBuilder.UserDtoBuilder()
 This scenario is very usefull when you cannot modify the class to annotate it.
 
 ### Create a public and partial builder class
-And annotate this class with `[FluentBuilder.AutoGenerateBuilder(typeof(XXX))]` where `XXX` is the type for which you want to generate a FluentBuilder.
+And annotate this class with `[AutoGenerateBuilder(typeof(XXX))]` where `XXX` is the type for which you want to generate a FluentBuilder.
 ``` c#
-[FluentBuilder.AutoGenerateBuilder(typeof(UserDto))]
+[AutoGenerateBuilder(typeof(UserDto))]
 public partial class MyUserDtoBuilder
 {
 }

@@ -1,8 +1,8 @@
 # Usage
 ### :one: Annotate a class
-Annotate a class with `[FluentBuilder.AutoGenerateBuilder]` to indicate that a FluentBuilder should be generated for this class:
+Annotate a class with `[AutoGenerateBuilder]` to indicate that a FluentBuilder should be generated for this class:
 ``` c#
-[FluentBuilder.AutoGenerateBuilder]
+[AutoGenerateBuilder]
 public class User
 {
     public string FirstName { get; set; }
@@ -17,9 +17,9 @@ public class User
 This scenario is very usefull when you cannot modify the class to annotate it.
 
 #### Create a public and partial builder class
-And annotate this class with `[FluentBuilder.AutoGenerateBuilder(typeof(XXX))]` where `XXX` is the type for which you want to generate a FluentBuilder.
+And annotate this class with `[AutoGenerateBuilder(typeof(XXX))]` where `XXX` is the type for which you want to generate a FluentBuilder.
 ``` c#
-[FluentBuilder.AutoGenerateBuilder(typeof(UserDto))]
+[AutoGenerateBuilder(typeof(UserDto))]
 public partial class MyUserDtoBuilder
 {
 }
@@ -35,7 +35,7 @@ namespace Test
     {
         static void Main(string[] args)
         {
-            var user = new FluentBuilder.UserBuilder()
+            var user = new UserBuilder()
                 .WithFirstName("Test")
                 .WithLastName("User")
                 .Build();
