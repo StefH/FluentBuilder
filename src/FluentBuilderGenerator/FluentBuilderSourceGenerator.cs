@@ -48,7 +48,7 @@ internal class FluentBuilderSourceGenerator : ISourceGenerator
     private static void GenerateError(IGeneratorExecutionContextWrapper context, Exception exception)
     {
         var message = $"/*\r\n{nameof(FluentBuilderSourceGenerator)}\r\n\r\n[Exception]\r\n{exception}\r\n\r\n[StackTrace]\r\n{exception.StackTrace}*/";
-        context.AddSource("Error.g", SourceText.From(message, Encoding.UTF8));
+        context.AddSource("Error.g.cs", SourceText.From(message, Encoding.UTF8));
     }
 
     private static void InjectGeneratedClasses(IGeneratorExecutionContextWrapper context)

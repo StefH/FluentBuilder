@@ -27,8 +27,8 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="3.10.0" />
-        <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.10.0" />
+        <!--<PackageReference Include="Microsoft.CodeAnalysis.Common" Version="3.10.0" />-->
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.1.0" />
         <PackageReference Include="AnyOf" Version="0.3.0" />
     </ItemGroup>
 

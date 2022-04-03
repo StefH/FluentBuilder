@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text.Json;
 using BuilderConsumer.FluentBuilder;
 using ConsumerClassLibrary;
+using FluentBuilder;
 
 namespace BuilderConsumer
 {
@@ -111,7 +112,7 @@ namespace BuilderConsumer
         }
     }
 
-    [FluentBuilder.AutoGenerateBuilder]
+    [AutoGenerateBuilder]
     public class UserDto
     {
         public int Age { get; set; }
@@ -137,13 +138,13 @@ namespace BuilderConsumer
         public IDictionary<string, int> Dictionary1 { get; set; }
     }
 
-    [FluentBuilder.AutoGenerateBuilder]
+    [AutoGenerateBuilder]
     public class UserDtoT<T> where T : struct
     {
         public T TValue { get; set; }
     }
 
-    [FluentBuilder.AutoGenerateBuilder]
+    [AutoGenerateBuilder]
     public class UserDtoTT<T1, T2>
         where T1 : struct
         where T2 : class, new()
@@ -153,7 +154,7 @@ namespace BuilderConsumer
         public T2 T2Value { get; set; }
     }
 
-    [FluentBuilder.AutoGenerateBuilder]
+    [AutoGenerateBuilder]
     public class EmailDto
     {
         public string Address { get; set; }
@@ -161,7 +162,7 @@ namespace BuilderConsumer
         public bool Primary { get; set; }
     }
 
-    [FluentBuilder.AutoGenerateBuilder]
+    [AutoGenerateBuilder]
     public class EmailDtoWithConstructor
     {
         public string Address { get; set; }
@@ -175,7 +176,7 @@ namespace BuilderConsumer
         }
     }
 
-    [FluentBuilder.AutoGenerateBuilder]
+    [AutoGenerateBuilder]
     public class UserWithEmailDto
     {
         public int Age { get; set; }

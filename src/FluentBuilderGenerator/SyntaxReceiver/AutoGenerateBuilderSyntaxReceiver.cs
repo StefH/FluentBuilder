@@ -37,10 +37,9 @@ internal class AutoGenerateBuilderSyntaxReceiver : IAutoGenerateBuilderSyntaxRec
 
         var usings = new List<string>();
 
-        string ns = string.Empty;
-        if (classDeclarationSyntax.TryGetParentSyntax(out NamespaceDeclarationSyntax? namespaceDeclarationSyntax))
+        string ns = classDeclarationSyntax.GetNamespace();
+        if (!string.IsNullOrEmpty(ns))
         {
-            ns = namespaceDeclarationSyntax.Name.ToString();
             usings.Add(ns);
         }
 
@@ -67,7 +66,7 @@ internal class AutoGenerateBuilderSyntaxReceiver : IAutoGenerateBuilderSyntaxRec
             {
                 Namespace = ns,
                 ShortBuilderClassName = $"{classDeclarationSyntax.Identifier}",
-                FullBuilderClassName = $"{ns}.{classDeclarationSyntax.Identifier}",
+                FullBuilderClassName = CreateFullBuilderClassName(ns, classDeclarationSyntax),
                 FullRawTypeName = rawTypeName,
                 ShortTypeName = ConvertTypeName(rawTypeName).Split('.').Last(),
                 MetadataName = ConvertTypeName(rawTypeName),
@@ -97,7 +96,9 @@ internal class AutoGenerateBuilderSyntaxReceiver : IAutoGenerateBuilderSyntaxRec
 
     private static string GetFullType(string ns, ClassDeclarationSyntax classDeclarationSyntax, bool addBuilderPostfix)
     {
-        var type = $"{ns}.{classDeclarationSyntax.Identifier}{(addBuilderPostfix ? "Builder" : string.Empty)}";
+        var fullBuilderClassName = CreateFullBuilderClassName(ns, classDeclarationSyntax);
+        var type = $"{fullBuilderClassName}{(addBuilderPostfix ? "Builder" : string.Empty)}";
+
         if (classDeclarationSyntax.TypeParameterList != null)
         {
             var list = classDeclarationSyntax.TypeParameterList.Parameters.Select(p => p.Identifier.ToString());
@@ -105,6 +106,11 @@ internal class AutoGenerateBuilderSyntaxReceiver : IAutoGenerateBuilderSyntaxRec
         }
 
         return type;
+    }
+
+    private static string CreateFullBuilderClassName(string ns, BaseTypeDeclarationSyntax classDeclarationSyntax)
+    {
+        return !string.IsNullOrEmpty(ns) ? $"{ns}.{classDeclarationSyntax.Identifier}" : classDeclarationSyntax.Identifier.ToString();
     }
 
     private static string ConvertTypeName(string typeName)
