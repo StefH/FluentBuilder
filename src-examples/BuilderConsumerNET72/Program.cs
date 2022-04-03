@@ -22,7 +22,7 @@ namespace BuilderConsumerNET72
         }
     }
 
-    [FluentBuilder.AutoGenerateBuilder]
+    [AutoGenerateBuilder]
     public class UserDto
     {
         public string FirstName { get; set; }
@@ -36,7 +36,7 @@ namespace BuilderConsumerNET72
         public DateTime? QuitDate { get; set; }
     }
 
-    [FluentBuilder.AutoGenerateBuilder]
+    [AutoGenerateBuilder]
     public class EmailDto
     {
         public string Value { get; set; }

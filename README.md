@@ -25,7 +25,7 @@ Or via the Visual Studio NuGet package manager or if you use the `dotnet` comman
 ### Annotate a class
 Annotate an existing class with `[FluentBuilder.AutoGenerateBuilder]` to indicate that a FluentBuilder should be generated for this class:
 ``` c#
-[FluentBuilder.AutoGenerateBuilder]
+[AutoGenerateBuilder]
 public class User
 {
     public string FirstName { get; set; }
@@ -59,7 +59,7 @@ namespace Test
 
 ### Use FluentBuilder when the class has a default constructor
 ``` c#
-[FluentBuilder.AutoGenerateBuilder]
+[AutoGenerateBuilder]
 public class User
 {
     public string FirstName { get; set; }

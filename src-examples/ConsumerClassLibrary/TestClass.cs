@@ -1,8 +1,9 @@
 using System.Collections.Generic;
+using FluentBuilder;
 
 namespace ConsumerClassLibrary
 {
-    [FluentBuilder.AutoGenerateBuilder]
+    [AutoGenerateBuilder]
     public class TestClass
     {
         public int Id { get; set; }

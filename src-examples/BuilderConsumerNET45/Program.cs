@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using FluentBuilder;
 
 namespace BuilderConsumerNET45
 {
@@ -7,11 +8,11 @@ namespace BuilderConsumerNET45
     {
         static void Main(string[] args)
         {
-            var email = new FluentBuilder.EmailDtoBuilder()
+            var email = new EmailDtoBuilder()
                 .WithValue("x@x.nl")
                 .Build();
 
-            var user = new FluentBuilder.UserDtoBuilder()
+            var user = new UserDtoBuilder()
                         .WithFirstName("Stef")
                         .WithLastName("Heyenrath")
                         .WithPrimaryEmail(email)
@@ -21,7 +22,7 @@ namespace BuilderConsumerNET45
         }
     }
 
-    [FluentBuilder.AutoGenerateBuilder]
+    [AutoGenerateBuilder]
     public class UserDto
     {
         public string FirstName { get; set; }
@@ -35,7 +36,7 @@ namespace BuilderConsumerNET45
         public DateTime? QuitDate { get; set; }
     }
 
-    [FluentBuilder.AutoGenerateBuilder]
+    [AutoGenerateBuilder]
     public class EmailDto
     {
         public string Value { get; set; }
