@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Text.Json;
-using BuilderConsumer.FluentBuilder;
 using ConsumerClassLibrary;
 using FluentBuilder;
 
@@ -117,25 +116,25 @@ namespace BuilderConsumer
     {
         public int Age { get; set; }
 
-        public string FirstName { get; set; }
+        public string FirstName { get; set; } = null!;
 
-        public string LastName { get; set; }
+        public string LastName { get; set; } = null!;
 
-        public EmailDto PrimaryEmail { get; set; }
+        public EmailDto PrimaryEmail { get; set; } = null!;
 
-        public IEnumerable<EmailDto> SecondaryEmails { get; set; }
+        public IEnumerable<EmailDto>? SecondaryEmails { get; set; }
 
         public DateTime? QuitDate { get; set; }
 
         public TestDto? Test { get; set; }
 
-        public UserDtoT<long> UserDtoT { get; set; }
+        public UserDtoT<long> UserDtoT { get; set; } = null!;
 
-        public int[] IntArray { get; set; }
+        public int[] IntArray { get; set; } = null!;
 
-        public EmailDto[] EmailDtoArray { get; set; }
+        public EmailDto[] EmailDtoArray { get; set; } = null!;
 
-        public IDictionary<string, int> Dictionary1 { get; set; }
+        public IDictionary<string, int> Dictionary1 { get; set; } = null!;
     }
 
     [AutoGenerateBuilder]
@@ -151,13 +150,13 @@ namespace BuilderConsumer
     {
         public T1 T1Value { get; set; }
 
-        public T2 T2Value { get; set; }
+        public T2? T2Value { get; set; }
     }
 
     [AutoGenerateBuilder]
     public class EmailDto
     {
-        public string Address { get; set; }
+        public string Address { get; set; } = null!;
 
         public bool Primary { get; set; }
     }
@@ -181,14 +180,14 @@ namespace BuilderConsumer
     {
         public int Age { get; set; }
 
-        public EmailDto Email { get; set; }
+        public EmailDto Email { get; set; } = null!;
 
-        public EmailDtoWithConstructor EmailWithConstructor { get; set; }
+        public EmailDtoWithConstructor EmailWithConstructor { get; set; } = null!;
     }
 
     public class TestDto
     {
-        public string X { get; set; }
+        public string? X { get; set; }
     }
 
     public class MyTestDto

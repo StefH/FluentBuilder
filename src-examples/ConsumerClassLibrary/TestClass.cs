@@ -8,6 +8,6 @@ namespace ConsumerClassLibrary
     {
         public int Id { get; set; }
 
-        public List<string> Values { get; set; }
+        public List<string> Values { get; set; } = null!;
     }
 }
