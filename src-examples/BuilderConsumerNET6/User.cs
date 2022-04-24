@@ -1,15 +1,14 @@
 using System;
 using FluentBuilder;
 
-namespace BuilderConsumerNET6
+namespace BuilderConsumerNET6;
+
+[AutoGenerateBuilder]
+public class User : BaseClass
 {
-    [AutoGenerateBuilder]
-    public class User
-    {
-        public string FirstName { get; set; }
+    public string FirstName { get; set; } = null!;
 
-        public string LastName { get; set; }
+    public string? LastName { get; set; }
 
-        public DateTime? Date { get; set; }
-    }
+    public DateTime? Date { get; set; }
 }

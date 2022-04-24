@@ -1,17 +1,17 @@
 using System;
 
-namespace BuilderConsumerNET6
-{
-    class Program
-    {
-        static void Main(string[] args)
-        {
-            var user = new UserBuilder()
-                .WithFirstName("Test")
-                .WithLastName("User")
-                .Build();
+namespace BuilderConsumerNET6;
 
-            Console.WriteLine($"{user.FirstName} {user.LastName}");
-        }
+internal class Program
+{
+    static void Main(string[] args)
+    {
+        var user = new UserBuilder()
+            .WithId(42)
+            .WithFirstName("Test")
+            .WithLastName("User")
+            .Build();
+
+        Console.WriteLine($"{user.FirstName} {user.LastName} {user.Id}");
     }
 }
