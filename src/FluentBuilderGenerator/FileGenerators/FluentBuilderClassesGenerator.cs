@@ -93,7 +93,7 @@ namespace {classSymbol.BuilderNamespace}
         {
             sb.AppendLine($"        private bool _{CamelCase(property.Name)}IsSet;");
 
-            sb.AppendLine($"        private Lazy<{property.Type}> _{CamelCase(property.Name)} = new Lazy<{property.Type}>(() => default({property.Type}));");
+            sb.AppendLine($"        private Lazy<{property.Type}> _{CamelCase(property.Name)} = new Lazy<{property.Type}>(() => {property.Type.GetDefault()});");
 
             sb.AppendLine($"        public {className} With{property.Name}({property.Type} value) => With{property.Name}(() => value);");
 
@@ -103,7 +103,7 @@ namespace {classSymbol.BuilderNamespace}
 
             sb.AppendLine($"        public {className} Without{property.Name}()");
             sb.AppendLine("        {");
-            sb.AppendLine($"            With{property.Name}(() => default({property.Type}));");
+            sb.AppendLine($"            With{property.Name}(() => {property.Type.GetDefault()});");
             sb.AppendLine($"            _{CamelCase(property.Name)}IsSet = false;");
             sb.AppendLine("            return this;");
             sb.AppendLine("        }");

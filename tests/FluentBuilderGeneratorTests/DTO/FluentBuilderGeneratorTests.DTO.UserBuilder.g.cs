@@ -19,7 +19,7 @@ namespace FluentBuilderGeneratorTests.DTO
     public partial class UserBuilder : Builder<FluentBuilderGeneratorTests.DTO.User>
     {
         private bool _firstNameIsSet;
-        private Lazy<string> _firstName = new Lazy<string>(() => default(string));
+        private Lazy<string> _firstName = new Lazy<string>(() => string.Empty);
         public UserBuilder WithFirstName(string value) => WithFirstName(() => value);
         public UserBuilder WithFirstName(Func<string> func)
         {
@@ -29,13 +29,13 @@ namespace FluentBuilderGeneratorTests.DTO
         }
         public UserBuilder WithoutFirstName()
         {
-            WithFirstName(() => default(string));
+            WithFirstName(() => string.Empty);
             _firstNameIsSet = false;
             return this;
         }
 
         private bool _lastNameIsSet;
-        private Lazy<string> _lastName = new Lazy<string>(() => default(string));
+        private Lazy<string> _lastName = new Lazy<string>(() => string.Empty);
         public UserBuilder WithLastName(string value) => WithLastName(() => value);
         public UserBuilder WithLastName(Func<string> func)
         {
@@ -45,7 +45,7 @@ namespace FluentBuilderGeneratorTests.DTO
         }
         public UserBuilder WithoutLastName()
         {
-            WithLastName(() => default(string));
+            WithLastName(() => string.Empty);
             _lastNameIsSet = false;
             return this;
         }

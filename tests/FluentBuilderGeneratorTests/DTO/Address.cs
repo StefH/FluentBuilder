@@ -8,7 +8,7 @@ namespace FluentBuilderGeneratorTests.DTO
     {
         public int HouseNumber { get; set; }
 
-        public string City { get; set; }
+        public string? City { get; set; }
 
         public string[] Array { get; set; }
 

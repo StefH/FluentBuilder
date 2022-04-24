@@ -101,4 +101,41 @@ internal static class TypeSymbolExtensions
 
     internal static bool IsStruct(this ITypeSymbol namedType) =>
         namedType.IsValueType && namedType.TypeKind == TypeKind.Struct;
+
+    internal static string GetDefault(this ITypeSymbol typeSymbol)
+    {
+        if (typeSymbol.IsValueType || typeSymbol.NullableAnnotation == NullableAnnotation.Annotated)
+        {
+            return $"default({typeSymbol})";
+        }
+
+        var kind = typeSymbol.GetFluentTypeKind();
+        switch (kind)
+        {
+            case FluentTypeKind.String:
+                return "string.Empty";
+
+            case FluentTypeKind.Array:
+                var arrayTypeSymbol = (IArrayTypeSymbol)typeSymbol;
+                return $"Array.Empty<{arrayTypeSymbol.ElementType}>()";
+
+            case FluentTypeKind.IEnumerable:
+                // https://stackoverflow.com/questions/41466062/how-to-get-underlying-type-for-ienumerablet-with-roslyn
+                var namedTypeSymbol = (INamedTypeSymbol)typeSymbol;
+                return $"Array.Empty<{namedTypeSymbol.TypeArguments[0]}>()";
+
+            case FluentTypeKind.IList:
+            case FluentTypeKind.ICollection:
+                var listSymbol = (INamedTypeSymbol)typeSymbol;
+                return $"new List<{listSymbol.TypeArguments[0]}>()";
+
+            case FluentTypeKind.IDictionary:
+                var dictionarySymbol = (INamedTypeSymbol)typeSymbol;
+                return dictionarySymbol.TypeArguments.Any() ?
+                    $"new Dictionary<{dictionarySymbol.TypeArguments[0]}, {dictionarySymbol.TypeArguments[1]}>()" :
+                    "new Dictionary<object, object>()";
+        }
+
+        return $"default({typeSymbol})";
+    }
 }
