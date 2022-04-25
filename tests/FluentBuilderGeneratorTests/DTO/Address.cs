@@ -14,6 +14,14 @@ namespace FluentBuilderGeneratorTests.DTO
 
         public Address[] Array2 { get; set; }
 
+        public ThingWithConstructorWith2Parameters ThingWithConstructorWith2Parameters { get; set; }
+
+        public ThingWithoutDefaultConstructor ThingWithoutDefaultConstructor { get; set; }
+
+        public ThingWithPrivateConstructor ThingWithPrivateConstructor { get; set; }
+
+        public Thing Thing { get; set; }
+
         public IEnumerable<byte> Enumerable { get; set; }
 
         public IEnumerable<Address> Enumerable2 { get; set; }

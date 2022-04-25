@@ -67,7 +67,7 @@ namespace FluentBuilderGeneratorTests.DTO
         }
 
         private bool _testDummyClassIsSet;
-        private Lazy<FluentBuilderGeneratorTests.DTO.DummyClass> _testDummyClass = new Lazy<FluentBuilderGeneratorTests.DTO.DummyClass>(() => default(FluentBuilderGeneratorTests.DTO.DummyClass));
+        private Lazy<FluentBuilderGeneratorTests.DTO.DummyClass> _testDummyClass = new Lazy<FluentBuilderGeneratorTests.DTO.DummyClass>(() => new FluentBuilderGeneratorTests.DTO.DummyClass());
         public UserBuilder WithTestDummyClass(FluentBuilderGeneratorTests.DTO.DummyClass value) => WithTestDummyClass(() => value);
         public UserBuilder WithTestDummyClass(Func<FluentBuilderGeneratorTests.DTO.DummyClass> func)
         {
@@ -83,7 +83,7 @@ namespace FluentBuilderGeneratorTests.DTO
         });
         public UserBuilder WithoutTestDummyClass()
         {
-            WithTestDummyClass(() => default(FluentBuilderGeneratorTests.DTO.DummyClass));
+            WithTestDummyClass(() => new FluentBuilderGeneratorTests.DTO.DummyClass());
             _testDummyClassIsSet = false;
             return this;
         }
