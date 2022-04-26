@@ -127,7 +127,7 @@ namespace FluentBuilderGeneratorTests.DTO2
         }
 
         private bool _thingWithPrivateConstructorIsSet;
-        private Lazy<FluentBuilderGeneratorTests.DTO.ThingWithPrivateConstructor> _thingWithPrivateConstructor = new Lazy<FluentBuilderGeneratorTests.DTO.ThingWithPrivateConstructor>(() => default(FluentBuilderGeneratorTests.DTO.ThingWithPrivateConstructor));
+        private Lazy<FluentBuilderGeneratorTests.DTO.ThingWithPrivateConstructor> _thingWithPrivateConstructor = new Lazy<FluentBuilderGeneratorTests.DTO.ThingWithPrivateConstructor>(() => default(FluentBuilderGeneratorTests.DTO.ThingWithPrivateConstructor)!);
         public MyAddressBuilder WithThingWithPrivateConstructor(FluentBuilderGeneratorTests.DTO.ThingWithPrivateConstructor value) => WithThingWithPrivateConstructor(() => value);
         public MyAddressBuilder WithThingWithPrivateConstructor(Func<FluentBuilderGeneratorTests.DTO.ThingWithPrivateConstructor> func)
         {
@@ -137,7 +137,7 @@ namespace FluentBuilderGeneratorTests.DTO2
         }
         public MyAddressBuilder WithoutThingWithPrivateConstructor()
         {
-            WithThingWithPrivateConstructor(() => default(FluentBuilderGeneratorTests.DTO.ThingWithPrivateConstructor));
+            WithThingWithPrivateConstructor(() => default(FluentBuilderGeneratorTests.DTO.ThingWithPrivateConstructor)!);
             _thingWithPrivateConstructorIsSet = false;
             return this;
         }
@@ -155,6 +155,22 @@ namespace FluentBuilderGeneratorTests.DTO2
         {
             WithThing(() => new FluentBuilderGeneratorTests.DTO.Thing());
             _thingIsSet = false;
+            return this;
+        }
+
+        private bool _thingIsStructIsSet;
+        private Lazy<FluentBuilderGeneratorTests.DTO.ThingIsStruct> _thingIsStruct = new Lazy<FluentBuilderGeneratorTests.DTO.ThingIsStruct>(() => default(FluentBuilderGeneratorTests.DTO.ThingIsStruct));
+        public MyAddressBuilder WithThingIsStruct(FluentBuilderGeneratorTests.DTO.ThingIsStruct value) => WithThingIsStruct(() => value);
+        public MyAddressBuilder WithThingIsStruct(Func<FluentBuilderGeneratorTests.DTO.ThingIsStruct> func)
+        {
+            _thingIsStruct = new Lazy<FluentBuilderGeneratorTests.DTO.ThingIsStruct>(func);
+            _thingIsStructIsSet = true;
+            return this;
+        }
+        public MyAddressBuilder WithoutThingIsStruct()
+        {
+            WithThingIsStruct(() => default(FluentBuilderGeneratorTests.DTO.ThingIsStruct));
+            _thingIsStructIsSet = false;
             return this;
         }
 
@@ -369,6 +385,7 @@ namespace FluentBuilderGeneratorTests.DTO2
                             ThingWithoutDefaultConstructor = _thingWithoutDefaultConstructor.Value,
                             ThingWithPrivateConstructor = _thingWithPrivateConstructor.Value,
                             Thing = _thing.Value,
+                            ThingIsStruct = _thingIsStruct.Value,
                             Enumerable = _enumerable.Value,
                             Enumerable2 = _enumerable2.Value,
                             List = _list.Value,
@@ -390,6 +407,7 @@ namespace FluentBuilderGeneratorTests.DTO2
                     if (_thingWithoutDefaultConstructorIsSet) { instance.ThingWithoutDefaultConstructor = _thingWithoutDefaultConstructor.Value; }
                     if (_thingWithPrivateConstructorIsSet) { instance.ThingWithPrivateConstructor = _thingWithPrivateConstructor.Value; }
                     if (_thingIsSet) { instance.Thing = _thing.Value; }
+                    if (_thingIsStructIsSet) { instance.ThingIsStruct = _thingIsStruct.Value; }
                     if (_enumerableIsSet) { instance.Enumerable = _enumerable.Value; }
                     if (_enumerable2IsSet) { instance.Enumerable2 = _enumerable2.Value; }
                     if (_listIsSet) { instance.List = _list.Value; }

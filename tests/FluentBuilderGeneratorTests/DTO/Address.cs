@@ -22,6 +22,8 @@ namespace FluentBuilderGeneratorTests.DTO
 
         public Thing Thing { get; set; }
 
+        public ThingIsStruct ThingIsStruct { get; set; }
+
         public IEnumerable<byte> Enumerable { get; set; }
 
         public IEnumerable<Address> Enumerable2 { get; set; }

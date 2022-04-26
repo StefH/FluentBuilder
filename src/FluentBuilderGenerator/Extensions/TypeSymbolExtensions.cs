@@ -144,15 +144,16 @@ internal static class TypeSymbolExtensions
 
     private static string GetNewConstructor(ITypeSymbol typeSymbol)
     {
-        if (typeSymbol is INamedTypeSymbol namedTypeSymbol && namedTypeSymbol.Constructors.Any())
+        if (typeSymbol is INamedTypeSymbol namedTypeSymbol)
         {
-            var con = namedTypeSymbol.Constructors.OrderBy(c => c.Parameters.Length).First();
-
-            var list = new List<string>();
-            foreach (var p in con.Parameters)
+            if (!namedTypeSymbol.Constructors.Any())
             {
-                list.Add(p.Type.GetDefault());
+                return $"default({typeSymbol})!";
             }
+
+            var publicConstructor = namedTypeSymbol.Constructors.OrderBy(c => c.Parameters.Length).First();
+
+            var list = publicConstructor.Parameters.Select(p => p.Type.GetDefault());
 
             return $"new {typeSymbol}({string.Join(", ", list)})";
         }
