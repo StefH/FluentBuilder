@@ -12,8 +12,8 @@
         <ProjectReference Include="..\..\src\FluentBuilderGenerator\FluentBuilderGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
     </ItemGroup>
 
-    <ItemGroup Condition=" '$(Configuration)' != 'DebugAttach' ">
-        <PackageReference Include="FluentBuilder" Version="0.4.2">
+    <ItemGroup Condition=" '$(Configuration)' == 'Release' ">
+        <PackageReference Include="FluentBuilder" Version="0.4.3">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>

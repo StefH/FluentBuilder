@@ -1,3 +1,8 @@
+# 0.4.3 (27 April 2022)
+- [#24](https://github.com/StefH/FluentBuilder/pull/24) - Use correct default value for reference types [bug] contributed by [StefH](https://github.com/StefH)
+- [#25](https://github.com/StefH/FluentBuilder/pull/25) - Create correct default() statement (use New constructor when possible) [enhancement] contributed by [StefH](https://github.com/StefH)
+- [#22](https://github.com/StefH/FluentBuilder/issues/22) - The type or namespace name 'UserBuilder' does not exist in the namespace 'FluentBuilder' (are you missing an assembly reference?) [bug]
+
 # 0.4.2 (03 April 2022)
 - [#23](https://github.com/StefH/FluentBuilder/pull/23) - Add support for file scoped namespaces [enhancement] contributed by [StefH](https://github.com/StefH)
 
