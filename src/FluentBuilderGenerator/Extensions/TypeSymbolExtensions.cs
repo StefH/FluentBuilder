@@ -120,12 +120,12 @@ internal static class TypeSymbolExtensions
 
             case FluentTypeKind.Array:
                 var arrayTypeSymbol = (IArrayTypeSymbol)typeSymbol;
-                return $"Array.Empty<{arrayTypeSymbol.ElementType}>()";
+                return $"new {arrayTypeSymbol.ElementType}[0]";
 
             case FluentTypeKind.IEnumerable:
                 // https://stackoverflow.com/questions/41466062/how-to-get-underlying-type-for-ienumerablet-with-roslyn
                 var namedTypeSymbol = (INamedTypeSymbol)typeSymbol;
-                return $"Array.Empty<{namedTypeSymbol.TypeArguments[0]}>()";
+                return $"new {namedTypeSymbol.TypeArguments[0]}[0]";
 
             case FluentTypeKind.IList:
             case FluentTypeKind.ICollection:
