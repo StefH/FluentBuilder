@@ -1,6 +1,4 @@
-# 0.4.3 (27 April 2022)
-- #24 Use correct default value for reference types [bug]
-- #25 Create correct default() statement (use New constructor when possible) [enhancement]
-- #22 The type or namespace name 'UserBuilder' does not exist in the namespace 'FluentBuilder' (are you missing an assembly reference?) [bug]
+# 0.4.4 (27 April 2022)
+- #26 Replace Array.Empty by new T[0] (supporting .NET45) [bug]
 
 The full release notes can be found here: https://github.com/StefH/FluentBuilder/blob/main/ReleaseNotes.md

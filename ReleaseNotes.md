@@ -1,3 +1,6 @@
+# 0.4.4 (27 April 2022)
+- [#26](https://github.com/StefH/FluentBuilder/pull/26) - Replace Array.Empty by new T[0] (supporting .NET45) [bug] contributed by [StefH](https://github.com/StefH)
+
 # 0.4.3 (27 April 2022)
 - [#24](https://github.com/StefH/FluentBuilder/pull/24) - Use correct default value for reference types [bug] contributed by [StefH](https://github.com/StefH)
 - [#25](https://github.com/StefH/FluentBuilder/pull/25) - Create correct default() statement (use New constructor when possible) [enhancement] contributed by [StefH](https://github.com/StefH)
