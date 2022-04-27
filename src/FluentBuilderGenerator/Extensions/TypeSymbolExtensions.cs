@@ -112,6 +112,9 @@ internal static class TypeSymbolExtensions
         var kind = typeSymbol.GetFluentTypeKind();
         switch (kind)
         {
+            case FluentTypeKind.Other:
+                return GetNewConstructor(typeSymbol);
+
             case FluentTypeKind.String:
                 return "string.Empty";
 
@@ -137,5 +140,26 @@ internal static class TypeSymbolExtensions
         }
 
         return $"default({typeSymbol})";
+    }
+
+    private static string GetNewConstructor(ITypeSymbol typeSymbol)
+    {
+        if (typeSymbol is INamedTypeSymbol namedTypeSymbol)
+        {
+            if (!namedTypeSymbol.Constructors.Any())
+            {
+                return $"default({typeSymbol})!";
+            }
+
+            var publicConstructor = namedTypeSymbol.Constructors.OrderBy(c => c.Parameters.Length).First();
+
+            var list = publicConstructor.Parameters.Select(p => p.Type.GetDefault());
+
+            return $"new {typeSymbol}({string.Join(", ", list)})";
+        }
+
+        return typeSymbol.NullableAnnotation == NullableAnnotation.Annotated ?
+            $"default({typeSymbol})!" :
+            $"default({typeSymbol})";
     }
 }

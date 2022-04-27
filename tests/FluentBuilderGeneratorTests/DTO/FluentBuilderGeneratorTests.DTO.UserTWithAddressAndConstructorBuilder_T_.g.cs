@@ -35,7 +35,7 @@ namespace FluentBuilderGeneratorTests.DTO
         }
 
         private bool _addressIsSet;
-        private Lazy<FluentBuilderGeneratorTests.DTO.Address<short>> _address = new Lazy<FluentBuilderGeneratorTests.DTO.Address<short>>(() => default(FluentBuilderGeneratorTests.DTO.Address<short>));
+        private Lazy<FluentBuilderGeneratorTests.DTO.Address<short>> _address = new Lazy<FluentBuilderGeneratorTests.DTO.Address<short>>(() => new FluentBuilderGeneratorTests.DTO.Address<short>());
         public UserTWithAddressAndConstructorBuilder<T> WithAddress(FluentBuilderGeneratorTests.DTO.Address<short> value) => WithAddress(() => value);
         public UserTWithAddressAndConstructorBuilder<T> WithAddress(Func<FluentBuilderGeneratorTests.DTO.Address<short>> func)
         {
@@ -51,7 +51,7 @@ namespace FluentBuilderGeneratorTests.DTO
         });
         public UserTWithAddressAndConstructorBuilder<T> WithoutAddress()
         {
-            WithAddress(() => default(FluentBuilderGeneratorTests.DTO.Address<short>));
+            WithAddress(() => new FluentBuilderGeneratorTests.DTO.Address<short>());
             _addressIsSet = false;
             return this;
         }
