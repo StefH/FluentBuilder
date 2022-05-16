@@ -24,6 +24,8 @@ namespace FluentBuilderGeneratorTests.DTO
 
         public ThingIsStruct ThingIsStruct { get; set; }
 
+        public IReadOnlyCollection<string> IReadOnlyCollection { get; set; }
+
         public IEnumerable<byte> Enumerable { get; set; }
 
         public IEnumerable<Address> Enumerable2 { get; set; }

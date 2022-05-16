@@ -33,6 +33,11 @@ internal static class TypeSymbolExtensions
             return FluentTypeKind.IList;
         }
 
+        if (typeSymbol.ImplementsInterfaceOrBaseClass(typeof(IReadOnlyCollection<>)))
+        {
+            return FluentTypeKind.IReadOnlyCollection;
+        }
+
         if (typeSymbol.ImplementsInterfaceOrBaseClass(typeof(ICollection<>)) || typeSymbol.ImplementsInterfaceOrBaseClass(typeof(ICollection)))
         {
             return FluentTypeKind.ICollection;

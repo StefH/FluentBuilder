@@ -174,6 +174,22 @@ namespace FluentBuilderGeneratorTests.DTO
             return this;
         }
 
+        private bool _iReadOnlyCollectionIsSet;
+        private Lazy<System.Collections.Generic.IReadOnlyCollection<string>> _iReadOnlyCollection = new Lazy<System.Collections.Generic.IReadOnlyCollection<string>>(() => default(System.Collections.Generic.IReadOnlyCollection<string>));
+        public AddressBuilder WithIReadOnlyCollection(System.Collections.Generic.IReadOnlyCollection<string> value) => WithIReadOnlyCollection(() => value);
+        public AddressBuilder WithIReadOnlyCollection(Func<System.Collections.Generic.IReadOnlyCollection<string>> func)
+        {
+            _iReadOnlyCollection = new Lazy<System.Collections.Generic.IReadOnlyCollection<string>>(func);
+            _iReadOnlyCollectionIsSet = true;
+            return this;
+        }
+        public AddressBuilder WithoutIReadOnlyCollection()
+        {
+            WithIReadOnlyCollection(() => default(System.Collections.Generic.IReadOnlyCollection<string>));
+            _iReadOnlyCollectionIsSet = false;
+            return this;
+        }
+
         private bool _enumerableIsSet;
         private Lazy<System.Collections.Generic.IEnumerable<byte>> _enumerable = new Lazy<System.Collections.Generic.IEnumerable<byte>>(() => new byte[0]);
         public AddressBuilder WithEnumerable(System.Collections.Generic.IEnumerable<byte> value) => WithEnumerable(() => value);
@@ -386,6 +402,7 @@ namespace FluentBuilderGeneratorTests.DTO
                             ThingWithPrivateConstructor = _thingWithPrivateConstructor.Value,
                             Thing = _thing.Value,
                             ThingIsStruct = _thingIsStruct.Value,
+                            IReadOnlyCollection = _iReadOnlyCollection.Value,
                             Enumerable = _enumerable.Value,
                             Enumerable2 = _enumerable2.Value,
                             List = _list.Value,
@@ -408,6 +425,7 @@ namespace FluentBuilderGeneratorTests.DTO
                     if (_thingWithPrivateConstructorIsSet) { instance.ThingWithPrivateConstructor = _thingWithPrivateConstructor.Value; }
                     if (_thingIsSet) { instance.Thing = _thing.Value; }
                     if (_thingIsStructIsSet) { instance.ThingIsStruct = _thingIsStruct.Value; }
+                    if (_iReadOnlyCollectionIsSet) { instance.IReadOnlyCollection = _iReadOnlyCollection.Value; }
                     if (_enumerableIsSet) { instance.Enumerable = _enumerable.Value; }
                     if (_enumerable2IsSet) { instance.Enumerable2 = _enumerable2.Value; }
                     if (_listIsSet) { instance.List = _list.Value; }

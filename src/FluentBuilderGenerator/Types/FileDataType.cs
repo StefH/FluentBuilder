@@ -19,5 +19,7 @@ internal enum FileDataType : byte
 
     ICollectionBuilder,
 
-    IDictionaryBuilder,
+    IReadOnlyCollectionBuilder,
+
+    IDictionaryBuilder
 }

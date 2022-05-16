@@ -15,6 +15,9 @@ internal static class IEnumerableBuilderHelper
             case FileDataType.IEnumerableBuilder:
                 return ($"IEnumerable<{t}>", string.Empty);
 
+            case FileDataType.IReadOnlyCollectionBuilder:
+                return ($"IReadOnlyCollection<{t}>", string.Empty);
+
             case FileDataType.ICollectionBuilder:
                 return ($"ICollection<{t}>", string.Empty);
 
