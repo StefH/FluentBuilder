@@ -175,7 +175,7 @@ namespace FluentBuilderGeneratorTests.DTO
         }
 
         private bool _iReadOnlyCollectionIsSet;
-        private Lazy<System.Collections.Generic.IReadOnlyCollection<string>> _iReadOnlyCollection = new Lazy<System.Collections.Generic.IReadOnlyCollection<string>>(() => default(System.Collections.Generic.IReadOnlyCollection<string>));
+        private Lazy<System.Collections.Generic.IReadOnlyCollection<string>> _iReadOnlyCollection = new Lazy<System.Collections.Generic.IReadOnlyCollection<string>>(() => new List<string>());
         public AddressBuilder WithIReadOnlyCollection(System.Collections.Generic.IReadOnlyCollection<string> value) => WithIReadOnlyCollection(() => value);
         public AddressBuilder WithIReadOnlyCollection(Func<System.Collections.Generic.IReadOnlyCollection<string>> func)
         {
@@ -185,7 +185,7 @@ namespace FluentBuilderGeneratorTests.DTO
         }
         public AddressBuilder WithoutIReadOnlyCollection()
         {
-            WithIReadOnlyCollection(() => default(System.Collections.Generic.IReadOnlyCollection<string>));
+            WithIReadOnlyCollection(() => new List<string>());
             _iReadOnlyCollectionIsSet = false;
             return this;
         }

@@ -7,25 +7,14 @@ internal static class IEnumerableBuilderHelper
 {
     public static (string GenericType, string ToArray) GetGenericTypeAndToArray(FileDataType dataType, string t = "T")
     {
-        switch (dataType)
+        return dataType switch
         {
-            case FileDataType.ArrayBuilder:
-                return ($"{t}[]", ".ToArray()");
-
-            case FileDataType.IEnumerableBuilder:
-                return ($"IEnumerable<{t}>", string.Empty);
-
-            case FileDataType.IReadOnlyCollectionBuilder:
-                return ($"IReadOnlyCollection<{t}>", string.Empty);
-
-            case FileDataType.ICollectionBuilder:
-                return ($"ICollection<{t}>", string.Empty);
-
-            case FileDataType.IListBuilder:
-                return ($"IList<{t}>", string.Empty);
-
-            default:
-                throw new ArgumentException();
-        }
+            FileDataType.ArrayBuilder => ($"{t}[]", ".ToArray()"),
+            FileDataType.IEnumerableBuilder => ($"IEnumerable<{t}>", string.Empty),
+            FileDataType.IReadOnlyCollectionBuilder => ($"IReadOnlyCollection<{t}>", string.Empty),
+            FileDataType.ICollectionBuilder => ($"ICollection<{t}>", string.Empty),
+            FileDataType.IListBuilder => ($"IList<{t}>", string.Empty),
+            _ => throw new ArgumentException()
+        };
     }
 }

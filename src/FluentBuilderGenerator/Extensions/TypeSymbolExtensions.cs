@@ -134,6 +134,7 @@ internal static class TypeSymbolExtensions
 
             case FluentTypeKind.IList:
             case FluentTypeKind.ICollection:
+            case FluentTypeKind.IReadOnlyCollection:
                 var listSymbol = (INamedTypeSymbol)typeSymbol;
                 return $"new List<{listSymbol.TypeArguments[0]}>()";
 
