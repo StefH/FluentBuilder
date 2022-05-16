@@ -1,3 +1,7 @@
+# 0.4.5 (16 May 2022)
+- [#29](https://github.com/StefH/FluentBuilder/pull/29) - Support IReadOnlyCollection and ReadOnlyCollection [enhancement] contributed by [StefH](https://github.com/StefH)
+- [#27](https://github.com/StefH/FluentBuilder/issues/27) - Wrong initialization is generated for ReadOnlyCollection&lt;&gt; properties [bug]
+
 # 0.4.4 (27 April 2022)
 - [#26](https://github.com/StefH/FluentBuilder/pull/26) - Replace Array.Empty by new T[0] (supporting .NET45) [bug] contributed by [StefH](https://github.com/StefH)
 
