@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace FluentBuilderGeneratorTests.DTO
 {
@@ -26,7 +27,7 @@ namespace FluentBuilderGeneratorTests.DTO
 
         public IReadOnlyCollection<string> IReadOnlyCollection { get; set; }
 
-        public IReadOnlyCollection<long> ReadOnlyCollection { get; set; }
+        public ReadOnlyCollection<long> ReadOnlyCollection { get; set; }
 
         public IEnumerable<byte> Enumerable { get; set; }
 

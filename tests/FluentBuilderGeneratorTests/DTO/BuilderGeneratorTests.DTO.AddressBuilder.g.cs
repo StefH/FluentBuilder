@@ -418,8 +418,8 @@ namespace FluentBuilderGeneratorTests.DTO
                             ThingWithPrivateConstructor = _thingWithPrivateConstructor.Value,
                             Thing = _thing.Value,
                             ThingIsStruct = _thingIsStruct.Value,
-                            IReadOnlyCollection = _iReadOnlyCollection.Value,
-                            ReadOnlyCollection = _readOnlyCollection.Value,
+                         //   IReadOnlyCollection = _iReadOnlyCollection.Value,
+                        //    ReadOnlyCollection = _readOnlyCollection.Value,
                             Enumerable = _enumerable.Value,
                             Enumerable2 = _enumerable2.Value,
                             List = _list.Value,
@@ -443,7 +443,7 @@ namespace FluentBuilderGeneratorTests.DTO
                     if (_thingIsSet) { instance.Thing = _thing.Value; }
                     if (_thingIsStructIsSet) { instance.ThingIsStruct = _thingIsStruct.Value; }
                     if (_iReadOnlyCollectionIsSet) { instance.IReadOnlyCollection = _iReadOnlyCollection.Value; }
-                    if (_readOnlyCollectionIsSet) { instance.ReadOnlyCollection = _readOnlyCollection.Value; }
+                 //   if (_readOnlyCollectionIsSet) { instance.ReadOnlyCollection = _readOnlyCollection.Value; }
                     if (_enumerableIsSet) { instance.Enumerable = _enumerable.Value; }
                     if (_enumerable2IsSet) { instance.Enumerable2 = _enumerable2.Value; }
                     if (_listIsSet) { instance.List = _list.Value; }
