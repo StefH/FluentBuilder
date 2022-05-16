@@ -42,8 +42,8 @@ namespace FluentBuilderGeneratorTests
             var result = _sut.Execute(Namespace, new[] { sourceFile });
 
             // Assert
-            result.Files.Should().HaveCount(8);
-            result.Files[7].Path.Should().EndWith("Error.g.cs");
+            result.Files.Should().HaveCount(9);
+            result.Files[8].Path.Should().EndWith("Error.g.cs");
         }
 
         [Fact]
@@ -66,8 +66,8 @@ namespace FluentBuilderGeneratorTests
             var result = _sut.Execute(Namespace, new[] { sourceFile });
 
             // Assert
-            result.Files.Should().HaveCount(8);
-            result.Files[7].Path.Should().EndWith("Error.g.cs");
+            result.Files.Should().HaveCount(9);
+            result.Files[8].Path.Should().EndWith("Error.g.cs");
         }
 
         [Fact]
@@ -99,9 +99,9 @@ namespace FluentBuilderGeneratorTests
 
             // Assert
             result.Valid.Should().BeTrue();
-            result.Files.Should().HaveCount(9);
+            result.Files.Should().HaveCount(10);
 
-            for (int i = 7; i < 9; i++)
+            for (int i = 8; i < 10; i++)
             {
                 var builder = result.Files[i];
 
@@ -124,6 +124,7 @@ namespace FluentBuilderGeneratorTests
                 "FluentBuilder.ArrayBuilder.g.cs",
                 "FluentBuilder.IEnumerableBuilder.g.cs",
                 "FluentBuilder.IListBuilder.g.cs",
+                "FluentBuilder.IReadOnlyCollectionBuilder.g.cs",
                 "FluentBuilder.ICollectionBuilder.g.cs",
                 "FluentBuilder.IDictionaryBuilder.g.cs",
 
@@ -131,7 +132,8 @@ namespace FluentBuilderGeneratorTests
                 "BuilderGeneratorTests.DTO.Address_ArrayBuilder.g.cs",
                 "BuilderGeneratorTests.DTO.Address_IEnumerableBuilder.g.cs",
                 "BuilderGeneratorTests.DTO.Address_IListBuilder.g.cs",
-                "BuilderGeneratorTests.DTO.Address_ICollectionBuilder.g.cs"
+
+                "BuilderGeneratorTests.DTO.Address_ICollectionBuilder.g.cs",
             };
 
             var path = "./DTO/Address.cs";
@@ -179,9 +181,9 @@ namespace FluentBuilderGeneratorTests
 
             // Assert
             result.Valid.Should().BeTrue();
-            result.Files.Should().HaveCount(8);
+            result.Files.Should().HaveCount(9);
 
-            var builder = result.Files[7];
+            var builder = result.Files[8];
             builder.Path.Should().EndWith(builderFileName);
 
             if (Write) File.WriteAllText($"../../../DTO/{builderFileName}", builder.Text);
@@ -209,9 +211,9 @@ namespace FluentBuilderGeneratorTests
 
             // Assert
             result.Valid.Should().BeTrue();
-            result.Files.Should().HaveCount(8);
+            result.Files.Should().HaveCount(9);
 
-            var builder = result.Files[7];
+            var builder = result.Files[8];
             builder.Path.Should().EndWith(builderFileName);
 
             if (Write) File.WriteAllText($"../../../DTO/{builderFileName}", builder.Text);
@@ -249,9 +251,9 @@ namespace FluentBuilderGeneratorTests
 
             // Assert
             result.Valid.Should().BeTrue();
-            result.Files.Should().HaveCount(9);
+            result.Files.Should().HaveCount(10);
 
-            for (int i = 7; i < 9; i++)
+            for (int i = 8; i < 10; i++)
             {
                 var builder = result.Files[i];
                 //builder.Path.Should().EndWith(x.fileName);
@@ -295,9 +297,9 @@ namespace FluentBuilderGeneratorTests
 
             // Assert
             result.Valid.Should().BeTrue();
-            result.Files.Should().HaveCount(9);
+            result.Files.Should().HaveCount(10);
 
-            var builderForUserTWithAddressAndConstructor = result.Files[7];
+            var builderForUserTWithAddressAndConstructor = result.Files[8];
             builderForUserTWithAddressAndConstructor.Path.Should().EndWith(builder1FileName);
 
             if (Write) File.WriteAllText($"../../../DTO/{builder1FileName}", builderForUserTWithAddressAndConstructor.Text);
@@ -325,9 +327,9 @@ namespace FluentBuilderGeneratorTests
 
             // Assert
             result.Valid.Should().BeTrue();
-            result.Files.Should().HaveCount(12);
+            result.Files.Should().HaveCount(13);
 
-            for (int i = 7; i < 12; i++)
+            for (int i = 8; i < 13; i++)
             {
                 var builder = result.Files[i];
                 //builder.Path.Should().EndWith(x.fileName);

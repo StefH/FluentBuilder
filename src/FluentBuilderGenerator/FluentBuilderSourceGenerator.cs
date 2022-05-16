@@ -60,6 +60,7 @@ internal class FluentBuilderSourceGenerator : ISourceGenerator
             new IEnumerableBuilderGenerator(context.AssemblyName, FileDataType.ArrayBuilder, context.SupportsNullable),
             new IEnumerableBuilderGenerator(context.AssemblyName, FileDataType.IEnumerableBuilder, context.SupportsNullable),
             new IEnumerableBuilderGenerator(context.AssemblyName, FileDataType.IListBuilder, context.SupportsNullable),
+            new IEnumerableBuilderGenerator(context.AssemblyName, FileDataType.IReadOnlyCollectionBuilder, context.SupportsNullable),
             new IEnumerableBuilderGenerator(context.AssemblyName, FileDataType.ICollectionBuilder, context.SupportsNullable),
             new IDictionaryBuilderGenerator(context.AssemblyName, context.SupportsNullable)
         };

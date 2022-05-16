@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.ObjectModel;
 using FluentBuilderGenerator.Types;
 using Microsoft.CodeAnalysis;
 
@@ -28,9 +29,19 @@ internal static class TypeSymbolExtensions
             return FluentTypeKind.IDictionary;
         }
 
+        if (typeSymbol.ImplementsInterfaceOrBaseClass(typeof(ReadOnlyCollection<>)))
+        {
+            return FluentTypeKind.ReadOnlyCollection;
+        }
+
         if (typeSymbol.ImplementsInterfaceOrBaseClass(typeof(IList<>)) || typeSymbol.ImplementsInterfaceOrBaseClass(typeof(IList)))
         {
             return FluentTypeKind.IList;
+        }
+
+        if (typeSymbol.ImplementsInterfaceOrBaseClass(typeof(IReadOnlyCollection<>)))
+        {
+            return FluentTypeKind.IReadOnlyCollection;
         }
 
         if (typeSymbol.ImplementsInterfaceOrBaseClass(typeof(ICollection<>)) || typeSymbol.ImplementsInterfaceOrBaseClass(typeof(ICollection)))
@@ -127,10 +138,19 @@ internal static class TypeSymbolExtensions
                 var namedTypeSymbol = (INamedTypeSymbol)typeSymbol;
                 return $"new {namedTypeSymbol.TypeArguments[0]}[0]";
 
+            case FluentTypeKind.ReadOnlyCollection:
+            {
+                var listSymbol = (INamedTypeSymbol)typeSymbol;
+                return $"new {typeSymbol}(new List<{listSymbol.TypeArguments[0]}>())";
+            }
+
             case FluentTypeKind.IList:
             case FluentTypeKind.ICollection:
+            case FluentTypeKind.IReadOnlyCollection:
+            {
                 var listSymbol = (INamedTypeSymbol)typeSymbol;
                 return $"new List<{listSymbol.TypeArguments[0]}>()";
+            }
 
             case FluentTypeKind.IDictionary:
                 var dictionarySymbol = (INamedTypeSymbol)typeSymbol;

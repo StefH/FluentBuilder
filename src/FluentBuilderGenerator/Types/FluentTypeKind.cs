@@ -13,9 +13,13 @@ internal enum FluentTypeKind : byte
 
     ICollection,
 
+    IReadOnlyCollection,
+    
     IList,
 
     IDictionary,
+
+    ReadOnlyCollection,
 
     Other
 }

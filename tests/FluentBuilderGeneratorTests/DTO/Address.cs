@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace FluentBuilderGeneratorTests.DTO
 {
@@ -23,6 +24,10 @@ namespace FluentBuilderGeneratorTests.DTO
         public Thing Thing { get; set; }
 
         public ThingIsStruct ThingIsStruct { get; set; }
+
+        public IReadOnlyCollection<string> IReadOnlyCollection { get; set; }
+
+        public ReadOnlyCollection<long> ReadOnlyCollection { get; set; }
 
         public IEnumerable<byte> Enumerable { get; set; }
 
