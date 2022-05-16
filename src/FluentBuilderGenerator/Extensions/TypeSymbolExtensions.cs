@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.ObjectModel;
 using FluentBuilderGenerator.Types;
 using Microsoft.CodeAnalysis;
 
@@ -31,6 +32,11 @@ internal static class TypeSymbolExtensions
         if (typeSymbol.ImplementsInterfaceOrBaseClass(typeof(IList<>)) || typeSymbol.ImplementsInterfaceOrBaseClass(typeof(IList)))
         {
             return FluentTypeKind.IList;
+        }
+
+        if (typeSymbol.ImplementsInterfaceOrBaseClass(typeof(ReadOnlyCollection<>)))
+        {
+            return FluentTypeKind.ReadOnlyCollection;
         }
 
         if (typeSymbol.ImplementsInterfaceOrBaseClass(typeof(IReadOnlyCollection<>)))
@@ -132,8 +138,13 @@ internal static class TypeSymbolExtensions
                 var namedTypeSymbol = (INamedTypeSymbol)typeSymbol;
                 return $"new {namedTypeSymbol.TypeArguments[0]}[0]";
 
+            //case FluentTypeKind.IReadOnlyCollection:
+            //    var x = (INamedTypeSymbol)typeSymbol;
+            //    return $"new ReadOnlyCollection<{x.TypeArguments[0]}>()";
+
             case FluentTypeKind.IList:
             case FluentTypeKind.ICollection:
+            case FluentTypeKind.ReadOnlyCollection:
             case FluentTypeKind.IReadOnlyCollection:
                 var listSymbol = (INamedTypeSymbol)typeSymbol;
                 return $"new List<{listSymbol.TypeArguments[0]}>()";

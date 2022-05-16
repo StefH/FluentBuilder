@@ -132,6 +132,7 @@ namespace FluentBuilderGeneratorTests
                 "BuilderGeneratorTests.DTO.Address_ArrayBuilder.g.cs",
                 "BuilderGeneratorTests.DTO.Address_IEnumerableBuilder.g.cs",
                 "BuilderGeneratorTests.DTO.Address_IListBuilder.g.cs",
+
                 "BuilderGeneratorTests.DTO.Address_ICollectionBuilder.g.cs",
             };
 

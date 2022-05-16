@@ -190,6 +190,22 @@ namespace FluentBuilderGeneratorTests.DTO
             return this;
         }
 
+        private bool _readOnlyCollectionIsSet;
+        private Lazy<System.Collections.Generic.IReadOnlyCollection<long>> _readOnlyCollection = new Lazy<System.Collections.Generic.IReadOnlyCollection<long>>(() => new List<long>());
+        public AddressBuilder WithReadOnlyCollection(System.Collections.Generic.IReadOnlyCollection<long> value) => WithReadOnlyCollection(() => value);
+        public AddressBuilder WithReadOnlyCollection(Func<System.Collections.Generic.IReadOnlyCollection<long>> func)
+        {
+            _readOnlyCollection = new Lazy<System.Collections.Generic.IReadOnlyCollection<long>>(func);
+            _readOnlyCollectionIsSet = true;
+            return this;
+        }
+        public AddressBuilder WithoutReadOnlyCollection()
+        {
+            WithReadOnlyCollection(() => new List<long>());
+            _readOnlyCollectionIsSet = false;
+            return this;
+        }
+
         private bool _enumerableIsSet;
         private Lazy<System.Collections.Generic.IEnumerable<byte>> _enumerable = new Lazy<System.Collections.Generic.IEnumerable<byte>>(() => new byte[0]);
         public AddressBuilder WithEnumerable(System.Collections.Generic.IEnumerable<byte> value) => WithEnumerable(() => value);
@@ -403,6 +419,7 @@ namespace FluentBuilderGeneratorTests.DTO
                             Thing = _thing.Value,
                             ThingIsStruct = _thingIsStruct.Value,
                             IReadOnlyCollection = _iReadOnlyCollection.Value,
+                            ReadOnlyCollection = _readOnlyCollection.Value,
                             Enumerable = _enumerable.Value,
                             Enumerable2 = _enumerable2.Value,
                             List = _list.Value,
@@ -426,6 +443,7 @@ namespace FluentBuilderGeneratorTests.DTO
                     if (_thingIsSet) { instance.Thing = _thing.Value; }
                     if (_thingIsStructIsSet) { instance.ThingIsStruct = _thingIsStruct.Value; }
                     if (_iReadOnlyCollectionIsSet) { instance.IReadOnlyCollection = _iReadOnlyCollection.Value; }
+                    if (_readOnlyCollectionIsSet) { instance.ReadOnlyCollection = _readOnlyCollection.Value; }
                     if (_enumerableIsSet) { instance.Enumerable = _enumerable.Value; }
                     if (_enumerable2IsSet) { instance.Enumerable2 = _enumerable2.Value; }
                     if (_listIsSet) { instance.List = _list.Value; }

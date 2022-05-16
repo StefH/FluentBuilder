@@ -19,5 +19,7 @@ internal enum FluentTypeKind : byte
 
     IDictionary,
 
+    ReadOnlyCollection,
+
     Other
 }
