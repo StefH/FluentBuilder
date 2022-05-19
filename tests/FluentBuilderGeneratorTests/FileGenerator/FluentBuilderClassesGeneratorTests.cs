@@ -21,7 +21,7 @@ public class FluentBuilderClassesGeneratorTests
     private const bool Write = true;
 
     private readonly Mock<IGeneratorExecutionContextWrapper> _contextMock;
-    private readonly Mock<IAutoGenerateBuilderSyntaxReceiver> _receiverMock;
+    private readonly Mock<IAutoGenerateBuilderSyntaxReceiver> _syntaxReceiverMock;
 
     private readonly FluentBuilderClassesGenerator _sut;
 
@@ -32,16 +32,16 @@ public class FluentBuilderClassesGeneratorTests
         _contextMock.SetupGet(c => c.SupportsNullable).Returns(true);
         _contextMock.SetupGet(c => c.NullableEnabled).Returns(true);
 
-        _receiverMock = new Mock<IAutoGenerateBuilderSyntaxReceiver>();
+        _syntaxReceiverMock = new Mock<IAutoGenerateBuilderSyntaxReceiver>();
 
-        _sut = new FluentBuilderClassesGenerator(_contextMock.Object, _receiverMock.Object);
+        _sut = new FluentBuilderClassesGenerator(_contextMock.Object, _syntaxReceiverMock.Object);
     }
 
     [Fact]
     public void GenerateFiles_WhenNoClassesFoundByReceiver_Should_NotGenerateFiles()
     {
         // Arrange
-        _receiverMock.SetupGet(r => r.CandidateFluentDataItems).Returns(new List<FluentData>());
+        _syntaxReceiverMock.SetupGet(r => r.CandidateFluentDataItems).Returns(new List<FluentData>());
 
         // Act
         var result = _sut.GenerateFiles();
@@ -50,8 +50,8 @@ public class FluentBuilderClassesGeneratorTests
         result.Should().BeEmpty();
 
         // Verify
-        _receiverMock.Verify(r => r.CandidateFluentDataItems, Times.Once());
-        _receiverMock.VerifyNoOtherCalls();
+        _syntaxReceiverMock.Verify(r => r.CandidateFluentDataItems, Times.Once());
+        _syntaxReceiverMock.VerifyNoOtherCalls();
 
         _contextMock.VerifyNoOtherCalls();
     }
@@ -59,7 +59,7 @@ public class FluentBuilderClassesGeneratorTests
     [Fact]
     public void GenerateFiles_WhenOneClassIsFoundByReceiver_Should_GenerateOneFile()
     {
-        // Arrange : ReceiverMock
+        // Arrange : SyntaxReceiverMock
         var syntaxTree = CSharpSyntaxTree.ParseText(File.ReadAllText("./DTO/User.cs"));
         var root = syntaxTree.GetRoot();
         var @namespace = root.ChildNodes().OfType<NamespaceDeclarationSyntax>().Single();
@@ -76,7 +76,7 @@ public class FluentBuilderClassesGeneratorTests
             MetadataName = "FluentBuilderGeneratorTests.DTO.User",
             Usings = new List<string>()
         };
-        _receiverMock.SetupGet(r => r.CandidateFluentDataItems).Returns(new[] { fluentData });
+        _syntaxReceiverMock.SetupGet(r => r.CandidateFluentDataItems).Returns(new[] { fluentData });
 
         // Arrange : ContextMock
         var namespaceSymbolMock = new Mock<INamespaceSymbol>();
@@ -147,8 +147,8 @@ public class FluentBuilderClassesGeneratorTests
         generatedCode.Should().BeEquivalentTo(expectedCode);
 
         // Verify
-        _receiverMock.Verify(r => r.CandidateFluentDataItems, Times.Once());
-        _receiverMock.VerifyNoOtherCalls();
+        _syntaxReceiverMock.Verify(r => r.CandidateFluentDataItems, Times.Once());
+        _syntaxReceiverMock.VerifyNoOtherCalls();
 
         _contextMock.Verify(c => c.TryGetNamedTypeSymbolByFullMetadataName(It.IsAny<FluentData>(), out It.Ref<ClassSymbol?>.IsAny), Times.Once());
         _contextMock.Verify(c => c.AssemblyName, Times.Once());
