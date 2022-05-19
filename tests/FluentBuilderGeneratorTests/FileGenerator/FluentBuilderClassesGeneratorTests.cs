@@ -14,79 +14,79 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Moq;
 using Xunit;
 
-namespace FluentBuilderGeneratorTests.FileGenerator
+namespace FluentBuilderGeneratorTests.FileGenerator;
+
+public class FluentBuilderClassesGeneratorTests
 {
-    public class FluentBuilderClassesGeneratorTests
+    private const bool Write = true;
+
+    private readonly Mock<IGeneratorExecutionContextWrapper> _contextMock;
+    private readonly Mock<IAutoGenerateBuilderSyntaxReceiver> _receiverMock;
+
+    private readonly FluentBuilderClassesGenerator _sut;
+
+    public FluentBuilderClassesGeneratorTests()
     {
-        private const bool Write = true;
+        _contextMock = new Mock<IGeneratorExecutionContextWrapper>();
+        _contextMock.SetupGet(c => c.AssemblyName).Returns("FluentBuilderGeneratorTests");
+        _contextMock.SetupGet(c => c.SupportsNullable).Returns(true);
+        _contextMock.SetupGet(c => c.NullableEnabled).Returns(true);
 
-        private readonly Mock<IGeneratorExecutionContextWrapper> _contextMock;
-        private readonly Mock<IAutoGenerateBuilderSyntaxReceiver> _receiverMock;
+        _receiverMock = new Mock<IAutoGenerateBuilderSyntaxReceiver>();
 
-        private readonly FluentBuilderClassesGenerator _sut;
+        _sut = new FluentBuilderClassesGenerator(_contextMock.Object, _receiverMock.Object);
+    }
 
-        public FluentBuilderClassesGeneratorTests()
+    [Fact]
+    public void GenerateFiles_WhenNoClassesFoundByReceiver_Should_NotGenerateFiles()
+    {
+        // Arrange
+        _receiverMock.SetupGet(r => r.CandidateFluentDataItems).Returns(new List<FluentData>());
+
+        // Act
+        var result = _sut.GenerateFiles();
+
+        // Assert
+        result.Should().BeEmpty();
+
+        // Verify
+        _receiverMock.Verify(r => r.CandidateFluentDataItems, Times.Once());
+        _receiverMock.VerifyNoOtherCalls();
+
+        _contextMock.VerifyNoOtherCalls();
+    }
+
+    [Fact]
+    public void GenerateFiles_WhenOneClassIsFoundByReceiver_Should_GenerateOneFile()
+    {
+        // Arrange : ReceiverMock
+        var syntaxTree = CSharpSyntaxTree.ParseText(File.ReadAllText("./DTO/User.cs"));
+        var root = syntaxTree.GetRoot();
+        var @namespace = root.ChildNodes().OfType<NamespaceDeclarationSyntax>().Single();
+        var @class = @namespace.ChildNodes().OfType<ClassDeclarationSyntax>().Single();
+        var properties = @class.ChildNodes().OfType<PropertyDeclarationSyntax>().ToList();
+
+        var fluentData = new FluentData
         {
-            _contextMock = new Mock<IGeneratorExecutionContextWrapper>();
-            _contextMock.SetupGet(c => c.AssemblyName).Returns("FluentBuilderGeneratorTests");
-            _contextMock.SetupGet(c => c.SupportsNullable).Returns(true);
-            _contextMock.SetupGet(c => c.NullableEnabled).Returns(true);
+            Namespace = "FluentBuilderGeneratorTests.DTO",
+            ShortBuilderClassName = "UserBuilder",
+            FullBuilderClassName = "FluentBuilderGeneratorTests.DTO.UserBuilder",
+            FullRawTypeName = "FluentBuilderGeneratorTests.DTO.User",
+            ShortTypeName = "User",
+            MetadataName = "FluentBuilderGeneratorTests.DTO.User",
+            Usings = new List<string>()
+        };
+        _receiverMock.SetupGet(r => r.CandidateFluentDataItems).Returns(new[] { fluentData });
 
-            _receiverMock = new Mock<IAutoGenerateBuilderSyntaxReceiver>();
+        // Arrange : ContextMock
+        var namespaceSymbolMock = new Mock<INamespaceSymbol>();
+        namespaceSymbolMock.Setup(n => n.ToString()).Returns(@namespace.Name.ToString());
 
-            _sut = new FluentBuilderClassesGenerator(_contextMock.Object, _receiverMock.Object);
-        }
+        var namedTypeSymbolMock = new Mock<INamedTypeSymbol>();
+        namedTypeSymbolMock.SetupGet(n => n.Name).Returns("User");
+        namedTypeSymbolMock.SetupGet(n => n.TypeArguments).Returns(ImmutableArray.Create<ITypeSymbol>());
 
-        [Fact]
-        public void GenerateFiles_WhenNoClassesFoundByReceiver_Should_NotGenerateFiles()
-        {
-            // Arrange
-            _receiverMock.SetupGet(r => r.CandidateFluentDataItems).Returns(new List<FluentData>());
-
-            // Act
-            var result = _sut.GenerateFiles();
-
-            // Assert
-            result.Should().BeEmpty();
-
-            // Verify
-            _receiverMock.Verify(r => r.CandidateFluentDataItems, Times.Once());
-            _receiverMock.VerifyNoOtherCalls();
-
-            _contextMock.VerifyNoOtherCalls();
-        }
-
-        [Fact]
-        public void GenerateFiles_WhenOneClassIsFoundByReceiver_Should_GenerateOneFile()
-        {
-            // Arrange : ReceiverMock
-            var syntaxTree = CSharpSyntaxTree.ParseText(File.ReadAllText("./DTO/User.cs"));
-            var root = syntaxTree.GetRoot();
-            var @namespace = root.ChildNodes().OfType<NamespaceDeclarationSyntax>().Single();
-            var @class = @namespace.ChildNodes().OfType<ClassDeclarationSyntax>().Single();
-            var properties = @class.ChildNodes().OfType<PropertyDeclarationSyntax>().ToList();
-
-            var fluentData = new FluentData
-            {
-                Namespace = "FluentBuilderGeneratorTests.DTO",
-                ShortBuilderClassName = "UserBuilder",
-                FullBuilderClassName = "FluentBuilderGeneratorTests.DTO.UserBuilder",
-                FullRawTypeName = "FluentBuilderGeneratorTests.DTO.User",
-                ShortTypeName = "User",
-                MetadataName = "FluentBuilderGeneratorTests.DTO.User",
-                Usings = new List<string>()
-            };
-            _receiverMock.SetupGet(r => r.CandidateFluentDataItems).Returns(new[] { fluentData });
-
-            // Arrange : ContextMock
-            var namespaceSymbolMock = new Mock<INamespaceSymbol>();
-            namespaceSymbolMock.Setup(n => n.ToString()).Returns(@namespace.Name.ToString());
-
-            var namedTypeSymbolMock = new Mock<INamedTypeSymbol>();
-            namedTypeSymbolMock.SetupGet(n => n.Name).Returns("User");
-            namedTypeSymbolMock.SetupGet(n => n.TypeArguments).Returns(ImmutableArray.Create<ITypeSymbol>());
-
-            var membersMock = properties.Select(p =>
+        var membersMock = properties.Select(p =>
             {
                 var setMethodMock = new Mock<IMethodSymbol>();
 
@@ -106,54 +106,53 @@ namespace FluentBuilderGeneratorTests.FileGenerator
             .Select(p => (ISymbol)p.Object)
             .ToImmutableArray();
 
-            var originalDefinitionMock = new Mock<INamedTypeSymbol>();
-            originalDefinitionMock.Setup(o => o.ToString()).Returns("FluentBuilderGeneratorTests.DTO.User");
+        var originalDefinitionMock = new Mock<INamedTypeSymbol>();
+        originalDefinitionMock.Setup(o => o.ToString()).Returns("FluentBuilderGeneratorTests.DTO.User");
 
-            var classSymbolMock = new Mock<INamedTypeSymbol>();
-            classSymbolMock.SetupGet(n => n.ContainingNamespace).Returns(namespaceSymbolMock.Object);
-            classSymbolMock.SetupGet(n => n.Name).Returns("User");
-            classSymbolMock.SetupGet(n => n.OriginalDefinition).Returns(originalDefinitionMock.Object);
-            classSymbolMock.Setup(n => n.GetMembers()).Returns(membersMock);
-            classSymbolMock.SetupGet(n => n.TypeArguments).Returns(ImmutableArray.Create<ITypeSymbol>());
+        var classSymbolMock = new Mock<INamedTypeSymbol>();
+        classSymbolMock.SetupGet(n => n.ContainingNamespace).Returns(namespaceSymbolMock.Object);
+        classSymbolMock.SetupGet(n => n.Name).Returns("User");
+        classSymbolMock.SetupGet(n => n.OriginalDefinition).Returns(originalDefinitionMock.Object);
+        classSymbolMock.Setup(n => n.GetMembers()).Returns(membersMock);
+        classSymbolMock.SetupGet(n => n.TypeArguments).Returns(ImmutableArray.Create<ITypeSymbol>());
 
-            var classSymbolConstructorMock = new Mock<IMethodSymbol>();
-            classSymbolConstructorMock.SetupGet(c => c.Parameters).Returns(ImmutableArray<IParameterSymbol>.Empty);
-            classSymbolMock.SetupGet(n => n.Constructors).Returns(ImmutableArray.Create(new[] { classSymbolConstructorMock.Object }));
+        var classSymbolConstructorMock = new Mock<IMethodSymbol>();
+        classSymbolConstructorMock.SetupGet(c => c.Parameters).Returns(ImmutableArray<IParameterSymbol>.Empty);
+        classSymbolMock.SetupGet(n => n.Constructors).Returns(ImmutableArray.Create(new[] { classSymbolConstructorMock.Object }));
 
-            // _contextMock.Setup(c => c.GetTypeByMetadataName(It.IsAny<string>())).Returns(classSymbolMock.Object);
-            var x = new ClassSymbol
-            {
-                Type = FileDataType.Builder,
-                BuilderNamespace = fluentData.Namespace,
-                BuilderClassName = fluentData.ShortBuilderClassName,
-                FullBuilderClassName = fluentData.FullBuilderClassName,
-                NamedTypeSymbol = classSymbolMock.Object
-            };
+        // _contextMock.Setup(c => c.GetTypeByMetadataName(It.IsAny<string>())).Returns(classSymbolMock.Object);
+        var x = new ClassSymbol
+        {
+            Type = FileDataType.Builder,
+            BuilderNamespace = fluentData.Namespace,
+            BuilderClassName = fluentData.ShortBuilderClassName,
+            FullBuilderClassName = fluentData.FullBuilderClassName,
+            NamedTypeSymbol = classSymbolMock.Object
+        };
 
-            _contextMock.Setup(c => c.TryGetNamedTypeSymbolByFullMetadataName(It.IsAny<FluentData>(), out x)).Returns(true);
+        _contextMock.Setup(c => c.TryGetNamedTypeSymbolByFullMetadataName(It.IsAny<FluentData>(), out x)).Returns(true);
 
-            // Act
-            var result = _sut.GenerateFiles().ToList();
+        // Act
+        var result = _sut.GenerateFiles().ToList();
 
-            // Assert
-            result.Should().HaveCount(1);
-            result[0].FileName.Should().Be("FluentBuilderGeneratorTests.DTO.UserBuilder.g.cs");
+        // Assert
+        result.Should().HaveCount(1);
+        result[0].FileName.Should().Be("FluentBuilderGeneratorTests.DTO.UserBuilder.g.cs");
 
-            var generated = result[0].Text;
-            generated.Should().NotBeEmpty();
+        var generated = result[0].Text;
+        generated.Should().NotBeEmpty();
 
-            if (Write) File.WriteAllText("../../../DTO/FluentBuilderGeneratorTests.DTO.UserBuilder.g.cs", generated);
+        if (Write) File.WriteAllText("../../../DTO/FluentBuilderGeneratorTests.DTO.UserBuilder.g.cs", generated);
 
-            var generatedCode = CSharpSyntaxTree.ParseText(generated);
-            var expectedCode = CSharpSyntaxTree.ParseText(File.ReadAllText("../../../DTO/FluentBuilderGeneratorTests.DTO.UserBuilder.g.cs"));
-            generatedCode.Should().BeEquivalentTo(expectedCode);
+        var generatedCode = CSharpSyntaxTree.ParseText(generated);
+        var expectedCode = CSharpSyntaxTree.ParseText(File.ReadAllText("../../../DTO/FluentBuilderGeneratorTests.DTO.UserBuilder.g.cs"));
+        generatedCode.Should().BeEquivalentTo(expectedCode);
 
-            // Verify
-            _receiverMock.Verify(r => r.CandidateFluentDataItems, Times.Once());
-            _receiverMock.VerifyNoOtherCalls();
+        // Verify
+        _receiverMock.Verify(r => r.CandidateFluentDataItems, Times.Once());
+        _receiverMock.VerifyNoOtherCalls();
 
-            //_contextMock.Verify(c => c.GetTypeByMetadataName(It.IsAny<string>()), Times.Once());
-            //_contextMock.VerifyNoOtherCalls();
-        }
+        //_contextMock.Verify(c => c.GetTypeByMetadataName(It.IsAny<string>()), Times.Once());
+        //_contextMock.VerifyNoOtherCalls();
     }
 }

@@ -67,6 +67,9 @@
         <Compile Update="DTO\MyDummyClassBuilder.cs">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Compile>
+        <Compile Update="DTO\SimpleClass.cs">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Compile>
         <Compile Update="DTO\User.cs">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Compile>
