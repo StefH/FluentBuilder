@@ -120,8 +120,7 @@ public class FluentBuilderClassesGeneratorTests
         classSymbolConstructorMock.SetupGet(c => c.Parameters).Returns(ImmutableArray<IParameterSymbol>.Empty);
         classSymbolMock.SetupGet(n => n.Constructors).Returns(ImmutableArray.Create(new[] { classSymbolConstructorMock.Object }));
 
-        // _contextMock.Setup(c => c.GetTypeByMetadataName(It.IsAny<string>())).Returns(classSymbolMock.Object);
-        var x = new ClassSymbol
+        var classSymbol = new ClassSymbol
         {
             Type = FileDataType.Builder,
             BuilderNamespace = fluentData.Namespace,
@@ -129,8 +128,7 @@ public class FluentBuilderClassesGeneratorTests
             FullBuilderClassName = fluentData.FullBuilderClassName,
             NamedTypeSymbol = classSymbolMock.Object
         };
-
-        _contextMock.Setup(c => c.TryGetNamedTypeSymbolByFullMetadataName(It.IsAny<FluentData>(), out x)).Returns(true);
+        _contextMock.Setup(c => c.TryGetNamedTypeSymbolByFullMetadataName(It.IsAny<FluentData>(), out classSymbol)).Returns(true);
 
         // Act
         var result = _sut.GenerateFiles().ToList();
@@ -152,7 +150,9 @@ public class FluentBuilderClassesGeneratorTests
         _receiverMock.Verify(r => r.CandidateFluentDataItems, Times.Once());
         _receiverMock.VerifyNoOtherCalls();
 
-        //_contextMock.Verify(c => c.GetTypeByMetadataName(It.IsAny<string>()), Times.Once());
-        //_contextMock.VerifyNoOtherCalls();
+        _contextMock.Verify(c => c.TryGetNamedTypeSymbolByFullMetadataName(It.IsAny<FluentData>(), out It.Ref<ClassSymbol?>.IsAny), Times.Once());
+        _contextMock.Verify(c => c.AssemblyName, Times.Once());
+        _contextMock.Verify(c => c.SupportsNullable, Times.AtLeast(1));
+        _contextMock.VerifyNoOtherCalls();
     }
 }
