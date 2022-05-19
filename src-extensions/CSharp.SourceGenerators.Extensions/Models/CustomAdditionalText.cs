@@ -3,29 +3,28 @@ using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
 
-namespace CSharp.SourceGenerators.Extensions.Models
+namespace CSharp.SourceGenerators.Extensions.Models;
+
+internal sealed class CustomAdditionalText : AdditionalText
 {
-    internal sealed class CustomAdditionalText : AdditionalText
+    private readonly string _text;
+
+    public override string Path { get; }
+
+    public CustomAdditionalText(string path)
     {
-        private readonly string _text;
+        Path = path;
+        _text = File.ReadAllText(path);
+    }
 
-        public override string Path { get; }
+    public CustomAdditionalText(SourceFile source)
+    {
+        Path = source.Path;
+        _text = source.Text;
+    }
 
-        public CustomAdditionalText(string path)
-        {
-            Path = path;
-            _text = File.ReadAllText(path);
-        }
-
-        public CustomAdditionalText(SourceFile source)
-        {
-            Path = source.Path;
-            _text = source.Text;
-        }
-
-        public override SourceText GetText(CancellationToken cancellationToken = new CancellationToken())
-        {
-            return SourceText.From(_text);
-        }
+    public override SourceText GetText(CancellationToken cancellationToken = new CancellationToken())
+    {
+        return SourceText.From(_text);
     }
 }
