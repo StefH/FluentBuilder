@@ -46,27 +46,34 @@ public class FluentBuilderSourceGeneratorTests
     }
 
     [Fact]
-    public void GenerateFiles_ForAClassWithout_Public_Parameterless_Constructor_Should_Create_ErrorFile()
+    public void GenerateFiles_ForAClassWithPublicParameterlessConstructorAndPublicParameterizedConstructor_Should_GenerateCorrectFiles()
     {
         // Arrange
-        var path = "./DTO2/MyDateTimeBuilder.cs";
+        var sourceFilePath = "./DTO/ThingWithParameterizedConstructor.cs";
         var sourceFile = new SourceFile
         {
-            Path = path,
-            Text = File.ReadAllText(path),
-            AttributeToAddToClass = new ExtraAttribute
-            {
-                Name = "AutoGenerateBuilder",
-                ArgumentList = "typeof(DateTime)"
-            }
+            Path = sourceFilePath,
+            Text = File.ReadAllText(sourceFilePath),
+            AttributeToAddToClass = "FluentBuilder.AutoGenerateBuilder"
         };
 
         // Act
         var result = _sut.Execute(Namespace, new[] { sourceFile });
 
         // Assert
+        result.Valid.Should().BeTrue();
         result.Files.Should().HaveCount(9);
-        result.Files[8].Path.Should().EndWith("Error.g.cs");
+        result.Files.Should().NotContain(r => r.Path.EndsWith("Error.g.cs"));
+
+        for (int i = 8; i < 9; i++)
+        {
+            var builder = result.Files[i];
+
+            var filename = Path.GetFileName(builder.Path);
+
+            if (Write) File.WriteAllText($"../../../DTO/{filename}", builder.Text);
+            builder.Text.Should().Be(File.ReadAllText($"../../../DTO/{filename}"));
+        }
     }
 
     [Fact]

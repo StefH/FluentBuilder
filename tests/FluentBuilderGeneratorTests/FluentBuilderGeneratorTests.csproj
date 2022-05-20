@@ -82,6 +82,9 @@
         <Compile Update="DTO\UserT.cs">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Compile>
+        <Compile Update="DTO\ThingWithParameterizedConstructor.cs">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Compile>
     </ItemGroup>
 
 </Project>
