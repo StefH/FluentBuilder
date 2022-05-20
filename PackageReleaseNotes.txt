@@ -1,5 +1,5 @@
-# 0.4.5 (16 May 2022)
-- #29 Support IReadOnlyCollection and ReadOnlyCollection [enhancement]
-- #27 Wrong initialization is generated for ReadOnlyCollection&lt;&gt; properties [bug]
+# 0.4.6 (20 May 2022)
+- #31 Fix generation failing when the target type has at least one ctor with parameters
+- #30 Builder generation fails if the target type has at least one ctor with parameters [bug]
 
 The full release notes can be found here: https://github.com/StefH/FluentBuilder/blob/main/ReleaseNotes.md
