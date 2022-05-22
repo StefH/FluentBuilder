@@ -1,5 +1,3 @@
-﻿using System;
-
 namespace FluentBuilderGeneratorTests.DTO;
 
 public class ThingWithParameterizedConstructor
