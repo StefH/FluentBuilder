@@ -94,6 +94,22 @@ namespace FluentBuilderGeneratorTests.DTO2
             return this;
         }
 
+        private bool _thingWithConstructorWithItselfIsSet;
+        private Lazy<FluentBuilderGeneratorTests.DTO.ThingWithConstructorWithItself> _thingWithConstructorWithItself = new Lazy<FluentBuilderGeneratorTests.DTO.ThingWithConstructorWithItself>(() => new FluentBuilderGeneratorTests.DTO.ThingWithConstructorWithItself(string.Empty, string.Empty));
+        public MyAddressBuilder WithThingWithConstructorWithItself(FluentBuilderGeneratorTests.DTO.ThingWithConstructorWithItself value) => WithThingWithConstructorWithItself(() => value);
+        public MyAddressBuilder WithThingWithConstructorWithItself(Func<FluentBuilderGeneratorTests.DTO.ThingWithConstructorWithItself> func)
+        {
+            _thingWithConstructorWithItself = new Lazy<FluentBuilderGeneratorTests.DTO.ThingWithConstructorWithItself>(func);
+            _thingWithConstructorWithItselfIsSet = true;
+            return this;
+        }
+        public MyAddressBuilder WithoutThingWithConstructorWithItself()
+        {
+            WithThingWithConstructorWithItself(() => new FluentBuilderGeneratorTests.DTO.ThingWithConstructorWithItself(string.Empty, string.Empty));
+            _thingWithConstructorWithItselfIsSet = false;
+            return this;
+        }
+
         private bool _thingWithConstructorWith2ParametersIsSet;
         private Lazy<FluentBuilderGeneratorTests.DTO.ThingWithConstructorWith2Parameters> _thingWithConstructorWith2Parameters = new Lazy<FluentBuilderGeneratorTests.DTO.ThingWithConstructorWith2Parameters>(() => new FluentBuilderGeneratorTests.DTO.ThingWithConstructorWith2Parameters(default(int), default(int)));
         public MyAddressBuilder WithThingWithConstructorWith2Parameters(FluentBuilderGeneratorTests.DTO.ThingWithConstructorWith2Parameters value) => WithThingWithConstructorWith2Parameters(() => value);
@@ -413,6 +429,7 @@ namespace FluentBuilderGeneratorTests.DTO2
                             City = _city.Value,
                             Array = _array.Value,
                             Array2 = _array2.Value,
+                            ThingWithConstructorWithItself = _thingWithConstructorWithItself.Value,
                             ThingWithConstructorWith2Parameters = _thingWithConstructorWith2Parameters.Value,
                             ThingWithoutDefaultConstructor = _thingWithoutDefaultConstructor.Value,
                             ThingWithPrivateConstructor = _thingWithPrivateConstructor.Value,
@@ -437,6 +454,7 @@ namespace FluentBuilderGeneratorTests.DTO2
                     if (_cityIsSet) { instance.City = _city.Value; }
                     if (_arrayIsSet) { instance.Array = _array.Value; }
                     if (_array2IsSet) { instance.Array2 = _array2.Value; }
+                    if (_thingWithConstructorWithItselfIsSet) { instance.ThingWithConstructorWithItself = _thingWithConstructorWithItself.Value; }
                     if (_thingWithConstructorWith2ParametersIsSet) { instance.ThingWithConstructorWith2Parameters = _thingWithConstructorWith2Parameters.Value; }
                     if (_thingWithoutDefaultConstructorIsSet) { instance.ThingWithoutDefaultConstructor = _thingWithoutDefaultConstructor.Value; }
                     if (_thingWithPrivateConstructorIsSet) { instance.ThingWithPrivateConstructor = _thingWithPrivateConstructor.Value; }

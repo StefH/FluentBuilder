@@ -139,18 +139,18 @@ internal static class TypeSymbolExtensions
                 return $"new {namedTypeSymbol.TypeArguments[0]}[0]";
 
             case FluentTypeKind.ReadOnlyCollection:
-            {
-                var listSymbol = (INamedTypeSymbol)typeSymbol;
-                return $"new {typeSymbol}(new List<{listSymbol.TypeArguments[0]}>())";
-            }
+                {
+                    var listSymbol = (INamedTypeSymbol)typeSymbol;
+                    return $"new {typeSymbol}(new List<{listSymbol.TypeArguments[0]}>())";
+                }
 
             case FluentTypeKind.IList:
             case FluentTypeKind.ICollection:
             case FluentTypeKind.IReadOnlyCollection:
-            {
-                var listSymbol = (INamedTypeSymbol)typeSymbol;
-                return $"new List<{listSymbol.TypeArguments[0]}>()";
-            }
+                {
+                    var listSymbol = (INamedTypeSymbol)typeSymbol;
+                    return $"new List<{listSymbol.TypeArguments[0]}>()";
+                }
 
             case FluentTypeKind.IDictionary:
                 var dictionarySymbol = (INamedTypeSymbol)typeSymbol;
@@ -164,6 +164,11 @@ internal static class TypeSymbolExtensions
 
     private static string GetNewConstructor(ITypeSymbol typeSymbol)
     {
+        if (typeSymbol.ToString().Contains("ThingWithConstructorWithItself"))
+        {
+            int x = 0;
+        }
+
         if (typeSymbol is INamedTypeSymbol namedTypeSymbol)
         {
             if (!namedTypeSymbol.Constructors.Any())
@@ -171,9 +176,30 @@ internal static class TypeSymbolExtensions
                 return $"default({typeSymbol})!";
             }
 
-            var publicConstructor = namedTypeSymbol.Constructors.OrderBy(c => c.Parameters.Length).First();
+            var publicConstructorsWithMatch = new List<(IMethodSymbol PublicConstructor, int Match)>();
 
-            var list = publicConstructor.Parameters.Select(p => p.Type.GetDefault());
+            foreach (var publicConstructor in namedTypeSymbol.Constructors.OrderBy(c => c.Parameters.Length).ToArray())
+            {
+                var match = 100 - publicConstructor.Parameters.Length;
+                foreach (var parameter in publicConstructor.Parameters)
+                {
+                    if (parameter.Type.OriginalDefinition.ToString() == typeSymbol.OriginalDefinition.ToString())
+                    {
+                        // Prefer a public constructor which does not use itself
+                        match -= 10;
+                    }
+                }
+
+                publicConstructorsWithMatch.Add((publicConstructor, match));
+            }
+
+            var bestMatchingConstructor = publicConstructorsWithMatch.OrderByDescending(x => x.Match).First().PublicConstructor;
+
+            var list = new List<string>();
+            foreach (var parameter in bestMatchingConstructor.Parameters)
+            {
+                list.Add(parameter.Type.GetDefault());
+            }
 
             return $"new {typeSymbol}({string.Join(", ", list)})";
         }
