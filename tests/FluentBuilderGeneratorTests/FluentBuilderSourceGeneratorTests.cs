@@ -403,6 +403,36 @@ namespace FluentBuilderGeneratorTests.DTO
     }
 
     [Fact]
+    public void GenerateFiles_ClassWithReferenceToItself_Should_GenerateCorrectFiles()
+    {
+        // Arrange
+        var builderFileName = "FluentBuilderGeneratorTests.DTO.ThingBuilder.g.cs";
+        var path = "./DTO/Thing.cs";
+        var sourceFile = new SourceFile
+        {
+            Path = path,
+            Text = File.ReadAllText(path),
+            AttributeToAddToClass = new ExtraAttribute
+            {
+                Name = "FluentBuilder.AutoGenerateBuilder"
+            }
+        };
+
+        // Act
+        var result = _sut.Execute(Namespace, new[] { sourceFile });
+
+        // Assert
+        result.Valid.Should().BeTrue();
+        result.Files.Should().HaveCount(9);
+
+        var builder = result.Files[8];
+        builder.Path.Should().EndWith(builderFileName);
+
+        if (Write) File.WriteAllText($"../../../DTO/{builderFileName}", builder.Text);
+        builder.Text.Should().Be(File.ReadAllText($"../../../DTO/{builderFileName}"));
+    }
+
+    [Fact]
     public void GenerateFiles_ForFluentBuilder_Should_GenerateCorrectFiles()
     {
         // Arrange
