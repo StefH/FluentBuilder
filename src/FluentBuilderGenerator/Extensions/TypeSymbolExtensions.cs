@@ -164,43 +164,55 @@ internal static class TypeSymbolExtensions
 
     private static string GetNewConstructor(ITypeSymbol typeSymbol)
     {
-        if (typeSymbol is INamedTypeSymbol namedTypeSymbol)
+        if (typeSymbol is not INamedTypeSymbol namedTypeSymbol)
         {
-            if (!namedTypeSymbol.Constructors.Any())
-            {
-                return $"default({typeSymbol})!";
-            }
-
-            var publicConstructorsWithMatch = new List<(IMethodSymbol PublicConstructor, int Match)>();
-
-            foreach (var publicConstructor in namedTypeSymbol.Constructors.OrderBy(c => c.Parameters.Length).ToArray())
-            {
-                var match = 100 - publicConstructor.Parameters.Length;
-                foreach (var parameter in publicConstructor.Parameters)
-                {
-                    if (parameter.Type.OriginalDefinition.ToString() == typeSymbol.OriginalDefinition.ToString())
-                    {
-                        // Prefer a public constructor which does not use itself
-                        match -= 10;
-                    }
-                }
-
-                publicConstructorsWithMatch.Add((publicConstructor, match));
-            }
-
-            var bestMatchingConstructor = publicConstructorsWithMatch.OrderByDescending(x => x.Match).First().PublicConstructor;
-
-            var list = new List<string>();
-            foreach (var parameter in bestMatchingConstructor.Parameters)
-            {
-                list.Add(parameter.Type.GetDefault());
-            }
-
-            return $"new {typeSymbol}({string.Join(", ", list)})";
+            return typeSymbol.NullableAnnotation == NullableAnnotation.Annotated
+                ? $"default({typeSymbol})!"
+                : $"default({typeSymbol})";
         }
 
-        return typeSymbol.NullableAnnotation == NullableAnnotation.Annotated ?
-            $"default({typeSymbol})!" :
-            $"default({typeSymbol})";
+        if (!namedTypeSymbol.Constructors.Any())
+        {
+            return $"default({typeSymbol})!";
+        }
+
+        // Check if it's a Func or Action
+        if (namedTypeSymbol.DelegateInvokeMethod != null)
+        {
+            var delegateParameters = Enumerable.Repeat("_", namedTypeSymbol.DelegateInvokeMethod.Parameters.Length);
+
+            var body = namedTypeSymbol.DelegateInvokeMethod.ReturnsVoid
+                ? "{ }" // It's an Action
+                : namedTypeSymbol.DelegateInvokeMethod.ReturnType.GetDefault(); // It's an Func
+
+            return $"new {typeSymbol}(({string.Join(", ", delegateParameters)}) => {body})";
+        }
+
+        var publicConstructorsWithMatch = new List<(IMethodSymbol PublicConstructor, int Match)>();
+
+        foreach (var publicConstructor in namedTypeSymbol.Constructors.OrderBy(c => c.Parameters.Length).ToArray())
+        {
+            var match = 100 - publicConstructor.Parameters.Length;
+            foreach (var parameter in publicConstructor.Parameters)
+            {
+                if (parameter.Type.OriginalDefinition.ToString() == typeSymbol.OriginalDefinition.ToString())
+                {
+                    // Prefer a public constructor which does not use itself
+                    match -= 10;
+                }
+            }
+
+            publicConstructorsWithMatch.Add((publicConstructor, match));
+        }
+
+        var bestMatchingConstructor = publicConstructorsWithMatch.OrderByDescending(x => x.Match).First().PublicConstructor;
+
+        var constructorParameters = new List<string>();
+        foreach (var parameter in bestMatchingConstructor.Parameters)
+        {
+            constructorParameters.Add(parameter.Type.GetDefault());
+        }
+
+        return $"new {typeSymbol}({string.Join(", ", constructorParameters)})";
     }
 }
