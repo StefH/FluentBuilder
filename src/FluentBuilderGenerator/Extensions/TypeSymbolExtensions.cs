@@ -164,11 +164,6 @@ internal static class TypeSymbolExtensions
 
     private static string GetNewConstructor(ITypeSymbol typeSymbol)
     {
-        if (typeSymbol.ToString().Contains("ThingWithConstructorWithItself"))
-        {
-            int x = 0;
-        }
-
         if (typeSymbol is INamedTypeSymbol namedTypeSymbol)
         {
             if (!namedTypeSymbol.Constructors.Any())
