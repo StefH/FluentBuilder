@@ -1,3 +1,9 @@
+# 0.4.7 (04 June 2022)
+- [#33](https://github.com/StefH/FluentBuilder/pull/33) - Fix StackOverflow when there is a constructor with itself contributed by [StefH](https://github.com/StefH)
+- [#34](https://github.com/StefH/FluentBuilder/pull/34) - Implement Func and Action [enhancement] contributed by [StefH](https://github.com/StefH)
+- [#28](https://github.com/StefH/FluentBuilder/issues/28) - Generating a builder for a property of a type where the ctor with the least parameters expects the property type itself causes a stack overflow
+- [#32](https://github.com/StefH/FluentBuilder/issues/32) - Unable to use `Func` and `Action` with the builder methods
+
 # 0.4.6 (20 May 2022)
 - [#31](https://github.com/StefH/FluentBuilder/pull/31) - Fix generation failing when the target type has at least one ctor with parameters contributed by [iam-mholle](https://github.com/iam-mholle)
 - [#30](https://github.com/StefH/FluentBuilder/issues/30) - Builder generation fails if the target type has at least one ctor with parameters [bug]

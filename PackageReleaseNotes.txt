@@ -1,5 +1,7 @@
-# 0.4.6 (20 May 2022)
-- #31 Fix generation failing when the target type has at least one ctor with parameters
-- #30 Builder generation fails if the target type has at least one ctor with parameters [bug]
+# 0.4.7 (04 June 2022)
+- #33 Fix StackOverflow when there is a constructor with itself
+- #34 Implement Func and Action [enhancement]
+- #28 Generating a builder for a property of a type where the ctor with the least parameters expects the property type itself causes a stack overflow
+- #32 Unable to use `Func` and `Action` with the builder methods
 
 The full release notes can be found here: https://github.com/StefH/FluentBuilder/blob/main/ReleaseNotes.md
