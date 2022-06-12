@@ -9,20 +9,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Compile Remove="Utils\**" />
-      <EmbeddedResource Remove="Utils\**" />
-      <None Remove="Utils\**" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <Compile Remove="DTO\Builder.cs" />
-        <Compile Remove="DTO\IDictionaryBuilder.cs" />
-        <Compile Remove="DTO\IEnumerableBuilder.cs" />
-    </ItemGroup>
-
-    <ItemGroup>
         <PackageReference Include="FluentAssertions" Version="5.10.3" />
-        <!--<PackageReference Include="Microsoft.CodeAnalysis.Common" Version="3.10.0" />-->
         <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.1.0" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.4" />
         <PackageReference Include="Moq" Version="4.16.1" />
