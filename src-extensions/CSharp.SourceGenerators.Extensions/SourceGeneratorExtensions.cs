@@ -88,12 +88,13 @@ public static class SourceGeneratorExtensions
     private static SyntaxTree GetSyntaxTree(SourceFile source)
     {
         var syntaxTree = CSharpSyntaxTree.ParseText(source.Text, null, source.Path);
-        if (source.AttributeToAddToClass is not null && source.AttributeToAddToInterface is not null)
+        if (source.AttributeToAddToClass is null && source.AttributeToAddToInterface is null)
         {
+            // Both not defined, just return the SyntaxTree.
             return syntaxTree;
         }
 
-        SyntaxNode rootSyntaxNode = default!;
+        SyntaxNode rootSyntaxNode;
         if (source.AttributeToAddToClass is not null)
         {
             rootSyntaxNode = AddExtraAttribute<ClassDeclarationSyntax>(syntaxTree, source.AttributeToAddToClass.Value);
@@ -101,6 +102,10 @@ public static class SourceGeneratorExtensions
         else if (source.AttributeToAddToInterface is not null)
         {
             rootSyntaxNode = AddExtraAttribute<InterfaceDeclarationSyntax>(syntaxTree, source.AttributeToAddToInterface.Value);
+        }
+        else
+        {
+            throw new InvalidOperationException();
         }
 
         // https://stackoverflow.com/questions/21754908/cant-update-changes-to-tree-roslyn
