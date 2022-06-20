@@ -1,4 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
+using FluentBuilderGenerator.Models;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 // ReSharper disable once CheckNamespace
@@ -88,5 +90,25 @@ internal static class SyntaxNodeExtensions
         {
             return false;
         }
+    }
+
+    // https://stackoverflow.com/questions/49970813/collect-usings-from-all-enclosing-namespaces-having-an-itypesymbol
+    public static IReadOnlyList<UsingDirectiveSyntax> GetAllUsings(this SyntaxNode syntaxNode)
+    {
+        var allUsings = SyntaxFactory.List<UsingDirectiveSyntax>();
+        
+        foreach (var parent in syntaxNode.Ancestors(false))
+        {
+            if (parent is NamespaceDeclarationSyntax namespaceDeclarationSyntax)
+            {
+                allUsings = allUsings.AddRange(namespaceDeclarationSyntax.Usings);
+            }
+            else if (parent is CompilationUnitSyntax compilationUnitSyntax)
+            {
+                allUsings = allUsings.AddRange(compilationUnitSyntax.Usings);
+            }
+        }
+        
+        return allUsings;
     }
 }
