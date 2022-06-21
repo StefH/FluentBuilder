@@ -1,3 +1,7 @@
+# 0.4.8 (21 June 2022)
+- [#37](https://github.com/StefH/FluentBuilder/pull/37) - Support different namespace for class in custom builder class [enhancement] contributed by [StefH](https://github.com/StefH)
+- [#36](https://github.com/StefH/FluentBuilder/issues/36) - Issues with generating builder from an object in another namespace [bug]
+
 # 0.4.7 (04 June 2022)
 - [#33](https://github.com/StefH/FluentBuilder/pull/33) - Fix StackOverflow when there is a constructor with itself contributed by [StefH](https://github.com/StefH)
 - [#34](https://github.com/StefH/FluentBuilder/pull/34) - Implement Func and Action [enhancement] contributed by [StefH](https://github.com/StefH)

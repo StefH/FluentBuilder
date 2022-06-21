@@ -1,7 +1,5 @@
-# 0.4.7 (04 June 2022)
-- #33 Fix StackOverflow when there is a constructor with itself
-- #34 Implement Func and Action [enhancement]
-- #28 Generating a builder for a property of a type where the ctor with the least parameters expects the property type itself causes a stack overflow
-- #32 Unable to use `Func` and `Action` with the builder methods
+# 0.4.8 (21 June 2022)
+- #37 Support different namespace for class in custom builder class [enhancement]
+- #36 Issues with generating builder from an object in another namespace [bug]
 
 The full release notes can be found here: https://github.com/StefH/FluentBuilder/blob/main/ReleaseNotes.md
