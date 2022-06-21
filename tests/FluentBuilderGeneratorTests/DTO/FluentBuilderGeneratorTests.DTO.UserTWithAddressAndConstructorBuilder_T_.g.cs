@@ -63,16 +63,18 @@ namespace FluentBuilderGeneratorTests.DTO
             {
                 Object = new Lazy<UserTWithAddressAndConstructor<T>>(() =>
                 {
+                    UserTWithAddressAndConstructor<T> instance;
                     if (useObjectInitializer)
                     {
-                        return new UserTWithAddressAndConstructor<T>
+                        instance = new UserTWithAddressAndConstructor<T>
                         {
                             TValue = _tValue.Value,
                             Address = _address.Value
                         };
+                        return instance;
                     }
 
-                    var instance = new UserTWithAddressAndConstructor<T>();
+                    instance = new UserTWithAddressAndConstructor<T>();
                     if (_tValueIsSet) { instance.TValue = _tValue.Value; }
                     if (_addressIsSet) { instance.Address = _address.Value; }
                     return instance;

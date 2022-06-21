@@ -259,7 +259,7 @@ namespace {classSymbol.BuilderNamespace}
 
         var output = new StringBuilder();
 
-        output.AppendLine(string.Join("\r\n", propertiesInitOnly.Select(property => $@"        partial void Set{property.Name}({className} instance, {property.Type} value);")));
+        // output.AppendLine(string.Join("\r\n", propertiesInitOnly.Select(property => $@"        private partial void Set{property.Name}({className} instance, {property.Type} value);")));
         
         output.AppendLine($@"        public override {className} Build(bool useObjectInitializer = true)
         {{
@@ -272,17 +272,17 @@ namespace {classSymbol.BuilderNamespace}
                     {{
                         instance = new {className}
                         {{");
-        output.AppendLine(string.Join(",\r\n", propertiesSettable.Select(property => $@"                            {property.Name} = _{CamelCase(property.Name)}.Value")));
+        output.AppendLine(string.Join(",\r\n", properties.Select(property => $@"                            {property.Name} = _{CamelCase(property.Name)}.Value")));
         output.AppendLine("                        };");
 
-        output.AppendLine(string.Join("\r\n", propertiesInitOnly.Select(property => $@"                        if (_{CamelCase(property.Name)}IsSet) {{ Set{property.Name}(instance, _{CamelCase(property.Name)}.Value); }}")));
+        // output.AppendLine(string.Join("\r\n", propertiesInitOnly.Select(property => $@"                        if (_{CamelCase(property.Name)}IsSet) {{ Set{property.Name}(instance, _{CamelCase(property.Name)}.Value); }}")));
 
         output.AppendLine("                        return instance;");
         output.AppendLine("                    }");
         output.AppendLine($@"
                     instance = new {className}();");
         output.AppendLine(string.Join("\r\n", propertiesSettable.Select(property => $@"                    if (_{CamelCase(property.Name)}IsSet) {{ instance.{property.Name} = _{CamelCase(property.Name)}.Value; }}")));
-        output.AppendLine(string.Join("\r\n", propertiesInitOnly.Select(property => $@"                    if (_{CamelCase(property.Name)}IsSet) {{ Set{property.Name}(instance, _{CamelCase(property.Name)}.Value); }}")));
+        // output.AppendLine(string.Join("\r\n", propertiesInitOnly.Select(property => $@"                    if (_{CamelCase(property.Name)}IsSet) {{ Set{property.Name}(instance, _{CamelCase(property.Name)}.Value); }}")));
         output.AppendLine($@"                    return instance;
                 }});
             }}

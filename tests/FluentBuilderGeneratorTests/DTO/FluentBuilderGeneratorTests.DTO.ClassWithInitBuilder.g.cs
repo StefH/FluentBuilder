@@ -67,8 +67,6 @@ namespace FluentBuilderGeneratorTests.DTO
         }
 
 
-        partial void SetId(ClassWithInit instance, int value);
-        partial void SetTest(ClassWithInit instance, long value);
         public override ClassWithInit Build(bool useObjectInitializer = true)
         {
             if (Object?.IsValueCreated != true)
@@ -80,18 +78,15 @@ namespace FluentBuilderGeneratorTests.DTO
                     {
                         instance = new ClassWithInit
                         {
-                            Normal = _normal.Value
+                            Normal = _normal.Value,
+                            Id = _id.Value,
+                            Test = _test.Value
                         };
-                        if (_idIsSet) { SetId(instance, _id.Value); }
-                        if (_testIsSet) { SetTest(instance, _test.Value); }
                         return instance;
                     }
-                    
 
                     instance = new ClassWithInit();
                     if (_normalIsSet) { instance.Normal = _normal.Value; }
-                    if (_idIsSet) { SetId(instance, _id.Value); }
-                    if (_testIsSet) { SetTest(instance, _test.Value); }
                     return instance;
                 });
             }

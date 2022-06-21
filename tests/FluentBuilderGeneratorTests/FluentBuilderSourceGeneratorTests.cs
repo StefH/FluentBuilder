@@ -183,15 +183,17 @@ namespace FluentBuilderGeneratorTests.DTO
             {
                 Object = new Lazy<SimpleClass>(() =>
                 {
+                    SimpleClass instance;
                     if (useObjectInitializer)
                     {
-                        return new SimpleClass
+                        instance = new SimpleClass
                         {
                             Id = _id.Value
                         };
+                        return instance;
                     }
 
-                    var instance = new SimpleClass();
+                    instance = new SimpleClass();
                     if (_idIsSet) { instance.Id = _id.Value; }
                     return instance;
                 });
