@@ -48,6 +48,11 @@ internal class AutoGenerateBuilderSyntaxReceiver : IAutoGenerateBuilderSyntaxRec
             usings.AddRange(cc.Usings.Select(@using => @using.Name.ToString()));
         }
 
+        // https://github.com/StefH/FluentBuilder/issues/36
+        usings.AddRange(classDeclarationSyntax.GetAllUsings().Select(@using => @using.Name.ToString()));
+
+        usings = usings.Distinct().ToList();
+
         var argumentList = attributeLists.Attributes.FirstOrDefault()?.ArgumentList;
         if (argumentList != null && argumentList.Arguments.Any())
         {
