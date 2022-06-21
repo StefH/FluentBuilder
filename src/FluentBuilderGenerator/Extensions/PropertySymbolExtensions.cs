@@ -13,6 +13,11 @@ internal static class PropertySymbolExtensions
         FluentTypeKind.ICollection
     };
 
+    internal static bool IsSettable(this IPropertySymbol property)
+    {
+        return property.SetMethod is { IsInitOnly: false };
+    }
+
     internal static bool TryGetIDictionaryElementTypes(this IPropertySymbol property, out (INamedTypeSymbol key, INamedTypeSymbol value)? tuple)
     {
         var type = property.Type.GetFluentTypeKind();

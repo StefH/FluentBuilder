@@ -86,6 +86,7 @@ namespace {classSymbol.BuilderNamespace}
     private StringBuilder GenerateWithPropertyCode(ClassSymbol classSymbol, List<ClassSymbol> allClassSymbols)
     {
         var properties = GetProperties(classSymbol);
+
         var className = classSymbol.BuilderClassName;
 
         var sb = new StringBuilder();
@@ -252,15 +253,15 @@ namespace {classSymbol.BuilderNamespace}
         }
 
         var properties = GetProperties(classSymbol).ToArray();
-        var propertiesInitOnly = properties.Where(property => property.SetMethod!.IsInitOnly).ToArray();
-        var propertiesSettable = properties.Where(property => !property.SetMethod!.IsInitOnly).ToArray();
+        // var propertiesInitOnly = properties.Where(property => property.SetMethod!.IsInitOnly).ToArray();
+        var propertiesSettable = properties.Where(property => property.IsSettable()).ToArray();
 
         var className = classSymbol.NamedTypeSymbol.GenerateShortTypeName();
 
         var output = new StringBuilder();
 
         // output.AppendLine(string.Join("\r\n", propertiesInitOnly.Select(property => $@"        private partial void Set{property.Name}({className} instance, {property.Type} value);")));
-        
+
         output.AppendLine($@"        public override {className} Build(bool useObjectInitializer = true)
         {{
             if (Object?.IsValueCreated != true)
