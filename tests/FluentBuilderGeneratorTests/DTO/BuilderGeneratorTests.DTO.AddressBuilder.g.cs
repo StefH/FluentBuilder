@@ -421,9 +421,10 @@ namespace FluentBuilderGeneratorTests.DTO
             {
                 Object = new Lazy<Address>(() =>
                 {
+                    Address instance;
                     if (useObjectInitializer)
                     {
-                        return new Address
+                        instance = new Address
                         {
                             HouseNumber = _houseNumber.Value,
                             City = _city.Value,
@@ -447,9 +448,10 @@ namespace FluentBuilderGeneratorTests.DTO
                             IDictionary2 = _iDictionary2.Value,
                             Dictionary2 = _dictionary2.Value
                         };
+                        return instance;
                     }
 
-                    var instance = new Address();
+                    instance = new Address();
                     if (_houseNumberIsSet) { instance.HouseNumber = _houseNumber.Value; }
                     if (_cityIsSet) { instance.City = _city.Value; }
                     if (_arrayIsSet) { instance.Array = _array.Value; }

@@ -89,18 +89,20 @@ namespace FluentBuilderGeneratorTests.DTO
             {
                 Object = new Lazy<ClassWithFuncAndAction>(() =>
                 {
+                    ClassWithFuncAndAction instance;
                     if (useObjectInitializer)
                     {
-                        return new ClassWithFuncAndAction
+                        instance = new ClassWithFuncAndAction
                         {
                             Func1 = _func1.Value,
                             Func2 = _func2.Value,
                             FuncNull = _funcNull.Value,
                             Action = _action.Value
                         };
+                        return instance;
                     }
 
-                    var instance = new ClassWithFuncAndAction();
+                    instance = new ClassWithFuncAndAction();
                     if (_func1IsSet) { instance.Func1 = _func1.Value; }
                     if (_func2IsSet) { instance.Func2 = _func2.Value; }
                     if (_funcNullIsSet) { instance.FuncNull = _funcNull.Value; }

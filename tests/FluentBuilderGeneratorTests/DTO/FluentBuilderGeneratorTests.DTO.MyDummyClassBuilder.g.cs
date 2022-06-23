@@ -41,15 +41,17 @@ namespace FluentBuilderGeneratorTests.DTO
             {
                 Object = new Lazy<DummyClass>(() =>
                 {
+                    DummyClass instance;
                     if (useObjectInitializer)
                     {
-                        return new DummyClass
+                        instance = new DummyClass
                         {
                             Id = _id.Value
                         };
+                        return instance;
                     }
 
-                    var instance = new DummyClass();
+                    instance = new DummyClass();
                     if (_idIsSet) { instance.Id = _id.Value; }
                     return instance;
                 });

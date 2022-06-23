@@ -47,15 +47,17 @@ namespace FluentBuilderGeneratorTests.DTO
             {
                 Object = new Lazy<Thing>(() =>
                 {
+                    Thing instance;
                     if (useObjectInitializer)
                     {
-                        return new Thing
+                        instance = new Thing
                         {
                             T = _t.Value
                         };
+                        return instance;
                     }
 
-                    var instance = new Thing();
+                    instance = new Thing();
                     if (_tIsSet) { instance.T = _t.Value; }
                     return instance;
                 });

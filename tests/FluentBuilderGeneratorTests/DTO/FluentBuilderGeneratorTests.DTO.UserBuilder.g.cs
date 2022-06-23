@@ -95,18 +95,20 @@ namespace FluentBuilderGeneratorTests.DTO
             {
                 Object = new Lazy<User>(() =>
                 {
+                    User instance;
                     if (useObjectInitializer)
                     {
-                        return new User
+                        instance = new User
                         {
                             FirstName = _firstName.Value,
                             LastName = _lastName.Value,
                             QuitDate = _quitDate.Value,
                             TestDummyClass = _testDummyClass.Value
                         };
+                        return instance;
                     }
 
-                    var instance = new User();
+                    instance = new User();
                     if (_firstNameIsSet) { instance.FirstName = _firstName.Value; }
                     if (_lastNameIsSet) { instance.LastName = _lastName.Value; }
                     if (_quitDateIsSet) { instance.QuitDate = _quitDate.Value; }

@@ -41,15 +41,17 @@ namespace FluentBuilderGeneratorTests.DTO
             {
                 Object = new Lazy<Address<T>>(() =>
                 {
+                    Address<T> instance;
                     if (useObjectInitializer)
                     {
-                        return new Address<T>
+                        instance = new Address<T>
                         {
                             Street = _street.Value
                         };
+                        return instance;
                     }
 
-                    var instance = new Address<T>();
+                    instance = new Address<T>();
                     if (_streetIsSet) { instance.Street = _street.Value; }
                     return instance;
                 });

@@ -4,6 +4,7 @@ using CSharp.SourceGenerators.Extensions;
 using CSharp.SourceGenerators.Extensions.Models;
 using FluentAssertions;
 using FluentBuilderGenerator;
+using FluentBuilderGeneratorTests.DTO;
 using Xunit;
 
 namespace FluentBuilderGeneratorTests;
@@ -182,15 +183,17 @@ namespace FluentBuilderGeneratorTests.DTO
             {
                 Object = new Lazy<SimpleClass>(() =>
                 {
+                    SimpleClass instance;
                     if (useObjectInitializer)
                     {
-                        return new SimpleClass
+                        instance = new SimpleClass
                         {
                             Id = _id.Value
                         };
+                        return instance;
                     }
 
-                    var instance = new SimpleClass();
+                    instance = new SimpleClass();
                     if (_idIsSet) { instance.Id = _id.Value; }
                     return instance;
                 });
@@ -438,6 +441,36 @@ namespace FluentBuilderGeneratorTests.DTO
         // Arrange
         var builderFileName = "FluentBuilderGeneratorTests.DTO.ClassWithFuncAndActionBuilder.g.cs";
         var path = "./DTO/ClassWithFuncAndAction.cs";
+        var sourceFile = new SourceFile
+        {
+            Path = path,
+            Text = File.ReadAllText(path),
+            AttributeToAddToClass = new ExtraAttribute
+            {
+                Name = "FluentBuilder.AutoGenerateBuilder"
+            }
+        };
+
+        // Act
+        var result = _sut.Execute(Namespace, new[] { sourceFile });
+
+        // Assert
+        result.Valid.Should().BeTrue();
+        result.Files.Should().HaveCount(9);
+
+        var builder = result.Files[8];
+        builder.Path.Should().EndWith(builderFileName);
+
+        if (Write) File.WriteAllText($"../../../DTO/{builderFileName}", builder.Text);
+        builder.Text.Should().Be(File.ReadAllText($"../../../DTO/{builderFileName}"));
+    }
+
+    [Fact]
+    public void GenerateFiles_ClassWithInit_Should_GenerateCorrectFiles()
+    {
+        // Arrange
+        var builderFileName = "FluentBuilderGeneratorTests.DTO.ClassWithInitBuilder.g.cs";
+        var path = "./DTO/ClassWithInit.cs";
         var sourceFile = new SourceFile
         {
             Path = path,
