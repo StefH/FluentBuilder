@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using FluentBuilder;
 
@@ -9,5 +10,7 @@ namespace ConsumerClassLibrary
         public int Id { get; set; }
 
         public List<string> Values { get; set; } = null!;
+
+        public long[] MyArray { get; set; } = Array.Empty<long>();
     }
 }

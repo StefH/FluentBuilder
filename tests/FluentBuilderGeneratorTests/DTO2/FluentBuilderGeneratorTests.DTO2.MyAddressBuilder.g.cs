@@ -52,7 +52,7 @@ namespace FluentBuilderGeneratorTests.DTO2
 
         private bool _arrayIsSet;
         private Lazy<string[]> _array = new Lazy<string[]>(() => new string[0]);
-        public MyAddressBuilder WithArray(string[] value) => WithArray(() => value);
+        public MyAddressBuilder WithArray(params string[] value) => WithArray(() => value);
         public MyAddressBuilder WithArray(Func<string[]> func)
         {
             _array = new Lazy<string[]>(func);
@@ -74,7 +74,7 @@ namespace FluentBuilderGeneratorTests.DTO2
 
         private bool _array2IsSet;
         private Lazy<FluentBuilderGeneratorTests.DTO.Address[]> _array2 = new Lazy<FluentBuilderGeneratorTests.DTO.Address[]>(() => new FluentBuilderGeneratorTests.DTO.Address[0]);
-        public MyAddressBuilder WithArray2(FluentBuilderGeneratorTests.DTO.Address[] value) => WithArray2(() => value);
+        public MyAddressBuilder WithArray2(params FluentBuilderGeneratorTests.DTO.Address[] value) => WithArray2(() => value);
         public MyAddressBuilder WithArray2(Func<FluentBuilderGeneratorTests.DTO.Address[]> func)
         {
             _array2 = new Lazy<FluentBuilderGeneratorTests.DTO.Address[]>(func);
