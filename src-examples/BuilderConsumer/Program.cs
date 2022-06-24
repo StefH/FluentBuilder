@@ -25,6 +25,7 @@ namespace BuilderConsumer
 
             var test = new TestClassBuilder()
                 .WithId(100)
+                .WithMyArray(100, 200, 300)
                 .WithValues(eb => eb
                     .Add("abc")
                     .Build())

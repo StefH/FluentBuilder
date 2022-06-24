@@ -92,11 +92,14 @@ namespace {classSymbol.BuilderNamespace}
         var sb = new StringBuilder();
         foreach (var property in properties)
         {
+            // Use "params" in case it's an Array, else just use type-T.
+            var type = property.Type.GetFluentTypeKind() == FluentTypeKind.Array ? $"params {property.Type}" : property.Type.ToString();
+
             sb.AppendLine($"        private bool _{CamelCase(property.Name)}IsSet;");
 
             sb.AppendLine($"        private Lazy<{property.Type}> _{CamelCase(property.Name)} = new Lazy<{property.Type}>(() => {property.Type.GetDefault()});");
 
-            sb.AppendLine($"        public {className} With{property.Name}({property.Type} value) => With{property.Name}(() => value);");
+            sb.AppendLine($"        public {className} With{property.Name}({type} value) => With{property.Name}(() => value);");
 
             sb.Append(GenerateWithPropertyFuncMethod(classSymbol, property));
 
