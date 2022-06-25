@@ -1,3 +1,9 @@
+# 0.4.9 (25 June 2022)
+- [#38](https://github.com/StefH/FluentBuilder/pull/38) - Support for init-only properties [enhancement] contributed by [StefH](https://github.com/StefH)
+- [#42](https://github.com/StefH/FluentBuilder/pull/42) - Use params in 'With'-method in case the type is an array [enhancement] contributed by [StefH](https://github.com/StefH)
+- [#35](https://github.com/StefH/FluentBuilder/issues/35) - Builder code should handle init setter so that it doesn't generate non-compilable code
+- [#39](https://github.com/StefH/FluentBuilder/issues/39) - [enhancement]: for array `with` methods, consider adding the `params` keyword for easier use [enhancement]
+
 # 0.4.8 (21 June 2022)
 - [#37](https://github.com/StefH/FluentBuilder/pull/37) - Support different namespace for class in custom builder class [enhancement] contributed by [StefH](https://github.com/StefH)
 - [#36](https://github.com/StefH/FluentBuilder/issues/36) - Issues with generating builder from an object in another namespace [bug]
