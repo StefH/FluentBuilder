@@ -229,6 +229,7 @@ namespace {classSymbol.BuilderNamespace}
         var properties = classSymbol.NamedTypeSymbol.GetMembers().OfType<IPropertySymbol>()
             .Where(x => x.SetMethod is not null)
             .Where(x => x.CanBeReferencedByName)
+            .Where(x => !x.GetAttributes().Any(a => a.AttributeClass?.GetFullType() == typeof(IgnorePropertyAttribute).FullName))
             .ToList();
 
         var propertyNames = properties.Select(x => x.Name);
