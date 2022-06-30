@@ -223,13 +223,13 @@ namespace {classSymbol.BuilderNamespace}
             .AppendLine($"            return {cast}builder.Build(useObjectInitializer);")
             .AppendLine("        });");
     }
-
+    private const string IgnoreAttributeClassName = "FluentBuilder.IgnorePropertyAttribute";
     private static IEnumerable<IPropertySymbol> GetProperties(ClassSymbol classSymbol)
     {
         var properties = classSymbol.NamedTypeSymbol.GetMembers().OfType<IPropertySymbol>()
             .Where(x => x.SetMethod is not null)
             .Where(x => x.CanBeReferencedByName)
-            .Where(x => !x.GetAttributes().Any(a => a.AttributeClass?.GetFullType() == typeof(IgnorePropertyAttribute).FullName))
+            .Where(x => !x.GetAttributes().Any(a => a.AttributeClass?.GetFullType() == IgnoreAttributeClassName))
             .ToList();
 
         var propertyNames = properties.Select(x => x.Name);
