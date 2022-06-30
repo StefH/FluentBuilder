@@ -48,6 +48,10 @@ namespace FluentBuilder
             Type = type;
         }}
     }}
+    [AttributeUsage(AttributeTargets.Property)]
+    public class IgnorePropertyAttribute : Attribute
+    {{
+    }}
 }}
 {(_supportsNullable ? "#nullable disable" : string.Empty)}"
         );
