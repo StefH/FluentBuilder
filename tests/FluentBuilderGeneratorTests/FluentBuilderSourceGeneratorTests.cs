@@ -497,7 +497,7 @@ namespace FluentBuilderGeneratorTests.DTO
     }
 
     [Fact]
-    public void GenerateFiles_ClassCustomDefaultValue_Should_GenerateCorrectFiles()
+    public void GenerateFiles_ClassWithPropertyWhichHasAValue_Should_GenerateCorrectFiles()
     {
         // Arrange
         var builderFileName = "FluentBuilderGeneratorTests.DTO.ClassWithCultureInfoBuilder.g.cs";
