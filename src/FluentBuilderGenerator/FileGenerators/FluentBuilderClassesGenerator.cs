@@ -95,9 +95,11 @@ namespace {classSymbol.BuilderNamespace}
             // Use "params" in case it's an Array, else just use type-T.
             var type = property.Type.GetFluentTypeKind() == FluentTypeKind.Array ? $"params {property.Type}" : property.Type.ToString();
 
+            var @default = property.GetDefault();
+
             sb.AppendLine($"        private bool _{CamelCase(property.Name)}IsSet;");
 
-            sb.AppendLine($"        private Lazy<{property.Type}> _{CamelCase(property.Name)} = new Lazy<{property.Type}>(() => {property.Type.GetDefault()});");
+            sb.AppendLine($"        private Lazy<{property.Type}> _{CamelCase(property.Name)} = new Lazy<{property.Type}>(() => {@default});");
 
             sb.AppendLine($"        public {className} With{property.Name}({type} value) => With{property.Name}(() => value);");
 
@@ -107,7 +109,7 @@ namespace {classSymbol.BuilderNamespace}
 
             sb.AppendLine($"        public {className} Without{property.Name}()");
             sb.AppendLine("        {");
-            sb.AppendLine($"            With{property.Name}(() => {property.Type.GetDefault()});");
+            sb.AppendLine($"            With{property.Name}(() => {@default});");
             sb.AppendLine($"            _{CamelCase(property.Name)}IsSet = false;");
             sb.AppendLine("            return this;");
             sb.AppendLine("        }");
@@ -224,7 +226,7 @@ namespace {classSymbol.BuilderNamespace}
             .AppendLine("        });");
     }
 
-    private static IEnumerable<IPropertySymbol> GetProperties(ClassSymbol classSymbol)
+    private static IReadOnlyList<IPropertySymbol> GetProperties(ClassSymbol classSymbol)
     {
         var properties = classSymbol.NamedTypeSymbol.GetMembers().OfType<IPropertySymbol>()
             .Where(x => x.SetMethod is not null)
@@ -255,7 +257,7 @@ namespace {classSymbol.BuilderNamespace}
             throw new NotSupportedException($"Unable to generate a FluentBuilder for the class '{classSymbol.NamedTypeSymbol}' because no public parameterless constructor was defined.");
         }
 
-        var properties = GetProperties(classSymbol).ToArray();
+        var properties = GetProperties(classSymbol);
         // var propertiesInitOnly = properties.Where(property => property.SetMethod!.IsInitOnly).ToArray();
         var propertiesSettable = properties.Where(property => property.IsSettable()).ToArray();
 

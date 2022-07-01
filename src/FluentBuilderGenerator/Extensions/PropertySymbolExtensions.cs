@@ -1,5 +1,6 @@
 using FluentBuilderGenerator.Types;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace FluentBuilderGenerator.Extensions;
 
@@ -16,6 +17,23 @@ internal static class PropertySymbolExtensions
     internal static bool IsSettable(this IPropertySymbol property)
     {
         return property.SetMethod is { IsInitOnly: false };
+    }
+
+    internal static string GetDefault(this IPropertySymbol property)
+    {
+        var location = property.Locations.FirstOrDefault();
+        if (location != null)
+        {
+            var root = location.SourceTree?.GetRoot();
+            var syntax = root?.DescendantNodes().OfType<PropertyDeclarationSyntax>()
+                .FirstOrDefault(p => p.Identifier.ValueText == property.Name && p.Type.ToString() == property.Type.Name);
+            if (syntax is { Initializer: { } })
+            {
+                return syntax.Initializer.Value.ToString();
+            }
+        }
+        
+        return property.Type.GetDefault();
     }
 
     internal static bool TryGetIDictionaryElementTypes(this IPropertySymbol property, out (INamedTypeSymbol key, INamedTypeSymbol value)? tuple)
