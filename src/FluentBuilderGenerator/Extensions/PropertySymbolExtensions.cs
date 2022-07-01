@@ -20,34 +20,41 @@ internal static class PropertySymbolExtensions
         return property.SetMethod is { IsInitOnly: false };
     }
 
-    internal static string GetDefault(this IPropertySymbol property, IGeneratorExecutionContextWrapper context)
+    /// <summary>
+    /// Check if the <see cref="IPropertySymbol"/> has a value set, in that case try to get that value and return the using if needed.
+    ///
+    /// If no value is set, just return the default.
+    /// </summary>
+    internal static (string DefaultValue, string? ExtraUsing) GetDefault(this IPropertySymbol property, IGeneratorExecutionContextWrapper context)
     {
         var location = property.Locations.FirstOrDefault();
         if (location != null)
         {
-            var root = location.SourceTree?.GetRoot();
-            if (root != null)
+            var rootSyntaxNode = location.SourceTree?.GetRoot();
+            if (rootSyntaxNode != null)
             {
-                var syntax = root.DescendantNodes()
+                var propertyDeclarationSyntax = rootSyntaxNode.DescendantNodes()
                     .OfType<PropertyDeclarationSyntax>()
                     .FirstOrDefault(p => p.Identifier.ValueText == property.Name && p.Type.ToString() == property.Type.Name);
 
-                if (syntax is { Initializer: { } })
+                if (propertyDeclarationSyntax is { Initializer: { } })
                 {
-                    var usings = root.DescendantNodes().OfType<UsingDirectiveSyntax>().Select(ud => ud.Name.ToString()).Distinct().ToList();
+                    var thisUsings = rootSyntaxNode.DescendantNodes().OfType<UsingDirectiveSyntax>().Select(ud => ud.Name.ToString());
 
-                    // syntax.Initializer.Value.ToString()
-                    if (context.TryGetUsing(syntax.Type.ToString(), usings, out var @using))
-                    {
-                        return $"{@using}.{syntax.Initializer.Value}";
-                    }
+                    var ancestorUsings = rootSyntaxNode.GetAncestorsUsings().Select(ud => ud.Name.ToString());
 
-                    return $"{syntax.Initializer.Value}";
+                    var extraUsings = thisUsings.Union(ancestorUsings).Distinct().ToList();
+
+                    var value = propertyDeclarationSyntax.Initializer.Value.ToString();
+
+                    return context.TryGetUsing(propertyDeclarationSyntax.Type.ToString(), extraUsings, out var extraUsing) ?
+                        (v: value, extraUsing) :
+                        (v: value, null);
                 }
             }
         }
-        
-        return property.Type.GetDefault();
+
+        return (property.Type.GetDefault(), null);
     }
 
     internal static bool TryGetIDictionaryElementTypes(this IPropertySymbol property, out (INamedTypeSymbol key, INamedTypeSymbol value)? tuple)

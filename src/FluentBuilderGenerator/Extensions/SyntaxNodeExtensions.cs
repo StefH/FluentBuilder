@@ -93,7 +93,7 @@ internal static class SyntaxNodeExtensions
     }
 
     // https://stackoverflow.com/questions/49970813/collect-usings-from-all-enclosing-namespaces-having-an-itypesymbol
-    public static IReadOnlyList<UsingDirectiveSyntax> GetAllUsings(this SyntaxNode syntaxNode)
+    public static IReadOnlyList<UsingDirectiveSyntax> GetAncestorsUsings(this SyntaxNode syntaxNode)
     {
         var allUsings = SyntaxFactory.List<UsingDirectiveSyntax>();
         

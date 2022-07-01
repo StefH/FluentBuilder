@@ -40,7 +40,6 @@ internal class GeneratorExecutionContextWrapper : IGeneratorExecutionContextWrap
         var namedTypeSymbol = _context.Compilation.GetTypeByMetadataName(shortName);
         if (namedTypeSymbol is not null)
         {
-            //result = shortName;
             return false;
         }
 
@@ -54,7 +53,6 @@ internal class GeneratorExecutionContextWrapper : IGeneratorExecutionContextWrap
             }
         }
 
-        //result = null;
         return false;
     }
 
