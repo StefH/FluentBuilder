@@ -33,6 +33,31 @@ internal class GeneratorExecutionContextWrapper : IGeneratorExecutionContextWrap
 
     public void AddSource(string hintName, SourceText sourceText) => _context.AddSource(hintName, sourceText);
 
+    public bool TryGetUsing(string shortName, IReadOnlyList<string> usings, [NotNullWhen(true)] out string? result)
+    {
+        result = null;
+
+        var namedTypeSymbol = _context.Compilation.GetTypeByMetadataName(shortName);
+        if (namedTypeSymbol is not null)
+        {
+            //result = shortName;
+            return false;
+        }
+
+        foreach (var @using in usings)
+        {
+            namedTypeSymbol = _context.Compilation.GetTypeByMetadataName($"{@using}.{shortName}");
+            if (namedTypeSymbol is not null)
+            {
+                result = @using;
+                return true;
+            }
+        }
+
+        //result = null;
+        return false;
+    }
+
     public bool TryGetNamedTypeSymbolByFullMetadataName(FluentData fluentDataItem, [NotNullWhen(true)] out ClassSymbol? classSymbol)
     {
         classSymbol = null;

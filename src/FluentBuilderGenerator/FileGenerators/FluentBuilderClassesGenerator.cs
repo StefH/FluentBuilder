@@ -95,7 +95,7 @@ namespace {classSymbol.BuilderNamespace}
             // Use "params" in case it's an Array, else just use type-T.
             var type = property.Type.GetFluentTypeKind() == FluentTypeKind.Array ? $"params {property.Type}" : property.Type.ToString();
 
-            var @default = property.GetDefault();
+            var @default = property.GetDefault(_context);
 
             sb.AppendLine($"        private bool _{CamelCase(property.Name)}IsSet;");
 

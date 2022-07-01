@@ -525,10 +525,10 @@ namespace FluentBuilderGeneratorTests.DTO
         if (Write) File.WriteAllText($"../../../DTO/{builderFileName}", builder.Text);
         builder.Text.Should().Be(File.ReadAllText($"../../../DTO/{builderFileName}"));
 
-        var b = new ClassWithCultureInfoBuilder();
-        var c = b.Build();
+        //var b = new ClassWithCultureInfoBuilder();
+        //var c = b.Build();
 
-        int x = 0;
+        //int x = 0;
     }
 
     [Fact]

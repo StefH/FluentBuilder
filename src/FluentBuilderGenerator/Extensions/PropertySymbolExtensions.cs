@@ -1,4 +1,5 @@
 using FluentBuilderGenerator.Types;
+using FluentBuilderGenerator.Wrappers;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
@@ -19,17 +20,30 @@ internal static class PropertySymbolExtensions
         return property.SetMethod is { IsInitOnly: false };
     }
 
-    internal static string GetDefault(this IPropertySymbol property)
+    internal static string GetDefault(this IPropertySymbol property, IGeneratorExecutionContextWrapper context)
     {
         var location = property.Locations.FirstOrDefault();
         if (location != null)
         {
             var root = location.SourceTree?.GetRoot();
-            var syntax = root?.DescendantNodes().OfType<PropertyDeclarationSyntax>()
-                .FirstOrDefault(p => p.Identifier.ValueText == property.Name && p.Type.ToString() == property.Type.Name);
-            if (syntax is { Initializer: { } })
+            if (root != null)
             {
-                return syntax.Initializer.Value.ToString();
+                var syntax = root.DescendantNodes()
+                    .OfType<PropertyDeclarationSyntax>()
+                    .FirstOrDefault(p => p.Identifier.ValueText == property.Name && p.Type.ToString() == property.Type.Name);
+
+                if (syntax is { Initializer: { } })
+                {
+                    var usings = root.DescendantNodes().OfType<UsingDirectiveSyntax>().Select(ud => ud.Name.ToString()).Distinct().ToList();
+
+                    // syntax.Initializer.Value.ToString()
+                    if (context.TryGetUsing(syntax.Type.ToString(), usings, out var @using))
+                    {
+                        return $"{@using}.{syntax.Initializer.Value}";
+                    }
+
+                    return $"{syntax.Initializer.Value}";
+                }
             }
         }
         

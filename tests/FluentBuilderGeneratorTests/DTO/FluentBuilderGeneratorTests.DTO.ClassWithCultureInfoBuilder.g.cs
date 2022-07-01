@@ -35,7 +35,7 @@ namespace FluentBuilderGeneratorTests.DTO
         }
 
         private bool _localeIsSet;
-        private Lazy<System.Globalization.CultureInfo> _locale;// = new Lazy<System.Globalization.CultureInfo>(() => CultureInfo.CurrentCulture);
+        private Lazy<System.Globalization.CultureInfo> _locale = new Lazy<System.Globalization.CultureInfo>(() => System.Globalization.CultureInfo.CurrentCulture);
         public ClassWithCultureInfoBuilder WithLocale(System.Globalization.CultureInfo value) => WithLocale(() => value);
         public ClassWithCultureInfoBuilder WithLocale(Func<System.Globalization.CultureInfo> func)
         {
@@ -45,7 +45,7 @@ namespace FluentBuilderGeneratorTests.DTO
         }
         public ClassWithCultureInfoBuilder WithoutLocale()
         {
-          //  WithLocale(() => CultureInfo.CurrentCulture);
+            WithLocale(() => System.Globalization.CultureInfo.CurrentCulture);
             _localeIsSet = false;
             return this;
         }
