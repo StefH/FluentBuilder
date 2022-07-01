@@ -13,6 +13,8 @@ using System.Collections;
 using System.Collections.Generic;
 using FluentBuilderGeneratorTests.FluentBuilder;
 using FluentBuilderGeneratorTests.DTO;
+using System.Globalization;
+using MyNamespace;
 
 namespace FluentBuilderGeneratorTests.DTO
 {
@@ -35,7 +37,7 @@ namespace FluentBuilderGeneratorTests.DTO
         }
 
         private bool _localeIsSet;
-        private Lazy<System.Globalization.CultureInfo> _locale = new Lazy<System.Globalization.CultureInfo>(() => System.Globalization.CultureInfo.CurrentCulture);
+        private Lazy<System.Globalization.CultureInfo> _locale = new Lazy<System.Globalization.CultureInfo>(() => CultureInfo.CurrentCulture);
         public ClassWithCultureInfoBuilder WithLocale(System.Globalization.CultureInfo value) => WithLocale(() => value);
         public ClassWithCultureInfoBuilder WithLocale(Func<System.Globalization.CultureInfo> func)
         {
@@ -45,8 +47,40 @@ namespace FluentBuilderGeneratorTests.DTO
         }
         public ClassWithCultureInfoBuilder WithoutLocale()
         {
-            WithLocale(() => System.Globalization.CultureInfo.CurrentCulture);
+            WithLocale(() => CultureInfo.CurrentCulture);
             _localeIsSet = false;
+            return this;
+        }
+
+        private bool _locale2IsSet;
+        private Lazy<System.Globalization.CultureInfo> _locale2 = new Lazy<System.Globalization.CultureInfo>(() => System.Globalization.CultureInfo.CurrentCulture);
+        public ClassWithCultureInfoBuilder WithLocale2(System.Globalization.CultureInfo value) => WithLocale2(() => value);
+        public ClassWithCultureInfoBuilder WithLocale2(Func<System.Globalization.CultureInfo> func)
+        {
+            _locale2 = new Lazy<System.Globalization.CultureInfo>(func);
+            _locale2IsSet = true;
+            return this;
+        }
+        public ClassWithCultureInfoBuilder WithoutLocale2()
+        {
+            WithLocale2(() => System.Globalization.CultureInfo.CurrentCulture);
+            _locale2IsSet = false;
+            return this;
+        }
+
+        private bool _locale3IsSet;
+        private Lazy<System.Globalization.CultureInfo> _locale3 = new Lazy<System.Globalization.CultureInfo>(() => X.Value);
+        public ClassWithCultureInfoBuilder WithLocale3(System.Globalization.CultureInfo value) => WithLocale3(() => value);
+        public ClassWithCultureInfoBuilder WithLocale3(Func<System.Globalization.CultureInfo> func)
+        {
+            _locale3 = new Lazy<System.Globalization.CultureInfo>(func);
+            _locale3IsSet = true;
+            return this;
+        }
+        public ClassWithCultureInfoBuilder WithoutLocale3()
+        {
+            WithLocale3(() => X.Value);
+            _locale3IsSet = false;
             return this;
         }
 
@@ -63,7 +97,9 @@ namespace FluentBuilderGeneratorTests.DTO
                         instance = new ClassWithCultureInfo
                         {
                             NoValueSet = _noValueSet.Value,
-                            Locale = _locale.Value
+                            Locale = _locale.Value,
+                            Locale2 = _locale2.Value,
+                            Locale3 = _locale3.Value
                         };
                         return instance;
                     }
@@ -71,6 +107,8 @@ namespace FluentBuilderGeneratorTests.DTO
                     instance = new ClassWithCultureInfo();
                     if (_noValueSetIsSet) { instance.NoValueSet = _noValueSet.Value; }
                     if (_localeIsSet) { instance.Locale = _locale.Value; }
+                    if (_locale2IsSet) { instance.Locale2 = _locale2.Value; }
+                    if (_locale3IsSet) { instance.Locale3 = _locale3.Value; }
                     return instance;
                 });
             }

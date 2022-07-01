@@ -25,7 +25,7 @@ internal static class PropertySymbolExtensions
     ///
     /// If no value is set, just return the default.
     /// </summary>
-    internal static (string DefaultValue, string? ExtraUsing) GetDefault(this IPropertySymbol property, IGeneratorExecutionContextWrapper context)
+    internal static (string DefaultValue, IReadOnlyList<string>? ExtraUsings) GetDefault(this IPropertySymbol property, IGeneratorExecutionContextWrapper context)
     {
         var location = property.Locations.FirstOrDefault();
         if (location != null)
@@ -47,9 +47,11 @@ internal static class PropertySymbolExtensions
 
                     var value = propertyDeclarationSyntax.Initializer.Value.ToString();
 
-                    return context.TryGetUsing(propertyDeclarationSyntax.Type.ToString(), extraUsings, out var extraUsing) ?
-                        (v: value, extraUsing) :
-                        (v: value, null);
+                    return (value, extraUsings);
+
+                    //return context.TryGetUsing(propertyDeclarationSyntax.Type.ToString(), extraUsings, out var extraUsing) ?
+                    //    (value, extraUsings) :
+                    //    (value, null);
                 }
             }
         }
