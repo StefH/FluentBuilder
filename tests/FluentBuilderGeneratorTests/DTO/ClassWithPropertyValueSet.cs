@@ -1,5 +1,6 @@
 using System.Globalization;
 using MyNamespace;
+using MyNamespace2;
 
 namespace FluentBuilderGeneratorTests.DTO
 {
@@ -17,7 +18,9 @@ namespace FluentBuilderGeneratorTests.DTO
 
         public CultureInfo Locale3 { get; set; } = X.Value;
 
-        // public CultureInfo Locale4 { get; set; } = Y.Value;
+        public CultureInfo Locale4 { get; set; } = Y.Value;
+
+        public CultureInfo Locale5 { get; set; } = Z.Abc;
     }
 
     public static class X
@@ -31,5 +34,13 @@ namespace MyNamespace
     public static class Y
     {
         public static CultureInfo Value = CultureInfo.CurrentCulture;
+    }
+}
+
+namespace MyNamespace2
+{
+    public static class Z
+    {
+        public static CultureInfo Abc = MyNamespace.Y.Value;
     }
 }

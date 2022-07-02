@@ -15,6 +15,7 @@ using FluentBuilderGeneratorTests.FluentBuilder;
 using FluentBuilderGeneratorTests.DTO;
 using System.Globalization;
 using MyNamespace;
+using MyNamespace2;
 
 namespace FluentBuilderGeneratorTests.DTO
 {
@@ -116,6 +117,38 @@ namespace FluentBuilderGeneratorTests.DTO
             return this;
         }
 
+        private bool _locale4IsSet;
+        private Lazy<System.Globalization.CultureInfo> _locale4 = new Lazy<System.Globalization.CultureInfo>(() => Y.Value);
+        public ClassWithPropertyValueSetBuilder WithLocale4(System.Globalization.CultureInfo value) => WithLocale4(() => value);
+        public ClassWithPropertyValueSetBuilder WithLocale4(Func<System.Globalization.CultureInfo> func)
+        {
+            _locale4 = new Lazy<System.Globalization.CultureInfo>(func);
+            _locale4IsSet = true;
+            return this;
+        }
+        public ClassWithPropertyValueSetBuilder WithoutLocale4()
+        {
+            WithLocale4(() => Y.Value);
+            _locale4IsSet = false;
+            return this;
+        }
+
+        private bool _locale5IsSet;
+        private Lazy<System.Globalization.CultureInfo> _locale5 = new Lazy<System.Globalization.CultureInfo>(() => Z.Abc);
+        public ClassWithPropertyValueSetBuilder WithLocale5(System.Globalization.CultureInfo value) => WithLocale5(() => value);
+        public ClassWithPropertyValueSetBuilder WithLocale5(Func<System.Globalization.CultureInfo> func)
+        {
+            _locale5 = new Lazy<System.Globalization.CultureInfo>(func);
+            _locale5IsSet = true;
+            return this;
+        }
+        public ClassWithPropertyValueSetBuilder WithoutLocale5()
+        {
+            WithLocale5(() => Z.Abc);
+            _locale5IsSet = false;
+            return this;
+        }
+
 
         public override ClassWithPropertyValueSet Build(bool useObjectInitializer = true)
         {
@@ -133,7 +166,9 @@ namespace FluentBuilderGeneratorTests.DTO
                             IntValueSet2 = _intValueSet2.Value,
                             Locale = _locale.Value,
                             Locale2 = _locale2.Value,
-                            Locale3 = _locale3.Value
+                            Locale3 = _locale3.Value,
+                            Locale4 = _locale4.Value,
+                            Locale5 = _locale5.Value
                         };
                         return instance;
                     }
@@ -145,6 +180,8 @@ namespace FluentBuilderGeneratorTests.DTO
                     if (_localeIsSet) { instance.Locale = _locale.Value; }
                     if (_locale2IsSet) { instance.Locale2 = _locale2.Value; }
                     if (_locale3IsSet) { instance.Locale3 = _locale3.Value; }
+                    if (_locale4IsSet) { instance.Locale4 = _locale4.Value; }
+                    if (_locale5IsSet) { instance.Locale5 = _locale5.Value; }
                     return instance;
                 });
             }
