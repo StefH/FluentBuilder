@@ -11,7 +11,7 @@ namespace FluentBuilderGenerator.FileGenerators;
 
 internal partial class FluentBuilderClassesGenerator : IFilesGenerator
 {
-    private static readonly string[] SystemUsings = new[]
+    private static readonly string[] SystemUsings =
     {
         "System",
         "System.Collections",
