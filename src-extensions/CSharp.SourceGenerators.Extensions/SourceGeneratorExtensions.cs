@@ -109,7 +109,8 @@ public static class SourceGeneratorExtensions
         }
 
         // https://stackoverflow.com/questions/21754908/cant-update-changes-to-tree-roslyn
-        return CSharpSyntaxTree.ParseText(rootSyntaxNode.GetText().ToString(), null, source.Path);
+        var updatedText = rootSyntaxNode.GetText().ToString();
+        return CSharpSyntaxTree.ParseText(updatedText, null, source.Path);
     }
 
     private static SyntaxNode AddExtraAttribute<T>(SyntaxTree syntaxTree, AnyOf<string, ExtraAttribute> attributeToAdd)
