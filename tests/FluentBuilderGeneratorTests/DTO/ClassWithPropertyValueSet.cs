@@ -3,9 +3,13 @@ using MyNamespace;
 
 namespace FluentBuilderGeneratorTests.DTO
 {
-    public class ClassWithCultureInfo
+    public class ClassWithPropertyValueSet
     {
-        public int NoValueSet { get; set; }
+        public int NoIntValueSet { get; set; }
+
+        public int IntValueSet1 { get; set; } = 1 + 1;
+
+        public int IntValueSet2 { get; set; } = 2;
 
         public CultureInfo Locale { get; set; } = CultureInfo.CurrentCulture;
 

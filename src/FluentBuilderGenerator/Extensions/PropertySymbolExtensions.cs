@@ -35,7 +35,7 @@ internal static class PropertySymbolExtensions
             {
                 var propertyDeclarationSyntax = rootSyntaxNode.DescendantNodes()
                     .OfType<PropertyDeclarationSyntax>()
-                    .FirstOrDefault(p => p.Identifier.ValueText == property.Name && p.Type.ToString() == property.Type.Name);
+                    .FirstOrDefault(p => p.Identifier.ValueText == property.Name);
 
                 if (propertyDeclarationSyntax is { Initializer: { } })
                 {
@@ -48,10 +48,6 @@ internal static class PropertySymbolExtensions
                     var value = propertyDeclarationSyntax.Initializer.Value.ToString();
 
                     return (value, extraUsings);
-
-                    //return context.TryGetUsing(propertyDeclarationSyntax.Type.ToString(), extraUsings, out var extraUsing) ?
-                    //    (value, extraUsings) :
-                    //    (value, null);
                 }
             }
         }

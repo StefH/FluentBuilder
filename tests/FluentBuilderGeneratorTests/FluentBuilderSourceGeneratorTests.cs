@@ -500,8 +500,8 @@ namespace FluentBuilderGeneratorTests.DTO
     public void GenerateFiles_ClassWithPropertyWhichHasAValue_Should_GenerateCorrectFiles()
     {
         // Arrange
-        var builderFileName = "FluentBuilderGeneratorTests.DTO.ClassWithCultureInfoBuilder.g.cs";
-        var path = "./DTO/ClassWithCultureInfo.cs";
+        var builderFileName = "FluentBuilderGeneratorTests.DTO.ClassWithPropertyValueSetBuilder.g.cs";
+        var path = "./DTO/ClassWithPropertyValueSet.cs";
         var sourceFile = new SourceFile
         {
             Path = path,
