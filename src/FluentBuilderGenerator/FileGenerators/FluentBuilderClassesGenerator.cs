@@ -97,9 +97,9 @@ namespace {classSymbol.BuilderNamespace}
 
     private (StringBuilder StringBuilder, IReadOnlyList<string> ExtraUsings) GenerateWithPropertyCode(ClassSymbol classSymbol, List<ClassSymbol> allClassSymbols)
     {
-        var properties = GetProperties(classSymbol);
-
         var className = classSymbol.BuilderClassName;
+
+        var properties = GetProperties(classSymbol);
 
         var extraUsings = new List<string>();
 
@@ -109,7 +109,7 @@ namespace {classSymbol.BuilderNamespace}
             // Use "params" in case it's an Array, else just use type-T.
             var type = property.Type.GetFluentTypeKind() == FluentTypeKind.Array ? $"params {property.Type}" : property.Type.ToString();
 
-            var (@default, extraUsing) = property.GetDefault(_context);
+            var (defaultValue, extraUsing) = property.GetDefaultValue();
             if (extraUsing != null)
             {
                 extraUsings.AddRange(extraUsing);
@@ -117,7 +117,7 @@ namespace {classSymbol.BuilderNamespace}
 
             sb.AppendLine($"        private bool _{CamelCase(property.Name)}IsSet;");
 
-            sb.AppendLine($"        private Lazy<{property.Type}> _{CamelCase(property.Name)} = new Lazy<{property.Type}>(() => {@default});");
+            sb.AppendLine($"        private Lazy<{property.Type}> _{CamelCase(property.Name)} = new Lazy<{property.Type}>(() => {defaultValue});");
 
             sb.AppendLine($"        public {className} With{property.Name}({type} value) => With{property.Name}(() => value);");
 
@@ -127,7 +127,7 @@ namespace {classSymbol.BuilderNamespace}
 
             sb.AppendLine($"        public {className} Without{property.Name}()");
             sb.AppendLine("        {");
-            sb.AppendLine($"            With{property.Name}(() => {@default});");
+            sb.AppendLine($"            With{property.Name}(() => {defaultValue});");
             sb.AppendLine($"            _{CamelCase(property.Name)}IsSet = false;");
             sb.AppendLine("            return this;");
             sb.AppendLine("        }");

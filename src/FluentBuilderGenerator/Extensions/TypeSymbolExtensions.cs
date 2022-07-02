@@ -100,7 +100,7 @@ internal static class TypeSymbolExtensions
         return false;
     }
 
-    private static bool HasAddMethod(ITypeSymbol typeSymbol)
+    private static bool HasAddMethod(INamespaceOrTypeSymbol typeSymbol)
     {
         return typeSymbol
             .GetMembers(WellKnownMemberNames.CollectionInitializerAddMethodName)
@@ -139,18 +139,14 @@ internal static class TypeSymbolExtensions
                 return $"new {namedTypeSymbol.TypeArguments[0]}[0]";
 
             case FluentTypeKind.ReadOnlyCollection:
-                {
-                    var listSymbol = (INamedTypeSymbol)typeSymbol;
-                    return $"new {typeSymbol}(new List<{listSymbol.TypeArguments[0]}>())";
-                }
+                var readOnlyCollectionSymbol = (INamedTypeSymbol)typeSymbol;
+                return $"new {typeSymbol}(new List<{readOnlyCollectionSymbol.TypeArguments[0]}>())";
 
             case FluentTypeKind.IList:
             case FluentTypeKind.ICollection:
             case FluentTypeKind.IReadOnlyCollection:
-                {
-                    var listSymbol = (INamedTypeSymbol)typeSymbol;
-                    return $"new List<{listSymbol.TypeArguments[0]}>()";
-                }
+                var listSymbol = (INamedTypeSymbol)typeSymbol;
+                return $"new List<{listSymbol.TypeArguments[0]}>()";
 
             case FluentTypeKind.IDictionary:
                 var dictionarySymbol = (INamedTypeSymbol)typeSymbol;
@@ -207,11 +203,7 @@ internal static class TypeSymbolExtensions
 
         var bestMatchingConstructor = publicConstructorsWithMatch.OrderByDescending(x => x.Match).First().PublicConstructor;
 
-        var constructorParameters = new List<string>();
-        foreach (var parameter in bestMatchingConstructor.Parameters)
-        {
-            constructorParameters.Add(parameter.Type.GetDefault());
-        }
+        var constructorParameters = bestMatchingConstructor.Parameters.Select(parameter => parameter.Type.GetDefault());
 
         return $"new {typeSymbol}({string.Join(", ", constructorParameters)})";
     }

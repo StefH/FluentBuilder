@@ -1,5 +1,4 @@
 using FluentBuilderGenerator.Types;
-using FluentBuilderGenerator.Wrappers;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
@@ -24,7 +23,7 @@ internal static class PropertySymbolExtensions
     /// Check if the <see cref="IPropertySymbol"/> has a value set, in that case try to get that value and return the usings.
     /// If no value is set, just return the default value.
     /// </summary>
-    internal static (string DefaultValue, IReadOnlyList<string>? ExtraUsings) GetDefault(this IPropertySymbol property, IGeneratorExecutionContextWrapper context)
+    internal static (string DefaultValue, IReadOnlyList<string>? ExtraUsings) GetDefaultValue(this IPropertySymbol property)
     {
         var location = property.Locations.FirstOrDefault();
         if (location != null)
