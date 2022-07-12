@@ -7,7 +7,7 @@ namespace FluentBuilderGenerator.FileGenerators;
 
 internal class AutoGenerateBuilderAttributeGenerator : IFileGenerator
 {
-    private const string Name = "FluentBuilder.AutoGenerateBuilderAttribute.g.cs";
+    private const string Name = "FluentBuilder.AutoGenerateBuilderAttributes.g.cs";
 
     private readonly string _assemblyName;
     private readonly bool _supportsNullable;
@@ -50,7 +50,7 @@ namespace FluentBuilder
     }}
 
     [AttributeUsage(AttributeTargets.Property)]
-    internal sealed class IgnorePropertyAttribute : Attribute
+    internal sealed class FluentBuilderIgnoreAttribute : Attribute
     {{
     }}
 }}
