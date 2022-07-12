@@ -1,11 +1,9 @@
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using CSharp.SourceGenerators.Extensions;
 using CSharp.SourceGenerators.Extensions.Models;
 using FluentAssertions;
 using FluentBuilderGenerator;
-using FluentBuilderGeneratorTests.DTO;
 using Xunit;
 
 namespace FluentBuilderGeneratorTests;
@@ -269,22 +267,6 @@ namespace FluentBuilderGeneratorTests.DTO
             return this;
         }
 
-        private bool _cultureInfoIsSet;
-        private Lazy<System.Globalization.CultureInfo?> _cultureInfo = new Lazy<System.Globalization.CultureInfo?>(() => default(System.Globalization.CultureInfo?));
-        public SimpleClassBuilder WithCultureInfo(System.Globalization.CultureInfo? value) => WithCultureInfo(() => value);
-        public SimpleClassBuilder WithCultureInfo(Func<System.Globalization.CultureInfo?> func)
-        {
-            _cultureInfo = new Lazy<System.Globalization.CultureInfo?>(func);
-            _cultureInfoIsSet = true;
-            return this;
-        }
-        public SimpleClassBuilder WithoutCultureInfo()
-        {
-            WithCultureInfo(() => default(System.Globalization.CultureInfo?));
-            _cultureInfoIsSet = false;
-            return this;
-        }
-
 
         public override SimpleClass Build(bool useObjectInitializer = true)
         {
@@ -297,15 +279,13 @@ namespace FluentBuilderGeneratorTests.DTO
                     {
                         instance = new SimpleClass
                         {
-                            Id = _id.Value,
-                            CultureInfo = _cultureInfo.Value
+                            Id = _id.Value
                         };
                         return instance;
                     }
 
                     instance = new SimpleClass();
                     if (_idIsSet) { instance.Id = _id.Value; }
-                    if (_cultureInfoIsSet) { instance.CultureInfo = _cultureInfo.Value; }
                     return instance;
                 });
             }
