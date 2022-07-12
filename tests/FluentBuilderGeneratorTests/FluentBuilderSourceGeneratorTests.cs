@@ -4,7 +4,6 @@ using CSharp.SourceGenerators.Extensions;
 using CSharp.SourceGenerators.Extensions.Models;
 using FluentAssertions;
 using FluentBuilderGenerator;
-using FluentBuilderGeneratorTests.DTO;
 using Xunit;
 
 namespace FluentBuilderGeneratorTests;
@@ -268,22 +267,6 @@ namespace FluentBuilderGeneratorTests.DTO
             return this;
         }
 
-        private bool _cultureInfoIsSet;
-        private Lazy<System.Globalization.CultureInfo?> _cultureInfo = new Lazy<System.Globalization.CultureInfo?>(() => default(System.Globalization.CultureInfo?));
-        public SimpleClassBuilder WithCultureInfo(System.Globalization.CultureInfo? value) => WithCultureInfo(() => value);
-        public SimpleClassBuilder WithCultureInfo(Func<System.Globalization.CultureInfo?> func)
-        {
-            _cultureInfo = new Lazy<System.Globalization.CultureInfo?>(func);
-            _cultureInfoIsSet = true;
-            return this;
-        }
-        public SimpleClassBuilder WithoutCultureInfo()
-        {
-            WithCultureInfo(() => default(System.Globalization.CultureInfo?));
-            _cultureInfoIsSet = false;
-            return this;
-        }
-
 
         public override SimpleClass Build(bool useObjectInitializer = true)
         {
@@ -296,15 +279,13 @@ namespace FluentBuilderGeneratorTests.DTO
                     {
                         instance = new SimpleClass
                         {
-                            Id = _id.Value,
-                            CultureInfo = _cultureInfo.Value
+                            Id = _id.Value
                         };
                         return instance;
                     }
 
                     instance = new SimpleClass();
                     if (_idIsSet) { instance.Id = _id.Value; }
-                    if (_cultureInfoIsSet) { instance.CultureInfo = _cultureInfo.Value; }
                     return instance;
                 });
             }
@@ -603,6 +584,41 @@ namespace FluentBuilderGeneratorTests.DTO
 
         if (Write) File.WriteAllText($"../../../DTO/{builderFileName}", builder.Text);
         builder.Text.Should().Be(File.ReadAllText($"../../../DTO/{builderFileName}"));
+    }
+
+    [Fact]
+    public void GenerateFiles_ClassWithPropertyWhichHasAValue_Should_GenerateCorrectFiles()
+    {
+        // Arrange
+        var builderFileName = "FluentBuilderGeneratorTests.DTO.ClassWithPropertyValueSetBuilder.g.cs";
+        var path = "./DTO/ClassWithPropertyValueSet.cs";
+        var sourceFile = new SourceFile
+        {
+            Path = path,
+            Text = File.ReadAllText(path),
+            AttributeToAddToClass = new ExtraAttribute
+            {
+                Name = "FluentBuilder.AutoGenerateBuilder"
+            }
+        };
+
+        // Act
+        var result = _sut.Execute(Namespace, new[] { sourceFile });
+
+        // Assert
+        result.Valid.Should().BeTrue();
+        result.Files.Should().HaveCount(9);
+
+        var builder = result.Files[8];
+        builder.Path.Should().EndWith(builderFileName);
+
+        if (Write) File.WriteAllText($"../../../DTO/{builderFileName}", builder.Text);
+        builder.Text.Should().Be(File.ReadAllText($"../../../DTO/{builderFileName}"));
+
+        //var b = new ClassWithCultureInfoBuilder();
+        //var c = b.Build();
+
+        //int x = 0;
     }
 
     [Fact]

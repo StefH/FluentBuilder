@@ -5,7 +5,7 @@ namespace FluentBuilderGenerator.Extensions;
 
 internal static class StringExtensions
 {
-    private static readonly Regex ExtractValueBetween = new Regex("(?<=<).*(?=>)", RegexOptions.Compiled);
+    private static readonly Regex ExtractValueBetween = new("(?<=<).*(?=>)", RegexOptions.Compiled);
 
     public static bool TryGetGenericTypeArguments(this string input, [NotNullWhen(true)] out string? genericTypeArgumentValue)
     {

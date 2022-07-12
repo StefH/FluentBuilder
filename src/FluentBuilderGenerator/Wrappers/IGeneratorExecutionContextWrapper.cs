@@ -16,6 +16,6 @@ internal interface IGeneratorExecutionContextWrapper
 
     /// <see cref="GeneratorExecutionContext.AddSource(string, SourceText)"/>
     public void AddSource(string hintName, SourceText sourceText);
-
+    
     bool TryGetNamedTypeSymbolByFullMetadataName(FluentData fluentDataItem, [NotNullWhen(true)] out ClassSymbol? classSymbol);
 }

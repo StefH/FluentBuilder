@@ -1,5 +1,4 @@
 using System.Diagnostics.CodeAnalysis;
-using FluentBuilderGenerator.Models;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
@@ -93,22 +92,30 @@ internal static class SyntaxNodeExtensions
     }
 
     // https://stackoverflow.com/questions/49970813/collect-usings-from-all-enclosing-namespaces-having-an-itypesymbol
-    public static IReadOnlyList<UsingDirectiveSyntax> GetAllUsings(this SyntaxNode syntaxNode)
+    public static IReadOnlyList<UsingDirectiveSyntax> GetAncestorsUsings(this SyntaxNode syntaxNode)
     {
         var allUsings = SyntaxFactory.List<UsingDirectiveSyntax>();
-        
+
         foreach (var parent in syntaxNode.Ancestors(false))
         {
-            if (parent is NamespaceDeclarationSyntax namespaceDeclarationSyntax)
+            allUsings = parent switch
             {
-                allUsings = allUsings.AddRange(namespaceDeclarationSyntax.Usings);
-            }
-            else if (parent is CompilationUnitSyntax compilationUnitSyntax)
-            {
-                allUsings = allUsings.AddRange(compilationUnitSyntax.Usings);
-            }
+                NamespaceDeclarationSyntax namespaceDeclarationSyntax => allUsings.AddRange(namespaceDeclarationSyntax.Usings),
+                CompilationUnitSyntax compilationUnitSyntax => allUsings.AddRange(compilationUnitSyntax.Usings),
+                _ => allUsings
+            };
         }
-        
+
         return allUsings;
+    }
+
+    public static IReadOnlyList<T> FindDescendantNodes<T>(this SyntaxNode syntaxNode, Func<T, bool>? predicate = null) where T : SyntaxNode
+    {
+        return syntaxNode.DescendantNodes().OfType<T>().Where(x => predicate == null || predicate(x)).ToList();
+    }
+
+    public static T? FindDescendantNode<T>(this SyntaxNode syntaxNode, Func<T, bool>? predicate = null) where T : SyntaxNode
+    {
+        return syntaxNode.DescendantNodes().OfType<T>().FirstOrDefault(x => predicate == null || predicate(x));
     }
 }

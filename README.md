@@ -25,6 +25,8 @@ Or via the Visual Studio NuGet package manager or if you use the `dotnet` comman
 ### Annotate a class
 Annotate an existing class with `[FluentBuilder.AutoGenerateBuilder]` to indicate that a FluentBuilder should be generated for this class:
 ``` c#
+using FluentBuilder;
+
 [AutoGenerateBuilder]
 public class User
 {
@@ -33,12 +35,18 @@ public class User
     public string LastName { get; set; }
 
     public DateTime? Date { get; set; }
+
+    [FluentBuilderIgnore] // Add this attribute to ignore this property when generating a FluentBuilder.
+    public int Age { get; set; }
+
+    public int Answer { get; set; } = 42; // When a default value is set, this value is also set as default in the FluentBuilder.
 }
 ```
 
 ### Use FluentBuilder
 ``` c#
 using System;
+using FluentBuilder;
 
 namespace Test
 {
@@ -59,6 +67,8 @@ namespace Test
 
 ### Use FluentBuilder when the class has a default constructor
 ``` c#
+using FluentBuilder;
+
 [AutoGenerateBuilder]
 public class User
 {
@@ -77,6 +87,7 @@ public class User
 
 ``` c#
 using System;
+using FluentBuilder;
 
 namespace Test
 {
@@ -96,6 +107,8 @@ namespace Test
 
 ### Using FluentBuilder when a class has an `Array` or `IEnumerable<T>` property
 ``` c#
+using FluentBuilder;
+
 [AutoGenerateBuilder]
 public class UserDto
 {
@@ -129,6 +142,8 @@ var user = new UserDtoBuilder()
 
 ### Using FluentBuilder when a class has an `IDictionary<TKey, TValue>` property
 ``` c#
+using FluentBuilder;
+
 [AutoGenerateBuilder]
 public class UserDto
 {
@@ -153,6 +168,8 @@ This scenario is very usefull when you cannot modify the class to annotate it.
 ### Create a public and partial builder class
 And annotate this class with `[AutoGenerateBuilder(typeof(XXX))]` where `XXX` is the type for which you want to generate a FluentBuilder.
 ``` c#
+using FluentBuilder;
+
 [AutoGenerateBuilder(typeof(UserDto))]
 public partial class MyUserDtoBuilder
 {
@@ -162,6 +179,7 @@ public partial class MyUserDtoBuilder
 ### Use FluentBuilder
 ``` c#
 using System;
+using FluentBuilder;
 
 namespace Test
 {
