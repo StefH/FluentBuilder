@@ -12,5 +12,8 @@ namespace ConsumerClassLibrary
         public List<string> Values { get; set; } = null!;
 
         public long[] MyArray { get; set; } = Array.Empty<long>();
+
+        [FluentBuilderIgnore]
+        public bool IgnoreMe { get; set; }
     }
 }

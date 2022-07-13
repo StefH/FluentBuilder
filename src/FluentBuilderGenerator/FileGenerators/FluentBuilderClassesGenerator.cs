@@ -11,7 +11,13 @@ namespace FluentBuilderGenerator.FileGenerators;
 
 internal partial class FluentBuilderClassesGenerator : IFilesGenerator
 {
-    private const string FluentBuilderIgnoreAttributeClassName = "FluentBuilder.FluentBuilderIgnoreAttribute";
+    private static readonly string[] FluentBuilderIgnoreAttributeClassNames =
+    {
+        "FluentBuilder.FluentBuilderIgnoreAttribute",
+        "FluentBuilderIgnoreAttribute",
+        "FluentBuilder.FluentBuilderIgnore",
+        "FluentBuilderIgnore"
+    };
 
     private static readonly string[] SystemUsings =
     {
@@ -249,11 +255,9 @@ namespace {classSymbol.BuilderNamespace}
     private static IReadOnlyList<IPropertySymbol> GetProperties(ClassSymbol classSymbol)
     {
         var properties = classSymbol.NamedTypeSymbol.GetMembers().OfType<IPropertySymbol>()
-            .Where(x =>
-                x.SetMethod is not null &&
-                x.CanBeReferencedByName &&
-                !x.GetAttributes().Any(a => a.AttributeClass?.GetFullType() == FluentBuilderIgnoreAttributeClassName)
-            )
+            .Where(x => x.SetMethod is not null)
+            .Where(x => x.CanBeReferencedByName)
+            .Where(x => !x.GetAttributes().Any(a => FluentBuilderIgnoreAttributeClassNames.Contains(a.AttributeClass?.GetFullType())))
             .ToList();
 
         var propertyNames = properties.Select(x => x.Name);

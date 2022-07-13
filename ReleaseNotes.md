@@ -1,3 +1,8 @@
+# 0.5.0 (13 July 2022)
+- [#44](https://github.com/StefH/FluentBuilder/pull/44) - Adds an attribute called IgnoreProperty that tells the generator to skip the property [enhancement] contributed by [emorell96](https://github.com/emorell96)
+- [#45](https://github.com/StefH/FluentBuilder/pull/45) - If a propert has a default set, use that in the builder [enhancement] contributed by [StefH](https://github.com/StefH)
+- [#43](https://github.com/StefH/FluentBuilder/issues/43) - Bug with a class with CultureInfo
+
 # 0.4.9 (25 June 2022)
 - [#38](https://github.com/StefH/FluentBuilder/pull/38) - Support for init-only properties [enhancement] contributed by [StefH](https://github.com/StefH)
 - [#42](https://github.com/StefH/FluentBuilder/pull/42) - Use params in 'With'-method in case the type is an array [enhancement] contributed by [StefH](https://github.com/StefH)
