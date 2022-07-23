@@ -9,4 +9,5 @@ internal struct FluentData
     public string ShortTypeName { get; init; }
     public string MetadataName { get; init; }
     public List<string> Usings { get; init; }
+    public bool HandleBaseClasses { get; init; }
 }

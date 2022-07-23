@@ -28,8 +28,8 @@ internal class AutoGenerateBuilderSyntaxReceiver : IAutoGenerateBuilderSyntaxRec
     {
         data = default;
 
-        var attributeLists = classDeclarationSyntax.AttributeLists.FirstOrDefault(x => x.Attributes.Any(a => AutoGenerateBuilderAttributes.Contains(a.Name.ToString())));
-        if (attributeLists is null)
+        var attributeList = classDeclarationSyntax.AttributeLists.FirstOrDefault(x => x.Attributes.Any(a => AutoGenerateBuilderAttributes.Contains(a.Name.ToString())));
+        if (attributeList is null)
         {
             // ClassDeclarationSyntax should have the correct attribute
             return false;
@@ -53,7 +53,7 @@ internal class AutoGenerateBuilderSyntaxReceiver : IAutoGenerateBuilderSyntaxRec
 
         usings = usings.Distinct().ToList();
 
-        var argumentList = attributeLists.Attributes.FirstOrDefault()?.ArgumentList;
+        var argumentList = attributeList.Attributes.FirstOrDefault()?.ArgumentList;
         if (argumentList != null && argumentList.Arguments.Any())
         {
             var modifiers = classDeclarationSyntax.Modifiers.Select(m => m.ToString()).ToArray();

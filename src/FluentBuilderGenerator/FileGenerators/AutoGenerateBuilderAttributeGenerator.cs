@@ -42,10 +42,12 @@ namespace FluentBuilder
     internal sealed class AutoGenerateBuilderAttribute : Attribute
     {{
         public Type{(_supportsNullable ? "?" : string.Empty)} Type {{ get; }}
+        public bool HandleBaseClasses {{ get; }}
 
-        public AutoGenerateBuilderAttribute(Type{(_supportsNullable ? "?" : string.Empty)} type = null)
+        public AutoGenerateBuilderAttribute(Type{(_supportsNullable ? "?" : string.Empty)} type = null, bool handleBaseClasses = false)
         {{
             Type = type;
+            HandleBaseClasses = handleBaseClasses
         }}
     }}
 
