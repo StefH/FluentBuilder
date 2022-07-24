@@ -1,6 +1,7 @@
 // This source code is based on https://justsimplycode.com/2020/12/06/auto-generate-builders-using-source-generator-in-net-5
 using System.Text;
 using FluentBuilderGenerator.Extensions;
+using FluentBuilderGenerator.Helpers;
 using FluentBuilderGenerator.Models;
 using FluentBuilderGenerator.SyntaxReceiver;
 using FluentBuilderGenerator.Types;
@@ -120,10 +121,10 @@ namespace {classSymbol.BuilderNamespace}
             // Use "params" in case it's an Array, else just use type-T.
             var type = property.Type.GetFluentTypeKind() == FluentTypeKind.Array ? $"params {property.Type}" : property.Type.ToString();
 
-            var (defaultValue, extraUsing) = property.GetDefaultValue();
-            if (extraUsing != null)
+            var (defaultValue, extraUsingsFromDefaultValue) = DefaultValueHelper.GetDefaultValue(property);
+            if (extraUsingsFromDefaultValue != null)
             {
-                extraUsings.AddRange(extraUsing);
+                extraUsings.AddRange(extraUsingsFromDefaultValue);
             }
 
             sb.AppendLine($"        private bool _{CamelCase(property.Name)}IsSet;");
