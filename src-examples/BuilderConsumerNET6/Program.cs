@@ -6,18 +6,26 @@ internal class Program
 {
     static void Main(string[] args)
     {
-        var user1 = new UserBuilder()
+        var userA = new UserBuilder()
             .WithId(42)
             .WithFirstName("Test")
             .WithLastName("User")
             .Build();
 
-        Console.WriteLine($"{user1.FirstName} {user1.LastName} {user1.Id}");
+        Console.WriteLine($"{userA.FirstName} {userA.LastName} {userA.Id}");
 
-        var user2 = new UserBuilder()
+        var userB = new UserBuilder()
             .WithId(42)
             .Build();
 
-        Console.WriteLine($"{user2.FirstName.Length} {user2.LastName == null} {user2.Id}");
+        Console.WriteLine($"{userB.FirstName?.Length} {userB.LastName == null} {userB.Id}");
+
+        var userC = new UserNotHandleBaseClassBuilder()
+            // .WithId(42)
+            .WithFirstName("C-F")
+            .WithLastName("C-L")
+            .Build();
+
+        Console.WriteLine($"{userC.FirstName.Length} {userC.LastName == null}");
     }
 }

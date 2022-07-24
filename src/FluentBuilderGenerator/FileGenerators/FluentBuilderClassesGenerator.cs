@@ -46,13 +46,13 @@ internal partial class FluentBuilderClassesGenerator : IFilesGenerator
     public IReadOnlyList<FileData> GenerateFiles()
     {
         var applicableClassSymbols = GetClassSymbols();
-        var extraClassSymbols = applicableClassSymbols.ToList();
+        var extraClassSymbols = applicableClassSymbols.Select(x => x.ClassSymbol).ToList();
 
         var classes = applicableClassSymbols.Select(classSymbol => new FileData
         (
             FileDataType.Builder,
-            $"{classSymbol.FullBuilderClassName.Replace('<', '_').Replace('>', '_')}.g.cs",
-            CreateClassBuilderCode(classSymbol, extraClassSymbols)
+            $"{classSymbol.ClassSymbol.FullBuilderClassName.Replace('<', '_').Replace('>', '_')}.g.cs",
+            CreateClassBuilderCode(classSymbol.FluentData, classSymbol.ClassSymbol, extraClassSymbols)
         ));
 
         // Extra
@@ -69,9 +69,9 @@ internal partial class FluentBuilderClassesGenerator : IFilesGenerator
         return classes.Union(extra).ToList();
     }
 
-    private string CreateClassBuilderCode(ClassSymbol classSymbol, List<ClassSymbol> allClassSymbols)
+    private string CreateClassBuilderCode(FluentData fluentData, ClassSymbol classSymbol, List<ClassSymbol> allClassSymbols)
     {
-        var property = GenerateWithPropertyCode(classSymbol, allClassSymbols);
+        var property = GenerateWithPropertyCode(fluentData, classSymbol, allClassSymbols);
 
         var usings = SystemUsings.ToList();
         usings.Add($"{_context.AssemblyName}.FluentBuilder");
@@ -97,17 +97,20 @@ namespace {classSymbol.BuilderNamespace}
     public partial class {classSymbol.BuilderClassName} : Builder<{classSymbol.NamedTypeSymbol}>{classSymbol.NamedTypeSymbol.GetWhereStatement()}
     {{
 {property.StringBuilder}
-{GenerateBuildMethod(classSymbol)}
+{GenerateBuildMethod(fluentData, classSymbol)}
     }}
 }}
 {(_context.SupportsNullable ? "#nullable disable" : string.Empty)}";
     }
 
-    private (StringBuilder StringBuilder, IReadOnlyList<string> ExtraUsings) GenerateWithPropertyCode(ClassSymbol classSymbol, List<ClassSymbol> allClassSymbols)
+    private (StringBuilder StringBuilder, IReadOnlyList<string> ExtraUsings) GenerateWithPropertyCode(
+        FluentData fluentData,
+        ClassSymbol classSymbol,
+        List<ClassSymbol> allClassSymbols)
     {
         var className = classSymbol.BuilderClassName;
 
-        var properties = GetProperties(classSymbol);
+        var properties = GetProperties(classSymbol, fluentData.HandleBaseClasses);
 
         var extraUsings = new List<string>();
 
@@ -252,7 +255,7 @@ namespace {classSymbol.BuilderNamespace}
             .AppendLine("        });");
     }
 
-    private static IReadOnlyList<IPropertySymbol> GetProperties(ClassSymbol classSymbol)
+    private static IReadOnlyList<IPropertySymbol> GetProperties(ClassSymbol classSymbol, bool handleBaseClasses)
     {
         var properties = classSymbol.NamedTypeSymbol.GetMembers().OfType<IPropertySymbol>()
             .Where(x => x.SetMethod is not null)
@@ -262,29 +265,32 @@ namespace {classSymbol.BuilderNamespace}
 
         var propertyNames = properties.Select(x => x.Name);
 
-        var baseType = classSymbol.NamedTypeSymbol.BaseType;
-
-        while (baseType != null)
+        if (handleBaseClasses)
         {
-            properties.AddRange(baseType.GetMembers().OfType<IPropertySymbol>()
-                .Where(x => x.CanBeReferencedByName)
-                .Where(x => x.SetMethod is not null)
-                .Where(x => !propertyNames.Contains(x.Name)));
+            var baseType = classSymbol.NamedTypeSymbol.BaseType;
 
-            baseType = baseType.BaseType;
+            while (baseType != null)
+            {
+                properties.AddRange(baseType.GetMembers().OfType<IPropertySymbol>()
+                    .Where(x => x.CanBeReferencedByName)
+                    .Where(x => x.SetMethod is not null)
+                    .Where(x => !propertyNames.Contains(x.Name)));
+
+                baseType = baseType.BaseType;
+            }
         }
 
         return properties;
     }
 
-    private static string GenerateBuildMethod(ClassSymbol classSymbol)
+    private static string GenerateBuildMethod(FluentData fluentData, ClassSymbol classSymbol)
     {
         if (!classSymbol.NamedTypeSymbol.Constructors.Any(c => c.DeclaredAccessibility == Accessibility.Public && c.Parameters.IsEmpty))
         {
             throw new NotSupportedException($"Unable to generate a FluentBuilder for the class '{classSymbol.NamedTypeSymbol}' because no public parameterless constructor was defined.");
         }
 
-        var properties = GetProperties(classSymbol);
+        var properties = GetProperties(classSymbol, fluentData.HandleBaseClasses);
         // var propertiesInitOnly = properties.Where(property => property.SetMethod!.IsInitOnly).ToArray();
         var propertiesSettable = properties.Where(property => property.IsSettable()).ToArray();
 
@@ -330,14 +336,14 @@ namespace {classSymbol.BuilderNamespace}
         return output.ToString();
     }
 
-    private IReadOnlyList<ClassSymbol> GetClassSymbols()
+    private IReadOnlyList<(ClassSymbol ClassSymbol, FluentData FluentData)> GetClassSymbols()
     {
-        var classSymbols = new List<ClassSymbol>();
+        var classSymbols = new List<(ClassSymbol ClassSymbol, FluentData FluentData)>();
         foreach (var fluentDataItem in _receiver.CandidateFluentDataItems)
         {
             if (_context.TryGetNamedTypeSymbolByFullMetadataName(fluentDataItem, out var classSymbol))
             {
-                classSymbols.Add(classSymbol);
+                classSymbols.Add(new (classSymbol, fluentDataItem));
             }
         }
 

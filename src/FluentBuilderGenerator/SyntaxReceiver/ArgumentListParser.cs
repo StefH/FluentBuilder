@@ -10,7 +10,7 @@ internal static class ArgumentListParser
     {
         if (argumentList == null || !argumentList.Arguments.Any() || argumentList.Arguments.Count == 0)
         {
-            return (null, false);
+            return (null, true);
         }
 
         if (argumentList.Arguments.Count == 1)
@@ -20,7 +20,7 @@ internal static class ArgumentListParser
                 return (null, booleanValue);
             }
 
-            if (TryParseAsType(argumentList.Arguments[0].Expression, out string? rawTypeValue))
+            if (TryParseAsType(argumentList.Arguments[0].Expression, out var rawTypeValue))
             {
                 return (rawTypeValue, false);
             }
@@ -30,12 +30,12 @@ internal static class ArgumentListParser
 
         if (argumentList.Arguments.Count == 2)
         {
-            if (!TryParseAsType(argumentList.Arguments[0].Expression, out string? rawTypeValue))
+            if (!TryParseAsType(argumentList.Arguments[0].Expression, out var rawTypeValue))
             {
                 throw new ArgumentException("When the AutoGenerateBuilderAttribute is used with 2 arguments, the first argument should be a Type.");
             }
 
-            if (!TryParseAsBoolean(argumentList.Arguments[1].Expression, out bool booleanValue))
+            if (!TryParseAsBoolean(argumentList.Arguments[1].Expression, out var booleanValue))
             {
                 throw new ArgumentException("When the AutoGenerateBuilderAttribute is used with 2 arguments, the second argument should be a boolean.");
             }

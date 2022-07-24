@@ -8,7 +8,7 @@
         <Configurations>Debug;Release;DebugAttach</Configurations>
     </PropertyGroup>
 
-    <ItemGroup Condition=" '$(Configuration)' == 'DebugAttach' ">
+    <!--<ItemGroup Condition=" '$(Configuration)' == 'DebugAttach' or '$(Configuration)' == 'Debug' ">
         <ProjectReference Include="..\..\src\FluentBuilderGenerator\FluentBuilderGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
     </ItemGroup>
 
@@ -17,6 +17,10 @@
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
+    </ItemGroup>-->
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\src\FluentBuilderGenerator\FluentBuilderGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
     </ItemGroup>
 
 </Project>

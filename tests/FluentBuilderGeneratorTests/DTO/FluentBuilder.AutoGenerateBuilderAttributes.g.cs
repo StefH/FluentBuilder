@@ -18,7 +18,7 @@ namespace FluentBuilder
         public Type? Type { get; }
         public bool HandleBaseClasses { get; }
 
-        public AutoGenerateBuilderAttribute(bool handleBaseClasses = false) : this(null, handleBaseClasses)
+        public AutoGenerateBuilderAttribute(bool handleBaseClasses = true) : this(null, handleBaseClasses)
         {
         }
 
@@ -26,7 +26,7 @@ namespace FluentBuilder
         {
         }
 
-        public AutoGenerateBuilderAttribute(Type? type, bool handleBaseClasses = false)
+        public AutoGenerateBuilderAttribute(Type? type, bool handleBaseClasses = true)
         {
             Type = type;
             HandleBaseClasses = handleBaseClasses;
