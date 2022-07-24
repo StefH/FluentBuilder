@@ -16,10 +16,20 @@ namespace FluentBuilder
     internal sealed class AutoGenerateBuilderAttribute : Attribute
     {
         public Type? Type { get; }
+        public bool HandleBaseClasses { get; }
 
-        public AutoGenerateBuilderAttribute(Type? type = null)
+        public AutoGenerateBuilderAttribute(bool handleBaseClasses = false) : this(null, handleBaseClasses)
+        {
+        }
+
+        public AutoGenerateBuilderAttribute(Type? type) : this(type, false)
+        {
+        }
+
+        public AutoGenerateBuilderAttribute(Type? type, bool handleBaseClasses = false)
         {
             Type = type;
+            HandleBaseClasses = handleBaseClasses;
         }
     }
 

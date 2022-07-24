@@ -44,10 +44,18 @@ namespace FluentBuilder
         public Type{(_supportsNullable ? "?" : string.Empty)} Type {{ get; }}
         public bool HandleBaseClasses {{ get; }}
 
-        public AutoGenerateBuilderAttribute(Type{(_supportsNullable ? "?" : string.Empty)} type = null, bool handleBaseClasses = false)
+        public AutoGenerateBuilderAttribute(bool handleBaseClasses = false) : this(null, handleBaseClasses)
+        {{
+        }}
+
+        public AutoGenerateBuilderAttribute(Type{(_supportsNullable ? "?" : string.Empty)} type) : this(type, false)
+        {{
+        }}
+
+        public AutoGenerateBuilderAttribute(Type{(_supportsNullable ? "?" : string.Empty)} type, bool handleBaseClasses = false)
         {{
             Type = type;
-            HandleBaseClasses = handleBaseClasses
+            HandleBaseClasses = handleBaseClasses;
         }}
     }}
 
