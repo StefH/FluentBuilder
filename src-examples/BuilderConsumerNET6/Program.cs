@@ -18,7 +18,7 @@ internal class Program
             .WithId(42)
             .Build();
 
-        Console.WriteLine($"{userB.FirstName?.Length} {userB.LastName == null} {userB.Id}");
+        Console.WriteLine($"{userB.FirstName.Length} {userB.LastName == null} {userB.Id}");
 
         var userC = new UserNotHandleBaseClassBuilder()
             // .WithId(42)

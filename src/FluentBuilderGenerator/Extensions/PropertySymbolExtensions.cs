@@ -1,5 +1,6 @@
 using FluentBuilderGenerator.Types;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace FluentBuilderGenerator.Extensions;
@@ -33,7 +34,7 @@ internal static class PropertySymbolExtensions
             {
                 var propertyDeclarationSyntax = rootSyntaxNode.FindDescendantNode<PropertyDeclarationSyntax>(p => p.Identifier.ValueText == property.Name);
 
-                if (propertyDeclarationSyntax is { Initializer: { } })
+                if (propertyDeclarationSyntax?.Initializer != null && propertyDeclarationSyntax.Initializer.Value.Kind() != SyntaxKind.SuppressNullableWarningExpression)
                 {
                     var thisUsings = rootSyntaxNode.FindDescendantNodes<UsingDirectiveSyntax>().Select(ud => ud.Name.ToString());
 
@@ -44,6 +45,7 @@ internal static class PropertySymbolExtensions
                     var value = propertyDeclarationSyntax.Initializer.Value.ToString();
 
                     return (value, extraUsings);
+
                 }
             }
         }

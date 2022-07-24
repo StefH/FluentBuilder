@@ -149,6 +149,54 @@ namespace FluentBuilderGeneratorTests.DTO
             return this;
         }
 
+        private bool _suppressNullableWarningExpressionIsSet;
+        private Lazy<string> _suppressNullableWarningExpression = new Lazy<string>(() => string.Empty);
+        public ClassWithPropertyValueSetBuilder WithSuppressNullableWarningExpression(string value) => WithSuppressNullableWarningExpression(() => value);
+        public ClassWithPropertyValueSetBuilder WithSuppressNullableWarningExpression(Func<string> func)
+        {
+            _suppressNullableWarningExpression = new Lazy<string>(func);
+            _suppressNullableWarningExpressionIsSet = true;
+            return this;
+        }
+        public ClassWithPropertyValueSetBuilder WithoutSuppressNullableWarningExpression()
+        {
+            WithSuppressNullableWarningExpression(() => string.Empty);
+            _suppressNullableWarningExpressionIsSet = false;
+            return this;
+        }
+
+        private bool _stringNullIsSet;
+        private Lazy<string> _stringNull = new Lazy<string>(() => null);
+        public ClassWithPropertyValueSetBuilder WithStringNull(string value) => WithStringNull(() => value);
+        public ClassWithPropertyValueSetBuilder WithStringNull(Func<string> func)
+        {
+            _stringNull = new Lazy<string>(func);
+            _stringNullIsSet = true;
+            return this;
+        }
+        public ClassWithPropertyValueSetBuilder WithoutStringNull()
+        {
+            WithStringNull(() => null);
+            _stringNullIsSet = false;
+            return this;
+        }
+
+        private bool _stringEmptyIsSet;
+        private Lazy<string> _stringEmpty = new Lazy<string>(() => string.Empty);
+        public ClassWithPropertyValueSetBuilder WithStringEmpty(string value) => WithStringEmpty(() => value);
+        public ClassWithPropertyValueSetBuilder WithStringEmpty(Func<string> func)
+        {
+            _stringEmpty = new Lazy<string>(func);
+            _stringEmptyIsSet = true;
+            return this;
+        }
+        public ClassWithPropertyValueSetBuilder WithoutStringEmpty()
+        {
+            WithStringEmpty(() => string.Empty);
+            _stringEmptyIsSet = false;
+            return this;
+        }
+
 
         public override ClassWithPropertyValueSet Build(bool useObjectInitializer = true)
         {
@@ -168,7 +216,10 @@ namespace FluentBuilderGeneratorTests.DTO
                             Locale2 = _locale2.Value,
                             Locale3 = _locale3.Value,
                             Locale4 = _locale4.Value,
-                            Locale5 = _locale5.Value
+                            Locale5 = _locale5.Value,
+                            SuppressNullableWarningExpression = _suppressNullableWarningExpression.Value,
+                            StringNull = _stringNull.Value,
+                            StringEmpty = _stringEmpty.Value
                         };
                         return instance;
                     }
@@ -182,6 +233,9 @@ namespace FluentBuilderGeneratorTests.DTO
                     if (_locale3IsSet) { instance.Locale3 = _locale3.Value; }
                     if (_locale4IsSet) { instance.Locale4 = _locale4.Value; }
                     if (_locale5IsSet) { instance.Locale5 = _locale5.Value; }
+                    if (_suppressNullableWarningExpressionIsSet) { instance.SuppressNullableWarningExpression = _suppressNullableWarningExpression.Value; }
+                    if (_stringNullIsSet) { instance.StringNull = _stringNull.Value; }
+                    if (_stringEmptyIsSet) { instance.StringEmpty = _stringEmpty.Value; }
                     return instance;
                 });
             }
