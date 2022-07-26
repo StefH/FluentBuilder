@@ -8,8 +8,10 @@ namespace FluentBuilderGenerator.Helpers;
 
 internal static class DefaultValueHelper
 {
+    private static readonly SyntaxKind[] ExcludedSyntaxKinds = { SyntaxKind.SuppressNullableWarningExpression };
+
     /// <summary>
-    /// Check if the <see cref="IPropertySymbol"/> has a value set, in that case try to get that value and return the usings.
+    /// Check if the <see cref="IPropertySymbol"/> has a value set, in that case try to get that value and return it, and return the usings.
     /// If no value is set, just return the default value.
     /// </summary>
     internal static (string DefaultValue, IReadOnlyList<string>? ExtraUsings) GetDefaultValue(IPropertySymbol property)
@@ -22,8 +24,7 @@ internal static class DefaultValueHelper
             {
                 var propertyDeclarationSyntax = rootSyntaxNode.FindDescendantNode<PropertyDeclarationSyntax>(p => p.Identifier.ValueText == property.Name);
 
-                if (propertyDeclarationSyntax?.Initializer != null &&
-                    propertyDeclarationSyntax.Initializer.Value.Kind() != SyntaxKind.SuppressNullableWarningExpression)
+                if (propertyDeclarationSyntax?.Initializer != null && !ExcludedSyntaxKinds.Contains(propertyDeclarationSyntax.Initializer.Value.Kind()))
                 {
                     var thisUsings = rootSyntaxNode.FindDescendantNodes<UsingDirectiveSyntax>().Select(ud => ud.Name.ToString());
 
