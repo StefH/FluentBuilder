@@ -1,4 +1,7 @@
-# 0.5.1 (13 July 2022)
+# 0.5.1 (28 July 2022)
+- [#46](https://github.com/StefH/FluentBuilder/pull/46) - Add support to exclude properties from base-classes + fixed default value if SuppressNullableWarningExpression contributed by [StefH](https://github.com/StefH)
+
+# 0.5.0 (12 July 2022)
 - [#44](https://github.com/StefH/FluentBuilder/pull/44) - Adds an attribute called IgnoreProperty that tells the generator to skip the property [enhancement] contributed by [emorell96](https://github.com/emorell96)
 - [#45](https://github.com/StefH/FluentBuilder/pull/45) - If a propert has a default set, use that in the builder [enhancement] contributed by [StefH](https://github.com/StefH)
 - [#43](https://github.com/StefH/FluentBuilder/issues/43) - Bug with a class with CultureInfo
