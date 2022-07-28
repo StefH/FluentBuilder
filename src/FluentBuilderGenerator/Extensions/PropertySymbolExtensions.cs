@@ -1,5 +1,6 @@
 using FluentBuilderGenerator.Types;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace FluentBuilderGenerator.Extensions;
@@ -18,39 +19,7 @@ internal static class PropertySymbolExtensions
     {
         return property.SetMethod is { IsInitOnly: false };
     }
-
-    /// <summary>
-    /// Check if the <see cref="IPropertySymbol"/> has a value set, in that case try to get that value and return the usings.
-    /// If no value is set, just return the default value.
-    /// </summary>
-    internal static (string DefaultValue, IReadOnlyList<string>? ExtraUsings) GetDefaultValue(this IPropertySymbol property)
-    {
-        var location = property.Locations.FirstOrDefault();
-        if (location != null)
-        {
-            var rootSyntaxNode = location.SourceTree?.GetRoot();
-            if (rootSyntaxNode != null)
-            {
-                var propertyDeclarationSyntax = rootSyntaxNode.FindDescendantNode<PropertyDeclarationSyntax>(p => p.Identifier.ValueText == property.Name);
-
-                if (propertyDeclarationSyntax is { Initializer: { } })
-                {
-                    var thisUsings = rootSyntaxNode.FindDescendantNodes<UsingDirectiveSyntax>().Select(ud => ud.Name.ToString());
-
-                    var ancestorUsings = rootSyntaxNode.GetAncestorsUsings().Select(ud => ud.Name.ToString());
-
-                    var extraUsings = thisUsings.Union(ancestorUsings).Distinct().ToList();
-
-                    var value = propertyDeclarationSyntax.Initializer.Value.ToString();
-
-                    return (value, extraUsings);
-                }
-            }
-        }
-
-        return (property.Type.GetDefault(), null);
-    }
-
+    
     internal static bool TryGetIDictionaryElementTypes(this IPropertySymbol property, out (INamedTypeSymbol key, INamedTypeSymbol value)? tuple)
     {
         var type = property.Type.GetFluentTypeKind();

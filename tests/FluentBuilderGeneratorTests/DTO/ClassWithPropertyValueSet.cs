@@ -21,6 +21,12 @@ namespace FluentBuilderGeneratorTests.DTO
         public CultureInfo Locale4 { get; set; } = Y.Value;
 
         public CultureInfo Locale5 { get; set; } = Z.Abc;
+
+        public string SuppressNullableWarningExpression { get; set; } = null!;
+
+        public string StringNull { get; set; } = null;
+
+        public string StringEmpty { get; set; } = string.Empty;
     }
 
     public static class X

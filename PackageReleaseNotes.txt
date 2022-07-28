@@ -1,4 +1,4 @@
-# 0.5.0 (13 July 2022)
+# 0.5.1 (13 July 2022)
 - #44 Adds an attribute called IgnoreProperty that tells the generator to skip the property [enhancement]
 - #45 If a propert has a default set, use that in the builder [enhancement]
 - #43 Bug with a class with CultureInfo
