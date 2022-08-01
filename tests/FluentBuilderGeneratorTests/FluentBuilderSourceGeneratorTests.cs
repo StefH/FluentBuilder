@@ -119,6 +119,31 @@ public class FluentBuilderSourceGeneratorTests
     }
 
     [Fact]
+    public void GenerateFiles_ClassWithPrivateSetter_Should_GenerateCorrectFiles()
+    {
+        // Arrange
+        var path = "./DTO/ClassWithPrivateSetter.cs";
+        var sourceFile = new SourceFile
+        {
+            Path = path,
+            Text = File.ReadAllText(path),
+            AttributeToAddToClass = "FluentBuilder.AutoGenerateBuilder"
+        };
+
+        // Act
+        var result = _sut.Execute(Namespace, new[] { sourceFile });
+
+        // Assert
+        result.Valid.Should().BeTrue();
+        result.Files.Should().HaveCount(9);
+
+        var builder = result.Files[8];
+        var filename = Path.GetFileName(builder.Path);
+
+        if (Write) File.WriteAllText($"../../../DTO/{filename}", builder.Text);
+    }
+
+    [Fact]
     public void GenerateFiles_ClassWithFluentBuilderIgnore_Should_GenerateCorrectFiles()
     {
         // Arrange

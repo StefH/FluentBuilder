@@ -36,29 +36,25 @@ namespace FluentBuilder
     {{
         public Type{(_supportsNullable ? "?" : string.Empty)} Type {{ get; }}
         public bool HandleBaseClasses {{ get; }}
-        public FluentBuilderAccessibility Accessibility {{ get; }}
+        // public FluentBuilderAccessibility Accessibility {{ get; }}
 
-        public AutoGenerateBuilderAttribute() : this(null, true, FluentBuilderAccessibility.All)
+        public AutoGenerateBuilderAttribute() : this(null, true)
         {{
         }}
 
-        public AutoGenerateBuilderAttribute(bool handleBaseClasses) : this(null, handleBaseClasses, FluentBuilderAccessibility.All)
+        public AutoGenerateBuilderAttribute(bool handleBaseClasses) : this(null, handleBaseClasses)
         {{
         }}
 
-        public AutoGenerateBuilderAttribute(bool handleBaseClasses, FluentBuilderAccessibility accessibility) : this(null, handleBaseClasses, accessibility)
+        public AutoGenerateBuilderAttribute(Type{(_supportsNullable ? "?" : string.Empty)} type) : this(type, true)
         {{
         }}
 
-        public AutoGenerateBuilderAttribute(Type{(_supportsNullable ? "?" : string.Empty)} type, FluentBuilderAccessibility accessibility) : this(type, true, accessibility)
-        {{
-        }}
-
-        public AutoGenerateBuilderAttribute(Type{(_supportsNullable ? "?" : string.Empty)} type, bool handleBaseClasses, FluentBuilderAccessibility accessibility)
+        public AutoGenerateBuilderAttribute(Type{(_supportsNullable ? "?" : string.Empty)} type, bool handleBaseClasses)
         {{
             Type = type;
             HandleBaseClasses = handleBaseClasses;
-            Accessibility = accessibility;
+            // Accessibility = accessibility;
         }}
     }}
 
@@ -68,7 +64,7 @@ namespace FluentBuilder
     }}
 
     // Based on Microsoft.CodeAnalysis.Accessibility
-    [Flags]
+    /*[Flags]
     internal enum FluentBuilderAccessibility
     {{
         All = 0,
@@ -81,7 +77,7 @@ namespace FluentBuilder
         // ProtectedOrInternal = 5,
         // ProtectedOrFriend = ProtectedOrInternal,
         Public = 6
-    }}
+    }}*/
 }}
 {(_supportsNullable ? "#nullable disable" : string.Empty)}"
         );

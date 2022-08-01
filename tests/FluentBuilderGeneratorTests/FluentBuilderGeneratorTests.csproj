@@ -48,7 +48,7 @@
         <Compile Update="DTO2\MyAddressBuilder.cs">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Compile>
-        <Compile Update="DTO\ClassWithPrivateProperty.cs">
+        <Compile Update="DTO\ClassWithPrivateSetter.cs">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Compile>
         <Compile Update="DTO\ClassWithPropertyValueSet.cs">
