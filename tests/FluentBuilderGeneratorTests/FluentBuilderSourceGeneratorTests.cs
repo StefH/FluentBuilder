@@ -308,7 +308,7 @@ namespace FluentBuilderGeneratorTests.DTO
         // Arrange
         var fileNames = new[]
         {
-            "FluentBuilder.AutoGenerateBuilderAttributes.g.cs",
+            "FluentBuilder.Extra.g.cs",
             "FluentBuilder.BaseBuilder.g.cs",
 
             "FluentBuilder.ArrayBuilder.g.cs",

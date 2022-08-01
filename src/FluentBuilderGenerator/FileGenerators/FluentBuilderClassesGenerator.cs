@@ -344,7 +344,7 @@ namespace {classSymbol.BuilderNamespace}
         {
             if (_context.TryGetNamedTypeSymbolByFullMetadataName(fluentDataItem, out var classSymbol))
             {
-                classSymbols.Add(new (classSymbol, fluentDataItem));
+                classSymbols.Add((classSymbol, fluentDataItem));
             }
         }
 
