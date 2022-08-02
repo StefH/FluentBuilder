@@ -1,4 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
+using FluentBuilderGenerator.Types;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
@@ -6,44 +7,80 @@ namespace FluentBuilderGenerator.SyntaxReceiver;
 
 internal static class ArgumentListParser
 {
-    public static (string? RawTypeName, bool HandleBaseClasses) ParseAttributeArgumentList(AttributeArgumentListSyntax? argumentList)
+    public static FluentBuilderAttributeParameters ParseAttributeArgumentList(AttributeArgumentListSyntax? argumentList)
     {
-        if (argumentList == null || !argumentList.Arguments.Any() || argumentList.Arguments.Count == 0)
+        var result = new FluentBuilderAttributeParameters();
+
+        if (argumentList == null)
         {
-            return (null, true);
+            return result;
+        }
+
+        if (argumentList.Arguments.Count is < 0 or > 3)
+        {
+            throw new ArgumentException("The AutoGenerateBuilderAttribute requires 0, 1, 2 or 3 arguments.");
         }
 
         if (argumentList.Arguments.Count == 1)
         {
-            if (TryParseAsBoolean(argumentList.Arguments[0].Expression, out var booleanValue))
+            if (TryParseAsBoolean(argumentList.Arguments[0].Expression, out var handleBaseClasses))
             {
-                return (null, booleanValue);
+                return result with { HandleBaseClasses = handleBaseClasses };
             }
 
             if (TryParseAsType(argumentList.Arguments[0].Expression, out var rawTypeValue))
             {
-                return (rawTypeValue, false);
+                return result with { RawTypeName = rawTypeValue };
             }
 
-            throw new ArgumentException("When the AutoGenerateBuilderAttribute is used with 1 argument, the only argument should be a Type or a boolean.");
+            if (TryParseAsEnum<FluentBuilderAccessibility>(argumentList.Arguments[0].Expression, out var accessibility))
+            {
+                return result with { Accessibility = accessibility };
+            }
+
+            throw new ArgumentException("When the AutoGenerateBuilderAttribute is used with 1 argument, the only argument should be a Type, boolean or FluentBuilderAccessibility.");
         }
 
-        if (argumentList.Arguments.Count == 2)
+        foreach (var argument in argumentList.Arguments)
         {
-            if (!TryParseAsType(argumentList.Arguments[0].Expression, out var rawTypeValue))
+            if (TryParseAsType(argument.Expression, out var rawTypeValue))
             {
-                throw new ArgumentException("When the AutoGenerateBuilderAttribute is used with 2 arguments, the first argument should be a Type.");
+                result = result with { RawTypeName = rawTypeValue };
             }
 
-            if (!TryParseAsBoolean(argumentList.Arguments[1].Expression, out var booleanValue))
+            if (TryParseAsBoolean(argument.Expression, out var handleBaseClasses))
             {
-                throw new ArgumentException("When the AutoGenerateBuilderAttribute is used with 2 arguments, the second argument should be a boolean.");
+                result = result with { HandleBaseClasses = handleBaseClasses };
             }
 
-            return (rawTypeValue, booleanValue);
+            if (TryParseAsEnum<FluentBuilderAccessibility>(argument.Expression, out var accessibility))
+            {
+                result = result with { Accessibility = accessibility };
+            }
         }
 
-        throw new ArgumentException("The AutoGenerateBuilderAttribute requires 0, 1, or 2 arguments.");
+        //if (argumentList.Arguments.Count >= 2)
+        //{
+        //    if (TryParseAsType(argumentList.Arguments[0].Expression, out var rawTypeValue))
+        //    {
+        //        throw new ArgumentException("When the AutoGenerateBuilderAttribute is used with 2 arguments, the first argument should be a Type.");
+        //    }
+
+        //    if (!TryParseAsBoolean(argumentList.Arguments[1].Expression, out var handleBaseClasses))
+        //    {
+        //        throw new ArgumentException("When the AutoGenerateBuilderAttribute is used with 2 arguments, the second argument should be a boolean.");
+        //    }
+
+        //    var accessibility = FluentBuilderAccessibility.All;
+        //    if (argumentList.Arguments.Count == 3 && TryParseAsEnum(argumentList.Arguments[2].Expression, out accessibility))
+        //    {
+        //        throw new ArgumentException("When the AutoGenerateBuilderAttribute is used with 3 arguments, the third argument should be a enum.");
+        //    }
+
+        //    return result with { RawTypeName = rawTypeValue, HandleBaseClasses = handleBaseClasses, Accessibility = accessibility };
+        //}
+
+        return result;
     }
 
     private static bool TryParseAsBoolean(ExpressionSyntax expressionSyntax, out bool value)
@@ -70,5 +107,11 @@ internal static class ArgumentListParser
         }
 
         return false;
+    }
+
+    private static bool TryParseAsEnum<TEnum>(ExpressionSyntax expressionSyntax, out TEnum value)
+        where TEnum : struct
+    {
+        return Enum.TryParse(expressionSyntax.ToString().Substring(typeof(TEnum).Name.Length + 1), out value);
     }
 }

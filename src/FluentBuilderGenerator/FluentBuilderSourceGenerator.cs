@@ -55,7 +55,7 @@ internal class FluentBuilderSourceGenerator : ISourceGenerator
     {
         var generators = new IFileGenerator[]
         {
-            new AutoGenerateBuilderAttributeGenerator(context.AssemblyName, context.SupportsNullable),
+            new ExtraFilesGenerator(context.AssemblyName, context.SupportsNullable),
             new BaseBuilderGenerator(context.AssemblyName),
             new IEnumerableBuilderGenerator(context.AssemblyName, FileDataType.ArrayBuilder, context.SupportsNullable),
             new IEnumerableBuilderGenerator(context.AssemblyName, FileDataType.IEnumerableBuilder, context.SupportsNullable),

@@ -1,7 +1,5 @@
 using FluentBuilderGenerator.Types;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace FluentBuilderGenerator.Extensions;
 
@@ -15,11 +13,16 @@ internal static class PropertySymbolExtensions
         FluentTypeKind.ICollection
     };
 
-    internal static bool IsSettable(this IPropertySymbol property)
+    internal static bool IsPrivateSettable(this IPropertySymbol property)
     {
-        return property.SetMethod is { IsInitOnly: false };
+        return property.SetMethod is { IsInitOnly: false, DeclaredAccessibility: Accessibility.Private };
     }
-    
+
+    internal static bool IsPublicSettable(this IPropertySymbol property)
+    {
+        return property.SetMethod is { IsInitOnly: false, DeclaredAccessibility: Accessibility.Public };
+    }
+
     internal static bool TryGetIDictionaryElementTypes(this IPropertySymbol property, out (INamedTypeSymbol key, INamedTypeSymbol value)? tuple)
     {
         var type = property.Type.GetFluentTypeKind();

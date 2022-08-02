@@ -11,6 +11,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using FluentBuilderGeneratorTests.FluentBuilder;
 using FluentBuilderGeneratorTests.DTO;
 
@@ -48,11 +49,13 @@ namespace FluentBuilderGeneratorTests.DTO
                         {
                             Street = _street.Value
                         };
+
                         return instance;
                     }
 
                     instance = new Address<T>();
                     if (_streetIsSet) { instance.Street = _street.Value; }
+
                     return instance;
                 });
             }

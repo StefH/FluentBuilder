@@ -23,4 +23,10 @@
         <ProjectReference Include="..\..\src\FluentBuilderGenerator\FluentBuilderGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Compile Update="ClassWithPrivateSetter.cs">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Compile>
+    </ItemGroup>
+
 </Project>

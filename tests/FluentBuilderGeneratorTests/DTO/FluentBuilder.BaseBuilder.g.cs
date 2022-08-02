@@ -15,6 +15,8 @@ namespace FluentBuilderGeneratorTests.FluentBuilder
     {
         protected Lazy<T> Object;
 
+        protected Type InstanceType = typeof(T);
+
         public abstract T Build(bool useObjectInitializer = true);
 
         public Builder<T> WithObject(T value) => WithObject(() => value);

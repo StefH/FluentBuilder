@@ -11,6 +11,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using FluentBuilderGeneratorTests.FluentBuilder;
 using FluentBuilderGeneratorTests.DTO;
 
@@ -99,6 +100,7 @@ namespace FluentBuilderGeneratorTests.DTO
                             FuncNull = _funcNull.Value,
                             Action = _action.Value
                         };
+
                         return instance;
                     }
 
@@ -107,6 +109,7 @@ namespace FluentBuilderGeneratorTests.DTO
                     if (_func2IsSet) { instance.Func2 = _func2.Value; }
                     if (_funcNullIsSet) { instance.FuncNull = _funcNull.Value; }
                     if (_actionIsSet) { instance.Action = _action.Value; }
+
                     return instance;
                 });
             }
