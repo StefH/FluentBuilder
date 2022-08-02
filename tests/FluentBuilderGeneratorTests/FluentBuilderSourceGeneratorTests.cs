@@ -4,6 +4,7 @@ using CSharp.SourceGenerators.Extensions;
 using CSharp.SourceGenerators.Extensions.Models;
 using FluentAssertions;
 using FluentBuilderGenerator;
+using FluentBuilderGeneratorTests.DTO;
 using Xunit;
 
 namespace FluentBuilderGeneratorTests;
@@ -119,7 +120,7 @@ public class FluentBuilderSourceGeneratorTests
     }
 
     [Fact]
-    public void GenerateFiles_ClassWithPrivateSetter_Should_GenerateCorrectFiles()
+    public void GenerateFiles_ClassWithPrivateSetter_Should_GenerateSetMethodUsingReflection()
     {
         // Arrange
         var path = "./DTO/ClassWithPrivateSetter.cs";
@@ -137,10 +138,18 @@ public class FluentBuilderSourceGeneratorTests
         result.Valid.Should().BeTrue();
         result.Files.Should().HaveCount(9);
 
-        var builder = result.Files[8];
-        var filename = Path.GetFileName(builder.Path);
+        var fileResult = result.Files[8];
+        var filename = Path.GetFileName(fileResult.Path);
 
-        if (Write) File.WriteAllText($"../../../DTO/{filename}", builder.Text);
+        File.WriteAllText($"../../../DTO/{filename}", fileResult.Text);
+
+        var instance = new ClassWithPrivateSetterBuilder()
+            .WithValue1(100)
+            .WithValue2(42)
+            .Build();
+
+        instance.Value1.Should().Be(100);
+        instance.Value2.Should().Be(42);
     }
 
     [Fact]

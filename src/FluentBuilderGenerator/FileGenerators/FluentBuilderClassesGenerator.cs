@@ -24,7 +24,8 @@ internal partial class FluentBuilderClassesGenerator : IFilesGenerator
     {
         "System",
         "System.Collections",
-        "System.Collections.Generic"
+        "System.Collections.Generic",
+        "System.Reflection"
     };
 
     private static readonly FileDataType[] ExtraBuilders =
@@ -127,7 +128,10 @@ namespace {classSymbol.BuilderNamespace}
                 extraUsings.AddRange(extraUsingsFromDefaultValue);
             }
 
-            sb.AppendLine($"        private bool _{CamelCase(property.Name)}IsSet;");
+            // if (property.IsPublicSettable())
+            {
+                sb.AppendLine($"        private bool _{CamelCase(property.Name)}IsSet;");
+            }
 
             sb.AppendLine($"        private Lazy<{property.Type}> _{CamelCase(property.Name)} = new Lazy<{property.Type}>(() => {defaultValue});");
 
@@ -292,14 +296,17 @@ namespace {classSymbol.BuilderNamespace}
         }
 
         var properties = GetProperties(classSymbol, fluentData.HandleBaseClasses);
-        // var propertiesInitOnly = properties.Where(property => property.SetMethod!.IsInitOnly).ToArray();
-        var propertiesSettable = properties.Where(property => property.IsSettable()).ToArray();
+        var propertiesPrivateSettable = properties.Where(property => property.IsPrivateSettable()).ToArray();
+        var propertiesPublicSettable = properties.Where(property => property.IsPublicSettable()).ToArray();
 
         var className = classSymbol.NamedTypeSymbol.GenerateShortTypeName();
 
         var output = new StringBuilder();
 
-        // output.AppendLine(string.Join("\r\n", propertiesInitOnly.Select(property => $@"        private partial void Set{property.Name}({className} instance, {property.Type} value);")));
+        foreach (var property in propertiesPrivateSettable)
+        {
+            BuildPrivateSetMethod(output, className, property);
+        }
 
         output.AppendLine($@"        public override {className} Build(bool useObjectInitializer = true)
         {{
@@ -312,17 +319,20 @@ namespace {classSymbol.BuilderNamespace}
                     {{
                         instance = new {className}
                         {{");
-        output.AppendLine(string.Join(",\r\n", properties.Select(property => $@"                            {property.Name} = _{CamelCase(property.Name)}.Value")));
+        output.AppendLine(string.Join(",\r\n", propertiesPublicSettable.Select(property => $@"                            {property.Name} = _{CamelCase(property.Name)}.Value")));
         output.AppendLine("                        };");
 
-        // output.AppendLine(string.Join("\r\n", propertiesInitOnly.Select(property => $@"                        if (_{CamelCase(property.Name)}IsSet) {{ Set{property.Name}(instance, _{CamelCase(property.Name)}.Value); }}")));
+        output.AppendLine(string.Join("\r\n", propertiesPrivateSettable.Select(property => $@"                        if (_{CamelCase(property.Name)}IsSet) {{ Set{property.Name}(instance, _{CamelCase(property.Name)}.Value); }}")));
 
         output.AppendLine("                        return instance;");
         output.AppendLine("                    }");
         output.AppendLine($@"
                     instance = new {className}();");
-        output.AppendLine(string.Join("\r\n", propertiesSettable.Select(property => $@"                    if (_{CamelCase(property.Name)}IsSet) {{ instance.{property.Name} = _{CamelCase(property.Name)}.Value; }}")));
-        // output.AppendLine(string.Join("\r\n", propertiesInitOnly.Select(property => $@"                    if (_{CamelCase(property.Name)}IsSet) {{ Set{property.Name}(instance, _{CamelCase(property.Name)}.Value); }}")));
+
+        output.AppendLine(string.Join("\r\n", propertiesPublicSettable.Select(property => $@"                    if (_{CamelCase(property.Name)}IsSet) {{ instance.{property.Name} = _{CamelCase(property.Name)}.Value; }}")));
+
+        output.AppendLine(string.Join("\r\n", propertiesPrivateSettable.Select(property => $@"                    if (_{CamelCase(property.Name)}IsSet) {{ Set{property.Name}(instance, _{CamelCase(property.Name)}.Value); }}")));
+
         output.AppendLine($@"                    return instance;
                 }});
             }}
@@ -335,6 +345,19 @@ namespace {classSymbol.BuilderNamespace}
         public static {className} Default() => new {className}();");
 
         return output.ToString();
+    }
+
+    private static void BuildPrivateSetMethod(StringBuilder output, string className, IPropertySymbol property)
+    {
+        output.AppendLine($"        private void Set{property.Name}({className} instance, {property.Type} value)");
+        output.AppendLine("        {");
+        output.AppendLine($"            var property = InstanceType.GetProperty(\"{property.Name}\");");
+        output.AppendLine("            if (property != null)");
+        output.AppendLine("            {");
+        output.AppendLine("                property.SetValue(instance, value);");
+        output.AppendLine("            }");
+        output.AppendLine("        }");
+        output.AppendLine();
     }
 
     private IReadOnlyList<(ClassSymbol ClassSymbol, FluentData FluentData)> GetClassSymbols()

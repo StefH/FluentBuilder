@@ -11,6 +11,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using FluentBuilderGeneratorTests.FluentBuilder;
 using FluentBuilderGeneratorTests.DTO;
 
@@ -18,22 +19,47 @@ namespace FluentBuilderGeneratorTests.DTO
 {
     public partial class ClassWithPrivateSetterBuilder : Builder<FluentBuilderGeneratorTests.DTO.ClassWithPrivateSetter>
     {
-        private bool _publicIntIsSet;
-        private Lazy<int> _publicInt = new Lazy<int>(() => default(int));
-        public ClassWithPrivateSetterBuilder WithPublicInt(int value) => WithPublicInt(() => value);
-        public ClassWithPrivateSetterBuilder WithPublicInt(Func<int> func)
+        private bool _value1IsSet;
+        private Lazy<int> _value1 = new Lazy<int>(() => default(int));
+        public ClassWithPrivateSetterBuilder WithValue1(int value) => WithValue1(() => value);
+        public ClassWithPrivateSetterBuilder WithValue1(Func<int> func)
         {
-            _publicInt = new Lazy<int>(func);
-            _publicIntIsSet = true;
+            _value1 = new Lazy<int>(func);
+            _value1IsSet = true;
             return this;
         }
-        public ClassWithPrivateSetterBuilder WithoutPublicInt()
+        public ClassWithPrivateSetterBuilder WithoutValue1()
         {
-            WithPublicInt(() => default(int));
-            _publicIntIsSet = false;
+            WithValue1(() => default(int));
+            _value1IsSet = false;
             return this;
         }
 
+        private bool _value2IsSet;
+        private Lazy<int> _value2 = new Lazy<int>(() => default(int));
+        public ClassWithPrivateSetterBuilder WithValue2(int value) => WithValue2(() => value);
+        public ClassWithPrivateSetterBuilder WithValue2(Func<int> func)
+        {
+            _value2 = new Lazy<int>(func);
+            _value2IsSet = true;
+            return this;
+        }
+        public ClassWithPrivateSetterBuilder WithoutValue2()
+        {
+            WithValue2(() => default(int));
+            _value2IsSet = false;
+            return this;
+        }
+
+
+        private void SetValue1(ClassWithPrivateSetter instance, int value)
+        {
+            var property = InstanceType.GetProperty("Value1");
+            if (property != null)
+            {
+                property.SetValue(instance, value);
+            }
+        }
 
         public override ClassWithPrivateSetter Build(bool useObjectInitializer = true)
         {
@@ -46,13 +72,15 @@ namespace FluentBuilderGeneratorTests.DTO
                     {
                         instance = new ClassWithPrivateSetter
                         {
-                            // PublicInt = _publicInt.Value
+                            Value2 = _value2.Value
                         };
+                        if (_value1IsSet) { SetValue1(instance, _value1.Value); }
                         return instance;
                     }
 
                     instance = new ClassWithPrivateSetter();
-                    //if (_publicIntIsSet) { instance.PublicInt = _publicInt.Value; }
+                    if (_value2IsSet) { instance.Value2 = _value2.Value; }
+                    if (_value1IsSet) { SetValue1(instance, _value1.Value); }
                     return instance;
                 });
             }

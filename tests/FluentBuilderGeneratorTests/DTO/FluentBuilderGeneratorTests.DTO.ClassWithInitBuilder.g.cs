@@ -11,6 +11,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using FluentBuilderGeneratorTests.FluentBuilder;
 using FluentBuilderGeneratorTests.DTO;
 
@@ -78,15 +79,15 @@ namespace FluentBuilderGeneratorTests.DTO
                     {
                         instance = new ClassWithInit
                         {
-                            Normal = _normal.Value,
-                            Id = _id.Value,
-                            Test = _test.Value
+                            Normal = _normal.Value
                         };
+
                         return instance;
                     }
 
                     instance = new ClassWithInit();
                     if (_normalIsSet) { instance.Normal = _normal.Value; }
+
                     return instance;
                 });
             }

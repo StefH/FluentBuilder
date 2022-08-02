@@ -11,6 +11,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using FluentBuilderGeneratorTests.FluentBuilder;
 using FluentBuilderGeneratorTests.DTO;
 
@@ -48,11 +49,13 @@ namespace FluentBuilderGeneratorTests.DTO
                         {
                             Id = _id.Value
                         };
+
                         return instance;
                     }
 
                     instance = new DummyClass();
                     if (_idIsSet) { instance.Id = _id.Value; }
+
                     return instance;
                 });
             }

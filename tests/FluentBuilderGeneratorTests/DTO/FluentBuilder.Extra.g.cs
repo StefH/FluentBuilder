@@ -17,25 +17,29 @@ namespace FluentBuilder
     {
         public Type? Type { get; }
         public bool HandleBaseClasses { get; }
-        // public FluentBuilderAccessibility Accessibility { get; }
+        public FluentBuilderAccessibility Accessibility { get; }
 
-        public AutoGenerateBuilderAttribute() : this(null, true)
+        public AutoGenerateBuilderAttribute() : this(null, true, FluentBuilderAccessibility.All)
         {
         }
 
-        public AutoGenerateBuilderAttribute(bool handleBaseClasses) : this(null, handleBaseClasses)
+        public AutoGenerateBuilderAttribute(FluentBuilderAccessibility accessibility) : this(null, true, accessibility)
         {
         }
 
-        public AutoGenerateBuilderAttribute(Type? type) : this(type, true)
+        public AutoGenerateBuilderAttribute(bool handleBaseClasses) : this(null, handleBaseClasses, FluentBuilderAccessibility.All)
         {
         }
 
-        public AutoGenerateBuilderAttribute(Type? type, bool handleBaseClasses)
+        public AutoGenerateBuilderAttribute(Type? type, FluentBuilderAccessibility accessibility) : this(type, true, accessibility)
+        {
+        }
+
+        public AutoGenerateBuilderAttribute(Type? type, bool handleBaseClasses, FluentBuilderAccessibility accessibility)
         {
             Type = type;
             HandleBaseClasses = handleBaseClasses;
-            // Accessibility = accessibility;
+            Accessibility = accessibility;
         }
     }
 
@@ -45,7 +49,7 @@ namespace FluentBuilder
     }
 
     // Based on Microsoft.CodeAnalysis.Accessibility
-    /*[Flags]
+    [Flags]
     internal enum FluentBuilderAccessibility
     {
         All = 0,
@@ -58,6 +62,6 @@ namespace FluentBuilder
         // ProtectedOrInternal = 5,
         // ProtectedOrFriend = ProtectedOrInternal,
         Public = 6
-    }*/
+    }
 }
 #nullable disable
