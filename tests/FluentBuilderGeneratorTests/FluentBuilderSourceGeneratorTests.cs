@@ -689,4 +689,30 @@ namespace FluentBuilderGeneratorTests.DTO
             builder.Text.Should().Be(File.ReadAllText($"../../../DTO2/{filename}"));
         }
     }
+    [Fact]
+    public void GenerateFiles_WithFluentBuilderAccessibility()
+    {
+        // Arrange
+        var path = "./DTO/ClassWithPrivateSetter.cs";
+        var sourceFile = new SourceFile
+        {
+            Path = path,
+            Text = File.ReadAllText(path),
+            AttributeToAddToClass = new ExtraAttribute
+            {
+                Name = "FluentBuilder.AutoGenerateBuilder",
+                ArgumentList = "FluentBuilderAccessibility.Public"
+            }
+        };
+
+        // Act
+        var result = _sut.Execute(Namespace, new[] { sourceFile });
+
+        // Assert
+        result.Valid.Should().BeTrue();
+        result.Files.Should().HaveCount(9);
+
+        var fileResult = result.Files[8].Text;
+        fileResult.Should().NotContain("SetValue1");
+    }
 }

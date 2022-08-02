@@ -296,8 +296,9 @@ namespace {classSymbol.BuilderNamespace}
         }
 
         var properties = GetProperties(classSymbol, fluentData.HandleBaseClasses);
-        var propertiesPrivateSettable = properties.Where(property => property.IsPrivateSettable()).ToArray();
         var propertiesPublicSettable = properties.Where(property => property.IsPublicSettable()).ToArray();
+        var propertiesPrivateSettable = fluentData.Accessibility.HasFlag(FluentBuilderAccessibility.Private) ?
+            properties.Where(property => property.IsPrivateSettable()).ToArray() : Array.Empty<IPropertySymbol>();
 
         var className = classSymbol.NamedTypeSymbol.GenerateShortTypeName();
 
