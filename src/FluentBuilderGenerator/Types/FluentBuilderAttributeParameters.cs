@@ -1,6 +1,6 @@
 namespace FluentBuilderGenerator.Types;
 
-internal record FluentBuilderAttributeParameters
+internal record FluentBuilderAttributeArguments
 {
     public string? RawTypeName { get; set; }
 

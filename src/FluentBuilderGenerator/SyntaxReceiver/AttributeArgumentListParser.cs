@@ -5,11 +5,11 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace FluentBuilderGenerator.SyntaxReceiver;
 
-internal static class ArgumentListParser
+internal static class AttributeArgumentListParser
 {
-    public static FluentBuilderAttributeParameters ParseAttributeArgumentList(AttributeArgumentListSyntax? argumentList)
+    public static FluentBuilderAttributeArguments ParseAttributeArguments(AttributeArgumentListSyntax? argumentList)
     {
-        var result = new FluentBuilderAttributeParameters();
+        var result = new FluentBuilderAttributeArguments();
 
         if (argumentList == null)
         {
@@ -58,27 +58,6 @@ internal static class ArgumentListParser
                 result = result with { Accessibility = accessibility };
             }
         }
-
-        //if (argumentList.Arguments.Count >= 2)
-        //{
-        //    if (TryParseAsType(argumentList.Arguments[0].Expression, out var rawTypeValue))
-        //    {
-        //        throw new ArgumentException("When the AutoGenerateBuilderAttribute is used with 2 arguments, the first argument should be a Type.");
-        //    }
-
-        //    if (!TryParseAsBoolean(argumentList.Arguments[1].Expression, out var handleBaseClasses))
-        //    {
-        //        throw new ArgumentException("When the AutoGenerateBuilderAttribute is used with 2 arguments, the second argument should be a boolean.");
-        //    }
-
-        //    var accessibility = FluentBuilderAccessibility.All;
-        //    if (argumentList.Arguments.Count == 3 && TryParseAsEnum(argumentList.Arguments[2].Expression, out accessibility))
-        //    {
-        //        throw new ArgumentException("When the AutoGenerateBuilderAttribute is used with 3 arguments, the third argument should be a enum.");
-        //    }
-
-        //    return result with { RawTypeName = rawTypeValue, HandleBaseClasses = handleBaseClasses, Accessibility = accessibility };
-        //}
 
         return result;
     }
