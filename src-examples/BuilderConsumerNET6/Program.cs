@@ -7,7 +7,7 @@ internal class Program
     static void Main(string[] args)
     {
         var c = new ClassWithPrivateSetterBuilder()
-            .WithValue1(6)
+            .WithValue2(6)
             .Build();
 
         var userA = new UserBuilder()

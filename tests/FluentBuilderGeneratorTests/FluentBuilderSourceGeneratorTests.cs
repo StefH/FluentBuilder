@@ -120,15 +120,19 @@ public class FluentBuilderSourceGeneratorTests
     }
 
     [Fact]
-    public void GenerateFiles_ClassWithPrivateSetter_Should_GenerateSetMethodUsingReflection()
+    public void GenerateFiles_ClassWithPrivateSetter_And_AccessibilityAll_Should_GeneratePrivateSetMethodUsingReflection()
     {
         // Arrange
-        var path = "./DTO/ClassWithPrivateSetter.cs";
+        var path = "./DTO/ClassWithPrivateSetter1.cs";
         var sourceFile = new SourceFile
         {
             Path = path,
             Text = File.ReadAllText(path),
-            AttributeToAddToClass = "FluentBuilder.AutoGenerateBuilder"
+            AttributeToAddToClass = new ExtraAttribute
+            {
+                Name = "FluentBuilder.AutoGenerateBuilder",
+                ArgumentList = new[] { "FluentBuilderAccessibility.All" }
+            }
         };
 
         // Act
@@ -143,12 +147,48 @@ public class FluentBuilderSourceGeneratorTests
 
         File.WriteAllText($"../../../DTO/{filename}", fileResult.Text);
 
-        var instance = new ClassWithPrivateSetterBuilder()
+        var instance = new ClassWithPrivateSetter1Builder()
             .WithValue1(100)
             .WithValue2(42)
             .Build();
 
         instance.Value1.Should().Be(100);
+        instance.Value2.Should().Be(42);
+    }
+
+    [Fact]
+    public void GenerateFiles_ClassWithPrivateSetter_And_AccessibilityPublic_Should_Not_GeneratePrivateSetMethod()
+    {
+        // Arrange
+        var path = "./DTO/ClassWithPrivateSetter2.cs";
+        var sourceFile = new SourceFile
+        {
+            Path = path,
+            Text = File.ReadAllText(path),
+            AttributeToAddToClass = new ExtraAttribute
+            {
+                Name = "FluentBuilder.AutoGenerateBuilder",
+                ArgumentList = new[] { "FluentBuilderAccessibility.All" }
+            }
+        };
+
+        // Act
+        var result = _sut.Execute(Namespace, new[] { sourceFile });
+
+        // Assert
+        result.Valid.Should().BeTrue();
+        result.Files.Should().HaveCount(9);
+
+        var fileResult = result.Files[8];
+        var filename = Path.GetFileName(fileResult.Path);
+
+        File.WriteAllText($"../../../DTO/{filename}", fileResult.Text);
+
+        var instance = new ClassWithPrivateSetter2Builder()
+            .WithValue2(42)
+            .Build();
+
+        instance.Value1.Should().Be(default);
         instance.Value2.Should().Be(42);
     }
 
@@ -186,6 +226,7 @@ public class FluentBuilderSourceGeneratorTests
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using FluentBuilderGeneratorTests.FluentBuilder;
 using FluentBuilderGeneratorTests.DTO;
 
@@ -223,11 +264,13 @@ namespace FluentBuilderGeneratorTests.DTO
                         {
                             Id = _id.Value
                         };
+
                         return instance;
                     }
 
                     instance = new ClassWithFluentBuilderIgnore();
                     if (_idIsSet) { instance.Id = _id.Value; }
+
                     return instance;
                 });
             }
@@ -278,6 +321,7 @@ namespace FluentBuilderGeneratorTests.DTO
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using FluentBuilderGeneratorTests.FluentBuilder;
 using FluentBuilderGeneratorTests.DTO;
 
@@ -315,11 +359,13 @@ namespace FluentBuilderGeneratorTests.DTO
                         {
                             Id = _id.Value
                         };
+
                         return instance;
                     }
 
                     instance = new SimpleClass();
                     if (_idIsSet) { instance.Id = _id.Value; }
+
                     return instance;
                 });
             }
@@ -688,31 +734,5 @@ namespace FluentBuilderGeneratorTests.DTO
             if (Write) File.WriteAllText($"../../../DTO2/{filename}", builder.Text);
             builder.Text.Should().Be(File.ReadAllText($"../../../DTO2/{filename}"));
         }
-    }
-    [Fact]
-    public void GenerateFiles_WithFluentBuilderAccessibility()
-    {
-        // Arrange
-        var path = "./DTO/ClassWithPrivateSetter.cs";
-        var sourceFile = new SourceFile
-        {
-            Path = path,
-            Text = File.ReadAllText(path),
-            AttributeToAddToClass = new ExtraAttribute
-            {
-                Name = "FluentBuilder.AutoGenerateBuilder",
-                ArgumentList = "FluentBuilderAccessibility.Public"
-            }
-        };
-
-        // Act
-        var result = _sut.Execute(Namespace, new[] { sourceFile });
-
-        // Assert
-        result.Valid.Should().BeTrue();
-        result.Files.Should().HaveCount(9);
-
-        var fileResult = result.Files[8].Text;
-        fileResult.Should().NotContain("SetValue1");
     }
 }

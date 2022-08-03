@@ -112,12 +112,12 @@ namespace {classSymbol.BuilderNamespace}
     {
         var className = classSymbol.BuilderClassName;
 
-        var properties = GetProperties(classSymbol, fluentData.HandleBaseClasses);
-
+        var (propertiesPublicSettable, propertiesPrivateSettable) = GetProperties(classSymbol, fluentData.HandleBaseClasses, fluentData.Accessibility);
+        
         var extraUsings = new List<string>();
 
         var sb = new StringBuilder();
-        foreach (var property in properties)
+        foreach (var property in propertiesPublicSettable.Union(propertiesPrivateSettable))
         {
             // Use "params" in case it's an Array, else just use type-T.
             var type = property.Type.GetFluentTypeKind() == FluentTypeKind.Array ? $"params {property.Type}" : property.Type.ToString();
@@ -128,10 +128,7 @@ namespace {classSymbol.BuilderNamespace}
                 extraUsings.AddRange(extraUsingsFromDefaultValue);
             }
 
-            // if (property.IsPublicSettable())
-            {
-                sb.AppendLine($"        private bool _{CamelCase(property.Name)}IsSet;");
-            }
+            sb.AppendLine($"        private bool _{CamelCase(property.Name)}IsSet;");
 
             sb.AppendLine($"        private Lazy<{property.Type}> _{CamelCase(property.Name)} = new Lazy<{property.Type}>(() => {defaultValue});");
 
@@ -260,7 +257,7 @@ namespace {classSymbol.BuilderNamespace}
             .AppendLine("        });");
     }
 
-    private static IReadOnlyList<IPropertySymbol> GetProperties(ClassSymbol classSymbol, bool handleBaseClasses)
+    private static (IReadOnlyList<IPropertySymbol> PublicSettable, IReadOnlyList<IPropertySymbol> PrivateSettable) GetProperties(ClassSymbol classSymbol, bool handleBaseClasses, FluentBuilderAccessibility accessibility)
     {
         var properties = classSymbol.NamedTypeSymbol.GetMembers().OfType<IPropertySymbol>()
             .Where(x => x.SetMethod is not null)
@@ -285,7 +282,11 @@ namespace {classSymbol.BuilderNamespace}
             }
         }
 
-        return properties;
+        var propertiesPublicSettable = properties.Where(property => property.IsPublicSettable()).ToArray();
+        var propertiesPrivateSettable = accessibility.HasFlag(FluentBuilderAccessibility.Private) ?
+            properties.Where(property => property.IsPrivateSettable()).ToArray() : Array.Empty<IPropertySymbol>();
+
+        return (propertiesPublicSettable, propertiesPrivateSettable);
     }
 
     private static string GenerateBuildMethod(FluentData fluentData, ClassSymbol classSymbol)
@@ -295,11 +296,7 @@ namespace {classSymbol.BuilderNamespace}
             throw new NotSupportedException($"Unable to generate a FluentBuilder for the class '{classSymbol.NamedTypeSymbol}' because no public parameterless constructor was defined.");
         }
 
-        var properties = GetProperties(classSymbol, fluentData.HandleBaseClasses);
-        var propertiesPublicSettable = properties.Where(property => property.IsPublicSettable()).ToArray();
-        var propertiesPrivateSettable = fluentData.Accessibility.HasFlag(FluentBuilderAccessibility.Private) ?
-            properties.Where(property => property.IsPrivateSettable()).ToArray() : Array.Empty<IPropertySymbol>();
-
+        var (propertiesPublicSettable, propertiesPrivateSettable) = GetProperties(classSymbol, fluentData.HandleBaseClasses, fluentData.Accessibility);
         var className = classSymbol.NamedTypeSymbol.GenerateShortTypeName();
 
         var output = new StringBuilder();

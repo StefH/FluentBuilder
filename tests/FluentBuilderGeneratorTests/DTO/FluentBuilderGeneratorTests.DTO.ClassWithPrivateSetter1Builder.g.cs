@@ -17,42 +17,42 @@ using FluentBuilderGeneratorTests.DTO;
 
 namespace FluentBuilderGeneratorTests.DTO
 {
-    public partial class ClassWithPrivateSetterBuilder : Builder<FluentBuilderGeneratorTests.DTO.ClassWithPrivateSetter>
+    public partial class ClassWithPrivateSetter1Builder : Builder<FluentBuilderGeneratorTests.DTO.ClassWithPrivateSetter1>
     {
-        private bool _value1IsSet;
-        private Lazy<int> _value1 = new Lazy<int>(() => default(int));
-        public ClassWithPrivateSetterBuilder WithValue1(int value) => WithValue1(() => value);
-        public ClassWithPrivateSetterBuilder WithValue1(Func<int> func)
-        {
-            _value1 = new Lazy<int>(func);
-            _value1IsSet = true;
-            return this;
-        }
-        public ClassWithPrivateSetterBuilder WithoutValue1()
-        {
-            WithValue1(() => default(int));
-            _value1IsSet = false;
-            return this;
-        }
-
         private bool _value2IsSet;
         private Lazy<int> _value2 = new Lazy<int>(() => default(int));
-        public ClassWithPrivateSetterBuilder WithValue2(int value) => WithValue2(() => value);
-        public ClassWithPrivateSetterBuilder WithValue2(Func<int> func)
+        public ClassWithPrivateSetter1Builder WithValue2(int value) => WithValue2(() => value);
+        public ClassWithPrivateSetter1Builder WithValue2(Func<int> func)
         {
             _value2 = new Lazy<int>(func);
             _value2IsSet = true;
             return this;
         }
-        public ClassWithPrivateSetterBuilder WithoutValue2()
+        public ClassWithPrivateSetter1Builder WithoutValue2()
         {
             WithValue2(() => default(int));
             _value2IsSet = false;
             return this;
         }
 
+        private bool _value1IsSet;
+        private Lazy<int> _value1 = new Lazy<int>(() => default(int));
+        public ClassWithPrivateSetter1Builder WithValue1(int value) => WithValue1(() => value);
+        public ClassWithPrivateSetter1Builder WithValue1(Func<int> func)
+        {
+            _value1 = new Lazy<int>(func);
+            _value1IsSet = true;
+            return this;
+        }
+        public ClassWithPrivateSetter1Builder WithoutValue1()
+        {
+            WithValue1(() => default(int));
+            _value1IsSet = false;
+            return this;
+        }
 
-        private void SetValue1(ClassWithPrivateSetter instance, int value)
+
+        private void SetValue1(ClassWithPrivateSetter1 instance, int value)
         {
             var property = InstanceType.GetProperty("Value1");
             if (property != null)
@@ -61,16 +61,16 @@ namespace FluentBuilderGeneratorTests.DTO
             }
         }
 
-        public override ClassWithPrivateSetter Build(bool useObjectInitializer = true)
+        public override ClassWithPrivateSetter1 Build(bool useObjectInitializer = true)
         {
             if (Object?.IsValueCreated != true)
             {
-                Object = new Lazy<ClassWithPrivateSetter>(() =>
+                Object = new Lazy<ClassWithPrivateSetter1>(() =>
                 {
-                    ClassWithPrivateSetter instance;
+                    ClassWithPrivateSetter1 instance;
                     if (useObjectInitializer)
                     {
-                        instance = new ClassWithPrivateSetter
+                        instance = new ClassWithPrivateSetter1
                         {
                             Value2 = _value2.Value
                         };
@@ -78,7 +78,7 @@ namespace FluentBuilderGeneratorTests.DTO
                         return instance;
                     }
 
-                    instance = new ClassWithPrivateSetter();
+                    instance = new ClassWithPrivateSetter1();
                     if (_value2IsSet) { instance.Value2 = _value2.Value; }
                     if (_value1IsSet) { SetValue1(instance, _value1.Value); }
                     return instance;
@@ -90,7 +90,7 @@ namespace FluentBuilderGeneratorTests.DTO
             return Object.Value;
         }
 
-        public static ClassWithPrivateSetter Default() => new ClassWithPrivateSetter();
+        public static ClassWithPrivateSetter1 Default() => new ClassWithPrivateSetter1();
 
     }
 }
