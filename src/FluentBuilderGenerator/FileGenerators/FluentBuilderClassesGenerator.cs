@@ -317,19 +317,19 @@ namespace {classSymbol.BuilderNamespace}
                     {{
                         instance = new {className}
                         {{");
-        output.AppendLine(string.Join(",\r\n", propertiesPublicSettable.Select(property => $@"                            {property.Name} = _{CamelCase(property.Name)}.Value")));
+        output.AppendLines(propertiesPublicSettable.Select(property => $@"                            {property.Name} = _{CamelCase(property.Name)}.Value"), ",");
         output.AppendLine("                        };");
 
-        output.AppendLine(string.Join("\r\n", propertiesPrivateSettable.Select(property => $@"                        if (_{CamelCase(property.Name)}IsSet) {{ Set{property.Name}(instance, _{CamelCase(property.Name)}.Value); }}")));
+        output.AppendLines(propertiesPrivateSettable.Select(property => $@"                        if (_{CamelCase(property.Name)}IsSet) {{ Set{property.Name}(instance, _{CamelCase(property.Name)}.Value); }}"));
 
         output.AppendLine("                        return instance;");
         output.AppendLine("                    }");
         output.AppendLine($@"
                     instance = new {className}();");
 
-        output.AppendLine(string.Join("\r\n", propertiesPublicSettable.Select(property => $@"                    if (_{CamelCase(property.Name)}IsSet) {{ instance.{property.Name} = _{CamelCase(property.Name)}.Value; }}")));
+        output.AppendLines(propertiesPublicSettable.Select(property => $@"                    if (_{CamelCase(property.Name)}IsSet) {{ instance.{property.Name} = _{CamelCase(property.Name)}.Value; }}"));
 
-        output.AppendLine(string.Join("\r\n", propertiesPrivateSettable.Select(property => $@"                    if (_{CamelCase(property.Name)}IsSet) {{ Set{property.Name}(instance, _{CamelCase(property.Name)}.Value); }}")));
+        output.AppendLines(propertiesPrivateSettable.Select(property => $@"                    if (_{CamelCase(property.Name)}IsSet) {{ Set{property.Name}(instance, _{CamelCase(property.Name)}.Value); }}"));
 
         output.AppendLine($@"                    return instance;
                 }});
