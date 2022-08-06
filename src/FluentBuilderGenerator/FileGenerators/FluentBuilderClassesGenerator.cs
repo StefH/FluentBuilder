@@ -349,11 +349,7 @@ namespace {classSymbol.BuilderNamespace}
     {
         output.AppendLine($"        private void Set{property.Name}({className} instance, {property.Type} value)");
         output.AppendLine("        {");
-        output.AppendLine($"            var property = InstanceType.GetProperty(\"{property.Name}\");");
-        output.AppendLine("            if (property != null)");
-        output.AppendLine("            {");
-        output.AppendLine("                property.SetValue(instance, value);");
-        output.AppendLine("            }");
+        output.AppendLine($"            InstanceType.GetProperty(\"{property.Name}\")?.SetValue(instance, value);");
         output.AppendLine("        }");
         output.AppendLine();
     }

@@ -35,31 +35,6 @@ namespace FluentBuilderGeneratorTests.DTO
             return this;
         }
 
-        private bool _value1IsSet;
-        private Lazy<int> _value1 = new Lazy<int>(() => default(int));
-        public ClassWithPrivateSetter2Builder WithValue1(int value) => WithValue1(() => value);
-        public ClassWithPrivateSetter2Builder WithValue1(Func<int> func)
-        {
-            _value1 = new Lazy<int>(func);
-            _value1IsSet = true;
-            return this;
-        }
-        public ClassWithPrivateSetter2Builder WithoutValue1()
-        {
-            WithValue1(() => default(int));
-            _value1IsSet = false;
-            return this;
-        }
-
-
-        private void SetValue1(ClassWithPrivateSetter2 instance, int value)
-        {
-            var property = InstanceType.GetProperty("Value1");
-            if (property != null)
-            {
-                property.SetValue(instance, value);
-            }
-        }
 
         public override ClassWithPrivateSetter2 Build(bool useObjectInitializer = true)
         {
@@ -74,13 +49,13 @@ namespace FluentBuilderGeneratorTests.DTO
                         {
                             Value2 = _value2.Value
                         };
-                        if (_value1IsSet) { SetValue1(instance, _value1.Value); }
+
                         return instance;
                     }
 
                     instance = new ClassWithPrivateSetter2();
                     if (_value2IsSet) { instance.Value2 = _value2.Value; }
-                    if (_value1IsSet) { SetValue1(instance, _value1.Value); }
+
                     return instance;
                 });
             }

@@ -168,7 +168,7 @@ public class FluentBuilderSourceGeneratorTests
             AttributeToAddToClass = new ExtraAttribute
             {
                 Name = "FluentBuilder.AutoGenerateBuilder",
-                ArgumentList = new[] { "FluentBuilderAccessibility.All" }
+                ArgumentList = new[] { "FluentBuilderAccessibility.Public" }
             }
         };
 
@@ -181,6 +181,8 @@ public class FluentBuilderSourceGeneratorTests
 
         var fileResult = result.Files[8];
         var filename = Path.GetFileName(fileResult.Path);
+
+        fileResult.Text.Should().NotContain("InstanceType.GetProperty");
 
         File.WriteAllText($"../../../DTO/{filename}", fileResult.Text);
 
