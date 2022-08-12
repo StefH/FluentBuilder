@@ -283,7 +283,7 @@ namespace {classSymbol.BuilderNamespace}
         }
 
         var propertiesPublicSettable = properties.Where(property => property.IsPublicSettable()).ToArray();
-        var propertiesPrivateSettable = accessibility.HasFlag(FluentBuilderAccessibility.Private) ?
+        var propertiesPrivateSettable = accessibility == FluentBuilderAccessibility.PublicAndPrivate ?
             properties.Where(property => property.IsPrivateSettable()).ToArray() : Array.Empty<IPropertySymbol>();
 
         return (propertiesPublicSettable, propertiesPrivateSettable);

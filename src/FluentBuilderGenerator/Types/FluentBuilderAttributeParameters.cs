@@ -6,5 +6,5 @@ internal record FluentBuilderAttributeArguments
 
     public bool HandleBaseClasses { get; set; } = true;
 
-    public FluentBuilderAccessibility Accessibility { get; set; } = FluentBuilderAccessibility.All;
+    public FluentBuilderAccessibility Accessibility { get; set; } = FluentBuilderAccessibility.Public;
 }

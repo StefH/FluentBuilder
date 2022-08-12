@@ -120,7 +120,7 @@ public class FluentBuilderSourceGeneratorTests
     }
 
     [Fact]
-    public void GenerateFiles_ClassWithPrivateSetter_And_AccessibilityAll_Should_GeneratePrivateSetMethodUsingReflection()
+    public void GenerateFiles_ClassWithPrivateSetter_And_AccessibilityPublicAndPrivate_Should_GeneratePrivateSetMethodUsingReflection()
     {
         // Arrange
         var path = "./DTO/ClassWithPrivateSetter1.cs";
@@ -131,7 +131,7 @@ public class FluentBuilderSourceGeneratorTests
             AttributeToAddToClass = new ExtraAttribute
             {
                 Name = "FluentBuilder.AutoGenerateBuilder",
-                ArgumentList = new[] { "FluentBuilderAccessibility.All" }
+                ArgumentList = new[] { "FluentBuilderAccessibility.PublicAndPrivate" }
             }
         };
 

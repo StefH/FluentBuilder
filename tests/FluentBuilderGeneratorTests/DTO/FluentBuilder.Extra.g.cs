@@ -19,11 +19,11 @@ namespace FluentBuilder
         public bool HandleBaseClasses { get; }
         public FluentBuilderAccessibility Accessibility { get; }
 
-        public AutoGenerateBuilderAttribute() : this(null, true, FluentBuilderAccessibility.All)
+        public AutoGenerateBuilderAttribute() : this(null, true, FluentBuilderAccessibility.Public)
         {
         }
 
-        public AutoGenerateBuilderAttribute(bool handleBaseClasses) : this(null, handleBaseClasses, FluentBuilderAccessibility.All)
+        public AutoGenerateBuilderAttribute(bool handleBaseClasses) : this(null, handleBaseClasses, FluentBuilderAccessibility.Public)
         {
         }
 
@@ -35,7 +35,7 @@ namespace FluentBuilder
         {
         }
 
-        public AutoGenerateBuilderAttribute(Type? type) : this(type, true, FluentBuilderAccessibility.All)
+        public AutoGenerateBuilderAttribute(Type? type) : this(type, true, FluentBuilderAccessibility.Public)
         {
         }
 
@@ -43,7 +43,7 @@ namespace FluentBuilder
         {
         }
 
-        public AutoGenerateBuilderAttribute(Type? type, bool handleBaseClasses, FluentBuilderAccessibility accessibility = FluentBuilderAccessibility.All)
+        public AutoGenerateBuilderAttribute(Type? type, bool handleBaseClasses, FluentBuilderAccessibility accessibility = FluentBuilderAccessibility.Public)
         {
             Type = type;
             HandleBaseClasses = handleBaseClasses;
@@ -59,9 +59,8 @@ namespace FluentBuilder
     [Flags]
     internal enum FluentBuilderAccessibility
     {
-        All = 3,
-        Private = 1,
-        Public = 2
+        Public = 0,
+        PublicAndPrivate = 1
     }
 }
 #nullable disable
