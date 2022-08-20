@@ -17,44 +17,44 @@ using FluentBuilderGeneratorTests.DTO;
 
 namespace FluentBuilderGeneratorTests.DTO
 {
-    public partial class UserTBuilder<T> : Builder<FluentBuilderGeneratorTests.DTO.UserT<T>> where T : struct
+    public partial class ClassWithPrivateSetter2Builder : Builder<FluentBuilderGeneratorTests.DTO.ClassWithPrivateSetter2>
     {
-        private bool _tValueIsSet;
-        private Lazy<T> _tValue = new Lazy<T>(() => default(T));
-        public UserTBuilder<T> WithTValue(T value) => WithTValue(() => value);
-        public UserTBuilder<T> WithTValue(Func<T> func)
+        private bool _value2IsSet;
+        private Lazy<int> _value2 = new Lazy<int>(() => default(int));
+        public ClassWithPrivateSetter2Builder WithValue2(int value) => WithValue2(() => value);
+        public ClassWithPrivateSetter2Builder WithValue2(Func<int> func)
         {
-            _tValue = new Lazy<T>(func);
-            _tValueIsSet = true;
+            _value2 = new Lazy<int>(func);
+            _value2IsSet = true;
             return this;
         }
-        public UserTBuilder<T> WithoutTValue()
+        public ClassWithPrivateSetter2Builder WithoutValue2()
         {
-            WithTValue(() => default(T));
-            _tValueIsSet = false;
+            WithValue2(() => default(int));
+            _value2IsSet = false;
             return this;
         }
 
 
-        public override UserT<T> Build(bool useObjectInitializer = true)
+        public override ClassWithPrivateSetter2 Build(bool useObjectInitializer = true)
         {
             if (Object?.IsValueCreated != true)
             {
-                Object = new Lazy<UserT<T>>(() =>
+                Object = new Lazy<ClassWithPrivateSetter2>(() =>
                 {
-                    UserT<T> instance;
+                    ClassWithPrivateSetter2 instance;
                     if (useObjectInitializer)
                     {
-                        instance = new UserT<T>
+                        instance = new ClassWithPrivateSetter2
                         {
-                            TValue = _tValue.Value
+                            Value2 = _value2.Value
                         };
 
                         return instance;
                     }
 
-                    instance = new UserT<T>();
-                    if (_tValueIsSet) { instance.TValue = _tValue.Value; }
+                    instance = new ClassWithPrivateSetter2();
+                    if (_value2IsSet) { instance.Value2 = _value2.Value; }
 
                     return instance;
                 });
@@ -65,7 +65,7 @@ namespace FluentBuilderGeneratorTests.DTO
             return Object.Value;
         }
 
-        public static UserT<T> Default() => new UserT<T>();
+        public static ClassWithPrivateSetter2 Default() => new ClassWithPrivateSetter2();
 
     }
 }

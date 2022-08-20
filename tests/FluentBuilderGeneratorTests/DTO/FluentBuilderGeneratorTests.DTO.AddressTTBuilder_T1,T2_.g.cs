@@ -11,6 +11,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using FluentBuilderGeneratorTests.FluentBuilder;
 using FluentBuilderGeneratorTests.DTO;
 
@@ -65,12 +66,14 @@ namespace FluentBuilderGeneratorTests.DTO
                             TestValue1 = _testValue1.Value,
                             TestValue2 = _testValue2.Value
                         };
+
                         return instance;
                     }
 
                     instance = new AddressTT<T1, T2>();
                     if (_testValue1IsSet) { instance.TestValue1 = _testValue1.Value; }
                     if (_testValue2IsSet) { instance.TestValue2 = _testValue2.Value; }
+
                     return instance;
                 });
             }

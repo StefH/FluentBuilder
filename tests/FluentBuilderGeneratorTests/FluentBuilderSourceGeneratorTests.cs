@@ -4,6 +4,7 @@ using CSharp.SourceGenerators.Extensions;
 using CSharp.SourceGenerators.Extensions.Models;
 using FluentAssertions;
 using FluentBuilderGenerator;
+using FluentBuilderGeneratorTests.DTO;
 using Xunit;
 
 namespace FluentBuilderGeneratorTests;
@@ -119,6 +120,81 @@ public class FluentBuilderSourceGeneratorTests
     }
 
     [Fact]
+    public void GenerateFiles_ClassWithPrivateSetter_And_AccessibilityPublicAndPrivate_Should_GeneratePrivateSetMethodUsingReflection()
+    {
+        // Arrange
+        var path = "./DTO/ClassWithPrivateSetter1.cs";
+        var sourceFile = new SourceFile
+        {
+            Path = path,
+            Text = File.ReadAllText(path),
+            AttributeToAddToClass = new ExtraAttribute
+            {
+                Name = "FluentBuilder.AutoGenerateBuilder",
+                ArgumentList = new[] { "FluentBuilderAccessibility.PublicAndPrivate" }
+            }
+        };
+
+        // Act
+        var result = _sut.Execute(Namespace, new[] { sourceFile });
+
+        // Assert
+        result.Valid.Should().BeTrue();
+        result.Files.Should().HaveCount(9);
+
+        var fileResult = result.Files[8];
+        var filename = Path.GetFileName(fileResult.Path);
+
+        File.WriteAllText($"../../../DTO/{filename}", fileResult.Text);
+
+        var instance = new ClassWithPrivateSetter1Builder()
+            .WithValue1(100)
+            .WithValue2(42)
+            .Build();
+
+        instance.Value1.Should().Be(100);
+        instance.Value2.Should().Be(42);
+    }
+
+    [Fact]
+    public void GenerateFiles_ClassWithPrivateSetter_And_AccessibilityPublic_Should_Not_GeneratePrivateSetMethod()
+    {
+        // Arrange
+        var path = "./DTO/ClassWithPrivateSetter2.cs";
+        var sourceFile = new SourceFile
+        {
+            Path = path,
+            Text = File.ReadAllText(path),
+            AttributeToAddToClass = new ExtraAttribute
+            {
+                Name = "FluentBuilder.AutoGenerateBuilder",
+                ArgumentList = new[] { "FluentBuilderAccessibility.Public" }
+            }
+        };
+
+        // Act
+        var result = _sut.Execute(Namespace, new[] { sourceFile });
+
+        // Assert
+        result.Valid.Should().BeTrue();
+        result.Files.Should().HaveCount(9);
+
+        var fileResult = result.Files[8];
+        var filename = Path.GetFileName(fileResult.Path);
+
+        fileResult.Text.Should().NotContain("InstanceType.GetProperty");
+
+        File.WriteAllText($"../../../DTO/{filename}", fileResult.Text);
+
+        var instance = new ClassWithPrivateSetter2Builder()
+            .WithValue2(42)
+            .Build();
+
+        instance.Value1.Should().Be(default);
+        instance.Value2.Should().Be(42);
+    }
+
+    [Fact]
     public void GenerateFiles_ClassWithFluentBuilderIgnore_Should_GenerateCorrectFiles()
     {
         // Arrange
@@ -152,6 +228,7 @@ public class FluentBuilderSourceGeneratorTests
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using FluentBuilderGeneratorTests.FluentBuilder;
 using FluentBuilderGeneratorTests.DTO;
 
@@ -189,11 +266,13 @@ namespace FluentBuilderGeneratorTests.DTO
                         {
                             Id = _id.Value
                         };
+
                         return instance;
                     }
 
                     instance = new ClassWithFluentBuilderIgnore();
                     if (_idIsSet) { instance.Id = _id.Value; }
+
                     return instance;
                 });
             }
@@ -244,6 +323,7 @@ namespace FluentBuilderGeneratorTests.DTO
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using FluentBuilderGeneratorTests.FluentBuilder;
 using FluentBuilderGeneratorTests.DTO;
 
@@ -281,11 +361,13 @@ namespace FluentBuilderGeneratorTests.DTO
                         {
                             Id = _id.Value
                         };
+
                         return instance;
                     }
 
                     instance = new SimpleClass();
                     if (_idIsSet) { instance.Id = _id.Value; }
+
                     return instance;
                 });
             }
@@ -308,7 +390,7 @@ namespace FluentBuilderGeneratorTests.DTO
         // Arrange
         var fileNames = new[]
         {
-            "FluentBuilder.AutoGenerateBuilderAttributes.g.cs",
+            "FluentBuilder.Extra.g.cs",
             "FluentBuilder.BaseBuilder.g.cs",
 
             "FluentBuilder.ArrayBuilder.g.cs",

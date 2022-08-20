@@ -11,6 +11,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using FluentBuilderGeneratorTests.FluentBuilder;
 using FluentBuilderGeneratorTests.DTO;
 
@@ -105,6 +106,7 @@ namespace FluentBuilderGeneratorTests.DTO
                             QuitDate = _quitDate.Value,
                             TestDummyClass = _testDummyClass.Value
                         };
+
                         return instance;
                     }
 
@@ -113,6 +115,7 @@ namespace FluentBuilderGeneratorTests.DTO
                     if (_lastNameIsSet) { instance.LastName = _lastName.Value; }
                     if (_quitDateIsSet) { instance.QuitDate = _quitDate.Value; }
                     if (_testDummyClassIsSet) { instance.TestDummyClass = _testDummyClass.Value; }
+
                     return instance;
                 });
             }

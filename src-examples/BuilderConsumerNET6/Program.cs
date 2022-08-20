@@ -6,6 +6,10 @@ internal class Program
 {
     static void Main(string[] args)
     {
+        var c = new ClassWithPrivateSetterBuilder()
+            .WithValue2(6)
+            .Build();
+
         var userA = new UserBuilder()
             .WithId(42)
             .WithFirstName("Test")

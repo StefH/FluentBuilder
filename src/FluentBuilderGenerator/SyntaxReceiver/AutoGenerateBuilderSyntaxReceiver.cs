@@ -53,9 +53,9 @@ internal class AutoGenerateBuilderSyntaxReceiver : IAutoGenerateBuilderSyntaxRec
 
         usings = usings.Distinct().ToList();
 
-        var (rawTypeName, handleBaseClasses) = ArgumentListParser.ParseAttributeArgumentList(attributeList.Attributes.FirstOrDefault()?.ArgumentList);
+        var argumentList = AttributeArgumentListParser.ParseAttributeArguments(attributeList.Attributes.FirstOrDefault()?.ArgumentList);
 
-        if (rawTypeName != null) // The class which needs to be processed by the Builder is provided as type
+        if (argumentList.RawTypeName != null) // The class which needs to be processed by the Builder is provided as type
         {
             var modifiers = classDeclarationSyntax.Modifiers.Select(m => m.ToString()).ToArray();
             if (!(modifiers.Contains("public") && modifiers.Contains("partial")))
@@ -69,11 +69,12 @@ internal class AutoGenerateBuilderSyntaxReceiver : IAutoGenerateBuilderSyntaxRec
                 Namespace = ns,
                 ShortBuilderClassName = $"{classDeclarationSyntax.Identifier}",
                 FullBuilderClassName = CreateFullBuilderClassName(ns, classDeclarationSyntax),
-                FullRawTypeName = rawTypeName,
-                ShortTypeName = ConvertTypeName(rawTypeName).Split('.').Last(),
-                MetadataName = ConvertTypeName(rawTypeName),
+                FullRawTypeName = argumentList.RawTypeName,
+                ShortTypeName = ConvertTypeName(argumentList.RawTypeName).Split('.').Last(),
+                MetadataName = ConvertTypeName(argumentList.RawTypeName),
                 Usings = usings,
-                HandleBaseClasses = handleBaseClasses
+                HandleBaseClasses = argumentList.HandleBaseClasses,
+                Accessibility = argumentList.Accessibility
             };
 
             return true;
@@ -92,7 +93,8 @@ internal class AutoGenerateBuilderSyntaxReceiver : IAutoGenerateBuilderSyntaxRec
             ShortTypeName = ConvertTypeName(fullType).Split('.').Last(),
             MetadataName = metadataName,
             Usings = usings,
-            HandleBaseClasses = handleBaseClasses
+            HandleBaseClasses = argumentList.HandleBaseClasses,
+            Accessibility = argumentList.Accessibility
         };
 
         return true;

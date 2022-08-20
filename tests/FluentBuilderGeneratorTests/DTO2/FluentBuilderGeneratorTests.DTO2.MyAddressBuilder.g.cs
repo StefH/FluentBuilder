@@ -11,6 +11,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using FluentBuilderGeneratorTests.FluentBuilder;
 using FluentBuilderGeneratorTests.DTO;
 
@@ -448,6 +449,7 @@ namespace FluentBuilderGeneratorTests.DTO2
                             IDictionary2 = _iDictionary2.Value,
                             Dictionary2 = _dictionary2.Value
                         };
+
                         return instance;
                     }
 
@@ -473,6 +475,7 @@ namespace FluentBuilderGeneratorTests.DTO2
                     if (_iDictionaryIsSet) { instance.IDictionary = _iDictionary.Value; }
                     if (_iDictionary2IsSet) { instance.IDictionary2 = _iDictionary2.Value; }
                     if (_dictionary2IsSet) { instance.Dictionary2 = _dictionary2.Value; }
+
                     return instance;
                 });
             }

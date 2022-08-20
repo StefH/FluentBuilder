@@ -11,6 +11,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using FluentBuilderGeneratorTests.FluentBuilder;
 using FluentBuilderGeneratorTests.DTO;
 
@@ -54,11 +55,13 @@ namespace FluentBuilderGeneratorTests.DTO
                         {
                             T = _t.Value
                         };
+
                         return instance;
                     }
 
                     instance = new Thing();
                     if (_tIsSet) { instance.T = _t.Value; }
+
                     return instance;
                 });
             }

@@ -11,6 +11,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using FluentBuilderGeneratorTests.FluentBuilder;
 using FluentBuilderGeneratorTests.DTO;
 using System.Globalization;
@@ -221,6 +222,7 @@ namespace FluentBuilderGeneratorTests.DTO
                             StringNull = _stringNull.Value,
                             StringEmpty = _stringEmpty.Value
                         };
+
                         return instance;
                     }
 
@@ -236,6 +238,7 @@ namespace FluentBuilderGeneratorTests.DTO
                     if (_suppressNullableWarningExpressionIsSet) { instance.SuppressNullableWarningExpression = _suppressNullableWarningExpression.Value; }
                     if (_stringNullIsSet) { instance.StringNull = _stringNull.Value; }
                     if (_stringEmptyIsSet) { instance.StringEmpty = _stringEmpty.Value; }
+
                     return instance;
                 });
             }

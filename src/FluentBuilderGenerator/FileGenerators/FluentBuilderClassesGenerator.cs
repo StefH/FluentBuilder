@@ -24,7 +24,8 @@ internal partial class FluentBuilderClassesGenerator : IFilesGenerator
     {
         "System",
         "System.Collections",
-        "System.Collections.Generic"
+        "System.Collections.Generic",
+        "System.Reflection"
     };
 
     private static readonly FileDataType[] ExtraBuilders =
@@ -111,12 +112,12 @@ namespace {classSymbol.BuilderNamespace}
     {
         var className = classSymbol.BuilderClassName;
 
-        var properties = GetProperties(classSymbol, fluentData.HandleBaseClasses);
-
+        var (propertiesPublicSettable, propertiesPrivateSettable) = GetProperties(classSymbol, fluentData.HandleBaseClasses, fluentData.Accessibility);
+        
         var extraUsings = new List<string>();
 
         var sb = new StringBuilder();
-        foreach (var property in properties)
+        foreach (var property in propertiesPublicSettable.Union(propertiesPrivateSettable))
         {
             // Use "params" in case it's an Array, else just use type-T.
             var type = property.Type.GetFluentTypeKind() == FluentTypeKind.Array ? $"params {property.Type}" : property.Type.ToString();
@@ -256,7 +257,7 @@ namespace {classSymbol.BuilderNamespace}
             .AppendLine("        });");
     }
 
-    private static IReadOnlyList<IPropertySymbol> GetProperties(ClassSymbol classSymbol, bool handleBaseClasses)
+    private static (IReadOnlyList<IPropertySymbol> PublicSettable, IReadOnlyList<IPropertySymbol> PrivateSettable) GetProperties(ClassSymbol classSymbol, bool handleBaseClasses, FluentBuilderAccessibility accessibility)
     {
         var properties = classSymbol.NamedTypeSymbol.GetMembers().OfType<IPropertySymbol>()
             .Where(x => x.SetMethod is not null)
@@ -281,7 +282,11 @@ namespace {classSymbol.BuilderNamespace}
             }
         }
 
-        return properties;
+        var propertiesPublicSettable = properties.Where(property => property.IsPublicSettable()).ToArray();
+        var propertiesPrivateSettable = accessibility == FluentBuilderAccessibility.PublicAndPrivate ?
+            properties.Where(property => property.IsPrivateSettable()).ToArray() : Array.Empty<IPropertySymbol>();
+
+        return (propertiesPublicSettable, propertiesPrivateSettable);
     }
 
     private static string GenerateBuildMethod(FluentData fluentData, ClassSymbol classSymbol)
@@ -291,15 +296,15 @@ namespace {classSymbol.BuilderNamespace}
             throw new NotSupportedException($"Unable to generate a FluentBuilder for the class '{classSymbol.NamedTypeSymbol}' because no public parameterless constructor was defined.");
         }
 
-        var properties = GetProperties(classSymbol, fluentData.HandleBaseClasses);
-        // var propertiesInitOnly = properties.Where(property => property.SetMethod!.IsInitOnly).ToArray();
-        var propertiesSettable = properties.Where(property => property.IsSettable()).ToArray();
-
+        var (propertiesPublicSettable, propertiesPrivateSettable) = GetProperties(classSymbol, fluentData.HandleBaseClasses, fluentData.Accessibility);
         var className = classSymbol.NamedTypeSymbol.GenerateShortTypeName();
 
         var output = new StringBuilder();
 
-        // output.AppendLine(string.Join("\r\n", propertiesInitOnly.Select(property => $@"        private partial void Set{property.Name}({className} instance, {property.Type} value);")));
+        foreach (var property in propertiesPrivateSettable)
+        {
+            BuildPrivateSetMethod(output, className, property);
+        }
 
         output.AppendLine($@"        public override {className} Build(bool useObjectInitializer = true)
         {{
@@ -312,17 +317,20 @@ namespace {classSymbol.BuilderNamespace}
                     {{
                         instance = new {className}
                         {{");
-        output.AppendLine(string.Join(",\r\n", properties.Select(property => $@"                            {property.Name} = _{CamelCase(property.Name)}.Value")));
+        output.AppendLines(propertiesPublicSettable.Select(property => $@"                            {property.Name} = _{CamelCase(property.Name)}.Value"), ",");
         output.AppendLine("                        };");
 
-        // output.AppendLine(string.Join("\r\n", propertiesInitOnly.Select(property => $@"                        if (_{CamelCase(property.Name)}IsSet) {{ Set{property.Name}(instance, _{CamelCase(property.Name)}.Value); }}")));
+        output.AppendLines(propertiesPrivateSettable.Select(property => $@"                        if (_{CamelCase(property.Name)}IsSet) {{ Set{property.Name}(instance, _{CamelCase(property.Name)}.Value); }}"));
 
         output.AppendLine("                        return instance;");
         output.AppendLine("                    }");
         output.AppendLine($@"
                     instance = new {className}();");
-        output.AppendLine(string.Join("\r\n", propertiesSettable.Select(property => $@"                    if (_{CamelCase(property.Name)}IsSet) {{ instance.{property.Name} = _{CamelCase(property.Name)}.Value; }}")));
-        // output.AppendLine(string.Join("\r\n", propertiesInitOnly.Select(property => $@"                    if (_{CamelCase(property.Name)}IsSet) {{ Set{property.Name}(instance, _{CamelCase(property.Name)}.Value); }}")));
+
+        output.AppendLines(propertiesPublicSettable.Select(property => $@"                    if (_{CamelCase(property.Name)}IsSet) {{ instance.{property.Name} = _{CamelCase(property.Name)}.Value; }}"));
+
+        output.AppendLines(propertiesPrivateSettable.Select(property => $@"                    if (_{CamelCase(property.Name)}IsSet) {{ Set{property.Name}(instance, _{CamelCase(property.Name)}.Value); }}"));
+
         output.AppendLine($@"                    return instance;
                 }});
             }}
@@ -337,6 +345,15 @@ namespace {classSymbol.BuilderNamespace}
         return output.ToString();
     }
 
+    private static void BuildPrivateSetMethod(StringBuilder output, string className, IPropertySymbol property)
+    {
+        output.AppendLine($"        private void Set{property.Name}({className} instance, {property.Type} value)");
+        output.AppendLine("        {");
+        output.AppendLine($"            InstanceType.GetProperty(\"{property.Name}\")?.SetValue(instance, value);");
+        output.AppendLine("        }");
+        output.AppendLine();
+    }
+
     private IReadOnlyList<(ClassSymbol ClassSymbol, FluentData FluentData)> GetClassSymbols()
     {
         var classSymbols = new List<(ClassSymbol ClassSymbol, FluentData FluentData)>();
@@ -344,7 +361,7 @@ namespace {classSymbol.BuilderNamespace}
         {
             if (_context.TryGetNamedTypeSymbolByFullMetadataName(fluentDataItem, out var classSymbol))
             {
-                classSymbols.Add(new (classSymbol, fluentDataItem));
+                classSymbols.Add((classSymbol, fluentDataItem));
             }
         }
 

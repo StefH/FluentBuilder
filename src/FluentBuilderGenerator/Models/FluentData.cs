@@ -1,3 +1,5 @@
+using FluentBuilderGenerator.Types;
+
 namespace FluentBuilderGenerator.Models;
 
 internal struct FluentData
@@ -10,4 +12,5 @@ internal struct FluentData
     public string MetadataName { get; init; }
     public List<string> Usings { get; init; }
     public bool HandleBaseClasses { get; init; }
+    public FluentBuilderAccessibility Accessibility { get; init; }
 }
