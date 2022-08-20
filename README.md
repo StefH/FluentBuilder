@@ -43,6 +43,13 @@ public class User
 }
 ```
 
+#### AutoGenerateBuilder - attribute
+
+This attribute has 3 arguments:
+- `type` (Type) = The type for which to create the builder, see 'Define a class which needs to act as a builder'
+- `handleBaseClasses` (bool) = Handle also base-classes. Default value is `true`.
+- `accessibility` (FluentBuilderAccessibility) = Generate builder methods for `Public` or `PublicAndPrivate`. Default value when not provided is `Public`.
+
 ### Use FluentBuilder
 ``` c#
 using System;

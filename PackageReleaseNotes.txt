@@ -1,4 +1,6 @@
-# 0.5.1 (28 July 2022)
+# 0.6.0 (20 August 2022)
 - #46 Add support to exclude properties from base-classes + fixed default value if SuppressNullableWarningExpression
+- #47 Support Properties which have 'private set' [enhancement]
+- #40 Builder code should handle private setters
 
 The full release notes can be found here: https://github.com/StefH/FluentBuilder/blob/main/ReleaseNotes.md

@@ -1,5 +1,7 @@
-# 0.5.1 (28 July 2022)
+# 0.6.0 (20 August 2022)
 - [#46](https://github.com/StefH/FluentBuilder/pull/46) - Add support to exclude properties from base-classes + fixed default value if SuppressNullableWarningExpression contributed by [StefH](https://github.com/StefH)
+- [#47](https://github.com/StefH/FluentBuilder/pull/47) - Support Properties which have 'private set' [enhancement] contributed by [StefH](https://github.com/StefH)
+- [#40](https://github.com/StefH/FluentBuilder/issues/40) - Builder code should handle private setters
 
 # 0.5.0 (12 July 2022)
 - [#44](https://github.com/StefH/FluentBuilder/pull/44) - Adds an attribute called IgnoreProperty that tells the generator to skip the property [enhancement] contributed by [emorell96](https://github.com/emorell96)
