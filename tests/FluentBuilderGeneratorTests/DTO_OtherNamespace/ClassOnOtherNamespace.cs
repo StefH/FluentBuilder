@@ -1,4 +1,4 @@
-namespace Test.OtherNamespace;
+namespace AbcTest.OtherNamespace;
 
 public class ClassOnOtherNamespace
 {
