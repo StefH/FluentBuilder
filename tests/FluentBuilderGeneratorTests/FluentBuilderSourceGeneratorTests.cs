@@ -737,4 +737,42 @@ namespace FluentBuilderGeneratorTests.DTO
             builder.Text.Should().Be(File.ReadAllText($"../../../DTO2/{filename}"));
         }
     }
+
+    [Fact]
+    public void GenerateFiles_For2ClassesWithListBuilder_Should_GenerateCorrectFiles()
+    {
+        // Arrange
+        var pathOther = "./DTO_OtherNamespace/ClassOnOtherNamespace.cs";
+        var sourceFileOther = new SourceFile
+        {
+            Path = pathOther,
+            Text = File.ReadAllText(pathOther),
+            AttributeToAddToClass = "FluentBuilder.AutoGenerateBuilder"
+        };
+
+        var pathTest = "./DTO/Test.cs";
+        var sourceFileTest = new SourceFile
+        {
+            Path = pathTest,
+            Text = File.ReadAllText(pathTest),
+            AttributeToAddToClass = "FluentBuilder.AutoGenerateBuilder"
+        };
+        
+        // Act
+        var result = _sut.Execute(Namespace, new[] { sourceFileTest, sourceFileOther });
+
+        // Assert
+        result.Valid.Should().BeTrue();
+        result.Files.Should().HaveCount(11);
+
+        for (int i = 8; i < result.Files.Count; i++)
+        {
+            var builder = result.Files[i];
+
+            var filename = Path.GetFileName(builder.Path);
+
+            if (Write) File.WriteAllText($"../../../DTO/{filename}", builder.Text);
+            builder.Text.Should().Be(File.ReadAllText($"../../../DTO/{filename}"));
+        }
+    }
 }
