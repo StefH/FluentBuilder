@@ -1,4 +1,4 @@
-namespace FluentBuilderGeneratorTests.DTO_OtherNamespace;
+namespace Test.OtherNamespace;
 
 public class ClassOnOtherNamespace
 {

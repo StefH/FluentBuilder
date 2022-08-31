@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using FluentBuilderGeneratorTests.DTO_OtherNamespace;
+using Test.OtherNamespace;
 
 namespace FluentBuilderGeneratorTests.DTO;
 
