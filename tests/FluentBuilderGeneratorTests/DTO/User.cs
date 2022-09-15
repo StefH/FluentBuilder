@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace FluentBuilderGeneratorTests.DTO
 {
@@ -11,5 +12,7 @@ namespace FluentBuilderGeneratorTests.DTO
         public DateTime? QuitDate { get; set; }
 
         public DummyClass TestDummyClass { get; set; }
+
+        public List<Option> Options { get; set; }
     }
 }

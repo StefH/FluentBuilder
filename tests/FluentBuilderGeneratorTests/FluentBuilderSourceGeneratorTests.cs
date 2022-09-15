@@ -739,6 +739,53 @@ namespace FluentBuilderGeneratorTests.DTO
     }
 
     [Fact]
+    public void GenerateFiles_ForFluentBuilders_Should_GenerateCorrectFiles()
+    {
+        // Arrange
+        var pathUser = "./DTO2/MyUserBuilder.cs";
+        var sourceFileUser = new SourceFile
+        {
+            Path = pathUser,
+            Text = File.ReadAllText(pathUser),
+            AttributeToAddToClass = new ExtraAttribute
+            {
+                Name = "FluentBuilder.AutoGenerateBuilder",
+                ArgumentList = "typeof(FluentBuilderGeneratorTests.DTO.User)"
+            }
+        };
+
+        var pathOption = "./DTO2/MyOptionBuilder.cs";
+        var sourceFileOption = new SourceFile
+        {
+            Path = pathOption,
+            Text = File.ReadAllText(pathOption),
+            AttributeToAddToClass = new ExtraAttribute
+            {
+                Name = "FluentBuilder.AutoGenerateBuilder",
+                ArgumentList = "typeof(FluentBuilderGeneratorTests.DTO.Option)"
+            }
+        };
+
+        // Act
+        var result = _sut.Execute(Namespace, new[] { sourceFileUser, sourceFileOption });
+
+        // Assert
+        result.Valid.Should().BeTrue();
+        result.Files.Should().HaveCount(11);
+
+        for (int i = 8; i < 11; i++)
+        {
+            var builder = result.Files[i];
+            //builder.Path.Should().EndWith(x.fileName);
+
+            var filename = Path.GetFileName(builder.Path);
+
+            if (Write) File.WriteAllText($"../../../DTO2/{filename}", builder.Text);
+            builder.Text.Should().Be(File.ReadAllText($"../../../DTO2/{filename}"));
+        }
+    }
+
+    [Fact]
     public void GenerateFiles_For2ClassesWithListBuilder_Should_GenerateCorrectFiles()
     {
         // Arrange
