@@ -113,7 +113,7 @@ namespace {classSymbol.BuilderNamespace}
         var className = classSymbol.BuilderClassName;
 
         var (propertiesPublicSettable, propertiesPrivateSettable) = GetProperties(classSymbol, fluentData.HandleBaseClasses, fluentData.Accessibility);
-        
+
         var extraUsings = new List<string>();
 
         var sb = new StringBuilder();
@@ -222,19 +222,33 @@ namespace {classSymbol.BuilderNamespace}
         string fullBuilderName;
         if (existingClassSymbol != null && typeSymbol != null)
         {
-            var shortBuilderName = $"{kind}{typeSymbol.GenerateShortTypeName(true)}";
-            fullBuilderName = $"{typeSymbol.ContainingNamespace}.{shortBuilderName}";
-            if (allClassSymbols.All(cs => cs.NamedTypeSymbol.Name != shortBuilderName))
+            if (existingClassSymbol.FluentData.BuilderType == BuilderType.Custom)
             {
-                var fileDataType = kind.ToFileDataType();
-                allClassSymbols.Add(new ClassSymbol
+                fullBuilderName = existingClassSymbol.FluentData.FullBuilderClassName;
+            }
+            else
+            {
+                var shortBuilderName = $"{kind}{typeSymbol.GenerateShortTypeName(true)}";
+                fullBuilderName = $"{typeSymbol.ContainingNamespace}.{shortBuilderName}";
+                if (allClassSymbols.All(cs => cs.NamedTypeSymbol.Name != shortBuilderName))
                 {
-                    Type = fileDataType,
-                    BuilderNamespace = existingClassSymbol.BuilderNamespace,
-                    BuilderClassName = shortBuilderName,
-                    FullBuilderClassName = fullBuilderName,
-                    NamedTypeSymbol = typeSymbol
-                });
+                    var fileDataType = kind.ToFileDataType();
+                    allClassSymbols.Add(new ClassSymbol
+                    {
+                        Type = fileDataType,
+                        FluentData = new FluentData
+                        {
+                            BuilderType = BuilderType.Extra,
+                            Namespace = existingClassSymbol.BuilderNamespace,
+                            ShortBuilderClassName = shortBuilderName,
+                            FullBuilderClassName = fullBuilderName
+                        },
+                        //BuilderNamespace = existingClassSymbol.BuilderNamespace,
+                        //BuilderClassName = shortBuilderName,
+                        //FullBuilderClassName = fullBuilderName,
+                        NamedTypeSymbol = typeSymbol
+                    });
+                }
             }
         }
         else

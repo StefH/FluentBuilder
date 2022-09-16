@@ -771,9 +771,9 @@ namespace FluentBuilderGeneratorTests.DTO
 
         // Assert
         result.Valid.Should().BeTrue();
-        result.Files.Should().HaveCount(11);
+        result.Files.Should().HaveCount(10);
 
-        for (int i = 8; i < 11; i++)
+        for (int i = 8; i < result.Files.Count; i++)
         {
             var builder = result.Files[i];
             //builder.Path.Should().EndWith(x.fileName);

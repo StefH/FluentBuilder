@@ -2,6 +2,7 @@
 
 using FluentBuilderGenerator.Extensions;
 using FluentBuilderGenerator.Models;
+using FluentBuilderGenerator.Types;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
@@ -55,12 +56,12 @@ internal class AutoGenerateBuilderSyntaxReceiver : IAutoGenerateBuilderSyntaxRec
 
         var argumentList = AttributeArgumentListParser.ParseAttributeArguments(attributeList.Attributes.FirstOrDefault()?.ArgumentList);
 
-        if (argumentList.RawTypeName != null) // The class which needs to be processed by the Builder is provided as type
+        if (argumentList.RawTypeName != null) // The class which needs to be processed by the CustomBuilder is provided as type
         {
             var modifiers = classDeclarationSyntax.Modifiers.Select(m => m.ToString()).ToArray();
             if (!(modifiers.Contains("public") && modifiers.Contains("partial")))
             {
-                // ClassDeclarationSyntax should be "public" + "partial"
+                // ClassDeclarationSyntax should be "public" & "partial"
                 return false;
             }
 
@@ -74,7 +75,8 @@ internal class AutoGenerateBuilderSyntaxReceiver : IAutoGenerateBuilderSyntaxRec
                 MetadataName = ConvertTypeName(argumentList.RawTypeName),
                 Usings = usings,
                 HandleBaseClasses = argumentList.HandleBaseClasses,
-                Accessibility = argumentList.Accessibility
+                Accessibility = argumentList.Accessibility,
+                BuilderType = BuilderType.Custom
             };
 
             return true;
@@ -94,7 +96,8 @@ internal class AutoGenerateBuilderSyntaxReceiver : IAutoGenerateBuilderSyntaxRec
             MetadataName = metadataName,
             Usings = usings,
             HandleBaseClasses = argumentList.HandleBaseClasses,
-            Accessibility = argumentList.Accessibility
+            Accessibility = argumentList.Accessibility,
+            BuilderType = BuilderType.Generated
         };
 
         return true;

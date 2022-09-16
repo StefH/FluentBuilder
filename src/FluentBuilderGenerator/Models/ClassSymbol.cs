@@ -6,8 +6,14 @@ namespace FluentBuilderGenerator.Models;
 internal class ClassSymbol
 {
     public FileDataType Type { get; init; }
-    public string BuilderNamespace { get; init; } = null!;
-    public string BuilderClassName { get; init; } = null!;
-    public string FullBuilderClassName { get; init; } = null!;
+
+    public FluentData FluentData { get; init; }
+
+    public string BuilderNamespace => FluentData.Namespace;
+
+    public string BuilderClassName => FluentData.ShortBuilderClassName;
+
+    public string FullBuilderClassName => FluentData.FullBuilderClassName;
+
     public INamedTypeSymbol NamedTypeSymbol { get; init; } = null!;
 }
