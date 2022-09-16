@@ -147,13 +147,13 @@ public class FluentBuilderSourceGeneratorTests
 
         File.WriteAllText($"../../../DTO/{filename}", fileResult.Text);
 
-        var instance = new ClassWithPrivateSetter1Builder()
-            .WithValue1(100)
-            .WithValue2(42)
-            .Build();
+        //var instance = new ClassWithPrivateSetter1Builder()
+        //    .WithValue1(100)
+        //    .WithValue2(42)
+        //    .Build();
 
-        instance.Value1.Should().Be(100);
-        instance.Value2.Should().Be(42);
+        //instance.Value1.Should().Be(100);
+        //instance.Value2.Should().Be(42);
     }
 
     [Fact]
@@ -186,12 +186,12 @@ public class FluentBuilderSourceGeneratorTests
 
         File.WriteAllText($"../../../DTO/{filename}", fileResult.Text);
 
-        var instance = new ClassWithPrivateSetter2Builder()
-            .WithValue2(42)
-            .Build();
+        //var instance = new ClassWithPrivateSetter2Builder()
+        //    .WithValue2(42)
+        //    .Build();
 
-        instance.Value1.Should().Be(default);
-        instance.Value2.Should().Be(42);
+        //instance.Value1.Should().Be(default);
+        //instance.Value2.Should().Be(42);
     }
 
     [Fact]
@@ -699,43 +699,6 @@ namespace FluentBuilderGeneratorTests.DTO
 
         //var b = new ClassWithCultureInfoBuilder();
         //var c = b.Build();
-
-        //int x = 0;
-    }
-
-    [Fact]
-    public void GenerateFiles_ForFluentBuilder_Should_GenerateCorrectFiles()
-    {
-        // Arrange
-        var path = "./DTO2/MyAddressBuilder.cs";
-        var sourceFile = new SourceFile
-        {
-            Path = path,
-            Text = File.ReadAllText(path),
-            AttributeToAddToClass = new ExtraAttribute
-            {
-                Name = "FluentBuilder.AutoGenerateBuilder",
-                ArgumentList = "typeof(FluentBuilderGeneratorTests.DTO.Address)"
-            }
-        };
-
-        // Act
-        var result = _sut.Execute(Namespace, new[] { sourceFile });
-
-        // Assert
-        result.Valid.Should().BeTrue();
-        result.Files.Should().HaveCount(13);
-
-        for (int i = 8; i < 13; i++)
-        {
-            var builder = result.Files[i];
-            //builder.Path.Should().EndWith(x.fileName);
-
-            var filename = Path.GetFileName(builder.Path);
-
-            if (Write) File.WriteAllText($"../../../DTO2/{filename}", builder.Text);
-            builder.Text.Should().Be(File.ReadAllText($"../../../DTO2/{filename}"));
-        }
     }
 
     [Fact]
