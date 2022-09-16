@@ -222,11 +222,11 @@ namespace {classSymbol.BuilderNamespace}
         string fullBuilderName;
         if (existingClassSymbol != null && typeSymbol != null)
         {
-            if (existingClassSymbol.FluentData.BuilderType == BuilderType.Custom)
-            {
-                fullBuilderName = existingClassSymbol.FluentData.FullBuilderClassName;
-            }
-            else
+            //if (existingClassSymbol.FluentData.BuilderType == BuilderType.Custom)
+            //{
+            //    fullBuilderName = existingClassSymbol.FluentData.FullBuilderClassName;
+            //}
+            //else
             {
                 var shortBuilderName = $"{kind}{typeSymbol.GenerateShortTypeName(true)}";
                 fullBuilderName = $"{typeSymbol.ContainingNamespace}.{shortBuilderName}";
@@ -239,11 +239,11 @@ namespace {classSymbol.BuilderNamespace}
                         FluentData = new FluentData
                         {
                             BuilderType = BuilderType.Extra,
-                            Namespace = existingClassSymbol.BuilderNamespace,
+                            Namespace = typeSymbol.ContainingNamespace.ToString(),
                             ShortBuilderClassName = shortBuilderName,
                             FullBuilderClassName = fullBuilderName
                         },
-                        //BuilderNamespace = existingClassSymbol.BuilderNamespace,
+                        //BuilderNamespace = typeSymbol.ContainingNamespace.ToString(),
                         //BuilderClassName = shortBuilderName,
                         //FullBuilderClassName = fullBuilderName,
                         NamedTypeSymbol = typeSymbol
