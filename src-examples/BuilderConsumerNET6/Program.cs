@@ -1,4 +1,4 @@
-using System;
+using System.Text.Json;
 
 namespace BuilderConsumerNET6;
 
@@ -14,10 +14,10 @@ internal class Program
             .WithId(42)
             .WithFirstName("Test")
             .WithLastName("User")
-            .WithOptions(ob => ob.Build())
+            .WithOptions(optionsBuilder => optionsBuilder.Add(myOptionBuilder => myOptionBuilder.WithName("option 1")))
             .Build();
 
-        Console.WriteLine($"{userA.FirstName} {userA.LastName} {userA.Id}");
+        Console.WriteLine(JsonSerializer.Serialize(userA, new JsonSerializerOptions { WriteIndented = true }));
 
         var userB = new MyUserBuilder()
             .WithId(42)
