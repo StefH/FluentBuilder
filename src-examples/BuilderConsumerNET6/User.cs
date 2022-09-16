@@ -1,8 +1,5 @@
-using FluentBuilder;
-
 namespace BuilderConsumerNET6;
 
-[AutoGenerateBuilder]
 public class User : BaseClass
 {
     public string FirstName { get; set; } = null!;
@@ -18,4 +15,6 @@ public class User : BaseClass
     public int? NullableInt { get; set; }
 
     public char? NullableChar { get; set; }
+
+    public List<Option> Options { get; set; }
 }

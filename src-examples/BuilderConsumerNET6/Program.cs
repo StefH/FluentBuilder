@@ -10,15 +10,16 @@ internal class Program
             .WithValue2(6)
             .Build();
 
-        var userA = new UserBuilder()
+        var userA = new MyUserBuilder()
             .WithId(42)
             .WithFirstName("Test")
             .WithLastName("User")
+            .WithOptions(ob => ob.Build())
             .Build();
 
         Console.WriteLine($"{userA.FirstName} {userA.LastName} {userA.Id}");
 
-        var userB = new UserBuilder()
+        var userB = new MyUserBuilder()
             .WithId(42)
             .Build();
 
