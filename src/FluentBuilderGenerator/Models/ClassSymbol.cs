@@ -16,4 +16,6 @@ internal class ClassSymbol
     public string FullBuilderClassName => FluentData.FullBuilderClassName;
 
     public INamedTypeSymbol NamedTypeSymbol { get; init; } = null!;
+
+    public string ItemBuilderName { get; init; } = string.Empty;
 }
