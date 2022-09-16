@@ -14,7 +14,7 @@ using System.Collections.Generic;
 using FluentBuilderGeneratorTests.FluentBuilder;
 using FluentBuilderGeneratorTests.DTO;
 
-namespace FluentBuilderGeneratorTests.DTO2
+namespace FluentBuilderGeneratorTests.DTO
 {
     public partial class IListOptionBuilder : Builder<IList<FluentBuilderGeneratorTests.DTO.Option>>
     {
@@ -25,9 +25,9 @@ namespace FluentBuilderGeneratorTests.DTO2
             _list.Value.Add(func());
             return this;
         }
-        public IListOptionBuilder Add(Action<MyOptionBuilder> action, bool useObjectInitializer = true)
+        public IListOptionBuilder Add(Action<FluentBuilderGeneratorTests.DTO2.MyOptionBuilder> action, bool useObjectInitializer = true)
         {
-            var builder = new MyOptionBuilder();
+            var builder = new FluentBuilderGeneratorTests.DTO2.MyOptionBuilder();
             action(builder);
             Add(() => builder.Build(useObjectInitializer));
             return this;

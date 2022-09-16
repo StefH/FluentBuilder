@@ -17,5 +17,5 @@ internal class ClassSymbol
 
     public INamedTypeSymbol NamedTypeSymbol { get; init; } = null!;
 
-    public string ItemBuilderName { get; init; } = string.Empty;
+    public string ItemBuilderFullName { get; init; } = string.Empty;
 }

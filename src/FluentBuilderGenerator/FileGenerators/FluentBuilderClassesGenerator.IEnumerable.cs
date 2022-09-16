@@ -44,9 +44,10 @@ namespace {classSymbol.BuilderNamespace}
     {
         var className = classSymbol.BuilderClassName;
         var itemClassSymbol = classSymbol.NamedTypeSymbol;
+        var itemBuilderFullName = classSymbol.ItemBuilderFullName;
 
         var sb = new StringBuilder();
-        sb.AppendLine($"        public {className} Add({itemClassSymbol.Name} item) => Add(() => item);");
+        sb.AppendLine($"        public {className} Add({classSymbol.NamedTypeSymbol.Name} item) => Add(() => item);");
 
         sb.AppendLine($"        public {className} Add(Func<{itemClassSymbol.Name}> func)");
         sb.AppendLine("        {");
@@ -54,9 +55,9 @@ namespace {classSymbol.BuilderNamespace}
         sb.AppendLine("            return this;");
         sb.AppendLine("        }");
 
-        sb.AppendLine($"        public {className} Add(Action<{classSymbol.ItemBuilderName}> action, bool useObjectInitializer = true)");
+        sb.AppendLine($"        public {className} Add(Action<{itemBuilderFullName}> action, bool useObjectInitializer = true)");
         sb.AppendLine("        {");
-        sb.AppendLine($"            var builder = new {classSymbol.ItemBuilderName}();");
+        sb.AppendLine($"            var builder = new {itemBuilderFullName}();");
         sb.AppendLine("            action(builder);");
         sb.AppendLine("            Add(() => builder.Build(useObjectInitializer));");
         sb.AppendLine("            return this;");

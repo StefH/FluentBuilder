@@ -227,9 +227,17 @@ namespace {classSymbol.BuilderNamespace}
 
             if (allClassSymbols.All(cs => cs.NamedTypeSymbol.Name != shortBuilderName))
             {
-                var itemBuilderName = existingClassSymbol.FluentData.BuilderType == BuilderType.Generated ?
-                    existingClassSymbol.FluentData.ShortTypeName :
-                    $"{typeSymbol.GenerateShortTypeName(true)}";
+                string itemBuilderFullName;
+                //string @namespace;
+
+                if (existingClassSymbol.FluentData.BuilderType == BuilderType.Custom)
+                {
+                    itemBuilderFullName = existingClassSymbol.FluentData.FullBuilderClassName;
+                }
+                else
+                {
+                    itemBuilderFullName = $"{typeSymbol.GenerateFullTypeName(true)}";
+                }
 
                 var fileDataType = kind.ToFileDataType();
                 allClassSymbols.Add(new ClassSymbol
@@ -246,7 +254,7 @@ namespace {classSymbol.BuilderNamespace}
                     //BuilderClassName = shortBuilderName,
                     //FullBuilderClassName = fullBuilderName,
                     NamedTypeSymbol = typeSymbol,
-                    ItemBuilderName = itemBuilderName
+                    ItemBuilderFullName = itemBuilderFullName
                 });
             }
         }

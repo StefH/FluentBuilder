@@ -92,9 +92,9 @@ namespace FluentBuilderGeneratorTests.DTO2
             _optionsIsSet = true;
             return this;
         }
-        public MyUserBuilder WithOptions(Action<FluentBuilderGeneratorTests.DTO2.IListOptionBuilder> action, bool useObjectInitializer = true) => WithOptions(() =>
+        public MyUserBuilder WithOptions(Action<FluentBuilderGeneratorTests.DTO.IListOptionBuilder> action, bool useObjectInitializer = true) => WithOptions(() =>
         {
-            var builder = new FluentBuilderGeneratorTests.DTO2.IListOptionBuilder();
+            var builder = new FluentBuilderGeneratorTests.DTO.IListOptionBuilder();
             action(builder);
             return (System.Collections.Generic.List<FluentBuilderGeneratorTests.DTO.Option>) builder.Build(useObjectInitializer);
         });
