@@ -113,7 +113,7 @@ namespace {classSymbol.BuilderNamespace}
         var className = classSymbol.BuilderClassName;
 
         var (propertiesPublicSettable, propertiesPrivateSettable) = GetProperties(classSymbol, fluentData.HandleBaseClasses, fluentData.Accessibility);
-        
+
         var extraUsings = new List<string>();
 
         var sb = new StringBuilder();
@@ -224,16 +224,37 @@ namespace {classSymbol.BuilderNamespace}
         {
             var shortBuilderName = $"{kind}{typeSymbol.GenerateShortTypeName(true)}";
             fullBuilderName = $"{typeSymbol.ContainingNamespace}.{shortBuilderName}";
+
             if (allClassSymbols.All(cs => cs.NamedTypeSymbol.Name != shortBuilderName))
             {
+                string itemBuilderFullName;
+                //string @namespace;
+
+                if (existingClassSymbol.FluentData.BuilderType == BuilderType.Custom)
+                {
+                    itemBuilderFullName = existingClassSymbol.FluentData.FullBuilderClassName;
+                }
+                else
+                {
+                    itemBuilderFullName = $"{typeSymbol.GenerateFullTypeName(true)}";
+                }
+
                 var fileDataType = kind.ToFileDataType();
                 allClassSymbols.Add(new ClassSymbol
                 {
                     Type = fileDataType,
-                    BuilderNamespace = existingClassSymbol.BuilderNamespace,
-                    BuilderClassName = shortBuilderName,
-                    FullBuilderClassName = fullBuilderName,
-                    NamedTypeSymbol = typeSymbol
+                    FluentData = new FluentData
+                    {
+                        BuilderType = BuilderType.Extra,
+                        Namespace = typeSymbol.ContainingNamespace.ToString(),
+                        ShortBuilderClassName = shortBuilderName,
+                        FullBuilderClassName = fullBuilderName
+                    },
+                    //BuilderNamespace = typeSymbol.ContainingNamespace.ToString(),
+                    //BuilderClassName = shortBuilderName,
+                    //FullBuilderClassName = fullBuilderName,
+                    NamedTypeSymbol = typeSymbol,
+                    ItemBuilderFullName = itemBuilderFullName
                 });
             }
         }

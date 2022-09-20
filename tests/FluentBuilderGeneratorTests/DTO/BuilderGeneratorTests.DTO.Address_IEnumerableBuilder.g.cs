@@ -25,9 +25,9 @@ namespace FluentBuilderGeneratorTests.DTO
             _list.Value.Add(func());
             return this;
         }
-        public IEnumerableAddressBuilder Add(Action<AddressBuilder> action, bool useObjectInitializer = true)
+        public IEnumerableAddressBuilder Add(Action<FluentBuilderGeneratorTests.DTO.AddressBuilder> action, bool useObjectInitializer = true)
         {
-            var builder = new AddressBuilder();
+            var builder = new FluentBuilderGeneratorTests.DTO.AddressBuilder();
             action(builder);
             Add(() => builder.Build(useObjectInitializer));
             return this;

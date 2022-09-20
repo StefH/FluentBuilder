@@ -68,6 +68,7 @@ public class FluentBuilderClassesGeneratorTests
 
         var fluentData = new FluentData
         {
+            BuilderType = BuilderType.Generated,
             Namespace = "FluentBuilderGeneratorTests.DTO",
             ShortBuilderClassName = "UserBuilder",
             FullBuilderClassName = "FluentBuilderGeneratorTests.DTO.UserBuilder",
@@ -124,9 +125,10 @@ public class FluentBuilderClassesGeneratorTests
         var classSymbol = new ClassSymbol
         {
             Type = FileDataType.Builder,
-            BuilderNamespace = fluentData.Namespace,
-            BuilderClassName = fluentData.ShortBuilderClassName,
-            FullBuilderClassName = fluentData.FullBuilderClassName,
+            FluentData = fluentData,
+            //BuilderNamespace = fluentData.Namespace,
+            //BuilderClassName = fluentData.ShortBuilderClassName,
+            //FullBuilderClassName = fluentData.FullBuilderClassName,
             NamedTypeSymbol = classSymbolMock.Object
         };
         _contextMock.Setup(c => c.TryGetNamedTypeSymbolByFullMetadataName(It.IsAny<FluentData>(), out classSymbol)).Returns(true);

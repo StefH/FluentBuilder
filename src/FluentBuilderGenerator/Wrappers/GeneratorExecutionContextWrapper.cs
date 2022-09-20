@@ -44,9 +44,10 @@ internal class GeneratorExecutionContextWrapper : IGeneratorExecutionContextWrap
             classSymbol = new ClassSymbol
             {
                 Type = FileDataType.Builder,
-                BuilderNamespace = fluentDataItem.Namespace,
-                BuilderClassName = fluentDataItem.ShortBuilderClassName,
-                FullBuilderClassName = fluentDataItem.FullBuilderClassName,
+                FluentData = fluentDataItem,
+                //BuilderNamespace = fluentDataItem.Namespace,
+                //BuilderClassName = fluentDataItem.ShortBuilderClassName,
+                //FullBuilderClassName = fluentDataItem.FullBuilderClassName,
                 NamedTypeSymbol = symbol
             };
             return true;
@@ -60,9 +61,10 @@ internal class GeneratorExecutionContextWrapper : IGeneratorExecutionContextWrap
                 classSymbol = new ClassSymbol
                 {
                     Type = FileDataType.Builder,
-                    BuilderNamespace = fluentDataItem.Namespace,
-                    BuilderClassName = fluentDataItem.ShortBuilderClassName,
-                    FullBuilderClassName = fluentDataItem.FullBuilderClassName,
+                    FluentData = fluentDataItem,
+                    //BuilderNamespace = fluentDataItem.Namespace,
+                    //BuilderClassName = fluentDataItem.ShortBuilderClassName,
+                    //FullBuilderClassName = fluentDataItem.FullBuilderClassName,
                     NamedTypeSymbol = symbol
                 };
                 return true;

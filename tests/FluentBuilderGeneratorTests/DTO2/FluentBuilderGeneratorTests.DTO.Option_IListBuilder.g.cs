@@ -14,31 +14,31 @@ using System.Collections.Generic;
 using FluentBuilderGeneratorTests.FluentBuilder;
 using FluentBuilderGeneratorTests.DTO;
 
-namespace FluentBuilderGeneratorTests.DTO2
+namespace FluentBuilderGeneratorTests.DTO
 {
-    public partial class IEnumerableAddressBuilder : Builder<IEnumerable<FluentBuilderGeneratorTests.DTO.Address>>
+    public partial class IListOptionBuilder : Builder<IList<FluentBuilderGeneratorTests.DTO.Option>>
     {
-        private readonly Lazy<List<FluentBuilderGeneratorTests.DTO.Address>> _list = new Lazy<List<FluentBuilderGeneratorTests.DTO.Address>>(() => new List<FluentBuilderGeneratorTests.DTO.Address>());
-        public IEnumerableAddressBuilder Add(Address item) => Add(() => item);
-        public IEnumerableAddressBuilder Add(Func<Address> func)
+        private readonly Lazy<List<FluentBuilderGeneratorTests.DTO.Option>> _list = new Lazy<List<FluentBuilderGeneratorTests.DTO.Option>>(() => new List<FluentBuilderGeneratorTests.DTO.Option>());
+        public IListOptionBuilder Add(Option item) => Add(() => item);
+        public IListOptionBuilder Add(Func<Option> func)
         {
             _list.Value.Add(func());
             return this;
         }
-        public IEnumerableAddressBuilder Add(Action<AddressBuilder> action, bool useObjectInitializer = true)
+        public IListOptionBuilder Add(Action<FluentBuilderGeneratorTests.DTO2.MyOptionBuilder> action, bool useObjectInitializer = true)
         {
-            var builder = new AddressBuilder();
+            var builder = new FluentBuilderGeneratorTests.DTO2.MyOptionBuilder();
             action(builder);
             Add(() => builder.Build(useObjectInitializer));
             return this;
         }
 
 
-        public override IEnumerable<FluentBuilderGeneratorTests.DTO.Address> Build(bool useObjectInitializer = true)
+        public override IList<FluentBuilderGeneratorTests.DTO.Option> Build(bool useObjectInitializer = true)
         {
             if (Object?.IsValueCreated != true)
             {
-                Object = new Lazy<IEnumerable<FluentBuilderGeneratorTests.DTO.Address>>(() =>
+                Object = new Lazy<IList<FluentBuilderGeneratorTests.DTO.Option>>(() =>
                 {
                     return _list.Value;
                 });

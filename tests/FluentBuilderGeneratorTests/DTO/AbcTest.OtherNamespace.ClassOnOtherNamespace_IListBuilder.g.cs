@@ -12,33 +12,33 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using FluentBuilderGeneratorTests.FluentBuilder;
-using FluentBuilderGeneratorTests.DTO;
+using AbcTest.OtherNamespace;
 
-namespace FluentBuilderGeneratorTests.DTO2
+namespace AbcTest.OtherNamespace
 {
-    public partial class IListAddressBuilder : Builder<IList<FluentBuilderGeneratorTests.DTO.Address>>
+    public partial class IListClassOnOtherNamespaceBuilder : Builder<IList<AbcTest.OtherNamespace.ClassOnOtherNamespace>>
     {
-        private readonly Lazy<List<FluentBuilderGeneratorTests.DTO.Address>> _list = new Lazy<List<FluentBuilderGeneratorTests.DTO.Address>>(() => new List<FluentBuilderGeneratorTests.DTO.Address>());
-        public IListAddressBuilder Add(Address item) => Add(() => item);
-        public IListAddressBuilder Add(Func<Address> func)
+        private readonly Lazy<List<AbcTest.OtherNamespace.ClassOnOtherNamespace>> _list = new Lazy<List<AbcTest.OtherNamespace.ClassOnOtherNamespace>>(() => new List<AbcTest.OtherNamespace.ClassOnOtherNamespace>());
+        public IListClassOnOtherNamespaceBuilder Add(ClassOnOtherNamespace item) => Add(() => item);
+        public IListClassOnOtherNamespaceBuilder Add(Func<ClassOnOtherNamespace> func)
         {
             _list.Value.Add(func());
             return this;
         }
-        public IListAddressBuilder Add(Action<AddressBuilder> action, bool useObjectInitializer = true)
+        public IListClassOnOtherNamespaceBuilder Add(Action<AbcTest.OtherNamespace.ClassOnOtherNamespaceBuilder> action, bool useObjectInitializer = true)
         {
-            var builder = new AddressBuilder();
+            var builder = new AbcTest.OtherNamespace.ClassOnOtherNamespaceBuilder();
             action(builder);
             Add(() => builder.Build(useObjectInitializer));
             return this;
         }
 
 
-        public override IList<FluentBuilderGeneratorTests.DTO.Address> Build(bool useObjectInitializer = true)
+        public override IList<AbcTest.OtherNamespace.ClassOnOtherNamespace> Build(bool useObjectInitializer = true)
         {
             if (Object?.IsValueCreated != true)
             {
-                Object = new Lazy<IList<FluentBuilderGeneratorTests.DTO.Address>>(() =>
+                Object = new Lazy<IList<AbcTest.OtherNamespace.ClassOnOtherNamespace>>(() =>
                 {
                     return _list.Value;
                 });

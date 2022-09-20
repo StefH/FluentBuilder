@@ -1,8 +1,6 @@
 using System.Text;
-using FluentBuilderGenerator.Extensions;
 using FluentBuilderGenerator.Helpers;
 using FluentBuilderGenerator.Models;
-using Microsoft.CodeAnalysis;
 
 namespace FluentBuilderGenerator.FileGenerators;
 
@@ -34,7 +32,7 @@ namespace {classSymbol.BuilderNamespace}
     public partial class {classSymbol.BuilderClassName} : Builder<{t}>
     {{
         private readonly Lazy<List<{type}>> _list = new Lazy<List<{type}>>(() => new List<{type}>());
-{GenerateAddMethodsForIEnumerableBuilder(classSymbol.BuilderClassName, classSymbol.NamedTypeSymbol)}
+{GenerateAddMethodsForIEnumerableBuilder(classSymbol)}
 
 {GenerateBuildMethodForIEnumerableBuilder(classSymbol)}
     }}
@@ -42,12 +40,14 @@ namespace {classSymbol.BuilderNamespace}
 {(_context.SupportsNullable ? "#nullable disable" : string.Empty)}";
     }
 
-    private static StringBuilder GenerateAddMethodsForIEnumerableBuilder(string className, INamedTypeSymbol itemClassSymbol)
+    private static StringBuilder GenerateAddMethodsForIEnumerableBuilder(ClassSymbol classSymbol)
     {
-        var itemBuilderName = $"{itemClassSymbol.GenerateShortTypeName(true)}";
+        var className = classSymbol.BuilderClassName;
+        var itemClassSymbol = classSymbol.NamedTypeSymbol;
+        var itemBuilderFullName = classSymbol.ItemBuilderFullName;
 
         var sb = new StringBuilder();
-        sb.AppendLine($"        public {className} Add({itemClassSymbol.Name} item) => Add(() => item);");
+        sb.AppendLine($"        public {className} Add({classSymbol.NamedTypeSymbol.Name} item) => Add(() => item);");
 
         sb.AppendLine($"        public {className} Add(Func<{itemClassSymbol.Name}> func)");
         sb.AppendLine("        {");
@@ -55,9 +55,9 @@ namespace {classSymbol.BuilderNamespace}
         sb.AppendLine("            return this;");
         sb.AppendLine("        }");
 
-        sb.AppendLine($"        public {className} Add(Action<{itemBuilderName}> action, bool useObjectInitializer = true)");
+        sb.AppendLine($"        public {className} Add(Action<{itemBuilderFullName}> action, bool useObjectInitializer = true)");
         sb.AppendLine("        {");
-        sb.AppendLine($"            var builder = new {itemBuilderName}();");
+        sb.AppendLine($"            var builder = new {itemBuilderFullName}();");
         sb.AppendLine("            action(builder);");
         sb.AppendLine("            Add(() => builder.Build(useObjectInitializer));");
         sb.AppendLine("            return this;");
