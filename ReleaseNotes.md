@@ -1,3 +1,7 @@
+# 0.7.0 (20 September 2022)
+- [#49](https://github.com/StefH/FluentBuilder/pull/49) - Fix IListBuilder namespace [bug] contributed by [StefH](https://github.com/StefH)
+- [#48](https://github.com/StefH/FluentBuilder/issues/48) - Child builders for properties not generating correct code
+
 # 0.6.0 (20 August 2022)
 - [#46](https://github.com/StefH/FluentBuilder/pull/46) - Add support to exclude properties from base-classes + fixed default value if SuppressNullableWarningExpression contributed by [StefH](https://github.com/StefH)
 - [#47](https://github.com/StefH/FluentBuilder/pull/47) - Support Properties which have 'private set' [enhancement] contributed by [StefH](https://github.com/StefH)
