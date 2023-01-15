@@ -1,14 +1,19 @@
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using CSharp.SourceGenerators.Extensions;
 using CSharp.SourceGenerators.Extensions.Models;
 using FluentAssertions;
 using FluentBuilderGenerator;
 using FluentBuilderGeneratorTests.DTO;
+using VerifyTests;
+using VerifyXunit;
 using Xunit;
 
 namespace FluentBuilderGeneratorTests;
 
+[UsesVerify]
 public class FluentBuilderSourceGeneratorTests
 {
     private const string Namespace = "FluentBuilderGeneratorTests";
@@ -22,8 +27,12 @@ public class FluentBuilderSourceGeneratorTests
         _sut = new FluentBuilderSourceGenerator();
     }
 
+    [ModuleInitializer]
+    public static void ModuleInitializer() =>
+        VerifySourceGenerators.Enable();
+
     [Fact]
-    public void GenerateFiles_ForAClassWithoutAPublicConstructor_Should_Create_ErrorFile()
+    public Task GenerateFiles_ForAClassWithoutAPublicConstructor_Should_Create_ErrorFile()
     {
         // Arrange
         var path = "./DTO2/MyAppDomainBuilder.cs";
@@ -44,6 +53,10 @@ public class FluentBuilderSourceGeneratorTests
         // Assert
         result.Files.Should().HaveCount(9);
         result.Files[8].Path.Should().EndWith("Error.g.cs");
+
+        // Verify
+        var errorResult = result.GeneratorDriver.GetRunResult().Results.First().GeneratedSources.First(s => s.HintName.Contains("Error.g.cs"));
+        return Verifier.Verify(errorResult);
     }
 
     [Fact]

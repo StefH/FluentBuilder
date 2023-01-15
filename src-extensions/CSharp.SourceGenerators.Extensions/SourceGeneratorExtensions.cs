@@ -64,13 +64,14 @@ public static class SourceGeneratorExtensions
             .Create(sourceGenerator)
             .AddAdditionalTexts(ImmutableArray.CreateRange(additionalTexts));
 
-        driver.RunGeneratorsAndUpdateCompilation(
+        var executedDriver = driver.RunGeneratorsAndUpdateCompilation(
             compilation,
             out Compilation outputCompilation,
             out ImmutableArray<Diagnostic> diagnostics);
 
         return new ExecuteResult
         {
+            GeneratorDriver = executedDriver,
             WarningMessages = diagnostics.Where(d => d.Severity == DiagnosticSeverity.Warning).Select(d => d.GetMessage()).ToList(),
             ErrorMessages = diagnostics.Where(d => d.Severity == DiagnosticSeverity.Error).Select(d => d.GetMessage()).ToList(),
             Files = outputCompilation.SyntaxTrees
