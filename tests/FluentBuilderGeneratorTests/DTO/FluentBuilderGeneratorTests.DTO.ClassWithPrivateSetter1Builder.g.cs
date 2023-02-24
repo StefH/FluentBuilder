@@ -52,6 +52,7 @@ namespace FluentBuilderGeneratorTests.DTO
         }
 
 
+
         private void SetValue1(ClassWithPrivateSetter1 instance, int value)
         {
             InstanceType.GetProperty("Value1")?.SetValue(instance, value);

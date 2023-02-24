@@ -416,6 +416,7 @@ namespace FluentBuilderGeneratorTests.DTO
         }
 
 
+
         public override Address Build(bool useObjectInitializer = true)
         {
             if (Object?.IsValueCreated != true)

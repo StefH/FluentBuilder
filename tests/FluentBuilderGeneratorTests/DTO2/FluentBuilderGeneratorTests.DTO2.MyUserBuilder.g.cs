@@ -106,6 +106,7 @@ namespace FluentBuilderGeneratorTests.DTO2
         }
 
 
+
         public override User Build(bool useObjectInitializer = true)
         {
             if (Object?.IsValueCreated != true)
