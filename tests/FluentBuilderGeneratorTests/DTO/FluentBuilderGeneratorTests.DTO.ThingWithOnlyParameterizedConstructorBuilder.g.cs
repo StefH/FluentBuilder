@@ -68,22 +68,22 @@ namespace FluentBuilderGeneratorTests.DTO
         }
 
 
-        private bool _591074099_xIsSet;
-        private Lazy<int> _591074099_x = new Lazy<int>(() => default(int));
-        private bool _591074099_yIsSet;
-        private Lazy<string> _591074099_y = new Lazy<string>(() => string.Empty);
-        private bool _591074099_zIsSet;
-        private Lazy<string> _591074099_z = new Lazy<string>(() => string.Empty);
+        private bool _56304489_xIsSet;
+        private Lazy<int> _56304489_x = new Lazy<int>(() => default(int));
+        private bool _56304489_yIsSet;
+        private Lazy<string> _56304489_y = new Lazy<string>(() => string.Empty);
+        private bool _56304489_zIsSet;
+        private Lazy<string> _56304489_z = new Lazy<string>(() => string.Empty);
         public ThingWithOnlyParameterizedConstructorBuilder WithConstructor(int x, string y, string z = "test")
         {
-            _591074099_x = new Lazy<int>(() => x);
-            _591074099_xIsSet = true;
+            _56304489_x = new Lazy<int>(() => x);
+            _56304489_xIsSet = true;
 
-            _591074099_y = new Lazy<string>(() => y);
-            _591074099_yIsSet = true;
+            _56304489_y = new Lazy<string>(() => y);
+            _56304489_yIsSet = true;
 
-            _591074099_z = new Lazy<string>(() => z);
-            _591074099_zIsSet = true;
+            _56304489_z = new Lazy<string>(() => z);
+            _56304489_zIsSet = true;
 
 
             return this;
@@ -93,7 +93,15 @@ namespace FluentBuilderGeneratorTests.DTO
         {
             if (Object?.IsValueCreated != true)
             {
-               
+                Object = new Lazy<ThingWithOnlyParameterizedConstructor>(() =>
+                {
+                    return new ThingWithOnlyParameterizedConstructor
+                    (
+                        _56304489_x.Value,
+                        _56304489_y.Value,
+                        _56304489_z.Value
+                    );
+                });
             }
 
             PostBuild(Object.Value);

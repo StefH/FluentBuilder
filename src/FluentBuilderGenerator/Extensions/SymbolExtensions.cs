@@ -12,6 +12,11 @@ internal static class SymbolExtensions
         InternalClassNames.NullableAttribute
     };
 
+    public static string GetDeterministicHashCodeAsString(this ISymbol symbol)
+    {
+        return symbol.ToString().GetDeterministicHashCodeAsString();
+    }
+
     public static string GetAttributesPrefix(this ISymbol symbol)
     {
         var attributes = symbol.GetAttributesAsList();
