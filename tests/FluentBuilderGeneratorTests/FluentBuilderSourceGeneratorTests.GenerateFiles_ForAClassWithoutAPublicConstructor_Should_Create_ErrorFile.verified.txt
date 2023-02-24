@@ -14,7 +14,7 @@ System.NotSupportedException: Unable to generate a FluentBuilder for the class '
    at System.Linq.Enumerable.UnionIterator`1.FillSet()
    at System.Linq.Enumerable.UnionIterator`1.ToList()
    at System.Linq.Enumerable.ToList[TSource](IEnumerable`1 source)
-   at FluentBuilderGenerator.FileGenerators.FluentBuilderClassesGenerator.GenerateFiles() in {SolutionDirectory}src\FluentBuilderGenerator\FileGenerators\FluentBuilderClassesGenerator.cs:line 71
+   at FluentBuilderGenerator.FileGenerators.FluentBuilderClassesGenerator.GenerateFiles() in {SolutionDirectory}src\FluentBuilderGenerator\FileGenerators\FluentBuilderClassesGenerator.cs:line 61
    at FluentBuilderGenerator.FluentBuilderSourceGenerator.InjectFluentBuilderClasses(IGeneratorExecutionContextWrapper context, IAutoGenerateBuilderSyntaxReceiver receiver) in {SolutionDirectory}src\FluentBuilderGenerator\FluentBuilderSourceGenerator.cs:line 79
    at FluentBuilderGenerator.FluentBuilderSourceGenerator.Execute(GeneratorExecutionContext context) in {SolutionDirectory}src\FluentBuilderGenerator\FluentBuilderSourceGenerator.cs:line 40
 
@@ -27,7 +27,7 @@ System.NotSupportedException: Unable to generate a FluentBuilder for the class '
    at System.Linq.Enumerable.UnionIterator`1.FillSet()
    at System.Linq.Enumerable.UnionIterator`1.ToList()
    at System.Linq.Enumerable.ToList[TSource](IEnumerable`1 source)
-   at FluentBuilderGenerator.FileGenerators.FluentBuilderClassesGenerator.GenerateFiles() in {SolutionDirectory}src\FluentBuilderGenerator\FileGenerators\FluentBuilderClassesGenerator.cs:line 71
+   at FluentBuilderGenerator.FileGenerators.FluentBuilderClassesGenerator.GenerateFiles() in {SolutionDirectory}src\FluentBuilderGenerator\FileGenerators\FluentBuilderClassesGenerator.cs:line 61
    at FluentBuilderGenerator.FluentBuilderSourceGenerator.InjectFluentBuilderClasses(IGeneratorExecutionContextWrapper context, IAutoGenerateBuilderSyntaxReceiver receiver) in {SolutionDirectory}src\FluentBuilderGenerator\FluentBuilderSourceGenerator.cs:line 79
    at FluentBuilderGenerator.FluentBuilderSourceGenerator.Execute(GeneratorExecutionContext context) in {SolutionDirectory}src\FluentBuilderGenerator\FluentBuilderSourceGenerator.cs:line 40*/
 }

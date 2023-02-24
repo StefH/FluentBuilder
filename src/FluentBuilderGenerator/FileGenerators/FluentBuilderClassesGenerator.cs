@@ -327,43 +327,58 @@ namespace {classSymbol.BuilderNamespace}
             BuildPrivateSetMethod(output, className, property);
         }
 
-        output.AppendLine($@"        public override {className} Build(bool useObjectInitializer = true)
-        {{
-            if (Object?.IsValueCreated != true)
-            {{
-                Object = new Lazy<{className}>(() =>
-                {{
-                    {className} instance;
-                    if (useObjectInitializer)
-                    {{
-                        instance = new {className}
-                        {{");
-        output.AppendLines(propertiesPublicSettable.Select(property => $@"                            {property.Name} = _{CamelCase(property.Name)}.Value"), ",");
-        output.AppendLine("                        };");
+        output.AppendLine(8, $"public override {className} Build(bool useObjectInitializer = true)");
+        output.AppendLine(8, @"{");
+        output.AppendLine(8, @"    if (Object?.IsValueCreated != true)");
+        output.AppendLine(8, @"    {");
+        output.AppendLine(8, $"        Object = new Lazy<{className}>(() =>");
+        output.AppendLine(8, @"        {");
 
-        output.AppendLines(propertiesPrivateSettable.Select(property => $@"                        if (_{CamelCase(property.Name)}IsSet) {{ Set{property.Name}(instance, _{CamelCase(property.Name)}.Value); }}"));
+        x(output, className, propertiesPublicSettable, propertiesPrivateSettable);
 
-        output.AppendLine("                        return instance;");
-        output.AppendLine("                    }");
-        output.AppendLine($@"
-                    instance = new {className}();");
+        output.AppendLine(8, @"        });");
+        output.AppendLine(8, @"    }");
 
-        output.AppendLines(propertiesPublicSettable.Select(property => $@"                    if (_{CamelCase(property.Name)}IsSet) {{ instance.{property.Name} = _{CamelCase(property.Name)}.Value; }}"));
+        output.AppendLine();
+        output.AppendLine(8, @"    PostBuild(Object.Value);");
 
-        output.AppendLines(propertiesPrivateSettable.Select(property => $@"                    if (_{CamelCase(property.Name)}IsSet) {{ Set{property.Name}(instance, _{CamelCase(property.Name)}.Value); }}"));
+        output.AppendLine();
+        output.AppendLine(8, @"    return Object.Value;");
+        output.AppendLine(8, @"}");
 
-        output.AppendLine($@"                    return instance;
-                }});
-            }}
-
-            PostBuild(Object.Value);
-
-            return Object.Value;
-        }}
-
-        public static {className} Default() => new {className}();");
+        output.AppendLine();
+        output.AppendLine(8, $"public static {className} Default() => new {className}();");
 
         return output.ToString();
+    }
+
+    private static void x(
+        StringBuilder output,
+        string className,
+        IReadOnlyList<IPropertySymbol> propertiesPublicSettable,
+        IReadOnlyList<IPropertySymbol> propertiesPrivateSettable
+    )
+    {
+        output.AppendLine(20, $"{className} instance;");
+        output.AppendLine(20, @"if (useObjectInitializer)");
+        output.AppendLine(20, @"{");
+        output.AppendLine(20, $"    instance = new {className}");
+        output.AppendLine(20, @"    {");
+        output.AppendLines(20, propertiesPublicSettable.Select(property => $@"        {property.Name} = _{CamelCase(property.Name)}.Value"), ",");
+        output.AppendLine(20, @"    };");
+
+        output.AppendLines(propertiesPrivateSettable.Select(property => $@"        if (_{CamelCase(property.Name)}IsSet) {{ Set{property.Name}(instance, _{CamelCase(property.Name)}.Value); }}"));
+
+        output.AppendLine(20, @"    return instance;");
+        output.AppendLine(20, @"}");
+        output.AppendLine();
+        output.AppendLine(20, $"instance = new {className}();");
+
+        output.AppendLines(20, propertiesPublicSettable.Select(property => $@"if (_{CamelCase(property.Name)}IsSet) {{ instance.{property.Name} = _{CamelCase(property.Name)}.Value; }}"));
+
+        output.AppendLines(20, propertiesPrivateSettable.Select(property => $@"if (_{CamelCase(property.Name)}IsSet) {{ Set{property.Name}(instance, _{CamelCase(property.Name)}.Value); }}"));
+
+        output.AppendLine(20, "return instance;");
     }
 
     private static void BuildPrivateSetMethod(StringBuilder output, string className, IPropertySymbol property)
