@@ -68,22 +68,22 @@ namespace FluentBuilderGeneratorTests.DTO
         }
 
 
-        private bool _56304489_xIsSet;
-        private Lazy<int> _56304489_x = new Lazy<int>(() => default(int));
-        private bool _56304489_yIsSet;
-        private Lazy<string> _56304489_y = new Lazy<string>(() => string.Empty);
-        private bool _56304489_zIsSet;
-        private Lazy<string> _56304489_z = new Lazy<string>(() => string.Empty);
+        private bool __544568902_xIsSet;
+        private Lazy<int> __544568902_x = new Lazy<int>(() => default(int));
+        private bool __544568902_yIsSet;
+        private Lazy<string> __544568902_y = new Lazy<string>(() => string.Empty);
+        private bool __544568902_zIsSet;
+        private Lazy<string> __544568902_z = new Lazy<string>(() => string.Empty);
         public ThingWithOnlyParameterizedConstructorBuilder WithConstructor(int x, string y, string z = "test")
         {
-            _56304489_x = new Lazy<int>(() => x);
-            _56304489_xIsSet = true;
+            __544568902_x = new Lazy<int>(() => x);
+            __544568902_xIsSet = true;
 
-            _56304489_y = new Lazy<string>(() => y);
-            _56304489_yIsSet = true;
+            __544568902_y = new Lazy<string>(() => y);
+            __544568902_yIsSet = true;
 
-            _56304489_z = new Lazy<string>(() => z);
-            _56304489_zIsSet = true;
+            __544568902_z = new Lazy<string>(() => z);
+            __544568902_zIsSet = true;
 
 
             return this;
@@ -97,9 +97,9 @@ namespace FluentBuilderGeneratorTests.DTO
                 {
                     return new ThingWithOnlyParameterizedConstructor
                     (
-                        _56304489_x.Value,
-                        _56304489_y.Value,
-                        _56304489_z.Value
+                        __544568902_x.Value, 
+                        __544568902_y.Value, 
+                        __544568902_z.Value
                     );
                 });
             }
@@ -109,6 +109,7 @@ namespace FluentBuilderGeneratorTests.DTO
             return Object.Value;
         }
 
+        public static ThingWithOnlyParameterizedConstructor Default() => new ThingWithOnlyParameterizedConstructor(default(int), string.Empty, string.Empty);
 
     }
 }

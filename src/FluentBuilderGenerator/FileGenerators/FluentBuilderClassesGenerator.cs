@@ -430,15 +430,20 @@ namespace {classSymbol.BuilderNamespace}
         output.AppendLine(8, @"}");
 
         output.AppendLine();
-        if (isParameterLessConstructor)
+        //if (isParameterLessConstructor)
+        //{
+        //    output.AppendLine(8, $"public static {className} Default() => new {className}();");
+        //}
+        //else
         {
-            output.AppendLine(8, $"public static {className} Default() => new {className}();");
-        }
-        else
-        {
-            var constructorParameters = GetConstructorParameters(constructor);
-            var constructorParametersAsString = string.Join(", ", constructorParameters.Select(x => MethodParameterBuilder.Build(x.Symbol, null)));
-            output.AppendLine(8, $"public static {className} Default() => new {className}({constructorParametersAsString});");
+            var defaultValues = new List<string>();
+            foreach (var p in GetConstructorParameters(constructor))
+            {
+                var (defaultValue, _) = DefaultValueHelper.GetDefaultValue(p.Symbol, p.Symbol.Type);
+                defaultValues.Add(defaultValue);
+            }
+
+            output.AppendLine(8, $"public static {className} Default() => new {className}({string.Join(", ", defaultValues)});");
         }
 
         return output.ToString();
