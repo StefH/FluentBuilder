@@ -119,6 +119,11 @@ public class FluentBuilderSourceGeneratorTests
             if (Write) File.WriteAllText($"../../../DTO/{filename}", builder.Text);
             builder.Text.Should().Be(File.ReadAllText($"../../../DTO/{filename}"));
         }
+
+        var b = new ThingWithOnlyParameterizedConstructorBuilder()
+            .Build();
+
+        int xxx = 0;
     }
 
     [Fact]
