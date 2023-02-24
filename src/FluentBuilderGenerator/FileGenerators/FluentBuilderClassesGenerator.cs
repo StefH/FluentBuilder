@@ -107,6 +107,7 @@ namespace {classSymbol.BuilderNamespace}
     public partial class {classSymbol.BuilderClassName} : Builder<{classSymbol.NamedTypeSymbol}>{classSymbol.NamedTypeSymbol.GetWhereStatement()}
     {{
 {property.StringBuilder}
+{con.StringBuilder}
 {GenerateBuildMethod(fluentData, classSymbol)}
     }}
 }}
@@ -124,13 +125,13 @@ namespace {classSymbol.BuilderNamespace}
             return (new StringBuilder(), new List<string>());
         }
 
+        var builderClassName = classSymbol.BuilderClassName;
+
         var extraUsings = new List<string>();
 
         var sb = new StringBuilder();
         foreach (var publicConstructor in publicConstructors)
         {
-            //sb.AppendLine($"        public {className} WithConstructor{property.Name}({type} value) => With{property.Name}(() => value);");
-
             var constructorParameters = new List<string>();
 
             foreach (var parameter in publicConstructor.Parameters)
@@ -141,7 +142,7 @@ namespace {classSymbol.BuilderNamespace}
                 constructorParameters.Add(MethodParameterBuilder.Build(parameter, type));
             }
 
-            int x22 = 9;
+            sb.AppendLine($"        public {builderClassName} WithConstructor({string.Join(", ", constructorParameters)}) {{ return this;}}");
         }
 
         return (sb, extraUsings.Distinct().ToList());
@@ -152,7 +153,7 @@ namespace {classSymbol.BuilderNamespace}
         ClassSymbol classSymbol,
         List<ClassSymbol> allClassSymbols)
     {
-        var className = classSymbol.BuilderClassName;
+        var builderClassName = classSymbol.BuilderClassName;
 
         var (propertiesPublicSettable, propertiesPrivateSettable) = GetProperties(classSymbol, fluentData.HandleBaseClasses, fluentData.Accessibility);
 
@@ -174,13 +175,13 @@ namespace {classSymbol.BuilderNamespace}
 
             sb.AppendLine($"        private Lazy<{property.Type}> _{CamelCase(property.Name)} = new Lazy<{property.Type}>(() => {defaultValue});");
 
-            sb.AppendLine($"        public {className} With{property.Name}({type} value) => With{property.Name}(() => value);");
+            sb.AppendLine($"        public {builderClassName} With{property.Name}({type} value) => With{property.Name}(() => value);");
 
             sb.Append(GenerateWithPropertyFuncMethod(classSymbol, property));
 
             sb.Append(GeneratePropertyActionMethodIfApplicable(classSymbol, property, allClassSymbols));
 
-            sb.AppendLine($"        public {className} Without{property.Name}()");
+            sb.AppendLine($"        public {builderClassName} Without{property.Name}()");
             sb.AppendLine("        {");
             sb.AppendLine($"            With{property.Name}(() => {defaultValue});");
             sb.AppendLine($"            _{CamelCase(property.Name)}IsSet = false;");
@@ -377,7 +378,8 @@ namespace {classSymbol.BuilderNamespace}
         output.AppendLine(8, $"        Object = new Lazy<{className}>(() =>");
         output.AppendLine(8, @"        {");
 
-        if (publicConstructors.Any(p => p.Parameters.IsEmpty))
+        var isParameterLessConstructor = publicConstructors.Any(p => p.Parameters.IsEmpty);
+        if (isParameterLessConstructor)
         {
             BuildCreateInstanceForParameterLessConstructor(output, className, propertiesPublicSettable, propertiesPrivateSettable);
         }
@@ -397,7 +399,10 @@ namespace {classSymbol.BuilderNamespace}
         output.AppendLine(8, @"}");
 
         output.AppendLine();
-        output.AppendLine(8, $"public static {className} Default() => new {className}();");
+        if (isParameterLessConstructor)
+        {
+            output.AppendLine(8, $"public static {className} Default() => new {className}();");
+        }
 
         return output.ToString();
     }

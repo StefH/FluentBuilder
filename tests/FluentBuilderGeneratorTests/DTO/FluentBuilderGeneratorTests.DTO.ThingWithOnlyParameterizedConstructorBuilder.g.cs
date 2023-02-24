@@ -35,6 +35,40 @@ namespace FluentBuilderGeneratorTests.DTO
             return this;
         }
 
+        private bool _yIsSet;
+        private Lazy<string> _y = new Lazy<string>(() => string.Empty);
+        public ThingWithOnlyParameterizedConstructorBuilder WithY(string value) => WithY(() => value);
+        public ThingWithOnlyParameterizedConstructorBuilder WithY(Func<string> func)
+        {
+            _y = new Lazy<string>(func);
+            _yIsSet = true;
+            return this;
+        }
+        public ThingWithOnlyParameterizedConstructorBuilder WithoutY()
+        {
+            WithY(() => string.Empty);
+            _yIsSet = false;
+            return this;
+        }
+
+        private bool _zIsSet;
+        private Lazy<string> _z = new Lazy<string>(() => string.Empty);
+        public ThingWithOnlyParameterizedConstructorBuilder WithZ(string value) => WithZ(() => value);
+        public ThingWithOnlyParameterizedConstructorBuilder WithZ(Func<string> func)
+        {
+            _z = new Lazy<string>(func);
+            _zIsSet = true;
+            return this;
+        }
+        public ThingWithOnlyParameterizedConstructorBuilder WithoutZ()
+        {
+            WithZ(() => string.Empty);
+            _zIsSet = false;
+            return this;
+        }
+
+
+        public ThingWithOnlyParameterizedConstructorBuilder WithConstructor(int x, string y, string z = "test") { return this;}
 
         public override ThingWithOnlyParameterizedConstructor Build(bool useObjectInitializer = true)
         {
@@ -42,11 +76,6 @@ namespace FluentBuilderGeneratorTests.DTO
             {
                 Object = new Lazy<ThingWithOnlyParameterizedConstructor>(() =>
                 {
-                    return new ThingWithOnlyParameterizedConstructor
-                    (
-                        _x.Value,
-                        "f"
-                    );
                 });
             }
 
@@ -55,7 +84,6 @@ namespace FluentBuilderGeneratorTests.DTO
             return Object.Value;
         }
 
-        public static ThingWithParameterizedConstructor Default() => new ThingWithParameterizedConstructor();
 
     }
 }
