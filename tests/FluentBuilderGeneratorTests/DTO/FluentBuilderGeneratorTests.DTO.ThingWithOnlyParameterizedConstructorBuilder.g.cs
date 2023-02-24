@@ -68,15 +68,32 @@ namespace FluentBuilderGeneratorTests.DTO
         }
 
 
-        public ThingWithOnlyParameterizedConstructorBuilder WithConstructor(int x, string y, string z = "test") { return this;}
+        private bool _591074099_xIsSet;
+        private Lazy<int> _591074099_x = new Lazy<int>(() => default(int));
+        private bool _591074099_yIsSet;
+        private Lazy<string> _591074099_y = new Lazy<string>(() => string.Empty);
+        private bool _591074099_zIsSet;
+        private Lazy<string> _591074099_z = new Lazy<string>(() => string.Empty);
+        public ThingWithOnlyParameterizedConstructorBuilder WithConstructor(int x, string y, string z = "test")
+        {
+            _591074099_x = new Lazy<int>(() => x);
+            _591074099_xIsSet = true;
+
+            _591074099_y = new Lazy<string>(() => y);
+            _591074099_yIsSet = true;
+
+            _591074099_z = new Lazy<string>(() => z);
+            _591074099_zIsSet = true;
+
+
+            return this;
+        }
 
         public override ThingWithOnlyParameterizedConstructor Build(bool useObjectInitializer = true)
         {
             if (Object?.IsValueCreated != true)
             {
-                Object = new Lazy<ThingWithOnlyParameterizedConstructor>(() =>
-                {
-                });
+               
             }
 
             PostBuild(Object.Value);
