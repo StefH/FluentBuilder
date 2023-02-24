@@ -73,6 +73,14 @@ internal partial class FluentBuilderClassesGenerator : IFilesGenerator
 
     private string CreateClassBuilderCode(FluentData fluentData, ClassSymbol classSymbol, List<ClassSymbol> allClassSymbols)
     {
+        var publicConstructors = classSymbol.NamedTypeSymbol.Constructors.Where(c => c.DeclaredAccessibility == Accessibility.Public).ToArray();
+        if (!publicConstructors.Any())
+        {
+            throw new NotSupportedException($"Unable to generate a FluentBuilder for the class '{classSymbol.NamedTypeSymbol}' because no public constructor is defined.");
+        }
+
+        var con = GenerateWithConstructorCode(fluentData, classSymbol, publicConstructors, allClassSymbols);
+
         var property = GenerateWithPropertyCode(fluentData, classSymbol, allClassSymbols);
 
         var usings = SystemUsings.ToList();
@@ -103,6 +111,40 @@ namespace {classSymbol.BuilderNamespace}
     }}
 }}
 {(_context.SupportsNullable ? "#nullable disable" : string.Empty)}";
+    }
+
+    private (StringBuilder StringBuilder, IReadOnlyList<string> ExtraUsings) GenerateWithConstructorCode(
+        FluentData fluentData,
+        ClassSymbol classSymbol,
+        IReadOnlyList<IMethodSymbol> publicConstructors,
+        List<ClassSymbol> allClassSymbols)
+    {
+        if (publicConstructors.Count(p => p.Parameters.IsEmpty) == 1)
+        {
+            return (new StringBuilder(), new List<string>());
+        }
+
+        var extraUsings = new List<string>();
+
+        var sb = new StringBuilder();
+        foreach (var publicConstructor in publicConstructors)
+        {
+            //sb.AppendLine($"        public {className} WithConstructor{property.Name}({type} value) => With{property.Name}(() => value);");
+
+            var constructorParameters = new List<string>();
+
+            foreach (var parameter in publicConstructor.Parameters)
+            {
+                // Use "params" in case it's an Array, else just use type-T.
+                var type = parameter.Type.GetFluentTypeKind() == FluentTypeKind.Array ? $"params {parameter.Type}" : parameter.Type.ToString();
+
+                constructorParameters.Add(MethodParameterBuilder.Build(parameter, type));
+            }
+
+            int x22 = 9;
+        }
+
+        return (sb, extraUsings.Distinct().ToList());
     }
 
     private (StringBuilder StringBuilder, IReadOnlyList<string> ExtraUsings) GenerateWithPropertyCode(
@@ -312,10 +354,11 @@ namespace {classSymbol.BuilderNamespace}
 
     private static string GenerateBuildMethod(FluentData fluentData, ClassSymbol classSymbol)
     {
-        if (!classSymbol.NamedTypeSymbol.Constructors.Any(c => c.DeclaredAccessibility == Accessibility.Public && c.Parameters.IsEmpty))
-        {
-            throw new NotSupportedException($"Unable to generate a FluentBuilder for the class '{classSymbol.NamedTypeSymbol}' because no public parameterless constructor was defined.");
-        }
+        var publicConstructors = classSymbol.NamedTypeSymbol.Constructors.Where(c => c.DeclaredAccessibility == Accessibility.Public).ToArray();
+        //if (!publicConstructors.Any())
+        //{
+        //    throw new NotSupportedException($"Unable to generate a FluentBuilder for the class '{classSymbol.NamedTypeSymbol}' because no public constructor is defined.");
+        //}
 
         var (propertiesPublicSettable, propertiesPrivateSettable) = GetProperties(classSymbol, fluentData.HandleBaseClasses, fluentData.Accessibility);
         var className = classSymbol.NamedTypeSymbol.GenerateShortTypeName();
@@ -334,8 +377,15 @@ namespace {classSymbol.BuilderNamespace}
         output.AppendLine(8, $"        Object = new Lazy<{className}>(() =>");
         output.AppendLine(8, @"        {");
 
-        BuildCreateInstance(output, className, propertiesPublicSettable, propertiesPrivateSettable);
-
+        if (publicConstructors.Any(p => p.Parameters.IsEmpty))
+        {
+            BuildCreateInstanceForParameterLessConstructor(output, className, propertiesPublicSettable, propertiesPrivateSettable);
+        }
+        else
+        {
+            var constructorWithMinimalParameters = publicConstructors.OrderBy(p => p.Parameters.Length).First();
+        }
+        
         output.AppendLine(8, @"        });");
         output.AppendLine(8, @"    }");
 
@@ -352,7 +402,12 @@ namespace {classSymbol.BuilderNamespace}
         return output.ToString();
     }
 
-    private static void BuildCreateInstance(
+    private static void BuildCreateInstanceForConstructor()
+    {
+
+    }
+
+    private static void BuildCreateInstanceForParameterLessConstructor(
         StringBuilder output,
         string className,
         IReadOnlyList<IPropertySymbol> propertiesPublicSettable,

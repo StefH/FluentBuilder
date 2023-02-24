@@ -6,9 +6,12 @@ public class ThingWithOnlyParameterizedConstructor
 
     public string Y { get; set; }
 
-    public ThingWithOnlyParameterizedConstructor(int x, string y)
+    public string Z { get; set; }
+
+    public ThingWithOnlyParameterizedConstructor(int x, string y, string z = "test")
     {
         X = x;
         Y = y;
+        Z = z;
     }
 }

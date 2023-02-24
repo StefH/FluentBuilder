@@ -91,7 +91,7 @@ public class FluentBuilderSourceGeneratorTests
     }
 
     [Fact]
-    public void GenerateFiles_ForAClassWithOnlyPublicParameterlessConstructor_Should_GenerateCorrectFiles()
+    public void GenerateFiles_ForAClassWithOnlyParameterizedConstructor_Should_GenerateCorrectFiles()
     {
         // Arrange
         var sourceFilePath = "./DTO/ThingWithOnlyParameterizedConstructor.cs";
