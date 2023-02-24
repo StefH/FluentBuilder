@@ -430,21 +430,15 @@ namespace {classSymbol.BuilderNamespace}
         output.AppendLine(8, @"}");
 
         output.AppendLine();
-        //if (isParameterLessConstructor)
-        //{
-        //    output.AppendLine(8, $"public static {className} Default() => new {className}();");
-        //}
-        //else
-        {
-            var defaultValues = new List<string>();
-            foreach (var p in GetConstructorParameters(constructor))
-            {
-                var (defaultValue, _) = DefaultValueHelper.GetDefaultValue(p.Symbol, p.Symbol.Type);
-                defaultValues.Add(defaultValue);
-            }
 
-            output.AppendLine(8, $"public static {className} Default() => new {className}({string.Join(", ", defaultValues)});");
+        var defaultValues = new List<string>();
+        foreach (var p in GetConstructorParameters(constructor))
+        {
+            var (defaultValue, _) = DefaultValueHelper.GetDefaultValue(p.Symbol, p.Symbol.Type);
+            defaultValues.Add(defaultValue);
         }
+
+        output.AppendLine(8, $"public static {className} Default() => new {className}({string.Join(", ", defaultValues)});");
 
         return output.ToString();
     }
@@ -452,7 +446,7 @@ namespace {classSymbol.BuilderNamespace}
     private static IMethodSymbol BuildCreateInstanceForConstructor(StringBuilder sb, string className, IReadOnlyList<IMethodSymbol> publicConstructors)
     {
         var publicConstructor = publicConstructors.First(c => !c.Parameters.IsEmpty);
-        var hashCode =  publicConstructor.GetDeterministicHashCodeAsString();
+        var hashCode = publicConstructor.GetDeterministicHashCodeAsString();
 
         var constructorParameters = GetConstructorParameters(publicConstructor);
 
