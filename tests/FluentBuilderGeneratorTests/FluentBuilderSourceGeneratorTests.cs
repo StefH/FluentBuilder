@@ -91,6 +91,37 @@ public class FluentBuilderSourceGeneratorTests
     }
 
     [Fact]
+    public void GenerateFiles_ForAClassWithOnlyPublicParameterlessConstructor_Should_GenerateCorrectFiles()
+    {
+        // Arrange
+        var sourceFilePath = "./DTO/ThingWithOnlyParameterizedConstructor.cs";
+        var sourceFile = new SourceFile
+        {
+            Path = sourceFilePath,
+            Text = File.ReadAllText(sourceFilePath),
+            AttributeToAddToClass = "FluentBuilder.AutoGenerateBuilder"
+        };
+
+        // Act
+        var result = _sut.Execute(Namespace, new[] { sourceFile });
+
+        // Assert
+        result.Valid.Should().BeTrue();
+        result.Files.Should().HaveCount(9);
+        result.Files.Should().NotContain(r => r.Path.EndsWith("Error.g.cs"));
+
+        for (int i = 8; i < 9; i++)
+        {
+            var builder = result.Files[i];
+
+            var filename = Path.GetFileName(builder.Path);
+
+            if (Write) File.WriteAllText($"../../../DTO/{filename}", builder.Text);
+            builder.Text.Should().Be(File.ReadAllText($"../../../DTO/{filename}"));
+        }
+    }
+
+    [Fact]
     public void GenerateFiles_For2Classes_Should_GenerateCorrectFiles()
     {
         // Arrange
