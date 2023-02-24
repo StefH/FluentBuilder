@@ -367,7 +367,7 @@ namespace {classSymbol.BuilderNamespace}
         output.AppendLines(20, propertiesPublicSettable.Select(property => $@"        {property.Name} = _{CamelCase(property.Name)}.Value"), ",");
         output.AppendLine(20, @"    };");
 
-        output.AppendLines(propertiesPrivateSettable.Select(property => $@"        if (_{CamelCase(property.Name)}IsSet) {{ Set{property.Name}(instance, _{CamelCase(property.Name)}.Value); }}"));
+        output.AppendLines(20, propertiesPrivateSettable.Select(property => $@"    if (_{CamelCase(property.Name)}IsSet) {{ Set{property.Name}(instance, _{CamelCase(property.Name)}.Value); }}"));
 
         output.AppendLine(20, @"    return instance;");
         output.AppendLine(20, @"}");
