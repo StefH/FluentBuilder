@@ -334,7 +334,7 @@ namespace {classSymbol.BuilderNamespace}
         output.AppendLine(8, $"        Object = new Lazy<{className}>(() =>");
         output.AppendLine(8, @"        {");
 
-        x(output, className, propertiesPublicSettable, propertiesPrivateSettable);
+        BuildCreateInstance(output, className, propertiesPublicSettable, propertiesPrivateSettable);
 
         output.AppendLine(8, @"        });");
         output.AppendLine(8, @"    }");
@@ -352,7 +352,7 @@ namespace {classSymbol.BuilderNamespace}
         return output.ToString();
     }
 
-    private static void x(
+    private static void BuildCreateInstance(
         StringBuilder output,
         string className,
         IReadOnlyList<IPropertySymbol> propertiesPublicSettable,
