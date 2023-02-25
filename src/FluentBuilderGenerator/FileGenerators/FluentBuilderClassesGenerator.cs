@@ -413,12 +413,15 @@ namespace {classSymbol.BuilderNamespace}
 
         var isParameterLessConstructor = publicConstructors.Any(p => p.Parameters.IsEmpty);
 
-        output.AppendLine(8, $"public override {className} Build(bool useObjectInitializer = true)");
+        output.AppendLine(8, $"public override {className} Build() => Build({isParameterLessConstructor.ToString().ToLowerInvariant()});");
+        output.AppendLine();
+
+        output.AppendLine(8, $"public override {className} Build(bool useObjectInitializer)");
         output.AppendLine(8, @"{");
 
         if (!isParameterLessConstructor)
         {
-            output.AppendLine(8, @"{");output.AppendLine(8, $"    if (useObjectInitializer) {{ throw new NotSupportedException(\"Unable to use the ObjectInitializer for the class '{classSymbol.NamedTypeSymbol}' because no public parameterless constructor is defined.\"); }}");
+            output.AppendLine(8, $"    if (useObjectInitializer) {{ throw new NotSupportedException(\"Unable to use the ObjectInitializer for the class '{classSymbol.NamedTypeSymbol}' because no public parameterless constructor is defined.\"); }}");
             output.AppendLine();
         }
 

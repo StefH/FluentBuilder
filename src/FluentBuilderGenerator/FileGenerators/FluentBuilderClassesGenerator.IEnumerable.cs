@@ -47,21 +47,22 @@ namespace {classSymbol.BuilderNamespace}
         var itemBuilderFullName = classSymbol.ItemBuilderFullName;
 
         var sb = new StringBuilder();
-        sb.AppendLine($"        public {className} Add({classSymbol.NamedTypeSymbol.Name} item) => Add(() => item);");
+        sb.AppendLine(8, $"public {className} Add({classSymbol.NamedTypeSymbol.Name} item) => Add(() => item);");
+                   
+        sb.AppendLine(8, $"public {className} Add(Func<{itemClassSymbol.Name}> func)");
+        sb.AppendLine(8, @"{");
+        sb.AppendLine(8, @"    _list.Value.Add(func());");
+        sb.AppendLine(8, @"    return this;");
+        sb.AppendLine(8, @"}");
+               
+        sb.AppendLine(8, $"public {className} Add(Action<{itemBuilderFullName}> action, bool useObjectInitializer = true)");
+        sb.AppendLine(8, @"{");
+        sb.AppendLine(8, $"    var builder = new {itemBuilderFullName}();");
+        sb.AppendLine(8, @"    action(builder);");
+        sb.AppendLine(8, @"    Add(() => builder.Build(useObjectInitializer));");
+        sb.AppendLine(8, @"    return this;");
+        sb.AppendLine(8, @"}");
 
-        sb.AppendLine($"        public {className} Add(Func<{itemClassSymbol.Name}> func)");
-        sb.AppendLine("        {");
-        sb.AppendLine("            _list.Value.Add(func());");
-        sb.AppendLine("            return this;");
-        sb.AppendLine("        }");
-
-        sb.AppendLine($"        public {className} Add(Action<{itemBuilderFullName}> action, bool useObjectInitializer = true)");
-        sb.AppendLine("        {");
-        sb.AppendLine($"            var builder = new {itemBuilderFullName}();");
-        sb.AppendLine("            action(builder);");
-        sb.AppendLine("            Add(() => builder.Build(useObjectInitializer));");
-        sb.AppendLine("            return this;");
-        sb.AppendLine("        }");
         return sb;
     }
 
@@ -69,7 +70,9 @@ namespace {classSymbol.BuilderNamespace}
     {
         var (genericType, toArray) = IEnumerableBuilderHelper.GetGenericTypeAndToArray(classSymbol.Type, classSymbol.NamedTypeSymbol.ToString());
 
-        return $@"        public override {genericType} Build(bool useObjectInitializer = true)
+        return $@"        public override {genericType} Build() => Build(true);
+
+        public override {genericType} Build(bool useObjectInitializer)
         {{
             if (Object?.IsValueCreated != true)
             {{

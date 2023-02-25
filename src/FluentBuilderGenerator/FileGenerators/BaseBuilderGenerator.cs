@@ -41,7 +41,9 @@ namespace {_assemblyName}.FluentBuilder
 
         protected Type InstanceType = typeof(T);
 
-        public abstract T Build(bool useObjectInitializer = true);
+        public abstract T Build();
+
+        public abstract T Build(bool useObjectInitializer);
 
         public Builder<T> WithObject(T value) => WithObject(() => value);
 

@@ -57,7 +57,9 @@ namespace {_assemblyName}.FluentBuilder
             return this;
         }}
 
-        public override {_genericType} Build(bool useObjectInitializer = true)
+        public override {_genericType} Build() => Build(true);
+
+        public override {_genericType} Build(bool useObjectInitializer)
         {{
             if (Object?.IsValueCreated != true)
             {{
