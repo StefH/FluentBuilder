@@ -25,7 +25,9 @@ namespace FluentBuilderGeneratorTests.FluentBuilder
             return this;
         }
 
-        public override IEnumerable<T> Build(bool useObjectInitializer = true)
+        public override IEnumerable<T> Build() => Build(true);
+
+        public override IEnumerable<T> Build(bool useObjectInitializer)
         {
             if (Object?.IsValueCreated != true)
             {

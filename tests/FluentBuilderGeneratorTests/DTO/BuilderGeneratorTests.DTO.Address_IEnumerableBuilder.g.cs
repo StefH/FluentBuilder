@@ -34,7 +34,9 @@ namespace FluentBuilderGeneratorTests.DTO
         }
 
 
-        public override IEnumerable<FluentBuilderGeneratorTests.DTO.Address> Build(bool useObjectInitializer = true)
+        public override IEnumerable<FluentBuilderGeneratorTests.DTO.Address> Build() => Build(true);
+
+        public override IEnumerable<FluentBuilderGeneratorTests.DTO.Address> Build(bool useObjectInitializer)
         {
             if (Object?.IsValueCreated != true)
             {

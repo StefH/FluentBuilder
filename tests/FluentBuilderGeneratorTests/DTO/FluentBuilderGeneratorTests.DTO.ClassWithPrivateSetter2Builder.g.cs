@@ -37,7 +37,9 @@ namespace FluentBuilderGeneratorTests.DTO
 
 
 
-        public override ClassWithPrivateSetter2 Build(bool useObjectInitializer = true)
+        public override ClassWithPrivateSetter2 Build() => Build(true);
+
+        public override ClassWithPrivateSetter2 Build(bool useObjectInitializer)
         {
             if (Object?.IsValueCreated != true)
             {

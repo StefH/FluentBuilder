@@ -417,7 +417,9 @@ namespace FluentBuilderGeneratorTests.DTO
 
 
 
-        public override Address Build(bool useObjectInitializer = true)
+        public override Address Build() => Build(true);
+
+        public override Address Build(bool useObjectInitializer)
         {
             if (Object?.IsValueCreated != true)
             {

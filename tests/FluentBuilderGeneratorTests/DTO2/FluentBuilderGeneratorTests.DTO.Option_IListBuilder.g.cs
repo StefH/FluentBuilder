@@ -34,7 +34,9 @@ namespace FluentBuilderGeneratorTests.DTO
         }
 
 
-        public override IList<FluentBuilderGeneratorTests.DTO.Option> Build(bool useObjectInitializer = true)
+        public override IList<FluentBuilderGeneratorTests.DTO.Option> Build() => Build(true);
+
+        public override IList<FluentBuilderGeneratorTests.DTO.Option> Build(bool useObjectInitializer)
         {
             if (Object?.IsValueCreated != true)
             {

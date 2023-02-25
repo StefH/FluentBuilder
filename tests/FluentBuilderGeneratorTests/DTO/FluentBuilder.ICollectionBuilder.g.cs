@@ -25,7 +25,9 @@ namespace FluentBuilderGeneratorTests.FluentBuilder
             return this;
         }
 
-        public override ICollection<T> Build(bool useObjectInitializer = true)
+        public override ICollection<T> Build() => Build(true);
+
+        public override ICollection<T> Build(bool useObjectInitializer)
         {
             if (Object?.IsValueCreated != true)
             {

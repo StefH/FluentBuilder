@@ -103,9 +103,12 @@ namespace FluentBuilderGeneratorTests.DTO
         }
 
 
-        public override ThingWithOnlyParameterizedConstructors Build(bool useObjectInitializer = true)
+        public override ThingWithOnlyParameterizedConstructors Build() => Build(false);
+
+        public override ThingWithOnlyParameterizedConstructors Build(bool useObjectInitializer)
         {
             if (useObjectInitializer) { throw new NotSupportedException("Unable to use the ObjectInitializer for the class 'FluentBuilderGeneratorTests.DTO.ThingWithOnlyParameterizedConstructors' because no public parameterless constructor is defined."); }
+
             if (Object?.IsValueCreated != true)
             {
                 Object = new Lazy<ThingWithOnlyParameterizedConstructors>(() =>

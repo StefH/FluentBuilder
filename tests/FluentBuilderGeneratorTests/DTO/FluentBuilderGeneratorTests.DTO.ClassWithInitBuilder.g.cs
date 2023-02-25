@@ -37,7 +37,9 @@ namespace FluentBuilderGeneratorTests.DTO
 
 
 
-        public override ClassWithInit Build(bool useObjectInitializer = true)
+        public override ClassWithInit Build() => Build(true);
+
+        public override ClassWithInit Build(bool useObjectInitializer)
         {
             if (Object?.IsValueCreated != true)
             {

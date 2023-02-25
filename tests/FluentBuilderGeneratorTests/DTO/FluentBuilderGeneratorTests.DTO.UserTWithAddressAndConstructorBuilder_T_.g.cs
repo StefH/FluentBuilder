@@ -59,7 +59,9 @@ namespace FluentBuilderGeneratorTests.DTO
 
 
 
-        public override UserTWithAddressAndConstructor<T> Build(bool useObjectInitializer = true)
+        public override UserTWithAddressAndConstructor<T> Build() => Build(true);
+
+        public override UserTWithAddressAndConstructor<T> Build(bool useObjectInitializer)
         {
             if (Object?.IsValueCreated != true)
             {

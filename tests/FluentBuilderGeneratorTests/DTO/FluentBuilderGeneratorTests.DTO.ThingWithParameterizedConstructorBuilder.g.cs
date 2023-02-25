@@ -37,7 +37,9 @@ namespace FluentBuilderGeneratorTests.DTO
 
 
 
-        public override ThingWithParameterizedConstructor Build(bool useObjectInitializer = true)
+        public override ThingWithParameterizedConstructor Build() => Build(true);
+
+        public override ThingWithParameterizedConstructor Build(bool useObjectInitializer)
         {
             if (Object?.IsValueCreated != true)
             {

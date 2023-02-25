@@ -200,7 +200,9 @@ namespace FluentBuilderGeneratorTests.DTO
 
 
 
-        public override ClassWithPropertyValueSet Build(bool useObjectInitializer = true)
+        public override ClassWithPropertyValueSet Build() => Build(true);
+
+        public override ClassWithPropertyValueSet Build(bool useObjectInitializer)
         {
             if (Object?.IsValueCreated != true)
             {

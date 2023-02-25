@@ -26,7 +26,9 @@ namespace FluentBuilderGeneratorTests.FluentBuilder
             return this;
         }
 
-        public override IDictionary<TKey, TValue> Build(bool useObjectInitializer = true)
+        public override IDictionary<TKey, TValue> Build() => Build(true);
+
+        public override IDictionary<TKey, TValue> Build(bool useObjectInitializer)
         {
             if (Object?.IsValueCreated != true)
             {

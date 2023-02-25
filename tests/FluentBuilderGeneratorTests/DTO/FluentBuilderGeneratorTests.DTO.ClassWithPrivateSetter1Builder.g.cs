@@ -58,7 +58,9 @@ namespace FluentBuilderGeneratorTests.DTO
             InstanceType.GetProperty("Value1")?.SetValue(instance, value);
         }
 
-        public override ClassWithPrivateSetter1 Build(bool useObjectInitializer = true)
+        public override ClassWithPrivateSetter1 Build() => Build(true);
+
+        public override ClassWithPrivateSetter1 Build(bool useObjectInitializer)
         {
             if (Object?.IsValueCreated != true)
             {

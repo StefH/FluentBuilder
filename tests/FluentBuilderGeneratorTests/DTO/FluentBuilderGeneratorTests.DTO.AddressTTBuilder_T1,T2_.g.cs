@@ -53,7 +53,9 @@ namespace FluentBuilderGeneratorTests.DTO
 
 
 
-        public override AddressTT<T1, T2> Build(bool useObjectInitializer = true)
+        public override AddressTT<T1, T2> Build() => Build(true);
+
+        public override AddressTT<T1, T2> Build(bool useObjectInitializer)
         {
             if (Object?.IsValueCreated != true)
             {

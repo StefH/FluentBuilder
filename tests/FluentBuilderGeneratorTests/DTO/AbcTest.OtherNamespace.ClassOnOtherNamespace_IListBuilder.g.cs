@@ -34,7 +34,9 @@ namespace AbcTest.OtherNamespace
         }
 
 
-        public override IList<AbcTest.OtherNamespace.ClassOnOtherNamespace> Build(bool useObjectInitializer = true)
+        public override IList<AbcTest.OtherNamespace.ClassOnOtherNamespace> Build() => Build(true);
+
+        public override IList<AbcTest.OtherNamespace.ClassOnOtherNamespace> Build(bool useObjectInitializer)
         {
             if (Object?.IsValueCreated != true)
             {

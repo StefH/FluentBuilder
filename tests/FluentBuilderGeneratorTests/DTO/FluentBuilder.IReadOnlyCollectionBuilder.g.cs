@@ -25,7 +25,9 @@ namespace FluentBuilderGeneratorTests.FluentBuilder
             return this;
         }
 
-        public override IReadOnlyCollection<T> Build(bool useObjectInitializer = true)
+        public override IReadOnlyCollection<T> Build() => Build(true);
+
+        public override IReadOnlyCollection<T> Build(bool useObjectInitializer)
         {
             if (Object?.IsValueCreated != true)
             {

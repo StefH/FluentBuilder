@@ -25,7 +25,9 @@ namespace FluentBuilderGeneratorTests.FluentBuilder
             return this;
         }
 
-        public override T[] Build(bool useObjectInitializer = true)
+        public override T[] Build() => Build(true);
+
+        public override T[] Build(bool useObjectInitializer)
         {
             if (Object?.IsValueCreated != true)
             {
