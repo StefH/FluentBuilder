@@ -415,6 +415,13 @@ namespace {classSymbol.BuilderNamespace}
 
         output.AppendLine(8, $"public override {className} Build(bool useObjectInitializer = true)");
         output.AppendLine(8, @"{");
+
+        if (!isParameterLessConstructor)
+        {
+            output.AppendLine(8, @"{");output.AppendLine(8, $"    if (useObjectInitializer) {{ throw new NotSupportedException(\"Unable to use the ObjectInitializer for the class '{classSymbol.NamedTypeSymbol}' because no public parameterless constructor is defined.\"); }}");
+            output.AppendLine();
+        }
+
         output.AppendLine(8, @"    if (Object?.IsValueCreated != true)");
         output.AppendLine(8, @"    {");
         output.AppendLine(8, $"        Object = new Lazy<{className}>(() =>");
@@ -463,7 +470,8 @@ namespace {classSymbol.BuilderNamespace}
             sb.AppendLine(20, $"if (_Constructor{constructorHashCode}_IsSet) {{ return _Constructor{constructorHashCode}.Value; }}");
         }
 
-        sb.AppendLine(20, @"return Default()");
+        sb.AppendLine();
+        sb.AppendLine(20, @"return Default();");
 
         return publicConstructors.First(c => !c.Parameters.IsEmpty);
     }
