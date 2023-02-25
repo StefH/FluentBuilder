@@ -1,5 +1,8 @@
+using FluentBuilder;
+
 namespace BuilderConsumer;
 
+[AutoGenerateBuilder]
 public class ThingWithOnlyParameterizedConstructors
 {
     public int X { get; set; }
