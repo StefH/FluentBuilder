@@ -102,7 +102,7 @@ namespace FluentBuilderGeneratorTests.DTO
             return Object.Value;
         }
 
-        public static ThingWithParameterizedConstructor Default() => _Constructor_1554208865.Value;
+        public static ThingWithParameterizedConstructor Default() => null;
 
     }
 }
