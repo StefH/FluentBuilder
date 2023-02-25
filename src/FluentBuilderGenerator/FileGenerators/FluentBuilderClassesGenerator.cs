@@ -164,24 +164,17 @@ namespace {classSymbol.BuilderNamespace}
 
             sb.AppendLine(8, $"        return new {classSymbol.NamedTypeSymbol}");
             sb.AppendLine(8, @"        (");
-            sb.AppendLines(8, constructorParameters.Select(x => x.Symbol.Name), ", ");
+            sb.AppendLines(20, constructorParameters.Select(x => x.Symbol.Name), ", ");
             sb.AppendLine(8, @"        );");
 
-            sb.AppendLine(8, $"_Constructor{constructorHashCode}_IsSet = true;");
+            
 
             sb.AppendLine(8, @"    });");
 
-            
-            //foreach (var p in constructorParameters)
-            //{
-            //    sb.AppendLine(12, $"_{constructorHashCode}_{CamelCase(p.Symbol.Name)} = new Lazy<{p.Type}>(() => {p.Symbol.Name});");
-            //    sb.AppendLine();
-            //}
-
-            sb.AppendLine(8, $"_{constructorHashCode}_ConstructorIsSet = true;");
+            sb.AppendLine(8, $"    _Constructor{constructorHashCode}_IsSet = true;");
 
             sb.AppendLine();
-            sb.AppendLine(12, @"return this;");
+            sb.AppendLine(8, @"    return this;");
             sb.AppendLine(8, @"}");
 
             sb.AppendLine();
@@ -466,17 +459,19 @@ namespace {classSymbol.BuilderNamespace}
 
     private static IMethodSymbol BuildCreateInstanceForConstructor(StringBuilder sb, string className, IReadOnlyList<IMethodSymbol> publicConstructors)
     {
+
         var publicConstructor = publicConstructors.First(c => !c.Parameters.IsEmpty);
-        var hashCode = publicConstructor.GetDeterministicHashCodeAsString();
-
-        var constructorParameters = GetConstructorParameters(publicConstructor);
-
-        sb.AppendLine(20, $"return new {className}");
-        sb.AppendLine(20, @"(");
-        sb.AppendLines(24, constructorParameters.Select(x => $"_{hashCode}_{CamelCase(x.Symbol.Name)}.Value"), ", ");
-        sb.AppendLine(20, @");");
-
         return publicConstructor;
+        //var hashCode = publicConstructor.GetDeterministicHashCodeAsString();
+
+        //var constructorParameters = GetConstructorParameters(publicConstructor);
+
+        //sb.AppendLine(20, $"return new {className}");
+        //sb.AppendLine(20, @"(");
+        //sb.AppendLines(24, constructorParameters.Select(x => $"_{hashCode}_{CamelCase(x.Symbol.Name)}.Value"), ", ");
+        //sb.AppendLine(20, @");");
+
+        
     }
 
     private static void BuildCreateInstanceForParameterLessConstructor(
