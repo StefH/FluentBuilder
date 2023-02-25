@@ -8,7 +8,7 @@ public class ThingWithOnlyParameterizedConstructor
 
     public string Z { get; set; }
 
-    public ThingWithOnlyParameterizedConstructor(int x, string y, string z = "test")
+    public ThingWithOnlyParameterizedConstructor(int x, int y, string z = "test")
     {
         X = x;
         Y = y;
