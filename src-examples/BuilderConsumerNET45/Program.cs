@@ -8,6 +8,12 @@ namespace BuilderConsumerNET45
     {
         static void Main(string[] args)
         {
+            var t1 = new ThingWithOnlyParameterizedConstructorsBuilder()
+                //.WithConstructor(1, "2", "drie")
+                //.Build()
+                ;
+            // Console.WriteLine("t1 = " + JsonSerializer.Serialize(t1, JsonSerializerOptions));
+
             var email = new EmailDtoBuilder()
                 .WithValue("x@x.nl")
                 .Build();
