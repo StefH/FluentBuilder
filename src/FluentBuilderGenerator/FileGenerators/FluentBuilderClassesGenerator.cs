@@ -154,15 +154,15 @@ namespace {classSymbol.BuilderNamespace}
                 //sb.AppendLine(8, $"private Lazy<{p.Type}> _{constructorHashCode}_{CamelCase(p.Symbol.Name)} = new Lazy<{p.Type}>(() => {defaultValue});");
             }
 
-            sb.AppendLine(8, $"private Lazy<{publicConstructor.Name}> _Constructor{constructorHashCode} = new Lazy<{publicConstructor.Name}>(() => {string.Join(",", defaultValues)});");
+            sb.AppendLine(8, $"private Lazy<{classSymbol.NamedTypeSymbol}> _Constructor{constructorHashCode} = new Lazy<{classSymbol.NamedTypeSymbol}>(() => {string.Join(",", defaultValues)});");
 
             sb.AppendLine(8, $"public {builderClassName} WithConstructor({constructorParametersAsString})");
             sb.AppendLine(8, @"{");
 
-            sb.AppendLine(8, $"    _Constructor{constructorHashCode} = new Lazy<{publicConstructor.Name}>(() =>");
+            sb.AppendLine(8, $"    _Constructor{constructorHashCode} = new Lazy<{classSymbol.NamedTypeSymbol}>(() =>");
             sb.AppendLine(8, @"    {");
 
-            sb.AppendLine(8, $"        return new {publicConstructor.Name}");
+            sb.AppendLine(8, $"        return new {classSymbol.NamedTypeSymbol}");
             sb.AppendLine(8, @"        (");
             sb.AppendLines(8, constructorParameters.Select(x => x.Symbol.Name), ", ");
             sb.AppendLine(8, @"        );");
