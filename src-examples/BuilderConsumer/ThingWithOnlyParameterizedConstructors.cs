@@ -11,6 +11,8 @@ public class ThingWithOnlyParameterizedConstructors
 
     public string Z { get; set; }
 
+    public long L { get; set; }
+
     public ThingWithOnlyParameterizedConstructors(int x, int y, string z = "test")
     {
         X = x;
