@@ -2,7 +2,7 @@ using FluentBuilder;
 
 namespace BuilderConsumer.Builders;
 
-[AutoGenerateBuilder(typeof(ThingWithOnlyParameterizedConstructor))]
-public partial class ThingWithOnlyParameterizedConstructorBuilder
+[AutoGenerateBuilder(typeof(ThingWithOnlyParameterizedConstructors))]
+public partial class ThingWithOnlyParameterizedConstructorsBuilder
 {
 }

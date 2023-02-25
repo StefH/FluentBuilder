@@ -19,7 +19,7 @@
       <Compile Update="Builders\ThingWithParameterizedConstructorBuilder.cs">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Compile>
-      <Compile Update="ThingWithOnlyParameterizedConstructor.cs">
+      <Compile Update="ThingWithOnlyParameterizedConstructors.cs">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Compile>
       <Compile Update="ThingWithParameterizedConstructor.cs">

@@ -28,8 +28,7 @@ public class FluentBuilderSourceGeneratorTests
     }
 
     [ModuleInitializer]
-    public static void ModuleInitializer() =>
-        VerifySourceGenerators.Enable();
+    public static void ModuleInitializer() => VerifySourceGenerators.Enable();
 
     [Fact]
     public Task GenerateFiles_ForAClassWithoutAPublicConstructor_Should_Create_ErrorFile()
@@ -120,6 +119,9 @@ public class FluentBuilderSourceGeneratorTests
             builder.Text.Should().Be(File.ReadAllText($"../../../DTO/{filename}"));
         }
 
+        var b0 = new ThingWithOnlyParameterizedConstructorsBuilder()
+            .Build();
+
         var b1 = new ThingWithOnlyParameterizedConstructorsBuilder()
             .WithConstructor(1, 2, "drie")
             .Build();
@@ -128,7 +130,7 @@ public class FluentBuilderSourceGeneratorTests
             .WithConstructor(42)
             .Build();
 
-        int xxx = 0;
+        var _ = 0;
     }
 
     [Fact]
