@@ -447,9 +447,8 @@ namespace {classSymbol.BuilderNamespace}
         {
             var constructorHashCode = x.publicConstructor.GetDeterministicHashCodeAsString();
 
-            output.AppendLine(20, $"{(x.idx > 0).If("else ")}if (_Constructor{constructorHashCode}_IsSet) {{ instance = _Constructor{constructorHashCode}.Value; }}");
+            output.AppendLine(20, $"{(x.idx > 0).IIf("else ")}if (_Constructor{constructorHashCode}_IsSet) {{ instance = _Constructor{constructorHashCode}.Value; }}");
         }
-        //output.AppendLine(20, (publicConstructors.Length == 1).If("instance = Default();", "else { instance = Default(); }"));
         output.AppendLine(20, "else { instance = Default(); }");
         output.AppendLine();
 
@@ -482,55 +481,12 @@ namespace {classSymbol.BuilderNamespace}
         return output.ToString();
     }
 
-    private static IMethodSymbol BuildCreateInstanceForConstructor(StringBuilder sb, IReadOnlyList<IMethodSymbol> publicConstructors)
-    {
-        foreach (var publicConstructor in publicConstructors)
-        {
-            var constructorHashCode = publicConstructor.GetDeterministicHashCodeAsString();
-            sb.AppendLine(20, $"if (_Constructor{constructorHashCode}_IsSet) {{ return _Constructor{constructorHashCode}.Value; }}");
-        }
-
-        sb.AppendLine();
-        sb.AppendLine(20, @"return Default();");
-
-        return publicConstructors.First(c => !c.Parameters.IsEmpty);
-    }
-
-    private static void BuildCreateInstanceForParameterLessConstructor(
-        StringBuilder output,
-        string className,
-        IReadOnlyList<IPropertySymbol> propertiesPublicSettable,
-        IReadOnlyList<IPropertySymbol> propertiesPrivateSettable
-    )
-    {
-        output.AppendLine(20, $"{className} instance;");
-        output.AppendLine(20, @"if (useObjectInitializer)");
-        output.AppendLine(20, @"{");
-        output.AppendLine(20, $"    instance = new {className}");
-        output.AppendLine(20, @"    {");
-        output.AppendLines(20, propertiesPublicSettable.Select(property => $@"        {property.Name} = _{CamelCase(property.Name)}.Value"), ",");
-        output.AppendLine(20, @"    };");
-
-        output.AppendLines(20, propertiesPrivateSettable.Select(property => $@"    if (_{CamelCase(property.Name)}IsSet) {{ Set{property.Name}(instance, _{CamelCase(property.Name)}.Value); }}"));
-
-        output.AppendLine(20, @"    return instance;");
-        output.AppendLine(20, @"}");
-        output.AppendLine();
-        output.AppendLine(20, $"instance = new {className}();");
-
-        output.AppendLines(20, propertiesPublicSettable.Select(property => $@"if (_{CamelCase(property.Name)}IsSet) {{ instance.{property.Name} = _{CamelCase(property.Name)}.Value; }}"));
-
-        output.AppendLines(20, propertiesPrivateSettable.Select(property => $@"if (_{CamelCase(property.Name)}IsSet) {{ Set{property.Name}(instance, _{CamelCase(property.Name)}.Value); }}"));
-
-        output.AppendLine(20, "return instance;");
-    }
-
     private static void BuildPrivateSetMethod(StringBuilder output, string className, IPropertySymbol property)
     {
-        output.AppendLine($"        private void Set{property.Name}({className} instance, {property.Type} value)");
-        output.AppendLine("        {");
-        output.AppendLine($"            InstanceType.GetProperty(\"{property.Name}\")?.SetValue(instance, value);");
-        output.AppendLine("        }");
+        output.AppendLine(8, $"private void Set{property.Name}({className} instance, {property.Type} value)");
+        output.AppendLine(8, @"{");
+        output.AppendLine(8, $"    InstanceType.GetProperty(\"{property.Name}\")?.SetValue(instance, value);");
+        output.AppendLine(8, @"}");
         output.AppendLine();
     }
 

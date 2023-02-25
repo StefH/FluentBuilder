@@ -1,3 +1,4 @@
+using FluentBuilderGenerator.Extensions;
 using FluentBuilderGenerator.Models;
 using FluentBuilderGenerator.Types;
 
@@ -32,7 +33,7 @@ internal class IDictionaryBuilderGenerator : IFileGenerator
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-{(_supportsNullable ? "#nullable enable" : string.Empty)}
+{_supportsNullable.IIf("#nullable enable")}
 using System;
 using System.Collections.Generic;
 
@@ -69,7 +70,7 @@ namespace {_assemblyName}.FluentBuilder
         }}
     }}
 }}
-{(_supportsNullable ? "#nullable disable" : string.Empty)}"
+{_supportsNullable.IIf("#nullable disable")}"
         );
     }
 }

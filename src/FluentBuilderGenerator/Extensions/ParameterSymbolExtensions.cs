@@ -1,4 +1,3 @@
-using FluentBuilderGenerator.Types;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 
@@ -19,7 +18,7 @@ internal static class ParameterSymbolExtensions
         };
     }
 
-    public static string GetParamsPrefix(this IParameterSymbol ps) => ps.IsParams ? "params " : string.Empty;
+    public static string GetParamsPrefix(this IParameterSymbol ps) => ps.IsParams.IIf("params ");
 
     public static string GetDefaultValue(this IParameterSymbol ps)
     {
@@ -50,6 +49,4 @@ internal static class ParameterSymbolExtensions
 
         return $" = {defaultValue}";
     }
-
-    //public static TypeEnum GetTypeEnum(this IParameterSymbol p) => p.Type.GetTypeEnum();
 }

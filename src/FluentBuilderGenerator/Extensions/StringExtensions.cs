@@ -8,7 +8,7 @@ internal static class StringExtensions
 {
     private static readonly Regex ExtractValueBetween = new("(?<=<).*(?=>)", RegexOptions.Compiled);
 
-    public static string If(this bool value, string valueTrue, string valueFalse = "")
+    public static string IIf(this bool value, string valueTrue, string valueFalse = "")
     {
         return value ? valueTrue : valueFalse;
     }

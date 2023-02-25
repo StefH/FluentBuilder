@@ -21,7 +21,7 @@ internal static class SymbolExtensions
     {
         var attributes = symbol.GetAttributesAsList();
 
-        return attributes.Any() ? $"{string.Join(" ", attributes)} " : string.Empty;
+        return attributes.Any().IIf($"{string.Join(" ", attributes)} ");
     }
 
     public static IReadOnlyList<string> GetAttributesAsList(this ISymbol symbol)
