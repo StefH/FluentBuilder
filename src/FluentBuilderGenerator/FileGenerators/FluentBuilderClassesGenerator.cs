@@ -151,10 +151,9 @@ namespace {classSymbol.BuilderNamespace}
                 }
 
                 defaultValues.Add(defaultValue);
-                //sb.AppendLine(8, $"private Lazy<{p.Type}> _{constructorHashCode}_{CamelCase(p.Symbol.Name)} = new Lazy<{p.Type}>(() => {defaultValue});");
             }
 
-            sb.AppendLine(8, $"private Lazy<{classSymbol.NamedTypeSymbol}> _Constructor{constructorHashCode} = new Lazy<{classSymbol.NamedTypeSymbol}>(() => {string.Join(",", defaultValues)});");
+            sb.AppendLine(8, $"private Lazy<{classSymbol.NamedTypeSymbol}> _Constructor{constructorHashCode} = new Lazy<{classSymbol.NamedTypeSymbol}>(() => new {classSymbol.NamedTypeSymbol}({string.Join(",", defaultValues)}));");
 
             sb.AppendLine(8, $"public {builderClassName} WithConstructor({constructorParametersAsString})");
             sb.AppendLine(8, @"{");
@@ -166,9 +165,7 @@ namespace {classSymbol.BuilderNamespace}
             sb.AppendLine(8, @"        (");
             sb.AppendLines(20, constructorParameters.Select(x => x.Symbol.Name), ", ");
             sb.AppendLine(8, @"        );");
-
             
-
             sb.AppendLine(8, @"    });");
 
             sb.AppendLine(8, $"    _Constructor{constructorHashCode}_IsSet = true;");
@@ -414,14 +411,18 @@ namespace {classSymbol.BuilderNamespace}
             BuildPrivateSetMethod(output, className, property);
         }
 
-        output.AppendLine(8, $"public override {className} Build(bool useObjectInitializer = true)");
+        var isParameterLessConstructor = publicConstructors.Any(p => p.Parameters.IsEmpty);
+
+        var useObjectInitializer = isParameterLessConstructor.If("bool useObjectInitializer = true");
+
+        output.AppendLine(8, $"public override {className} Build({useObjectInitializer})");
         output.AppendLine(8, @"{");
         output.AppendLine(8, @"    if (Object?.IsValueCreated != true)");
         output.AppendLine(8, @"    {");
         output.AppendLine(8, $"        Object = new Lazy<{className}>(() =>");
         output.AppendLine(8, @"        {");
 
-        var isParameterLessConstructor = publicConstructors.Any(p => p.Parameters.IsEmpty);
+        
         IMethodSymbol constructor;
         if (isParameterLessConstructor)
         {
@@ -459,19 +460,28 @@ namespace {classSymbol.BuilderNamespace}
 
     private static IMethodSymbol BuildCreateInstanceForConstructor(StringBuilder sb, string className, IReadOnlyList<IMethodSymbol> publicConstructors)
     {
+        //var publicConstructor = publicConstructors.First(c => !c.Parameters.IsEmpty);
 
-        var publicConstructor = publicConstructors.First(c => !c.Parameters.IsEmpty);
-        return publicConstructor;
-        //var hashCode = publicConstructor.GetDeterministicHashCodeAsString();
+        foreach (var publicConstructor in publicConstructors)
+        {
+            var constructorHashCode = publicConstructor.GetDeterministicHashCodeAsString();
+
+            sb.AppendLine(20, $"if (_Constructor{constructorHashCode}_IsSet) {{ return _Constructor{constructorHashCode}.Value; }}");
+            //sb.AppendLine(20, @"{");
+            //sb.AppendLine(20, $"return new {className}");
+            //sb.AppendLine(20, @"(");
+            //sb.AppendLines(24, constructorParameters.Select(x => $"_{hashCode}_{CamelCase(x.Symbol.Name)}.Value"), ", ");
+            //sb.AppendLine(20, @");");
+            //sb.AppendLine(20, @"}");
+        }
+
+        
 
         //var constructorParameters = GetConstructorParameters(publicConstructor);
 
-        //sb.AppendLine(20, $"return new {className}");
-        //sb.AppendLine(20, @"(");
-        //sb.AppendLines(24, constructorParameters.Select(x => $"_{hashCode}_{CamelCase(x.Symbol.Name)}.Value"), ", ");
-        //sb.AppendLine(20, @");");
 
-        
+
+        return publicConstructors.First(c => !c.Parameters.IsEmpty);
     }
 
     private static void BuildCreateInstanceForParameterLessConstructor(

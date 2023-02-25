@@ -8,6 +8,11 @@ internal static class StringExtensions
 {
     private static readonly Regex ExtractValueBetween = new("(?<=<).*(?=>)", RegexOptions.Compiled);
 
+    public static string If(this bool value, string valueTrue, string valueFalse = "")
+    {
+        return value ? valueTrue : valueFalse;
+    }
+
     public static bool TryGetGenericTypeArguments(this string input, [NotNullWhen(true)] out string? genericTypeArgumentValue)
     {
         var match = ExtractValueBetween.Match(input);
