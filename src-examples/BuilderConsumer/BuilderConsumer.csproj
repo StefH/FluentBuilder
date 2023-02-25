@@ -13,7 +13,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Compile Update="Builders\ThingWithOnlyParameterizedConstructorBuilder.cs">
+      <Compile Update="Builders\ThingWithOnlyParameterizedConstructorsBuilder.cs">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Compile>
       <Compile Update="Builders\ThingWithParameterizedConstructorBuilder.cs">
