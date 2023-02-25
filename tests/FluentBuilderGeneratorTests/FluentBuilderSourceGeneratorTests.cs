@@ -60,7 +60,7 @@ public class FluentBuilderSourceGeneratorTests
     }
 
     [Fact]
-    public void GenerateFiles_ForAClassWithPublicParameterlessConstructorAndPublicParameterizedConstructor_Should_GenerateCorrectFiles()
+    public void GenerateFiles_ForAClassWithPublicParameterlessConstructors_Should_GenerateCorrectFiles()
     {
         // Arrange
         var sourceFilePath = "./DTO/ThingWithParameterizedConstructor.cs";
@@ -94,7 +94,7 @@ public class FluentBuilderSourceGeneratorTests
     public void GenerateFiles_ForAClassWithOnlyParameterizedConstructor_Should_GenerateCorrectFiles()
     {
         // Arrange
-        var sourceFilePath = "./DTO/ThingWithOnlyParameterizedConstructor.cs";
+        var sourceFilePath = "./DTO/ThingWithOnlyParameterizedConstructors.cs";
         var sourceFile = new SourceFile
         {
             Path = sourceFilePath,
@@ -120,8 +120,9 @@ public class FluentBuilderSourceGeneratorTests
             builder.Text.Should().Be(File.ReadAllText($"../../../DTO/{filename}"));
         }
 
-        var b = new ThingWithOnlyParameterizedConstructorBuilder()
-            .Build();
+        //var b = new ThingWithOnlyParameterizedConstructorBuilder()
+        //    .WithConstructor(1, "2", "drie")
+        //    .Build();
 
         int xxx = 0;
     }

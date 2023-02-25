@@ -139,31 +139,52 @@ namespace {classSymbol.BuilderNamespace}
             var constructorParametersAsString = string.Join(", ", constructorParameters.Select(x => MethodParameterBuilder.Build(x.Symbol, x.Type)));
             var constructorHashCode = publicConstructor.GetDeterministicHashCodeAsString();
 
+            sb.AppendLine(8, $"private bool _Constructor{constructorHashCode}_IsSet;");
+            
+            var defaultValues = new List<string>();
             foreach (var p in constructorParameters)
             {
-                sb.AppendLine(8, $"private bool _{constructorHashCode}_{CamelCase(p.Symbol.Name)}IsSet;");
-
                 var (defaultValue, extraUsingsFromDefaultValue) = DefaultValueHelper.GetDefaultValue(p.Symbol, p.Symbol.Type);
                 if (extraUsingsFromDefaultValue != null)
                 {
                     extraUsings.AddRange(extraUsingsFromDefaultValue);
                 }
-                sb.AppendLine(8, $"private Lazy<{p.Type}> _{constructorHashCode}_{CamelCase(p.Symbol.Name)} = new Lazy<{p.Type}>(() => {defaultValue});");
+
+                defaultValues.Add(defaultValue);
+                //sb.AppendLine(8, $"private Lazy<{p.Type}> _{constructorHashCode}_{CamelCase(p.Symbol.Name)} = new Lazy<{p.Type}>(() => {defaultValue});");
             }
+
+            sb.AppendLine(8, $"private Lazy<{publicConstructor.Name}> _Constructor{constructorHashCode} = new Lazy<{publicConstructor.Name}>(() => {string.Join(",", defaultValues)});");
 
             sb.AppendLine(8, $"public {builderClassName} WithConstructor({constructorParametersAsString})");
             sb.AppendLine(8, @"{");
 
-            foreach (var p in constructorParameters)
-            {
-                sb.AppendLine(12, $"_{constructorHashCode}_{CamelCase(p.Symbol.Name)} = new Lazy<{p.Type}>(() => {p.Symbol.Name});");
-                sb.AppendLine(12, $"_{constructorHashCode}_{CamelCase(p.Symbol.Name)}IsSet = true;");
-                sb.AppendLine();
-            }
+            sb.AppendLine(8, $"    _Constructor{constructorHashCode} = new Lazy<{publicConstructor.Name}>(() =>");
+            sb.AppendLine(8, @"    {");
+
+            sb.AppendLine(8, $"        return new {publicConstructor.Name}");
+            sb.AppendLine(8, @"        (");
+            sb.AppendLines(8, constructorParameters.Select(x => x.Symbol.Name), ", ");
+            sb.AppendLine(8, @"        );");
+
+            sb.AppendLine(8, $"_Constructor{constructorHashCode}_IsSet = true;");
+
+            sb.AppendLine(8, @"    });");
+
+            
+            //foreach (var p in constructorParameters)
+            //{
+            //    sb.AppendLine(12, $"_{constructorHashCode}_{CamelCase(p.Symbol.Name)} = new Lazy<{p.Type}>(() => {p.Symbol.Name});");
+            //    sb.AppendLine();
+            //}
+
+            sb.AppendLine(8, $"_{constructorHashCode}_ConstructorIsSet = true;");
 
             sb.AppendLine();
             sb.AppendLine(12, @"return this;");
             sb.AppendLine(8, @"}");
+
+            sb.AppendLine();
         }
 
         return (sb, extraUsings.Distinct().ToList());

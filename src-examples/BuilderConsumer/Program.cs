@@ -16,7 +16,10 @@ class Program
 
     static void Main(string[] args)
     {
-        var t1 = new ThingWithOnlyParameterizedConstructorBuilder();
+        var t1 = new ThingWithOnlyParameterizedConstructorBuilder()
+            .WithConstructor(1, "2", "drie")
+            .Build();
+        Console.WriteLine("t1 = " + JsonSerializer.Serialize(t1, JsonSerializerOptions));
 
         var s = new MyVersionBuilder().Build();
         Console.WriteLine("s = " + JsonSerializer.Serialize(s, JsonSerializerOptions));
