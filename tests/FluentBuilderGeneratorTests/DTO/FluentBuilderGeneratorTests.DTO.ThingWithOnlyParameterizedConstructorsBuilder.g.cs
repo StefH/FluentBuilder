@@ -103,11 +103,17 @@ namespace FluentBuilderGeneratorTests.DTO
         }
 
 
-        public override ThingWithOnlyParameterizedConstructors Build(bool useObjectInitializer = true)
+        public override ThingWithOnlyParameterizedConstructors Build(bool c)
         {
             if (Object?.IsValueCreated != true)
             {
-               
+                Object = new Lazy<ThingWithOnlyParameterizedConstructors>(() =>
+                {
+                    if (_Constructor290739056_IsSet) { return _Constructor290739056.Value; }
+                    if (_Constructor696540298_IsSet) { return _Constructor696540298.Value; }
+
+                    return Default();
+                });
             }
 
             PostBuild(Object.Value);
@@ -117,6 +123,7 @@ namespace FluentBuilderGeneratorTests.DTO
 
         public static ThingWithOnlyParameterizedConstructors Default() => new ThingWithOnlyParameterizedConstructors(default(int), default(int), string.Empty);
 
+        
     }
 }
 #nullable disable

@@ -413,16 +413,13 @@ namespace {classSymbol.BuilderNamespace}
 
         var isParameterLessConstructor = publicConstructors.Any(p => p.Parameters.IsEmpty);
 
-        var useObjectInitializer = isParameterLessConstructor.If("bool useObjectInitializer = true");
-
-        output.AppendLine(8, $"public override {className} Build({useObjectInitializer})");
+        output.AppendLine(8, $"public override {className} Build(bool useObjectInitializer = true)");
         output.AppendLine(8, @"{");
         output.AppendLine(8, @"    if (Object?.IsValueCreated != true)");
         output.AppendLine(8, @"    {");
         output.AppendLine(8, $"        Object = new Lazy<{className}>(() =>");
         output.AppendLine(8, @"        {");
 
-        
         IMethodSymbol constructor;
         if (isParameterLessConstructor)
         {
@@ -431,7 +428,7 @@ namespace {classSymbol.BuilderNamespace}
         }
         else
         {
-            constructor = BuildCreateInstanceForConstructor(output, className, publicConstructors);
+            constructor = BuildCreateInstanceForConstructor(output, publicConstructors);
         }
 
         output.AppendLine(8, @"        });");
@@ -458,28 +455,15 @@ namespace {classSymbol.BuilderNamespace}
         return output.ToString();
     }
 
-    private static IMethodSymbol BuildCreateInstanceForConstructor(StringBuilder sb, string className, IReadOnlyList<IMethodSymbol> publicConstructors)
+    private static IMethodSymbol BuildCreateInstanceForConstructor(StringBuilder sb, IReadOnlyList<IMethodSymbol> publicConstructors)
     {
-        //var publicConstructor = publicConstructors.First(c => !c.Parameters.IsEmpty);
-
         foreach (var publicConstructor in publicConstructors)
         {
             var constructorHashCode = publicConstructor.GetDeterministicHashCodeAsString();
-
             sb.AppendLine(20, $"if (_Constructor{constructorHashCode}_IsSet) {{ return _Constructor{constructorHashCode}.Value; }}");
-            //sb.AppendLine(20, @"{");
-            //sb.AppendLine(20, $"return new {className}");
-            //sb.AppendLine(20, @"(");
-            //sb.AppendLines(24, constructorParameters.Select(x => $"_{hashCode}_{CamelCase(x.Symbol.Name)}.Value"), ", ");
-            //sb.AppendLine(20, @");");
-            //sb.AppendLine(20, @"}");
         }
 
-        
-
-        //var constructorParameters = GetConstructorParameters(publicConstructor);
-
-
+        sb.AppendLine(20, @"return Default()");
 
         return publicConstructors.First(c => !c.Parameters.IsEmpty);
     }
