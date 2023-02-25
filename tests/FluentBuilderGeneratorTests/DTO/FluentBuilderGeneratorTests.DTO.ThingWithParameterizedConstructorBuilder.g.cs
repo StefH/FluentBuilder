@@ -89,8 +89,9 @@ namespace FluentBuilderGeneratorTests.DTO
                     }
 
                     if (_Constructor_1554208865_IsSet) { instance = _Constructor_1554208865.Value; }
-                    if (_Constructor_722069126_IsSet) { instance = _Constructor_722069126.Value; }
-                    instance = Default();
+                    else if (_Constructor_722069126_IsSet) { instance = _Constructor_722069126.Value; }
+                    else { instance = Default(); }
+
                     if (_xIsSet) { instance.X = _x.Value; }
 
                     return instance;
@@ -102,7 +103,7 @@ namespace FluentBuilderGeneratorTests.DTO
             return Object.Value;
         }
 
-        public static ThingWithParameterizedConstructor Default() => null;
+        public static ThingWithParameterizedConstructor Default() => new ThingWithParameterizedConstructor();
 
     }
 }

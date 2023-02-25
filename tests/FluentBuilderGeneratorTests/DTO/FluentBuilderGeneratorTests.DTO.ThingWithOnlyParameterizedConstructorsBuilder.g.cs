@@ -19,51 +19,19 @@ namespace FluentBuilderGeneratorTests.DTO
 {
     public partial class ThingWithOnlyParameterizedConstructorsBuilder : Builder<FluentBuilderGeneratorTests.DTO.ThingWithOnlyParameterizedConstructors>
     {
-        private bool _xIsSet;
-        private Lazy<int> _x = new Lazy<int>(() => default(int));
-        public ThingWithOnlyParameterizedConstructorsBuilder WithX(int value) => WithX(() => value);
-        public ThingWithOnlyParameterizedConstructorsBuilder WithX(Func<int> func)
+        private bool _lIsSet;
+        private Lazy<long> _l = new Lazy<long>(() => default(long));
+        public ThingWithOnlyParameterizedConstructorsBuilder WithL(long value) => WithL(() => value);
+        public ThingWithOnlyParameterizedConstructorsBuilder WithL(Func<long> func)
         {
-            _x = new Lazy<int>(func);
-            _xIsSet = true;
+            _l = new Lazy<long>(func);
+            _lIsSet = true;
             return this;
         }
-        public ThingWithOnlyParameterizedConstructorsBuilder WithoutX()
+        public ThingWithOnlyParameterizedConstructorsBuilder WithoutL()
         {
-            WithX(() => default(int));
-            _xIsSet = false;
-            return this;
-        }
-
-        private bool _yIsSet;
-        private Lazy<int> _y = new Lazy<int>(() => default(int));
-        public ThingWithOnlyParameterizedConstructorsBuilder WithY(int value) => WithY(() => value);
-        public ThingWithOnlyParameterizedConstructorsBuilder WithY(Func<int> func)
-        {
-            _y = new Lazy<int>(func);
-            _yIsSet = true;
-            return this;
-        }
-        public ThingWithOnlyParameterizedConstructorsBuilder WithoutY()
-        {
-            WithY(() => default(int));
-            _yIsSet = false;
-            return this;
-        }
-
-        private bool _zIsSet;
-        private Lazy<string> _z = new Lazy<string>(() => string.Empty);
-        public ThingWithOnlyParameterizedConstructorsBuilder WithZ(string value) => WithZ(() => value);
-        public ThingWithOnlyParameterizedConstructorsBuilder WithZ(Func<string> func)
-        {
-            _z = new Lazy<string>(func);
-            _zIsSet = true;
-            return this;
-        }
-        public ThingWithOnlyParameterizedConstructorsBuilder WithoutZ()
-        {
-            WithZ(() => string.Empty);
-            _zIsSet = false;
+            WithL(() => default(long));
+            _lIsSet = false;
             return this;
         }
 
@@ -118,11 +86,10 @@ namespace FluentBuilderGeneratorTests.DTO
                     }
 
                     if (_Constructor290739056_IsSet) { instance = _Constructor290739056.Value; }
-                    if (_Constructor696540298_IsSet) { instance = _Constructor696540298.Value; }
-                    instance = Default();
-                  //  if (_xIsSet) { instance.X = _x.Value; }
-                  //  if (_yIsSet) { instance.Y = _y.Value; }
-                  //  if (_zIsSet) { instance.Z = _z.Value; }
+                    else if (_Constructor696540298_IsSet) { instance = _Constructor696540298.Value; }
+                    else { instance = Default(); }
+
+                    if (_lIsSet) { instance.L = _l.Value; }
 
                     return instance;
                 });

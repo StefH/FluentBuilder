@@ -443,12 +443,15 @@ namespace {classSymbol.BuilderNamespace}
         output.AppendLine(20, @"}");
         output.AppendLine();
 
-        foreach (var publicConstructor in publicConstructors)
+        foreach (var x in publicConstructors.Select((publicConstructor, idx) => new { publicConstructor, idx}))
         {
-            var constructorHashCode = publicConstructor.GetDeterministicHashCodeAsString();
-            output.AppendLine(20, $"if (_Constructor{constructorHashCode}_IsSet) {{ instance = _Constructor{constructorHashCode}.Value; }}");
+            var constructorHashCode = x.publicConstructor.GetDeterministicHashCodeAsString();
+
+            output.AppendLine(20, $"{(x.idx > 0).If("else ")}if (_Constructor{constructorHashCode}_IsSet) {{ instance = _Constructor{constructorHashCode}.Value; }}");
         }
-        output.AppendLine(20, @"instance = Default();");
+        //output.AppendLine(20, (publicConstructors.Length == 1).If("instance = Default();", "else { instance = Default(); }"));
+        output.AppendLine(20, "else { instance = Default(); }");
+        output.AppendLine();
 
         output.AppendLines(20, propertiesPublicSettable.Select(property => $@"if (_{CamelCase(property.Name)}IsSet) {{ instance.{property.Name} = _{CamelCase(property.Name)}.Value; }}"));
 
