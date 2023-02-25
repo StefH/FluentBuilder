@@ -1,6 +1,6 @@
 namespace FluentBuilderGeneratorTests.DTO;
 
-public class ThingWithOnlyParameterizedConstructor
+public class ThingWithOnlyParameterizedConstructors
 {
     public int X { get; set; }
 
@@ -8,14 +8,14 @@ public class ThingWithOnlyParameterizedConstructor
 
     public string Z { get; set; }
 
-    public ThingWithOnlyParameterizedConstructor(int x, int y, string z = "test")
+    public ThingWithOnlyParameterizedConstructors(int x, int y, string z = "test")
     {
         X = x;
         Y = y;
         Z = z;
     }
 
-    public ThingWithOnlyParameterizedConstructor(int x)
+    public ThingWithOnlyParameterizedConstructors(int x)
     {
         X = x;
         Y = -1;
