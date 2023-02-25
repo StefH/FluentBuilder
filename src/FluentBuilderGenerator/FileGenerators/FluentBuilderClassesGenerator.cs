@@ -122,17 +122,12 @@ namespace {classSymbol.BuilderNamespace}
         IReadOnlyList<IMethodSymbol> publicConstructors
     )
     {
-        if (publicConstructors.Count(c => c.Parameters.IsEmpty) == 1)
-        {
-            return (new StringBuilder(), new List<string>());
-        }
-
         var builderClassName = classSymbol.BuilderClassName;
 
         var extraUsings = new List<string>();
 
         var sb = new StringBuilder();
-        foreach (var publicConstructor in publicConstructors.Where(c => !c.Parameters.IsEmpty))
+        foreach (var publicConstructor in publicConstructors)
         {
             var constructorParameters = GetConstructorParameters(publicConstructor);
 
@@ -411,35 +406,55 @@ namespace {classSymbol.BuilderNamespace}
             BuildPrivateSetMethod(output, className, property);
         }
 
-        var isParameterLessConstructor = publicConstructors.Any(p => p.Parameters.IsEmpty);
+        var hasParameterLessConstructor = publicConstructors.Any(p => p.Parameters.IsEmpty);
 
-        output.AppendLine(8, $"public override {className} Build() => Build({isParameterLessConstructor.ToString().ToLowerInvariant()});");
+        output.AppendLine(8, $"public override {className} Build() => Build({hasParameterLessConstructor.ToString().ToLowerInvariant()});");
         output.AppendLine();
 
         output.AppendLine(8, $"public override {className} Build(bool useObjectInitializer)");
         output.AppendLine(8, @"{");
-
-        if (!isParameterLessConstructor)
-        {
-            output.AppendLine(8, $"    if (useObjectInitializer) {{ throw new NotSupportedException(\"Unable to use the ObjectInitializer for the class '{classSymbol.NamedTypeSymbol}' because no public parameterless constructor is defined.\"); }}");
-            output.AppendLine();
-        }
 
         output.AppendLine(8, @"    if (Object?.IsValueCreated != true)");
         output.AppendLine(8, @"    {");
         output.AppendLine(8, $"        Object = new Lazy<{className}>(() =>");
         output.AppendLine(8, @"        {");
 
-        IMethodSymbol constructor;
-        if (isParameterLessConstructor)
+        output.AppendLine(20, $"{className} instance;");
+
+        output.AppendLine(20, @"if (useObjectInitializer)");
+        output.AppendLine(20, @"{");
+
+        if (!hasParameterLessConstructor)
         {
-            constructor = publicConstructors.First(p => p.Parameters.IsEmpty);
-            BuildCreateInstanceForParameterLessConstructor(output, className, propertiesPublicSettable, propertiesPrivateSettable);
+            output.AppendLine(20, $"    throw new NotSupportedException(\"Unable to use the ObjectInitializer for the class '{classSymbol.NamedTypeSymbol}' because no public parameterless constructor is defined.\");");
         }
         else
         {
-            constructor = BuildCreateInstanceForConstructor(output, publicConstructors);
+            output.AppendLine(20, $"    instance = new {className}");
+            output.AppendLine(20, @"    {");
+            output.AppendLines(20, propertiesPublicSettable.Select(property => $@"        {property.Name} = _{CamelCase(property.Name)}.Value"), ",");
+            output.AppendLine(20, @"    };");
+
+            output.AppendLines(20, propertiesPrivateSettable.Select(property => $@"    if (_{CamelCase(property.Name)}IsSet) {{ Set{property.Name}(instance, _{CamelCase(property.Name)}.Value); }}"));
+
+            output.AppendLine(20, @"    return instance;");
         }
+        
+        output.AppendLine(20, @"}");
+        output.AppendLine();
+
+        foreach (var publicConstructor in publicConstructors)
+        {
+            var constructorHashCode = publicConstructor.GetDeterministicHashCodeAsString();
+            output.AppendLine(20, $"if (_Constructor{constructorHashCode}_IsSet) {{ instance = _Constructor{constructorHashCode}.Value; }}");
+        }
+        output.AppendLine(20, @"instance = Default();");
+
+        output.AppendLines(20, propertiesPublicSettable.Select(property => $@"if (_{CamelCase(property.Name)}IsSet) {{ instance.{property.Name} = _{CamelCase(property.Name)}.Value; }}"));
+
+        output.AppendLines(20, propertiesPrivateSettable.Select(property => $@"if (_{CamelCase(property.Name)}IsSet) {{ Set{property.Name}(instance, _{CamelCase(property.Name)}.Value); }}"));
+
+        output.AppendLine(20, "return instance;");
 
         output.AppendLine(8, @"        });");
         output.AppendLine(8, @"    }");
@@ -454,12 +469,11 @@ namespace {classSymbol.BuilderNamespace}
         output.AppendLine();
 
         var defaultValues = new List<string>();
-        foreach (var p in GetConstructorParameters(constructor))
+        foreach (var p in GetConstructorParameters(publicConstructors.First()))
         {
             var (defaultValue, _) = DefaultValueHelper.GetDefaultValue(p.Symbol, p.Symbol.Type);
             defaultValues.Add(defaultValue);
         }
-
         output.AppendLine(8, $"public static {className} Default() => new {className}({string.Join(", ", defaultValues)});");
 
         return output.ToString();
