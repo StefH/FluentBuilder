@@ -119,19 +119,19 @@ public class FluentBuilderSourceGeneratorTests
             builder.Text.Should().Be(File.ReadAllText($"../../../DTO/{filename}"));
         }
 
-        //var b0 = new ThingWithOnlyParameterizedConstructorsBuilder()
-        //    .WithL(10000)
-        //    .Build();
+        var b0 = new ThingWithOnlyParameterizedConstructorsBuilder()
+            .WithL(10000)
+            .Build();
 
         var b1 = new ThingWithOnlyParameterizedConstructorsBuilder()
             .WithConstructor(1, 2, "drie")
             .WithL(10000)
             .Build();
 
-        //var b2 = new ThingWithOnlyParameterizedConstructorsBuilder()
-        //    .WithConstructor(42)
-        //    .WithL(10000)
-        //    .Build();
+        var b2 = new ThingWithOnlyParameterizedConstructorsBuilder()
+            .WithConstructor(42)
+            .WithL(10000)
+            .Build();
 
         var _ = 0;
     }
