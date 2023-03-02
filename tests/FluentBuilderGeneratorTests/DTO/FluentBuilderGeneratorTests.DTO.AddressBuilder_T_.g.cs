@@ -57,9 +57,9 @@ namespace FluentBuilderGeneratorTests.DTO
 
         public override Address<T> Build(bool useObjectInitializer)
         {
-            if (Object?.IsValueCreated != true)
+            if (Instance?.IsValueCreated != true)
             {
-                Object = new Lazy<Address<T>>(() =>
+                Instance = new Lazy<Address<T>>(() =>
                 {
                     Address<T> instance;
                     if (useObjectInitializer)
@@ -81,9 +81,9 @@ namespace FluentBuilderGeneratorTests.DTO
                 });
             }
 
-            PostBuild(Object.Value);
+            PostBuild(Instance.Value);
 
-            return Object.Value;
+            return Instance.Value;
         }
 
         public static Address<T> Default() => new Address<T>();

@@ -79,9 +79,9 @@ namespace FluentBuilderGeneratorTests.DTO
 
         public override UserTWithAddressAndConstructor<T> Build(bool useObjectInitializer)
         {
-            if (Object?.IsValueCreated != true)
+            if (Instance?.IsValueCreated != true)
             {
-                Object = new Lazy<UserTWithAddressAndConstructor<T>>(() =>
+                Instance = new Lazy<UserTWithAddressAndConstructor<T>>(() =>
                 {
                     UserTWithAddressAndConstructor<T> instance;
                     if (useObjectInitializer)
@@ -105,9 +105,9 @@ namespace FluentBuilderGeneratorTests.DTO
                 });
             }
 
-            PostBuild(Object.Value);
+            PostBuild(Instance.Value);
 
-            return Object.Value;
+            return Instance.Value;
         }
 
         public static UserTWithAddressAndConstructor<T> Default() => new UserTWithAddressAndConstructor<T>();

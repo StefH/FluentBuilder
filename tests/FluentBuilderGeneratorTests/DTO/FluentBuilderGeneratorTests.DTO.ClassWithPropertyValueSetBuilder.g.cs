@@ -220,9 +220,9 @@ namespace FluentBuilderGeneratorTests.DTO
 
         public override ClassWithPropertyValueSet Build(bool useObjectInitializer)
         {
-            if (Object?.IsValueCreated != true)
+            if (Instance?.IsValueCreated != true)
             {
-                Object = new Lazy<ClassWithPropertyValueSet>(() =>
+                Instance = new Lazy<ClassWithPropertyValueSet>(() =>
                 {
                     ClassWithPropertyValueSet instance;
                     if (useObjectInitializer)
@@ -264,9 +264,9 @@ namespace FluentBuilderGeneratorTests.DTO
                 });
             }
 
-            PostBuild(Object.Value);
+            PostBuild(Instance.Value);
 
-            return Object.Value;
+            return Instance.Value;
         }
 
         public static ClassWithPropertyValueSet Default() => new ClassWithPropertyValueSet();

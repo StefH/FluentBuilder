@@ -38,17 +38,17 @@ namespace FluentBuilderGeneratorTests.DTO
 
         public override IEnumerable<FluentBuilderGeneratorTests.DTO.Address> Build(bool useObjectInitializer)
         {
-            if (Object?.IsValueCreated != true)
+            if (Instance?.IsValueCreated != true)
             {
-                Object = new Lazy<IEnumerable<FluentBuilderGeneratorTests.DTO.Address>>(() =>
+                Instance = new Lazy<IEnumerable<FluentBuilderGeneratorTests.DTO.Address>>(() =>
                 {
                     return _list.Value;
                 });
             }
 
-            PostBuild(Object.Value);
+            PostBuild(Instance.Value);
 
-            return Object.Value;
+            return Instance.Value;
         }
 
     }

@@ -29,17 +29,17 @@ namespace FluentBuilderGeneratorTests.FluentBuilder
 
         public override T[] Build(bool useObjectInitializer)
         {
-            if (Object?.IsValueCreated != true)
+            if (Instance?.IsValueCreated != true)
             {
-                Object = new Lazy<T[]>(() =>
+                Instance = new Lazy<T[]>(() =>
                 {
                     return _list.Value.ToArray();
                 });
             }
 
-            PostBuild(Object.Value);
+            PostBuild(Instance.Value);
 
-            return Object.Value;
+            return Instance.Value;
         }
     }
 }

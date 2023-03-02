@@ -57,9 +57,9 @@ namespace FluentBuilderGeneratorTests.DTO
 
         public override ClassWithInit Build(bool useObjectInitializer)
         {
-            if (Object?.IsValueCreated != true)
+            if (Instance?.IsValueCreated != true)
             {
-                Object = new Lazy<ClassWithInit>(() =>
+                Instance = new Lazy<ClassWithInit>(() =>
                 {
                     ClassWithInit instance;
                     if (useObjectInitializer)
@@ -81,9 +81,9 @@ namespace FluentBuilderGeneratorTests.DTO
                 });
             }
 
-            PostBuild(Object.Value);
+            PostBuild(Instance.Value);
 
-            return Object.Value;
+            return Instance.Value;
         }
 
         public static ClassWithInit Default() => new ClassWithInit();

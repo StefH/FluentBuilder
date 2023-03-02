@@ -63,9 +63,9 @@ namespace FluentBuilderGeneratorTests.DTO
 
         public override Test Build(bool useObjectInitializer)
         {
-            if (Object?.IsValueCreated != true)
+            if (Instance?.IsValueCreated != true)
             {
-                Object = new Lazy<Test>(() =>
+                Instance = new Lazy<Test>(() =>
                 {
                     Test instance;
                     if (useObjectInitializer)
@@ -87,9 +87,9 @@ namespace FluentBuilderGeneratorTests.DTO
                 });
             }
 
-            PostBuild(Object.Value);
+            PostBuild(Instance.Value);
 
-            return Object.Value;
+            return Instance.Value;
         }
 
         public static Test Default() => new Test();

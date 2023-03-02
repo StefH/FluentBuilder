@@ -56,17 +56,17 @@ namespace {_assemblyName}.FluentBuilder
 
         public override IDictionary<TKey, TValue> Build(bool useObjectInitializer)
         {{
-            if (Object?.IsValueCreated != true)
+            if (Instance?.IsValueCreated != true)
             {{
-                Object = new Lazy<IDictionary<TKey, TValue>>(() =>
+                Instance = new Lazy<IDictionary<TKey, TValue>>(() =>
                 {{
                     return _dictionary.Value;
                 }});
             }}
 
-            PostBuild(Object.Value);
+            PostBuild(Instance.Value);
 
-            return Object.Value;
+            return Instance.Value;
         }}
     }}
 }}

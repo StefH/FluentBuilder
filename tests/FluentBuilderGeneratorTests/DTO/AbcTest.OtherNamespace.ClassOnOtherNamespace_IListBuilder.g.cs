@@ -38,17 +38,17 @@ namespace AbcTest.OtherNamespace
 
         public override IList<AbcTest.OtherNamespace.ClassOnOtherNamespace> Build(bool useObjectInitializer)
         {
-            if (Object?.IsValueCreated != true)
+            if (Instance?.IsValueCreated != true)
             {
-                Object = new Lazy<IList<AbcTest.OtherNamespace.ClassOnOtherNamespace>>(() =>
+                Instance = new Lazy<IList<AbcTest.OtherNamespace.ClassOnOtherNamespace>>(() =>
                 {
                     return _list.Value;
                 });
             }
 
-            PostBuild(Object.Value);
+            PostBuild(Instance.Value);
 
-            return Object.Value;
+            return Instance.Value;
         }
 
     }

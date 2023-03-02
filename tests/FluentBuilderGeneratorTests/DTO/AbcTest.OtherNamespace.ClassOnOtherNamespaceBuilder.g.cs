@@ -57,9 +57,9 @@ namespace AbcTest.OtherNamespace
 
         public override ClassOnOtherNamespace Build(bool useObjectInitializer)
         {
-            if (Object?.IsValueCreated != true)
+            if (Instance?.IsValueCreated != true)
             {
-                Object = new Lazy<ClassOnOtherNamespace>(() =>
+                Instance = new Lazy<ClassOnOtherNamespace>(() =>
                 {
                     ClassOnOtherNamespace instance;
                     if (useObjectInitializer)
@@ -81,9 +81,9 @@ namespace AbcTest.OtherNamespace
                 });
             }
 
-            PostBuild(Object.Value);
+            PostBuild(Instance.Value);
 
-            return Object.Value;
+            return Instance.Value;
         }
 
         public static ClassOnOtherNamespace Default() => new ClassOnOtherNamespace();

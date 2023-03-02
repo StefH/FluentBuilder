@@ -60,9 +60,9 @@ namespace FluentBuilderGeneratorTests.DTO
 
         public override SimpleClass Build(bool useObjectInitializer)
         {
-            if (Object?.IsValueCreated != true)
+            if (Instance?.IsValueCreated != true)
             {
-                Object = new Lazy<SimpleClass>(() =>
+                Instance = new Lazy<SimpleClass>(() =>
                 {
                     SimpleClass instance;
                     if (useObjectInitializer)
@@ -84,9 +84,9 @@ namespace FluentBuilderGeneratorTests.DTO
                 });
             }
 
-            PostBuild(Object.Value);
+            PostBuild(Instance.Value);
 
-            return Object.Value;
+            return Instance.Value;
         }
 
         public static SimpleClass Default() => new SimpleClass();

@@ -74,17 +74,17 @@ namespace {classSymbol.BuilderNamespace}
 
         public override {genericType} Build(bool useObjectInitializer)
         {{
-            if (Object?.IsValueCreated != true)
+            if (Instance?.IsValueCreated != true)
             {{
-                Object = new Lazy<{genericType}>(() =>
+                Instance = new Lazy<{genericType}>(() =>
                 {{
                     return _list.Value{toArray};
                 }});
             }}
 
-            PostBuild(Object.Value);
+            PostBuild(Instance.Value);
 
-            return Object.Value;
+            return Instance.Value;
         }}
 ";
     }

@@ -57,9 +57,9 @@ namespace FluentBuilderGeneratorTests.DTO2
 
         public override Option Build(bool useObjectInitializer)
         {
-            if (Object?.IsValueCreated != true)
+            if (Instance?.IsValueCreated != true)
             {
-                Object = new Lazy<Option>(() =>
+                Instance = new Lazy<Option>(() =>
                 {
                     Option instance;
                     if (useObjectInitializer)
@@ -81,9 +81,9 @@ namespace FluentBuilderGeneratorTests.DTO2
                 });
             }
 
-            PostBuild(Object.Value);
+            PostBuild(Instance.Value);
 
-            return Object.Value;
+            return Instance.Value;
         }
 
         public static Option Default() => new Option();

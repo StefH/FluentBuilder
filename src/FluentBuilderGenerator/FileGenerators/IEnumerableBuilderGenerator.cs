@@ -62,17 +62,17 @@ namespace {_assemblyName}.FluentBuilder
 
         public override {_genericType} Build(bool useObjectInitializer)
         {{
-            if (Object?.IsValueCreated != true)
+            if (Instance?.IsValueCreated != true)
             {{
-                Object = new Lazy<{_genericType}>(() =>
+                Instance = new Lazy<{_genericType}>(() =>
                 {{
                     return _list.Value{_toArray};
                 }});
             }}
 
-            PostBuild(Object.Value);
+            PostBuild(Instance.Value);
 
-            return Object.Value;
+            return Instance.Value;
         }}
     }}
 }}

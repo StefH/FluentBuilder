@@ -127,9 +127,9 @@ namespace FluentBuilderGeneratorTests.DTO2
 
         public override User Build(bool useObjectInitializer)
         {
-            if (Object?.IsValueCreated != true)
+            if (Instance?.IsValueCreated != true)
             {
-                Object = new Lazy<User>(() =>
+                Instance = new Lazy<User>(() =>
                 {
                     User instance;
                     if (useObjectInitializer)
@@ -159,9 +159,9 @@ namespace FluentBuilderGeneratorTests.DTO2
                 });
             }
 
-            PostBuild(Object.Value);
+            PostBuild(Instance.Value);
 
-            return Object.Value;
+            return Instance.Value;
         }
 
         public static User Default() => new User();

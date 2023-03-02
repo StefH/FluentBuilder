@@ -75,9 +75,9 @@ namespace FluentBuilderGeneratorTests.DTO
 
         public override ThingWithOnlyParameterizedConstructors Build(bool useObjectInitializer)
         {
-            if (Object?.IsValueCreated != true)
+            if (Instance?.IsValueCreated != true)
             {
-                Object = new Lazy<ThingWithOnlyParameterizedConstructors>(() =>
+                Instance = new Lazy<ThingWithOnlyParameterizedConstructors>(() =>
                 {
                     ThingWithOnlyParameterizedConstructors instance;
                     if (useObjectInitializer)
@@ -95,9 +95,9 @@ namespace FluentBuilderGeneratorTests.DTO
                 });
             }
 
-            PostBuild(Object.Value);
+            PostBuild(Instance.Value);
 
-            return Object.Value;
+            return Instance.Value;
         }
 
         public static ThingWithOnlyParameterizedConstructors Default() => new ThingWithOnlyParameterizedConstructors(default(int), default(int), string.Empty);

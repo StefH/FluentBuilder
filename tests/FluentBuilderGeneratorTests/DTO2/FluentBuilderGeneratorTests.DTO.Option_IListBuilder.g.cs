@@ -38,17 +38,17 @@ namespace FluentBuilderGeneratorTests.DTO
 
         public override IList<FluentBuilderGeneratorTests.DTO.Option> Build(bool useObjectInitializer)
         {
-            if (Object?.IsValueCreated != true)
+            if (Instance?.IsValueCreated != true)
             {
-                Object = new Lazy<IList<FluentBuilderGeneratorTests.DTO.Option>>(() =>
+                Instance = new Lazy<IList<FluentBuilderGeneratorTests.DTO.Option>>(() =>
                 {
                     return _list.Value;
                 });
             }
 
-            PostBuild(Object.Value);
+            PostBuild(Instance.Value);
 
-            return Object.Value;
+            return Instance.Value;
         }
 
     }

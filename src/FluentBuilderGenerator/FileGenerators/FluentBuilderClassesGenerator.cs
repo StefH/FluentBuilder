@@ -414,9 +414,9 @@ namespace {classSymbol.BuilderNamespace}
         output.AppendLine(8, $"public override {className} Build(bool useObjectInitializer)");
         output.AppendLine(8, @"{");
 
-        output.AppendLine(8, @"    if (Object?.IsValueCreated != true)");
+        output.AppendLine(8, @"    if (Instance?.IsValueCreated != true)");
         output.AppendLine(8, @"    {");
-        output.AppendLine(8, $"        Object = new Lazy<{className}>(() =>");
+        output.AppendLine(8, $"        Instance = new Lazy<{className}>(() =>");
         output.AppendLine(8, @"        {");
 
         output.AppendLine(20, $"{className} instance;");
@@ -462,10 +462,10 @@ namespace {classSymbol.BuilderNamespace}
         output.AppendLine(8, @"    }");
 
         output.AppendLine();
-        output.AppendLine(8, @"    PostBuild(Object.Value);");
+        output.AppendLine(8, @"    PostBuild(Instance.Value);");
 
         output.AppendLine();
-        output.AppendLine(8, @"    return Object.Value;");
+        output.AppendLine(8, @"    return Instance.Value;");
         output.AppendLine(8, @"}");
 
         output.AppendLine();

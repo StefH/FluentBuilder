@@ -13,7 +13,7 @@ namespace FluentBuilderGeneratorTests.FluentBuilder
 {
     public abstract class Builder<T>
     {
-        protected Lazy<T> Object;
+        protected Lazy<T> Instance;
 
         protected Type InstanceType = typeof(T);
 
@@ -21,11 +21,11 @@ namespace FluentBuilderGeneratorTests.FluentBuilder
 
         public abstract T Build(bool useObjectInitializer);
 
-        public Builder<T> WithObject(T value) => WithObject(() => value);
+        public Builder<T> UsingInstance(T value) => UsingInstance(() => value);
 
-        public Builder<T> WithObject(Func<T> func)
+        public Builder<T> UsingInstance(Func<T> func)
         {
-            Object = new Lazy<T>(func);
+            Instance = new Lazy<T>(func);
             return this;
         }
     

@@ -29,17 +29,17 @@ namespace FluentBuilderGeneratorTests.FluentBuilder
 
         public override IList<T> Build(bool useObjectInitializer)
         {
-            if (Object?.IsValueCreated != true)
+            if (Instance?.IsValueCreated != true)
             {
-                Object = new Lazy<IList<T>>(() =>
+                Instance = new Lazy<IList<T>>(() =>
                 {
                     return _list.Value;
                 });
             }
 
-            PostBuild(Object.Value);
+            PostBuild(Instance.Value);
 
-            return Object.Value;
+            return Instance.Value;
         }
     }
 }

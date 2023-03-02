@@ -78,9 +78,9 @@ namespace FluentBuilderGeneratorTests.DTO
 
         public override ClassWithPrivateSetter1 Build(bool useObjectInitializer)
         {
-            if (Object?.IsValueCreated != true)
+            if (Instance?.IsValueCreated != true)
             {
-                Object = new Lazy<ClassWithPrivateSetter1>(() =>
+                Instance = new Lazy<ClassWithPrivateSetter1>(() =>
                 {
                     ClassWithPrivateSetter1 instance;
                     if (useObjectInitializer)
@@ -102,9 +102,9 @@ namespace FluentBuilderGeneratorTests.DTO
                 });
             }
 
-            PostBuild(Object.Value);
+            PostBuild(Instance.Value);
 
-            return Object.Value;
+            return Instance.Value;
         }
 
         public static ClassWithPrivateSetter1 Default() => new ClassWithPrivateSetter1();

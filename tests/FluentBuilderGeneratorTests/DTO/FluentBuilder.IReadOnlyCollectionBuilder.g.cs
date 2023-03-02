@@ -29,17 +29,17 @@ namespace FluentBuilderGeneratorTests.FluentBuilder
 
         public override IReadOnlyCollection<T> Build(bool useObjectInitializer)
         {
-            if (Object?.IsValueCreated != true)
+            if (Instance?.IsValueCreated != true)
             {
-                Object = new Lazy<IReadOnlyCollection<T>>(() =>
+                Instance = new Lazy<IReadOnlyCollection<T>>(() =>
                 {
                     return _list.Value;
                 });
             }
 
-            PostBuild(Object.Value);
+            PostBuild(Instance.Value);
 
-            return Object.Value;
+            return Instance.Value;
         }
     }
 }
