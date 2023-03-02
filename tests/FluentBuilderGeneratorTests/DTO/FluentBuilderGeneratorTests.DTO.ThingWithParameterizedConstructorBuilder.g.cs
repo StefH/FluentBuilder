@@ -38,7 +38,7 @@ namespace FluentBuilderGeneratorTests.DTO
 
         private bool _Constructor_1554208865_IsSet;
         private Lazy<FluentBuilderGeneratorTests.DTO.ThingWithParameterizedConstructor> _Constructor_1554208865 = new Lazy<FluentBuilderGeneratorTests.DTO.ThingWithParameterizedConstructor>(() => new FluentBuilderGeneratorTests.DTO.ThingWithParameterizedConstructor());
-        public ThingWithParameterizedConstructorBuilder WithConstructor()
+        public ThingWithParameterizedConstructorBuilder UsingConstructor()
         {
             _Constructor_1554208865 = new Lazy<FluentBuilderGeneratorTests.DTO.ThingWithParameterizedConstructor>(() =>
             {
@@ -54,7 +54,7 @@ namespace FluentBuilderGeneratorTests.DTO
 
         private bool _Constructor_722069126_IsSet;
         private Lazy<FluentBuilderGeneratorTests.DTO.ThingWithParameterizedConstructor> _Constructor_722069126 = new Lazy<FluentBuilderGeneratorTests.DTO.ThingWithParameterizedConstructor>(() => new FluentBuilderGeneratorTests.DTO.ThingWithParameterizedConstructor(default(int)));
-        public ThingWithParameterizedConstructorBuilder WithConstructor(int x)
+        public ThingWithParameterizedConstructorBuilder UsingConstructor(int x)
         {
             _Constructor_722069126 = new Lazy<FluentBuilderGeneratorTests.DTO.ThingWithParameterizedConstructor>(() =>
             {

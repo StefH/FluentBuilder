@@ -60,7 +60,7 @@ namespace FluentBuilderGeneratorTests.DTO
 
         private bool _Constructor1691800221_IsSet;
         private Lazy<FluentBuilderGeneratorTests.DTO.UserTWithAddressT<T>> _Constructor1691800221 = new Lazy<FluentBuilderGeneratorTests.DTO.UserTWithAddressT<T>>(() => new FluentBuilderGeneratorTests.DTO.UserTWithAddressT<T>());
-        public UserTWithAddressTBuilder<T> WithConstructor()
+        public UserTWithAddressTBuilder<T> UsingConstructor()
         {
             _Constructor1691800221 = new Lazy<FluentBuilderGeneratorTests.DTO.UserTWithAddressT<T>>(() =>
             {

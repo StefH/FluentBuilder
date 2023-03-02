@@ -41,7 +41,7 @@ namespace FluentBuilderGeneratorTests.DTO
 
         private bool _Constructor1291238155_IsSet;
         private Lazy<FluentBuilderGeneratorTests.DTO.ClassWithFluentBuilderIgnore> _Constructor1291238155 = new Lazy<FluentBuilderGeneratorTests.DTO.ClassWithFluentBuilderIgnore>(() => new FluentBuilderGeneratorTests.DTO.ClassWithFluentBuilderIgnore());
-        public ClassWithFluentBuilderIgnoreBuilder WithConstructor()
+        public ClassWithFluentBuilderIgnoreBuilder UsingConstructor()
         {
             _Constructor1291238155 = new Lazy<FluentBuilderGeneratorTests.DTO.ClassWithFluentBuilderIgnore>(() =>
             {

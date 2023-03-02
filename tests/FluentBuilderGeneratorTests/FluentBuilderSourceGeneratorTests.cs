@@ -124,12 +124,12 @@ public class FluentBuilderSourceGeneratorTests
             .Build();
 
         var b1 = new ThingWithOnlyParameterizedConstructorsBuilder()
-            .WithConstructor(1, 2, "drie")
+            .UsingConstructor(1, 2, "drie")
             .WithL(10000)
             .Build();
 
         var b2 = new ThingWithOnlyParameterizedConstructorsBuilder()
-            .WithConstructor(42)
+            .UsingConstructor(42)
             .WithL(10000)
             .Build();
 

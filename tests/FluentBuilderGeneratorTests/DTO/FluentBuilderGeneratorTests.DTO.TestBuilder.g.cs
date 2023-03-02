@@ -44,7 +44,7 @@ namespace FluentBuilderGeneratorTests.DTO
 
         private bool _Constructor1204588943_IsSet;
         private Lazy<FluentBuilderGeneratorTests.DTO.Test> _Constructor1204588943 = new Lazy<FluentBuilderGeneratorTests.DTO.Test>(() => new FluentBuilderGeneratorTests.DTO.Test());
-        public TestBuilder WithConstructor()
+        public TestBuilder UsingConstructor()
         {
             _Constructor1204588943 = new Lazy<FluentBuilderGeneratorTests.DTO.Test>(() =>
             {

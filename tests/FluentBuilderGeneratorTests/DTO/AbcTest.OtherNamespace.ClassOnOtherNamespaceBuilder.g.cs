@@ -38,7 +38,7 @@ namespace AbcTest.OtherNamespace
 
         private bool _Constructor1204632294_IsSet;
         private Lazy<AbcTest.OtherNamespace.ClassOnOtherNamespace> _Constructor1204632294 = new Lazy<AbcTest.OtherNamespace.ClassOnOtherNamespace>(() => new AbcTest.OtherNamespace.ClassOnOtherNamespace());
-        public ClassOnOtherNamespaceBuilder WithConstructor()
+        public ClassOnOtherNamespaceBuilder UsingConstructor()
         {
             _Constructor1204632294 = new Lazy<AbcTest.OtherNamespace.ClassOnOtherNamespace>(() =>
             {

@@ -44,7 +44,7 @@ namespace FluentBuilderGeneratorTests.DTO
 
         private bool _Constructor_759650433_IsSet;
         private Lazy<FluentBuilderGeneratorTests.DTO.Thing> _Constructor_759650433 = new Lazy<FluentBuilderGeneratorTests.DTO.Thing>(() => new FluentBuilderGeneratorTests.DTO.Thing());
-        public ThingBuilder WithConstructor()
+        public ThingBuilder UsingConstructor()
         {
             _Constructor_759650433 = new Lazy<FluentBuilderGeneratorTests.DTO.Thing>(() =>
             {

@@ -201,7 +201,7 @@ namespace FluentBuilderGeneratorTests.DTO
 
         private bool _Constructor_1318089537_IsSet;
         private Lazy<FluentBuilderGeneratorTests.DTO.ClassWithPropertyValueSet> _Constructor_1318089537 = new Lazy<FluentBuilderGeneratorTests.DTO.ClassWithPropertyValueSet>(() => new FluentBuilderGeneratorTests.DTO.ClassWithPropertyValueSet());
-        public ClassWithPropertyValueSetBuilder WithConstructor()
+        public ClassWithPropertyValueSetBuilder UsingConstructor()
         {
             _Constructor_1318089537 = new Lazy<FluentBuilderGeneratorTests.DTO.ClassWithPropertyValueSet>(() =>
             {

@@ -108,7 +108,7 @@ namespace FluentBuilderGeneratorTests.DTO2
 
         private bool _Constructor_1436654309_IsSet;
         private Lazy<FluentBuilderGeneratorTests.DTO.User> _Constructor_1436654309 = new Lazy<FluentBuilderGeneratorTests.DTO.User>(() => new FluentBuilderGeneratorTests.DTO.User());
-        public MyUserBuilder WithConstructor()
+        public MyUserBuilder UsingConstructor()
         {
             _Constructor_1436654309 = new Lazy<FluentBuilderGeneratorTests.DTO.User>(() =>
             {

@@ -82,7 +82,7 @@ internal partial class FluentBuilderClassesGenerator : IFilesGenerator
             throw new NotSupportedException($"Unable to generate a FluentBuilder for the class '{classSymbol.NamedTypeSymbol}' because no public constructor is defined.");
         }
 
-        var constructorCode = GenerateWithConstructorCode(classSymbol, publicConstructors);
+        var constructorCode = GenerateUsingConstructorCode(classSymbol, publicConstructors);
 
         var propertiesCode = GenerateWithPropertyCode(fluentData, classSymbol, allClassSymbols);
 
@@ -117,7 +117,7 @@ namespace {classSymbol.BuilderNamespace}
 {(_context.SupportsNullable ? "#nullable disable" : string.Empty)}";
     }
 
-    private (StringBuilder StringBuilder, IReadOnlyList<string> ExtraUsings) GenerateWithConstructorCode(
+    private (StringBuilder StringBuilder, IReadOnlyList<string> ExtraUsings) GenerateUsingConstructorCode(
         ClassSymbol classSymbol,
         IReadOnlyList<IMethodSymbol> publicConstructors
     )
@@ -150,7 +150,7 @@ namespace {classSymbol.BuilderNamespace}
 
             sb.AppendLine(8, $"private Lazy<{classSymbol.NamedTypeSymbol}> _Constructor{constructorHashCode} = new Lazy<{classSymbol.NamedTypeSymbol}>(() => new {classSymbol.NamedTypeSymbol}({string.Join(",", defaultValues)}));");
 
-            sb.AppendLine(8, $"public {builderClassName} WithConstructor({constructorParametersAsString})");
+            sb.AppendLine(8, $"public {builderClassName} UsingConstructor({constructorParametersAsString})");
             sb.AppendLine(8, @"{");
 
             sb.AppendLine(8, $"    _Constructor{constructorHashCode} = new Lazy<{classSymbol.NamedTypeSymbol}>(() =>");

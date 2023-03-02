@@ -38,7 +38,7 @@ namespace FluentBuilderGeneratorTests.DTO2
 
         private bool _Constructor155259363_IsSet;
         private Lazy<FluentBuilderGeneratorTests.DTO.Option> _Constructor155259363 = new Lazy<FluentBuilderGeneratorTests.DTO.Option>(() => new FluentBuilderGeneratorTests.DTO.Option());
-        public MyOptionBuilder WithConstructor()
+        public MyOptionBuilder UsingConstructor()
         {
             _Constructor155259363 = new Lazy<FluentBuilderGeneratorTests.DTO.Option>(() =>
             {
