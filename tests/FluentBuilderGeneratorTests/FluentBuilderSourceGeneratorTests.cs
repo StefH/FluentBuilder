@@ -133,6 +133,11 @@ public class FluentBuilderSourceGeneratorTests
             .WithL(10000)
             .Build();
 
+        var instance = new ThingWithOnlyParameterizedConstructors(999);
+        var b3 = new ThingWithOnlyParameterizedConstructorsBuilder()
+            .UsingInstance(instance)
+            .Build();
+
         var _ = 0;
     }
 
