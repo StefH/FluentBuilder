@@ -14,7 +14,7 @@ internal static class DefaultValueHelper
     /// Check if the <see cref="IPropertySymbol"/> has a value set, in that case try to get that value and return it, and return the usings.
     /// If no value is set, just return the default value.
     /// </summary>
-    internal static (string DefaultValue, IReadOnlyList<string>? ExtraUsings) GetDefaultValue(IPropertySymbol property)
+    internal static (string DefaultValue, IReadOnlyList<string>? ExtraUsings) GetDefaultValue(ISymbol property, ITypeSymbol typeSymbol)
     {
         var location = property.Locations.FirstOrDefault();
         if (location != null)
@@ -39,7 +39,7 @@ internal static class DefaultValueHelper
             }
         }
 
-        return (GetDefault(property.Type), null);
+        return (GetDefault(typeSymbol), null);
     }
 
     private static string GetDefault(ITypeSymbol typeSymbol)

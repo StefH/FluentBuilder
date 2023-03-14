@@ -1,3 +1,4 @@
+using FluentBuilderGenerator.Extensions;
 using FluentBuilderGenerator.Helpers;
 using FluentBuilderGenerator.Models;
 using FluentBuilderGenerator.Types;
@@ -39,7 +40,7 @@ internal class IEnumerableBuilderGenerator : IFileGenerator
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-{(_supportsNullable ? "#nullable enable" : string.Empty)}
+{_supportsNullable.IIf("#nullable enable")}
 using System;
 using System.Collections.Generic;
 
@@ -57,23 +58,25 @@ namespace {_assemblyName}.FluentBuilder
             return this;
         }}
 
-        public override {_genericType} Build(bool useObjectInitializer = true)
+        public override {_genericType} Build() => Build(true);
+
+        public override {_genericType} Build(bool useObjectInitializer)
         {{
-            if (Object?.IsValueCreated != true)
+            if (Instance?.IsValueCreated != true)
             {{
-                Object = new Lazy<{_genericType}>(() =>
+                Instance = new Lazy<{_genericType}>(() =>
                 {{
                     return _list.Value{_toArray};
                 }});
             }}
 
-            PostBuild(Object.Value);
+            PostBuild(Instance.Value);
 
-            return Object.Value;
+            return Instance.Value;
         }}
     }}
 }}
-{(_supportsNullable ? "#nullable disable" : string.Empty)}"
+{_supportsNullable.IIf("#nullable disable")}"
         );
     }
 }

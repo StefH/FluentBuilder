@@ -1,3 +1,4 @@
+using FluentBuilderGenerator.Extensions;
 using FluentBuilderGenerator.Models;
 using FluentBuilderGenerator.Types;
 
@@ -32,7 +33,7 @@ internal class IDictionaryBuilderGenerator : IFileGenerator
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-{(_supportsNullable ? "#nullable enable" : string.Empty)}
+{_supportsNullable.IIf("#nullable enable")}
 using System;
 using System.Collections.Generic;
 
@@ -51,23 +52,25 @@ namespace {_assemblyName}.FluentBuilder
             return this;
         }}
 
-        public override IDictionary<TKey, TValue> Build(bool useObjectInitializer = true)
+        public override IDictionary<TKey, TValue> Build() => Build(true);
+
+        public override IDictionary<TKey, TValue> Build(bool useObjectInitializer)
         {{
-            if (Object?.IsValueCreated != true)
+            if (Instance?.IsValueCreated != true)
             {{
-                Object = new Lazy<IDictionary<TKey, TValue>>(() =>
+                Instance = new Lazy<IDictionary<TKey, TValue>>(() =>
                 {{
                     return _dictionary.Value;
                 }});
             }}
 
-            PostBuild(Object.Value);
+            PostBuild(Instance.Value);
 
-            return Object.Value;
+            return Instance.Value;
         }}
     }}
 }}
-{(_supportsNullable ? "#nullable disable" : string.Empty)}"
+{_supportsNullable.IIf("#nullable disable")}"
         );
     }
 }

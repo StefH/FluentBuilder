@@ -64,7 +64,7 @@ internal static class NamedTypeSymbolExtensions
     /// </summary>
     public static string GenerateShortTypeName(this INamedTypeSymbol namedTypeSymbol, bool addBuilderPostFix = false)
     {
-        var className = $"{namedTypeSymbol.Name}{(addBuilderPostFix ? "Builder" : string.Empty)}";
+        var className = $"{namedTypeSymbol.Name}{addBuilderPostFix.IIf("Builder")}";
         var typeArguments = namedTypeSymbol.TypeArguments.Select(ta => ta.Name).ToArray();
 
         return !namedTypeSymbol.IsGenericType || typeArguments.Length == 0 ?
@@ -74,6 +74,6 @@ internal static class NamedTypeSymbolExtensions
 
     public static string GenerateFullTypeName(this INamedTypeSymbol namedTypeSymbol, bool addBuilderPostFix = false)
     {
-        return $"{namedTypeSymbol}{(addBuilderPostFix ? "Builder" : string.Empty)}";
+        return $"{namedTypeSymbol}{addBuilderPostFix.IIf("Builder")}";
     }
 }

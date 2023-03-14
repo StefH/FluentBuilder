@@ -8,8 +8,25 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="RestEase" Version="1.6.1" />
+      <PackageReference Include="RestEase.SourceGenerator" Version="1.6.1">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
+    </ItemGroup>
+
+    <ItemGroup>
         <ProjectReference Include="..\..\src\FluentBuilderGenerator\FluentBuilderGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
         <ProjectReference Include="..\ConsumerClassLibrary\ConsumerClassLibrary.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="ThingWithOnlyParameterizedConstructors.cs">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Compile>
+      <Compile Update="ThingWithParameterizedConstructor.cs">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Compile>
     </ItemGroup>
 
 </Project>

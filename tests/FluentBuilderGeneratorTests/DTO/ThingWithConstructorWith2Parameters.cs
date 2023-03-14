@@ -1,10 +1,10 @@
 namespace FluentBuilderGeneratorTests.DTO;
 
-public class ThingWithConstructorWith2Parameters
+public class ThingUsingConstructorWith2Parameters
 {
     public int X { get; }
 
-    public ThingWithConstructorWith2Parameters(int x, int y)
+    public ThingUsingConstructorWith2Parameters(int x, int y)
     {
         X = x * y;
     }
