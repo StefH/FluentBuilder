@@ -1,6 +1,6 @@
 rem https://github.com/StefH/GitHubReleaseNotes
 
-SET version=0.7.0
+SET version=0.7.1
 
 GitHubReleaseNotes --output ReleaseNotes.md --skip-empty-releases --exclude-labels question invalid doc --version %version%
 
