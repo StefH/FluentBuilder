@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Text.Json;
-using BuilderConsumer.Builders;
 using ConsumerClassLibrary;
 using FluentBuilder;
 
@@ -17,8 +16,9 @@ class Program
     static void Main(string[] args)
     {
         var t1 = new ThingWithOnlyParameterizedConstructorsBuilder()
-            .WithConstructor(1, "2", "drie")
+            .UsingConstructor(1, 2, "drie")
             .WithL(444444)
+            .WithX(123)
             .Build()
             ;
         Console.WriteLine("t1 = " + JsonSerializer.Serialize(t1, JsonSerializerOptions));
