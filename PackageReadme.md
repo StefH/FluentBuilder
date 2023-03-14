@@ -29,19 +29,21 @@ public partial class MyUserDtoBuilder
 ``` c#
 using System;
 
-namespace Test
-{
-    class Program
-    {
-        static void Main(string[] args)
-        {
-            var user = new UserBuilder()
-                .WithFirstName("Test")
-                .WithLastName("User")
-                .Build();
+namespace Test;
 
-            Console.WriteLine($"{user.FirstName} {user.LastName}");
-        }
+class Program
+{
+    static void Main(string[] args)
+    {
+        var user = new UserBuilder()
+            .WithFirstName("Test")
+            .WithLastName("User")
+            .Build();
+
+        Console.WriteLine($"{user.FirstName} {user.LastName}");
     }
 }
 ```
+---
+
+For more information, see the [StefH/FluentBuilder](https://github.com/StefH/FluentBuilder).

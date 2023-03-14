@@ -1,3 +1,8 @@
+# 0.7.1 (14 March 2023)
+- [#50](https://github.com/StefH/FluentBuilder/pull/50) - Take the namespace of generated files from the RootNamespace property [enhancement] contributed by [justinwritescode](https://github.com/justinwritescode)
+- [#51](https://github.com/StefH/FluentBuilder/pull/51) - Add support for parameterless constructors [enhancement] contributed by [StefH](https://github.com/StefH)
+- [#41](https://github.com/StefH/FluentBuilder/issues/41) - Builder could handle classes without default constructor [enhancement]
+
 # 0.7.0 (20 September 2022)
 - [#49](https://github.com/StefH/FluentBuilder/pull/49) - Fix IListBuilder namespace [bug] contributed by [StefH](https://github.com/StefH)
 - [#48](https://github.com/StefH/FluentBuilder/issues/48) - Child builders for properties not generating correct code

@@ -57,24 +57,23 @@ This attribute has 3 arguments:
 using System;
 using FluentBuilder;
 
-namespace Test
-{
-    class Program
-    {
-        static void Main(string[] args)
-        {
-            var user = new UserBuilder()
-                .WithFirstName("Test")
-                .WithLastName("User")
-                .Build();
+namespace Test;
 
-            Console.WriteLine($"{user.FirstName} {user.LastName}");
-        }
+class Program
+{
+    static void Main(string[] args)
+    {
+        var user = new UserBuilder()
+            .WithFirstName("Test")
+            .WithLastName("User")
+            .Build();
+
+        Console.WriteLine($"{user.FirstName} {user.LastName}");
     }
 }
 ```
 
-### Use FluentBuilder when the class has a default constructor
+### Use FluentBuilder when the class has a default (parameter-less) constructor
 ``` c#
 using FluentBuilder;
 
@@ -98,18 +97,57 @@ public class User
 using System;
 using FluentBuilder;
 
-namespace Test
-{
-    class Program
-    {
-        static void Main(string[] args)
-        {
-            var user = new UserBuilder()
-                .WithLastName("User")
-                .Build(false); // ⭐ Provide `false` for `useObjectInitializer` here.
+namespace Test;
 
-            Console.WriteLine($"{user.FirstName} {user.LastName}");
-        }
+class Program
+{
+    static void Main(string[] args)
+    {
+        var user = new UserBuilder()
+            .WithLastName("User")
+            .Build(false); // ⭐ Provide `false` for `useObjectInitializer` here.
+
+        Console.WriteLine($"{user.FirstName} {user.LastName}");
+    }
+}
+```
+
+### Use FluentBuilder when the class has a constructor with parameters
+``` c#
+using FluentBuilder;
+
+[AutoGenerateBuilder]
+public class User
+{
+    public string FirstName { get; set; }
+
+    public string LastName { get; set; }
+
+    public DateTime? Date { get; set; }
+
+    public User(string first)
+    {
+        FirstName = first;
+    }
+}
+```
+
+``` c#
+using System;
+using FluentBuilder;
+
+namespace Test;
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        var user = new UserBuilder()
+            .UsingConstructor("First")  // ⭐ Use `UsingConstructor` here.
+            .WithLastName("User")
+            .Build();
+
+        Console.WriteLine($"{user.FirstName} {user.LastName}");
     }
 }
 ```
@@ -190,19 +228,18 @@ public partial class MyUserDtoBuilder
 using System;
 using FluentBuilder;
 
-namespace Test
-{
-    class Program
-    {
-        static void Main(string[] args)
-        {
-            var user = new MyUserDtoBuilder() // 👈 Just use your own Builder
-                .WithFirstName("Test")
-                .WithLastName("User")
-                .Build();
+namespace Test;
 
-            Console.WriteLine($"{user.FirstName} {user.LastName}");
-        }
+class Program
+{
+    static void Main(string[] args)
+    {
+        var user = new MyUserDtoBuilder() // 👈 Just use your own Builder
+            .WithFirstName("Test")
+            .WithLastName("User")
+            .Build();
+
+        Console.WriteLine($"{user.FirstName} {user.LastName}");
     }
 }
 ```

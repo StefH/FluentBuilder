@@ -1,5 +1,6 @@
-# 0.7.0 (20 September 2022)
-- #49 Fix IListBuilder namespace [bug]
-- #48 Child builders for properties not generating correct code
+# 0.7.1 (14 March 2023)
+- #50 Take the namespace of generated files from the RootNamespace property [enhancement]
+- #51 Add support for parameterless constructors [enhancement]
+- #41 Builder could handle classes without default constructor [enhancement]
 
 The full release notes can be found here: https://github.com/StefH/FluentBuilder/blob/main/ReleaseNotes.md
