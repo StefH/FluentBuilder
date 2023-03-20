@@ -91,6 +91,14 @@ internal static class AttributeArgumentListParser
     private static bool TryParseAsEnum<TEnum>(ExpressionSyntax expressionSyntax, out TEnum value)
         where TEnum : struct
     {
-        return Enum.TryParse(expressionSyntax.ToString().Substring(typeof(TEnum).Name.Length + 1), out value);
+        value = default;
+
+        if (expressionSyntax is MemberAccessExpressionSyntax memberAccessExpressionSyntax)
+        {
+            var enumAsStringValue = memberAccessExpressionSyntax.Name.ToString();
+            return Enum.TryParse(enumAsStringValue, out value);
+        }
+
+        return false;
     }
 }
