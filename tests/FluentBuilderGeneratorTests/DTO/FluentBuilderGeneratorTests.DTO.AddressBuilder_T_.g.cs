@@ -28,13 +28,6 @@ namespace FluentBuilderGeneratorTests.DTO
             _streetIsSet = true;
             return this;
         }
-        public AddressBuilder<T> WithoutStreet()
-        {
-            WithStreet(() => default(T));
-            _streetIsSet = false;
-            return this;
-        }
-
 
         private bool _Constructor478882805_IsSet;
         private Lazy<FluentBuilderGeneratorTests.DTO.Address<T>> _Constructor478882805 = new Lazy<FluentBuilderGeneratorTests.DTO.Address<T>>(() => new FluentBuilderGeneratorTests.DTO.Address<T>());

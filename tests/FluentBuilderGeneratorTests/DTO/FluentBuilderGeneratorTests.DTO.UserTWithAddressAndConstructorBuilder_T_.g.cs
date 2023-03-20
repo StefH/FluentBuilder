@@ -28,13 +28,6 @@ namespace FluentBuilderGeneratorTests.DTO
             _tValueIsSet = true;
             return this;
         }
-        public UserTWithAddressAndConstructorBuilder<T> WithoutTValue()
-        {
-            WithTValue(() => default(T));
-            _tValueIsSet = false;
-            return this;
-        }
-
         private bool _addressIsSet;
         private Lazy<FluentBuilderGeneratorTests.DTO.Address<short>> _address = new Lazy<FluentBuilderGeneratorTests.DTO.Address<short>>(() => new FluentBuilderGeneratorTests.DTO.Address<short>());
         public UserTWithAddressAndConstructorBuilder<T> WithAddress(FluentBuilderGeneratorTests.DTO.Address<short> value) => WithAddress(() => value);
@@ -50,13 +43,6 @@ namespace FluentBuilderGeneratorTests.DTO
             action(builder);
             return builder.Build(useObjectInitializer);
         });
-        public UserTWithAddressAndConstructorBuilder<T> WithoutAddress()
-        {
-            WithAddress(() => new FluentBuilderGeneratorTests.DTO.Address<short>());
-            _addressIsSet = false;
-            return this;
-        }
-
 
         private bool _Constructor1978124393_IsSet;
         private Lazy<FluentBuilderGeneratorTests.DTO.UserTWithAddressAndConstructor<T>> _Constructor1978124393 = new Lazy<FluentBuilderGeneratorTests.DTO.UserTWithAddressAndConstructor<T>>(() => new FluentBuilderGeneratorTests.DTO.UserTWithAddressAndConstructor<T>());

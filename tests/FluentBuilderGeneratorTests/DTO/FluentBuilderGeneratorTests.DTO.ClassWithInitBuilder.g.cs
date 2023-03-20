@@ -28,13 +28,6 @@ namespace FluentBuilderGeneratorTests.DTO
             _normalIsSet = true;
             return this;
         }
-        public ClassWithInitBuilder WithoutNormal()
-        {
-            WithNormal(() => string.Empty);
-            _normalIsSet = false;
-            return this;
-        }
-
 
         private bool _Constructor_92937217_IsSet;
         private Lazy<FluentBuilderGeneratorTests.DTO.ClassWithInit> _Constructor_92937217 = new Lazy<FluentBuilderGeneratorTests.DTO.ClassWithInit>(() => new FluentBuilderGeneratorTests.DTO.ClassWithInit());

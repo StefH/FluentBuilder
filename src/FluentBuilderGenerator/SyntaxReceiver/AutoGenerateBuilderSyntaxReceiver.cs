@@ -76,7 +76,8 @@ internal class AutoGenerateBuilderSyntaxReceiver : IAutoGenerateBuilderSyntaxRec
                 Usings = usings,
                 HandleBaseClasses = fluentBuilderAttributeArguments.HandleBaseClasses,
                 Accessibility = fluentBuilderAttributeArguments.Accessibility,
-                BuilderType = BuilderType.Custom
+                BuilderType = BuilderType.Custom,
+                Methods = fluentBuilderAttributeArguments.Methods
             };
 
             return true;
@@ -97,7 +98,8 @@ internal class AutoGenerateBuilderSyntaxReceiver : IAutoGenerateBuilderSyntaxRec
             Usings = usings,
             HandleBaseClasses = fluentBuilderAttributeArguments.HandleBaseClasses,
             Accessibility = fluentBuilderAttributeArguments.Accessibility,
-            BuilderType = BuilderType.Generated
+            BuilderType = BuilderType.Generated,
+            Methods = fluentBuilderAttributeArguments.Methods
         };
 
         return true;

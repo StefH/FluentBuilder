@@ -28,13 +28,6 @@ namespace FluentBuilderGeneratorTests.DTO
             _houseNumberIsSet = true;
             return this;
         }
-        public AddressBuilder WithoutHouseNumber()
-        {
-            WithHouseNumber(() => default(int));
-            _houseNumberIsSet = false;
-            return this;
-        }
-
         private bool _cityIsSet;
         private Lazy<string?> _city = new Lazy<string?>(() => default(string?));
         public AddressBuilder WithCity(string? value) => WithCity(() => value);
@@ -44,13 +37,6 @@ namespace FluentBuilderGeneratorTests.DTO
             _cityIsSet = true;
             return this;
         }
-        public AddressBuilder WithoutCity()
-        {
-            WithCity(() => default(string?));
-            _cityIsSet = false;
-            return this;
-        }
-
         private bool _arrayIsSet;
         private Lazy<string[]> _array = new Lazy<string[]>(() => new string[0]);
         public AddressBuilder WithArray(params string[] value) => WithArray(() => value);
@@ -66,13 +52,6 @@ namespace FluentBuilderGeneratorTests.DTO
             action(builder);
             return builder.Build(useObjectInitializer);
         });
-        public AddressBuilder WithoutArray()
-        {
-            WithArray(() => new string[0]);
-            _arrayIsSet = false;
-            return this;
-        }
-
         private bool _array2IsSet;
         private Lazy<FluentBuilderGeneratorTests.DTO.Address[]> _array2 = new Lazy<FluentBuilderGeneratorTests.DTO.Address[]>(() => new FluentBuilderGeneratorTests.DTO.Address[0]);
         public AddressBuilder WithArray2(params FluentBuilderGeneratorTests.DTO.Address[] value) => WithArray2(() => value);
@@ -88,13 +67,6 @@ namespace FluentBuilderGeneratorTests.DTO
             action(builder);
             return builder.Build(useObjectInitializer);
         });
-        public AddressBuilder WithoutArray2()
-        {
-            WithArray2(() => new FluentBuilderGeneratorTests.DTO.Address[0]);
-            _array2IsSet = false;
-            return this;
-        }
-
         private bool _thingUsingConstructorWithItselfIsSet;
         private Lazy<FluentBuilderGeneratorTests.DTO.ThingUsingConstructorWithItself> _thingUsingConstructorWithItself = new Lazy<FluentBuilderGeneratorTests.DTO.ThingUsingConstructorWithItself>(() => new FluentBuilderGeneratorTests.DTO.ThingUsingConstructorWithItself(string.Empty, string.Empty));
         public AddressBuilder WithThingUsingConstructorWithItself(FluentBuilderGeneratorTests.DTO.ThingUsingConstructorWithItself value) => WithThingUsingConstructorWithItself(() => value);
@@ -104,13 +76,6 @@ namespace FluentBuilderGeneratorTests.DTO
             _thingUsingConstructorWithItselfIsSet = true;
             return this;
         }
-        public AddressBuilder WithoutThingUsingConstructorWithItself()
-        {
-            WithThingUsingConstructorWithItself(() => new FluentBuilderGeneratorTests.DTO.ThingUsingConstructorWithItself(string.Empty, string.Empty));
-            _thingUsingConstructorWithItselfIsSet = false;
-            return this;
-        }
-
         private bool _thingUsingConstructorWith2ParametersIsSet;
         private Lazy<FluentBuilderGeneratorTests.DTO.ThingUsingConstructorWith2Parameters> _thingUsingConstructorWith2Parameters = new Lazy<FluentBuilderGeneratorTests.DTO.ThingUsingConstructorWith2Parameters>(() => new FluentBuilderGeneratorTests.DTO.ThingUsingConstructorWith2Parameters(default(int), default(int)));
         public AddressBuilder WithThingUsingConstructorWith2Parameters(FluentBuilderGeneratorTests.DTO.ThingUsingConstructorWith2Parameters value) => WithThingUsingConstructorWith2Parameters(() => value);
@@ -120,13 +85,6 @@ namespace FluentBuilderGeneratorTests.DTO
             _thingUsingConstructorWith2ParametersIsSet = true;
             return this;
         }
-        public AddressBuilder WithoutThingUsingConstructorWith2Parameters()
-        {
-            WithThingUsingConstructorWith2Parameters(() => new FluentBuilderGeneratorTests.DTO.ThingUsingConstructorWith2Parameters(default(int), default(int)));
-            _thingUsingConstructorWith2ParametersIsSet = false;
-            return this;
-        }
-
         private bool _thingWithoutDefaultConstructorIsSet;
         private Lazy<FluentBuilderGeneratorTests.DTO.ThingWithoutDefaultConstructor> _thingWithoutDefaultConstructor = new Lazy<FluentBuilderGeneratorTests.DTO.ThingWithoutDefaultConstructor>(() => new FluentBuilderGeneratorTests.DTO.ThingWithoutDefaultConstructor(default(int)));
         public AddressBuilder WithThingWithoutDefaultConstructor(FluentBuilderGeneratorTests.DTO.ThingWithoutDefaultConstructor value) => WithThingWithoutDefaultConstructor(() => value);
@@ -136,13 +94,6 @@ namespace FluentBuilderGeneratorTests.DTO
             _thingWithoutDefaultConstructorIsSet = true;
             return this;
         }
-        public AddressBuilder WithoutThingWithoutDefaultConstructor()
-        {
-            WithThingWithoutDefaultConstructor(() => new FluentBuilderGeneratorTests.DTO.ThingWithoutDefaultConstructor(default(int)));
-            _thingWithoutDefaultConstructorIsSet = false;
-            return this;
-        }
-
         private bool _thingWithPrivateConstructorIsSet;
         private Lazy<FluentBuilderGeneratorTests.DTO.ThingWithPrivateConstructor> _thingWithPrivateConstructor = new Lazy<FluentBuilderGeneratorTests.DTO.ThingWithPrivateConstructor>(() => default(FluentBuilderGeneratorTests.DTO.ThingWithPrivateConstructor)!);
         public AddressBuilder WithThingWithPrivateConstructor(FluentBuilderGeneratorTests.DTO.ThingWithPrivateConstructor value) => WithThingWithPrivateConstructor(() => value);
@@ -152,13 +103,6 @@ namespace FluentBuilderGeneratorTests.DTO
             _thingWithPrivateConstructorIsSet = true;
             return this;
         }
-        public AddressBuilder WithoutThingWithPrivateConstructor()
-        {
-            WithThingWithPrivateConstructor(() => default(FluentBuilderGeneratorTests.DTO.ThingWithPrivateConstructor)!);
-            _thingWithPrivateConstructorIsSet = false;
-            return this;
-        }
-
         private bool _thingIsSet;
         private Lazy<FluentBuilderGeneratorTests.DTO.Thing> _thing = new Lazy<FluentBuilderGeneratorTests.DTO.Thing>(() => new FluentBuilderGeneratorTests.DTO.Thing());
         public AddressBuilder WithThing(FluentBuilderGeneratorTests.DTO.Thing value) => WithThing(() => value);
@@ -168,13 +112,6 @@ namespace FluentBuilderGeneratorTests.DTO
             _thingIsSet = true;
             return this;
         }
-        public AddressBuilder WithoutThing()
-        {
-            WithThing(() => new FluentBuilderGeneratorTests.DTO.Thing());
-            _thingIsSet = false;
-            return this;
-        }
-
         private bool _thingIsStructIsSet;
         private Lazy<FluentBuilderGeneratorTests.DTO.ThingIsStruct> _thingIsStruct = new Lazy<FluentBuilderGeneratorTests.DTO.ThingIsStruct>(() => default(FluentBuilderGeneratorTests.DTO.ThingIsStruct));
         public AddressBuilder WithThingIsStruct(FluentBuilderGeneratorTests.DTO.ThingIsStruct value) => WithThingIsStruct(() => value);
@@ -184,13 +121,6 @@ namespace FluentBuilderGeneratorTests.DTO
             _thingIsStructIsSet = true;
             return this;
         }
-        public AddressBuilder WithoutThingIsStruct()
-        {
-            WithThingIsStruct(() => default(FluentBuilderGeneratorTests.DTO.ThingIsStruct));
-            _thingIsStructIsSet = false;
-            return this;
-        }
-
         private bool _iReadOnlyCollectionIsSet;
         private Lazy<System.Collections.Generic.IReadOnlyCollection<string>> _iReadOnlyCollection = new Lazy<System.Collections.Generic.IReadOnlyCollection<string>>(() => new List<string>());
         public AddressBuilder WithIReadOnlyCollection(System.Collections.Generic.IReadOnlyCollection<string> value) => WithIReadOnlyCollection(() => value);
@@ -200,13 +130,6 @@ namespace FluentBuilderGeneratorTests.DTO
             _iReadOnlyCollectionIsSet = true;
             return this;
         }
-        public AddressBuilder WithoutIReadOnlyCollection()
-        {
-            WithIReadOnlyCollection(() => new List<string>());
-            _iReadOnlyCollectionIsSet = false;
-            return this;
-        }
-
         private bool _readOnlyCollectionIsSet;
         private Lazy<System.Collections.ObjectModel.ReadOnlyCollection<long>> _readOnlyCollection = new Lazy<System.Collections.ObjectModel.ReadOnlyCollection<long>>(() => new System.Collections.ObjectModel.ReadOnlyCollection<long>(new List<long>()));
         public AddressBuilder WithReadOnlyCollection(System.Collections.ObjectModel.ReadOnlyCollection<long> value) => WithReadOnlyCollection(() => value);
@@ -216,13 +139,6 @@ namespace FluentBuilderGeneratorTests.DTO
             _readOnlyCollectionIsSet = true;
             return this;
         }
-        public AddressBuilder WithoutReadOnlyCollection()
-        {
-            WithReadOnlyCollection(() => new System.Collections.ObjectModel.ReadOnlyCollection<long>(new List<long>()));
-            _readOnlyCollectionIsSet = false;
-            return this;
-        }
-
         private bool _enumerableIsSet;
         private Lazy<System.Collections.Generic.IEnumerable<byte>> _enumerable = new Lazy<System.Collections.Generic.IEnumerable<byte>>(() => new byte[0]);
         public AddressBuilder WithEnumerable(System.Collections.Generic.IEnumerable<byte> value) => WithEnumerable(() => value);
@@ -238,13 +154,6 @@ namespace FluentBuilderGeneratorTests.DTO
             action(builder);
             return builder.Build(useObjectInitializer);
         });
-        public AddressBuilder WithoutEnumerable()
-        {
-            WithEnumerable(() => new byte[0]);
-            _enumerableIsSet = false;
-            return this;
-        }
-
         private bool _enumerable2IsSet;
         private Lazy<System.Collections.Generic.IEnumerable<FluentBuilderGeneratorTests.DTO.Address>> _enumerable2 = new Lazy<System.Collections.Generic.IEnumerable<FluentBuilderGeneratorTests.DTO.Address>>(() => new FluentBuilderGeneratorTests.DTO.Address[0]);
         public AddressBuilder WithEnumerable2(System.Collections.Generic.IEnumerable<FluentBuilderGeneratorTests.DTO.Address> value) => WithEnumerable2(() => value);
@@ -260,13 +169,6 @@ namespace FluentBuilderGeneratorTests.DTO
             action(builder);
             return builder.Build(useObjectInitializer);
         });
-        public AddressBuilder WithoutEnumerable2()
-        {
-            WithEnumerable2(() => new FluentBuilderGeneratorTests.DTO.Address[0]);
-            _enumerable2IsSet = false;
-            return this;
-        }
-
         private bool _listIsSet;
         private Lazy<System.Collections.Generic.List<string>> _list = new Lazy<System.Collections.Generic.List<string>>(() => new List<string>());
         public AddressBuilder WithList(System.Collections.Generic.List<string> value) => WithList(() => value);
@@ -282,13 +184,6 @@ namespace FluentBuilderGeneratorTests.DTO
             action(builder);
             return (System.Collections.Generic.List<string>) builder.Build(useObjectInitializer);
         });
-        public AddressBuilder WithoutList()
-        {
-            WithList(() => new List<string>());
-            _listIsSet = false;
-            return this;
-        }
-
         private bool _list2IsSet;
         private Lazy<System.Collections.Generic.List<FluentBuilderGeneratorTests.DTO.Address>> _list2 = new Lazy<System.Collections.Generic.List<FluentBuilderGeneratorTests.DTO.Address>>(() => new List<FluentBuilderGeneratorTests.DTO.Address>());
         public AddressBuilder WithList2(System.Collections.Generic.List<FluentBuilderGeneratorTests.DTO.Address> value) => WithList2(() => value);
@@ -304,13 +199,6 @@ namespace FluentBuilderGeneratorTests.DTO
             action(builder);
             return (System.Collections.Generic.List<FluentBuilderGeneratorTests.DTO.Address>) builder.Build(useObjectInitializer);
         });
-        public AddressBuilder WithoutList2()
-        {
-            WithList2(() => new List<FluentBuilderGeneratorTests.DTO.Address>());
-            _list2IsSet = false;
-            return this;
-        }
-
         private bool _collectionIsSet;
         private Lazy<System.Collections.Generic.ICollection<long>> _collection = new Lazy<System.Collections.Generic.ICollection<long>>(() => new List<long>());
         public AddressBuilder WithCollection(System.Collections.Generic.ICollection<long> value) => WithCollection(() => value);
@@ -326,13 +214,6 @@ namespace FluentBuilderGeneratorTests.DTO
             action(builder);
             return builder.Build(useObjectInitializer);
         });
-        public AddressBuilder WithoutCollection()
-        {
-            WithCollection(() => new List<long>());
-            _collectionIsSet = false;
-            return this;
-        }
-
         private bool _collection2IsSet;
         private Lazy<System.Collections.Generic.ICollection<FluentBuilderGeneratorTests.DTO.Address>> _collection2 = new Lazy<System.Collections.Generic.ICollection<FluentBuilderGeneratorTests.DTO.Address>>(() => new List<FluentBuilderGeneratorTests.DTO.Address>());
         public AddressBuilder WithCollection2(System.Collections.Generic.ICollection<FluentBuilderGeneratorTests.DTO.Address> value) => WithCollection2(() => value);
@@ -348,13 +229,6 @@ namespace FluentBuilderGeneratorTests.DTO
             action(builder);
             return builder.Build(useObjectInitializer);
         });
-        public AddressBuilder WithoutCollection2()
-        {
-            WithCollection2(() => new List<FluentBuilderGeneratorTests.DTO.Address>());
-            _collection2IsSet = false;
-            return this;
-        }
-
         private bool _iDictionaryIsSet;
         private Lazy<System.Collections.IDictionary> _iDictionary = new Lazy<System.Collections.IDictionary>(() => new Dictionary<object, object>());
         public AddressBuilder WithIDictionary(System.Collections.IDictionary value) => WithIDictionary(() => value);
@@ -364,13 +238,6 @@ namespace FluentBuilderGeneratorTests.DTO
             _iDictionaryIsSet = true;
             return this;
         }
-        public AddressBuilder WithoutIDictionary()
-        {
-            WithIDictionary(() => new Dictionary<object, object>());
-            _iDictionaryIsSet = false;
-            return this;
-        }
-
         private bool _iDictionary2IsSet;
         private Lazy<System.Collections.Generic.IDictionary<string, int>> _iDictionary2 = new Lazy<System.Collections.Generic.IDictionary<string, int>>(() => new Dictionary<string, int>());
         public AddressBuilder WithIDictionary2(System.Collections.Generic.IDictionary<string, int> value) => WithIDictionary2(() => value);
@@ -386,13 +253,6 @@ namespace FluentBuilderGeneratorTests.DTO
             action(builder);
             return builder.Build(useObjectInitializer);
         });
-        public AddressBuilder WithoutIDictionary2()
-        {
-            WithIDictionary2(() => new Dictionary<string, int>());
-            _iDictionary2IsSet = false;
-            return this;
-        }
-
         private bool _dictionary2IsSet;
         private Lazy<System.Collections.Generic.Dictionary<string, int>> _dictionary2 = new Lazy<System.Collections.Generic.Dictionary<string, int>>(() => new Dictionary<string, int>());
         public AddressBuilder WithDictionary2(System.Collections.Generic.Dictionary<string, int> value) => WithDictionary2(() => value);
@@ -408,13 +268,6 @@ namespace FluentBuilderGeneratorTests.DTO
             action(builder);
             return (System.Collections.Generic.Dictionary<string, int>) builder.Build(useObjectInitializer);
         });
-        public AddressBuilder WithoutDictionary2()
-        {
-            WithDictionary2(() => new Dictionary<string, int>());
-            _dictionary2IsSet = false;
-            return this;
-        }
-
 
         private bool _Constructor_1362952513_IsSet;
         private Lazy<FluentBuilderGeneratorTests.DTO.Address> _Constructor_1362952513 = new Lazy<FluentBuilderGeneratorTests.DTO.Address>(() => new FluentBuilderGeneratorTests.DTO.Address());

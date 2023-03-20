@@ -28,13 +28,6 @@ namespace FluentBuilderGeneratorTests.DTO2
             _firstNameIsSet = true;
             return this;
         }
-        public MyUserBuilder WithoutFirstName()
-        {
-            WithFirstName(() => string.Empty);
-            _firstNameIsSet = false;
-            return this;
-        }
-
         private bool _lastNameIsSet;
         private Lazy<string> _lastName = new Lazy<string>(() => string.Empty);
         public MyUserBuilder WithLastName(string value) => WithLastName(() => value);
@@ -44,13 +37,6 @@ namespace FluentBuilderGeneratorTests.DTO2
             _lastNameIsSet = true;
             return this;
         }
-        public MyUserBuilder WithoutLastName()
-        {
-            WithLastName(() => string.Empty);
-            _lastNameIsSet = false;
-            return this;
-        }
-
         private bool _quitDateIsSet;
         private Lazy<System.DateTime?> _quitDate = new Lazy<System.DateTime?>(() => default(System.DateTime?));
         public MyUserBuilder WithQuitDate(System.DateTime? value) => WithQuitDate(() => value);
@@ -60,13 +46,6 @@ namespace FluentBuilderGeneratorTests.DTO2
             _quitDateIsSet = true;
             return this;
         }
-        public MyUserBuilder WithoutQuitDate()
-        {
-            WithQuitDate(() => default(System.DateTime?));
-            _quitDateIsSet = false;
-            return this;
-        }
-
         private bool _testDummyClassIsSet;
         private Lazy<FluentBuilderGeneratorTests.DTO.DummyClass> _testDummyClass = new Lazy<FluentBuilderGeneratorTests.DTO.DummyClass>(() => new FluentBuilderGeneratorTests.DTO.DummyClass());
         public MyUserBuilder WithTestDummyClass(FluentBuilderGeneratorTests.DTO.DummyClass value) => WithTestDummyClass(() => value);
@@ -76,13 +55,6 @@ namespace FluentBuilderGeneratorTests.DTO2
             _testDummyClassIsSet = true;
             return this;
         }
-        public MyUserBuilder WithoutTestDummyClass()
-        {
-            WithTestDummyClass(() => new FluentBuilderGeneratorTests.DTO.DummyClass());
-            _testDummyClassIsSet = false;
-            return this;
-        }
-
         private bool _optionsIsSet;
         private Lazy<System.Collections.Generic.List<FluentBuilderGeneratorTests.DTO.Option>> _options = new Lazy<System.Collections.Generic.List<FluentBuilderGeneratorTests.DTO.Option>>(() => new List<FluentBuilderGeneratorTests.DTO.Option>());
         public MyUserBuilder WithOptions(System.Collections.Generic.List<FluentBuilderGeneratorTests.DTO.Option> value) => WithOptions(() => value);
@@ -98,13 +70,6 @@ namespace FluentBuilderGeneratorTests.DTO2
             action(builder);
             return (System.Collections.Generic.List<FluentBuilderGeneratorTests.DTO.Option>) builder.Build(useObjectInitializer);
         });
-        public MyUserBuilder WithoutOptions()
-        {
-            WithOptions(() => new List<FluentBuilderGeneratorTests.DTO.Option>());
-            _optionsIsSet = false;
-            return this;
-        }
-
 
         private bool _Constructor_1436654309_IsSet;
         private Lazy<FluentBuilderGeneratorTests.DTO.User> _Constructor_1436654309 = new Lazy<FluentBuilderGeneratorTests.DTO.User>(() => new FluentBuilderGeneratorTests.DTO.User());

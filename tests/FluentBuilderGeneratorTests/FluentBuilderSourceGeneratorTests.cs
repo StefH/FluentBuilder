@@ -318,7 +318,7 @@ public class FluentBuilderSourceGeneratorTests
             AttributeToAddToClass = new ExtraAttribute
             {
                 Name = "FluentBuilder.AutoGenerateBuilder",
-                ArgumentList = new[] { "FluentBuilderMethods.Public" }
+                ArgumentList = new[] { "FluentBuilderMethods.WithAndWithout" }
             }
         };
 

@@ -28,13 +28,6 @@ namespace AbcTest.OtherNamespace
             _idIsSet = true;
             return this;
         }
-        public ClassOnOtherNamespaceBuilder WithoutId()
-        {
-            WithId(() => default(int));
-            _idIsSet = false;
-            return this;
-        }
-
 
         private bool _Constructor1204632294_IsSet;
         private Lazy<AbcTest.OtherNamespace.ClassOnOtherNamespace> _Constructor1204632294 = new Lazy<AbcTest.OtherNamespace.ClassOnOtherNamespace>(() => new AbcTest.OtherNamespace.ClassOnOtherNamespace());

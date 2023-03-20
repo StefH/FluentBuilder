@@ -28,13 +28,6 @@ namespace FluentBuilderGeneratorTests.DTO
             _value2IsSet = true;
             return this;
         }
-        public ClassWithPrivateSetter1Builder WithoutValue2()
-        {
-            WithValue2(() => default(int));
-            _value2IsSet = false;
-            return this;
-        }
-
         private bool _value1IsSet;
         private Lazy<int> _value1 = new Lazy<int>(() => default(int));
         public ClassWithPrivateSetter1Builder WithValue1(int value) => WithValue1(() => value);
@@ -44,13 +37,6 @@ namespace FluentBuilderGeneratorTests.DTO
             _value1IsSet = true;
             return this;
         }
-        public ClassWithPrivateSetter1Builder WithoutValue1()
-        {
-            WithValue1(() => default(int));
-            _value1IsSet = false;
-            return this;
-        }
-
 
         private bool _Constructor126242367_IsSet;
         private Lazy<FluentBuilderGeneratorTests.DTO.ClassWithPrivateSetter1> _Constructor126242367 = new Lazy<FluentBuilderGeneratorTests.DTO.ClassWithPrivateSetter1>(() => new FluentBuilderGeneratorTests.DTO.ClassWithPrivateSetter1());

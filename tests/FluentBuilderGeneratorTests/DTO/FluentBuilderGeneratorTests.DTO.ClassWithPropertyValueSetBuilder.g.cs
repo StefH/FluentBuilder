@@ -31,13 +31,6 @@ namespace FluentBuilderGeneratorTests.DTO
             _noIntValueSetIsSet = true;
             return this;
         }
-        public ClassWithPropertyValueSetBuilder WithoutNoIntValueSet()
-        {
-            WithNoIntValueSet(() => default(int));
-            _noIntValueSetIsSet = false;
-            return this;
-        }
-
         private bool _intValueSet1IsSet;
         private Lazy<int> _intValueSet1 = new Lazy<int>(() => 1 + 1);
         public ClassWithPropertyValueSetBuilder WithIntValueSet1(int value) => WithIntValueSet1(() => value);
@@ -47,13 +40,6 @@ namespace FluentBuilderGeneratorTests.DTO
             _intValueSet1IsSet = true;
             return this;
         }
-        public ClassWithPropertyValueSetBuilder WithoutIntValueSet1()
-        {
-            WithIntValueSet1(() => 1 + 1);
-            _intValueSet1IsSet = false;
-            return this;
-        }
-
         private bool _intValueSet2IsSet;
         private Lazy<int> _intValueSet2 = new Lazy<int>(() => 2);
         public ClassWithPropertyValueSetBuilder WithIntValueSet2(int value) => WithIntValueSet2(() => value);
@@ -63,13 +49,6 @@ namespace FluentBuilderGeneratorTests.DTO
             _intValueSet2IsSet = true;
             return this;
         }
-        public ClassWithPropertyValueSetBuilder WithoutIntValueSet2()
-        {
-            WithIntValueSet2(() => 2);
-            _intValueSet2IsSet = false;
-            return this;
-        }
-
         private bool _localeIsSet;
         private Lazy<System.Globalization.CultureInfo> _locale = new Lazy<System.Globalization.CultureInfo>(() => CultureInfo.CurrentCulture);
         public ClassWithPropertyValueSetBuilder WithLocale(System.Globalization.CultureInfo value) => WithLocale(() => value);
@@ -79,13 +58,6 @@ namespace FluentBuilderGeneratorTests.DTO
             _localeIsSet = true;
             return this;
         }
-        public ClassWithPropertyValueSetBuilder WithoutLocale()
-        {
-            WithLocale(() => CultureInfo.CurrentCulture);
-            _localeIsSet = false;
-            return this;
-        }
-
         private bool _locale2IsSet;
         private Lazy<System.Globalization.CultureInfo> _locale2 = new Lazy<System.Globalization.CultureInfo>(() => System.Globalization.CultureInfo.CurrentCulture);
         public ClassWithPropertyValueSetBuilder WithLocale2(System.Globalization.CultureInfo value) => WithLocale2(() => value);
@@ -95,13 +67,6 @@ namespace FluentBuilderGeneratorTests.DTO
             _locale2IsSet = true;
             return this;
         }
-        public ClassWithPropertyValueSetBuilder WithoutLocale2()
-        {
-            WithLocale2(() => System.Globalization.CultureInfo.CurrentCulture);
-            _locale2IsSet = false;
-            return this;
-        }
-
         private bool _locale3IsSet;
         private Lazy<System.Globalization.CultureInfo> _locale3 = new Lazy<System.Globalization.CultureInfo>(() => X.Value);
         public ClassWithPropertyValueSetBuilder WithLocale3(System.Globalization.CultureInfo value) => WithLocale3(() => value);
@@ -111,13 +76,6 @@ namespace FluentBuilderGeneratorTests.DTO
             _locale3IsSet = true;
             return this;
         }
-        public ClassWithPropertyValueSetBuilder WithoutLocale3()
-        {
-            WithLocale3(() => X.Value);
-            _locale3IsSet = false;
-            return this;
-        }
-
         private bool _locale4IsSet;
         private Lazy<System.Globalization.CultureInfo> _locale4 = new Lazy<System.Globalization.CultureInfo>(() => Y.Value);
         public ClassWithPropertyValueSetBuilder WithLocale4(System.Globalization.CultureInfo value) => WithLocale4(() => value);
@@ -127,13 +85,6 @@ namespace FluentBuilderGeneratorTests.DTO
             _locale4IsSet = true;
             return this;
         }
-        public ClassWithPropertyValueSetBuilder WithoutLocale4()
-        {
-            WithLocale4(() => Y.Value);
-            _locale4IsSet = false;
-            return this;
-        }
-
         private bool _locale5IsSet;
         private Lazy<System.Globalization.CultureInfo> _locale5 = new Lazy<System.Globalization.CultureInfo>(() => Z.Abc);
         public ClassWithPropertyValueSetBuilder WithLocale5(System.Globalization.CultureInfo value) => WithLocale5(() => value);
@@ -143,13 +94,6 @@ namespace FluentBuilderGeneratorTests.DTO
             _locale5IsSet = true;
             return this;
         }
-        public ClassWithPropertyValueSetBuilder WithoutLocale5()
-        {
-            WithLocale5(() => Z.Abc);
-            _locale5IsSet = false;
-            return this;
-        }
-
         private bool _suppressNullableWarningExpressionIsSet;
         private Lazy<string> _suppressNullableWarningExpression = new Lazy<string>(() => string.Empty);
         public ClassWithPropertyValueSetBuilder WithSuppressNullableWarningExpression(string value) => WithSuppressNullableWarningExpression(() => value);
@@ -159,13 +103,6 @@ namespace FluentBuilderGeneratorTests.DTO
             _suppressNullableWarningExpressionIsSet = true;
             return this;
         }
-        public ClassWithPropertyValueSetBuilder WithoutSuppressNullableWarningExpression()
-        {
-            WithSuppressNullableWarningExpression(() => string.Empty);
-            _suppressNullableWarningExpressionIsSet = false;
-            return this;
-        }
-
         private bool _stringNullIsSet;
         private Lazy<string> _stringNull = new Lazy<string>(() => null);
         public ClassWithPropertyValueSetBuilder WithStringNull(string value) => WithStringNull(() => value);
@@ -175,13 +112,6 @@ namespace FluentBuilderGeneratorTests.DTO
             _stringNullIsSet = true;
             return this;
         }
-        public ClassWithPropertyValueSetBuilder WithoutStringNull()
-        {
-            WithStringNull(() => null);
-            _stringNullIsSet = false;
-            return this;
-        }
-
         private bool _stringEmptyIsSet;
         private Lazy<string> _stringEmpty = new Lazy<string>(() => string.Empty);
         public ClassWithPropertyValueSetBuilder WithStringEmpty(string value) => WithStringEmpty(() => value);
@@ -191,13 +121,6 @@ namespace FluentBuilderGeneratorTests.DTO
             _stringEmptyIsSet = true;
             return this;
         }
-        public ClassWithPropertyValueSetBuilder WithoutStringEmpty()
-        {
-            WithStringEmpty(() => string.Empty);
-            _stringEmptyIsSet = false;
-            return this;
-        }
-
 
         private bool _Constructor_1318089537_IsSet;
         private Lazy<FluentBuilderGeneratorTests.DTO.ClassWithPropertyValueSet> _Constructor_1318089537 = new Lazy<FluentBuilderGeneratorTests.DTO.ClassWithPropertyValueSet>(() => new FluentBuilderGeneratorTests.DTO.ClassWithPropertyValueSet());

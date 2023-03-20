@@ -28,13 +28,6 @@ namespace FluentBuilderGeneratorTests.DTO2
             _nameIsSet = true;
             return this;
         }
-        public MyOptionBuilder WithoutName()
-        {
-            WithName(() => string.Empty);
-            _nameIsSet = false;
-            return this;
-        }
-
 
         private bool _Constructor155259363_IsSet;
         private Lazy<FluentBuilderGeneratorTests.DTO.Option> _Constructor155259363 = new Lazy<FluentBuilderGeneratorTests.DTO.Option>(() => new FluentBuilderGeneratorTests.DTO.Option());
