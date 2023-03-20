@@ -243,3 +243,16 @@ class Program
     }
 }
 ```
+
+## :books: Notes
+
+Since version 0.8.0, this FluentBuilder will only generate the `With***` methods. If you want the builder to also generate the `Without***` methods, add the enum `FluentBuilderMethods.WithAndWithout` to the attribute.
+
+``` c#
+using FluentBuilder;
+
+[AutoGenerateBuilder(typeof(UserDto), FluentBuilderMethods.WithAndWithout)]
+public partial class MyUserDtoBuilder
+{
+}
+```

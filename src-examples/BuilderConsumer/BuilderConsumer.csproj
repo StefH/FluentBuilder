@@ -20,13 +20,4 @@
         <ProjectReference Include="..\ConsumerClassLibrary\ConsumerClassLibrary.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Compile Update="ThingWithOnlyParameterizedConstructors.cs">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Compile>
-      <Compile Update="ThingWithParameterizedConstructor.cs">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Compile>
-    </ItemGroup>
-
 </Project>
