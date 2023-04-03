@@ -23,4 +23,10 @@ public class ThingWithOnlyParameterizedConstructors
         Y = -1;
         Z = "zzz";
     }
+
+    public ThingWithOnlyParameterizedConstructors(long l)
+    {
+        L = l;
+        Z = "via long";
+    }
 }

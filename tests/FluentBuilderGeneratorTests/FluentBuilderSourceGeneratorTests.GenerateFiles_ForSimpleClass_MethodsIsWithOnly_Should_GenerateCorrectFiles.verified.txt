@@ -53,7 +53,7 @@ namespace FluentBuilderGeneratorTests.DTO
 
         public SimpleClassBuilder UsingInstance(Func<FluentBuilderGeneratorTests.DTO.SimpleClass> func)
         {
-            Instance = new Lazy<FluentBuilderGeneratorTests.DTO.SimpleClass>(func);
+            Instance = new Lazy<FluentBuilderGeneratorTests.DTO.SimpleClass>(func());
             return this;
         }
 
@@ -79,11 +79,11 @@ namespace FluentBuilderGeneratorTests.DTO
                     if (_Constructor538961215_IsSet) { instance = _Constructor538961215.Value; }
                     else { instance = Default(); }
 
-                    if (_idIsSet) { instance.Id = _id.Value; }
-
                     return instance;
                 });
             }
+
+            if (_idIsSet) { Instance.Value.Id = _id.Value; }
 
             PostBuild(Instance.Value);
 

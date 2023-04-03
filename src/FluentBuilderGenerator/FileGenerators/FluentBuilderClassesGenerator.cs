@@ -416,7 +416,7 @@ namespace {classSymbol.BuilderNamespace}
 
         output.AppendLine(8, $"public {classSymbol.BuilderClassName} UsingInstance(Func<{classSymbol.NamedTypeSymbol}> func)");
         output.AppendLine(8, @"{");
-        output.AppendLine(8, $"    Instance = new Lazy<{classSymbol.NamedTypeSymbol}>(func);");
+        output.AppendLine(8, $"    Instance = new Lazy<{classSymbol.NamedTypeSymbol}>(func());");
         output.AppendLine(8, @"    return this;");
         output.AppendLine(8, @"}");
         output.AppendLine();
