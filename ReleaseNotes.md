@@ -1,3 +1,7 @@
+# 0.8.0 (03 April 2023)
+- [#52](https://github.com/StefH/FluentBuilder/pull/52) - AttributeArgumentListParser : Update TryParseAsEnum [enhancement] contributed by [StefH](https://github.com/StefH)
+- [#53](https://github.com/StefH/FluentBuilder/pull/53) - By default : generate only the With*** builder methods [enhancement] contributed by [StefH](https://github.com/StefH)
+
 # 0.7.1 (14 March 2023)
 - [#50](https://github.com/StefH/FluentBuilder/pull/50) - Take the namespace of generated files from the RootNamespace property [enhancement] contributed by [justinwritescode](https://github.com/justinwritescode)
 - [#51](https://github.com/StefH/FluentBuilder/pull/51) - Add support for parameterless constructors [enhancement] contributed by [StefH](https://github.com/StefH)

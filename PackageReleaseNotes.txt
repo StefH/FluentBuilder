@@ -1,6 +1,5 @@
-# 0.7.1 (14 March 2023)
-- #50 Take the namespace of generated files from the RootNamespace property [enhancement]
-- #51 Add support for parameterless constructors [enhancement]
-- #41 Builder could handle classes without default constructor [enhancement]
+# 0.8.0 (03 April 2023)
+- #52 AttributeArgumentListParser : Update TryParseAsEnum [enhancement]
+- #53 By default : generate only the With*** builder methods [enhancement]
 
 The full release notes can be found here: https://github.com/StefH/FluentBuilder/blob/main/ReleaseNotes.md
