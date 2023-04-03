@@ -56,6 +56,14 @@ namespace FluentBuilderGeneratorTests.DTO
         }
 
 
+        public SimpleClassBuilder UsingInstance(FluentBuilderGeneratorTests.DTO.SimpleClass value) => UsingInstance(() => value);
+
+        public SimpleClassBuilder UsingInstance(Func<FluentBuilderGeneratorTests.DTO.SimpleClass> func)
+        {
+            Instance = new Lazy<FluentBuilderGeneratorTests.DTO.SimpleClass>(func);
+            return this;
+        }
+
         public override SimpleClass Build() => Build(true);
 
         public override SimpleClass Build(bool useObjectInitializer)

@@ -51,9 +51,9 @@ namespace FluentBuilderGeneratorTests.DTO
 
         public ClassWithFluentBuilderIgnoreBuilder UsingInstance(FluentBuilderGeneratorTests.DTO.ClassWithFluentBuilderIgnore value) => UsingInstance(() => value);
 
-        public ClassWithFluentBuilderIgnoreBuilder UsingInstance(Func<FluentBuilderGeneratorTests.DTO.ClassWithFluentBuilderIgnore> value)
+        public ClassWithFluentBuilderIgnoreBuilder UsingInstance(Func<FluentBuilderGeneratorTests.DTO.ClassWithFluentBuilderIgnore> func)
         {
-            Instance = new Lazy<FluentBuilderGeneratorTests.DTO.ClassWithFluentBuilderIgnore>(func)
+            Instance = new Lazy<FluentBuilderGeneratorTests.DTO.ClassWithFluentBuilderIgnore>(func);
             return this;
         }
 
@@ -79,11 +79,11 @@ namespace FluentBuilderGeneratorTests.DTO
                     if (_Constructor1291238155_IsSet) { instance = _Constructor1291238155.Value; }
                     else { instance = Default(); }
 
-                    if (_idIsSet) { instance.Id = _id.Value; }
-
                     return instance;
                 });
             }
+            if (_idIsSet) { instance.Id = _id.Value; }
+
 
             PostBuild(Instance.Value);
 
