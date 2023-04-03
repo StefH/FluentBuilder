@@ -17,6 +17,14 @@ using FluentBuilderGeneratorTests.DTO;
 
 namespace FluentBuilderGeneratorTests.DTO
 {
+    public static partial class UserTWithAddressAndConstructorBuilder_T_Extensions
+    {
+        public static UserTWithAddressAndConstructorBuilder<T> AsBuilder<T>(this FluentBuilderGeneratorTests.DTO.UserTWithAddressAndConstructor<T> instance) where T : struct
+        {
+            return new UserTWithAddressAndConstructorBuilder<T>().UsingInstance(instance);
+        }
+    }
+
     public partial class UserTWithAddressAndConstructorBuilder<T> : Builder<FluentBuilderGeneratorTests.DTO.UserTWithAddressAndConstructor<T>> where T : struct
     {
         private bool _tValueIsSet;

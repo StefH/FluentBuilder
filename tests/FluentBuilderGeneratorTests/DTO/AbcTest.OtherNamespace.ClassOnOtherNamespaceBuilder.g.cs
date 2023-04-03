@@ -17,6 +17,14 @@ using AbcTest.OtherNamespace;
 
 namespace AbcTest.OtherNamespace
 {
+    public static partial class ClassOnOtherNamespaceBuilderExtensions
+    {
+        public static ClassOnOtherNamespaceBuilder AsBuilder(this AbcTest.OtherNamespace.ClassOnOtherNamespace instance)
+        {
+            return new ClassOnOtherNamespaceBuilder().UsingInstance(instance);
+        }
+    }
+
     public partial class ClassOnOtherNamespaceBuilder : Builder<AbcTest.OtherNamespace.ClassOnOtherNamespace>
     {
         private bool _idIsSet;

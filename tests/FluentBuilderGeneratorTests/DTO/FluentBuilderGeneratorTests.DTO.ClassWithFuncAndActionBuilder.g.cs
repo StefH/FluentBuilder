@@ -17,6 +17,14 @@ using FluentBuilderGeneratorTests.DTO;
 
 namespace FluentBuilderGeneratorTests.DTO
 {
+    public static partial class ClassWithFuncAndActionBuilderExtensions
+    {
+        public static ClassWithFuncAndActionBuilder AsBuilder(this FluentBuilderGeneratorTests.DTO.ClassWithFuncAndAction instance)
+        {
+            return new ClassWithFuncAndActionBuilder().UsingInstance(instance);
+        }
+    }
+
     public partial class ClassWithFuncAndActionBuilder : Builder<FluentBuilderGeneratorTests.DTO.ClassWithFuncAndAction>
     {
         private bool _func1IsSet;

@@ -423,7 +423,7 @@ public class FluentBuilderSourceGeneratorTests
     public void GenerateFiles_For1GenericClassTT_Should_GenerateCorrectFiles()
     {
         // Arrange
-        var builderFileName = "FluentBuilderGeneratorTests.DTO.AddressTTBuilder_T1,T2_.g.cs";
+        var builderFileName = "FluentBuilderGeneratorTests.DTO.AddressTTBuilder_T1_T2_.g.cs";
         var path = "./DTO/AddressTT.cs";
         var sourceFile = new SourceFile
         {

@@ -17,6 +17,14 @@ using FluentBuilderGeneratorTests.DTO;
 
 namespace FluentBuilderGeneratorTests.DTO
 {
+    public static partial class ThingWithParameterizedConstructorBuilderExtensions
+    {
+        public static ThingWithParameterizedConstructorBuilder AsBuilder(this FluentBuilderGeneratorTests.DTO.ThingWithParameterizedConstructor instance)
+        {
+            return new ThingWithParameterizedConstructorBuilder().UsingInstance(instance);
+        }
+    }
+
     public partial class ThingWithParameterizedConstructorBuilder : Builder<FluentBuilderGeneratorTests.DTO.ThingWithParameterizedConstructor>
     {
         private bool _xIsSet;

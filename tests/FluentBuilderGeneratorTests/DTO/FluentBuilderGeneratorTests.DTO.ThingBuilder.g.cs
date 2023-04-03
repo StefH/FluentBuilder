@@ -17,6 +17,14 @@ using FluentBuilderGeneratorTests.DTO;
 
 namespace FluentBuilderGeneratorTests.DTO
 {
+    public static partial class ThingBuilderExtensions
+    {
+        public static ThingBuilder AsBuilder(this FluentBuilderGeneratorTests.DTO.Thing instance)
+        {
+            return new ThingBuilder().UsingInstance(instance);
+        }
+    }
+
     public partial class ThingBuilder : Builder<FluentBuilderGeneratorTests.DTO.Thing>
     {
         private bool _tIsSet;

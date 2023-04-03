@@ -17,6 +17,14 @@ using FluentBuilderGeneratorTests.DTO;
 
 namespace FluentBuilderGeneratorTests.DTO
 {
+    public static partial class UserBuilderExtensions
+    {
+        public static UserBuilder AsBuilder(this FluentBuilderGeneratorTests.DTO.User instance)
+        {
+            return new UserBuilder().UsingInstance(instance);
+        }
+    }
+
     public partial class UserBuilder : Builder<FluentBuilderGeneratorTests.DTO.User>
     {
         private bool _firstNameIsSet;

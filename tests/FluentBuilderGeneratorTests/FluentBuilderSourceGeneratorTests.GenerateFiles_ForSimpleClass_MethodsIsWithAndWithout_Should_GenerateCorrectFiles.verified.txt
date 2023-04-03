@@ -20,6 +20,14 @@ using FluentBuilderGeneratorTests.DTO;
 
 namespace FluentBuilderGeneratorTests.DTO
 {
+    public static partial class SimpleClassBuilderExtensions
+    {
+        public static SimpleClassBuilder AsBuilder(this FluentBuilderGeneratorTests.DTO.SimpleClass instance)
+        {
+            return new SimpleClassBuilder().UsingInstance(instance);
+        }
+    }
+
     public partial class SimpleClassBuilder : Builder<FluentBuilderGeneratorTests.DTO.SimpleClass>
     {
         private bool _idIsSet;

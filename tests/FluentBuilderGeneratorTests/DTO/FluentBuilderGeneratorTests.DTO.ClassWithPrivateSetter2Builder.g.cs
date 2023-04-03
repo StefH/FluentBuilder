@@ -17,6 +17,14 @@ using FluentBuilderGeneratorTests.DTO;
 
 namespace FluentBuilderGeneratorTests.DTO
 {
+    public static partial class ClassWithPrivateSetter2BuilderExtensions
+    {
+        public static ClassWithPrivateSetter2Builder AsBuilder(this FluentBuilderGeneratorTests.DTO.ClassWithPrivateSetter2 instance)
+        {
+            return new ClassWithPrivateSetter2Builder().UsingInstance(instance);
+        }
+    }
+
     public partial class ClassWithPrivateSetter2Builder : Builder<FluentBuilderGeneratorTests.DTO.ClassWithPrivateSetter2>
     {
         private bool _value2IsSet;

@@ -17,6 +17,14 @@ using FluentBuilderGeneratorTests.DTO;
 
 namespace FluentBuilderGeneratorTests.DTO
 {
+    public static partial class AddressBuilder_T_Extensions
+    {
+        public static AddressBuilder<T> AsBuilder<T>(this FluentBuilderGeneratorTests.DTO.Address<T> instance) where T : struct
+        {
+            return new AddressBuilder<T>().UsingInstance(instance);
+        }
+    }
+
     public partial class AddressBuilder<T> : Builder<FluentBuilderGeneratorTests.DTO.Address<T>> where T : struct
     {
         private bool _streetIsSet;

@@ -17,6 +17,14 @@ using FluentBuilderGeneratorTests.DTO;
 
 namespace FluentBuilderGeneratorTests.DTO
 {
+    public static partial class AddressBuilderExtensions
+    {
+        public static AddressBuilder AsBuilder(this FluentBuilderGeneratorTests.DTO.Address instance)
+        {
+            return new AddressBuilder().UsingInstance(instance);
+        }
+    }
+
     public partial class AddressBuilder : Builder<FluentBuilderGeneratorTests.DTO.Address>
     {
         private bool _houseNumberIsSet;

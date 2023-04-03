@@ -17,6 +17,14 @@ using FluentBuilderGeneratorTests.DTO;
 
 namespace FluentBuilderGeneratorTests.DTO
 {
+    public static partial class TestBuilderExtensions
+    {
+        public static TestBuilder AsBuilder(this FluentBuilderGeneratorTests.DTO.Test instance)
+        {
+            return new TestBuilder().UsingInstance(instance);
+        }
+    }
+
     public partial class TestBuilder : Builder<FluentBuilderGeneratorTests.DTO.Test>
     {
         private bool _classOnOtherNamespaceListIsSet;

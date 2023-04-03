@@ -20,6 +20,14 @@ using MyNamespace2;
 
 namespace FluentBuilderGeneratorTests.DTO
 {
+    public static partial class ClassWithPropertyValueSetBuilderExtensions
+    {
+        public static ClassWithPropertyValueSetBuilder AsBuilder(this FluentBuilderGeneratorTests.DTO.ClassWithPropertyValueSet instance)
+        {
+            return new ClassWithPropertyValueSetBuilder().UsingInstance(instance);
+        }
+    }
+
     public partial class ClassWithPropertyValueSetBuilder : Builder<FluentBuilderGeneratorTests.DTO.ClassWithPropertyValueSet>
     {
         private bool _noIntValueSetIsSet;

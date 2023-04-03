@@ -17,6 +17,14 @@ using FluentBuilderGeneratorTests.DTO;
 
 namespace FluentBuilderGeneratorTests.DTO
 {
+    public static partial class MyDummyClassBuilderExtensions
+    {
+        public static MyDummyClassBuilder AsBuilder(this FluentBuilderGeneratorTests.DTO.DummyClass instance)
+        {
+            return new MyDummyClassBuilder().UsingInstance(instance);
+        }
+    }
+
     public partial class MyDummyClassBuilder : Builder<FluentBuilderGeneratorTests.DTO.DummyClass>
     {
         private bool _idIsSet;

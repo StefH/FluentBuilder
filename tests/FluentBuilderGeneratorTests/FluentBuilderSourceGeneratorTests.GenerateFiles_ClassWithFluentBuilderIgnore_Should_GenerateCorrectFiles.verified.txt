@@ -20,6 +20,14 @@ using FluentBuilderGeneratorTests.DTO;
 
 namespace FluentBuilderGeneratorTests.DTO
 {
+    public static partial class ClassWithFluentBuilderIgnoreBuilderExtensions
+    {
+        public static ClassWithFluentBuilderIgnoreBuilder AsBuilder(this FluentBuilderGeneratorTests.DTO.ClassWithFluentBuilderIgnore instance)
+        {
+            return new ClassWithFluentBuilderIgnoreBuilder().UsingInstance(instance);
+        }
+    }
+
     public partial class ClassWithFluentBuilderIgnoreBuilder : Builder<FluentBuilderGeneratorTests.DTO.ClassWithFluentBuilderIgnore>
     {
         private bool _idIsSet;

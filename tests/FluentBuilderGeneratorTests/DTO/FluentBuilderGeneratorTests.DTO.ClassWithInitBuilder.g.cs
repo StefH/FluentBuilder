@@ -17,6 +17,14 @@ using FluentBuilderGeneratorTests.DTO;
 
 namespace FluentBuilderGeneratorTests.DTO
 {
+    public static partial class ClassWithInitBuilderExtensions
+    {
+        public static ClassWithInitBuilder AsBuilder(this FluentBuilderGeneratorTests.DTO.ClassWithInit instance)
+        {
+            return new ClassWithInitBuilder().UsingInstance(instance);
+        }
+    }
+
     public partial class ClassWithInitBuilder : Builder<FluentBuilderGeneratorTests.DTO.ClassWithInit>
     {
         private bool _normalIsSet;

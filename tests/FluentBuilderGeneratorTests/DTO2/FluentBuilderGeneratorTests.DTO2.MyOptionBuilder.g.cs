@@ -17,6 +17,14 @@ using FluentBuilderGeneratorTests.DTO;
 
 namespace FluentBuilderGeneratorTests.DTO2
 {
+    public static partial class MyOptionBuilderExtensions
+    {
+        public static MyOptionBuilder AsBuilder(this FluentBuilderGeneratorTests.DTO.Option instance)
+        {
+            return new MyOptionBuilder().UsingInstance(instance);
+        }
+    }
+
     public partial class MyOptionBuilder : Builder<FluentBuilderGeneratorTests.DTO.Option>
     {
         private bool _nameIsSet;
