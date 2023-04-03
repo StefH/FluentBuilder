@@ -31,13 +31,6 @@ namespace FluentBuilderGeneratorTests.DTO
             _idIsSet = true;
             return this;
         }
-        public ClassWithFluentBuilderIgnoreBuilder WithoutId()
-        {
-            WithId(() => default(int));
-            _idIsSet = false;
-            return this;
-        }
-
 
         private bool _Constructor1291238155_IsSet;
         private Lazy<FluentBuilderGeneratorTests.DTO.ClassWithFluentBuilderIgnore> _Constructor1291238155 = new Lazy<FluentBuilderGeneratorTests.DTO.ClassWithFluentBuilderIgnore>(() => new FluentBuilderGeneratorTests.DTO.ClassWithFluentBuilderIgnore());

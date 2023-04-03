@@ -28,13 +28,6 @@ namespace FluentBuilderGeneratorTests.DTO
             _func1IsSet = true;
             return this;
         }
-        public ClassWithFuncAndActionBuilder WithoutFunc1()
-        {
-            WithFunc1(() => new System.Func<int, string>((_) => string.Empty));
-            _func1IsSet = false;
-            return this;
-        }
-
         private bool _func2IsSet;
         private Lazy<System.Func<int, bool, string>> _func2 = new Lazy<System.Func<int, bool, string>>(() => new System.Func<int, bool, string>((_, _) => string.Empty));
         public ClassWithFuncAndActionBuilder WithFunc2(System.Func<int, bool, string> value) => WithFunc2(() => value);
@@ -44,13 +37,6 @@ namespace FluentBuilderGeneratorTests.DTO
             _func2IsSet = true;
             return this;
         }
-        public ClassWithFuncAndActionBuilder WithoutFunc2()
-        {
-            WithFunc2(() => new System.Func<int, bool, string>((_, _) => string.Empty));
-            _func2IsSet = false;
-            return this;
-        }
-
         private bool _funcNullIsSet;
         private Lazy<System.Func<int?, bool?, string?>> _funcNull = new Lazy<System.Func<int?, bool?, string?>>(() => new System.Func<int?, bool?, string?>((_, _) => default(string?)));
         public ClassWithFuncAndActionBuilder WithFuncNull(System.Func<int?, bool?, string?> value) => WithFuncNull(() => value);
@@ -60,13 +46,6 @@ namespace FluentBuilderGeneratorTests.DTO
             _funcNullIsSet = true;
             return this;
         }
-        public ClassWithFuncAndActionBuilder WithoutFuncNull()
-        {
-            WithFuncNull(() => new System.Func<int?, bool?, string?>((_, _) => default(string?)));
-            _funcNullIsSet = false;
-            return this;
-        }
-
         private bool _actionIsSet;
         private Lazy<System.Action<int>> _action = new Lazy<System.Action<int>>(() => new System.Action<int>((_) => { }));
         public ClassWithFuncAndActionBuilder WithAction(System.Action<int> value) => WithAction(() => value);
@@ -76,13 +55,6 @@ namespace FluentBuilderGeneratorTests.DTO
             _actionIsSet = true;
             return this;
         }
-        public ClassWithFuncAndActionBuilder WithoutAction()
-        {
-            WithAction(() => new System.Action<int>((_) => { }));
-            _actionIsSet = false;
-            return this;
-        }
-
 
         private bool _Constructor_1844167085_IsSet;
         private Lazy<FluentBuilderGeneratorTests.DTO.ClassWithFuncAndAction> _Constructor_1844167085 = new Lazy<FluentBuilderGeneratorTests.DTO.ClassWithFuncAndAction>(() => new FluentBuilderGeneratorTests.DTO.ClassWithFuncAndAction());

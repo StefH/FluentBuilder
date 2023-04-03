@@ -28,13 +28,6 @@ namespace FluentBuilderGeneratorTests.DTO
             _lIsSet = true;
             return this;
         }
-        public ThingWithOnlyParameterizedConstructorsBuilder WithoutL()
-        {
-            WithL(() => default(long));
-            _lIsSet = false;
-            return this;
-        }
-
 
         private bool _Constructor696540298_IsSet;
         private Lazy<FluentBuilderGeneratorTests.DTO.ThingWithOnlyParameterizedConstructors> _Constructor696540298 = new Lazy<FluentBuilderGeneratorTests.DTO.ThingWithOnlyParameterizedConstructors>(() => new FluentBuilderGeneratorTests.DTO.ThingWithOnlyParameterizedConstructors(default(int)));

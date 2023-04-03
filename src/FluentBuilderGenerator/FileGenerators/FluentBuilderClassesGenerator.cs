@@ -222,13 +222,16 @@ namespace {classSymbol.BuilderNamespace}
 
             sb.Append(GeneratePropertyActionMethodIfApplicable(classSymbol, property, allClassSymbols));
 
-            sb.AppendLine($"        public {builderClassName} Without{property.Name}()");
-            sb.AppendLine("        {");
-            sb.AppendLine($"            With{property.Name}(() => {defaultValue});");
-            sb.AppendLine($"            _{CamelCase(property.Name)}IsSet = false;");
-            sb.AppendLine("            return this;");
-            sb.AppendLine("        }");
-            sb.AppendLine();
+            if (fluentData.Methods == FluentBuilderMethods.WithAndWithout)
+            {
+                sb.AppendLine($"        public {builderClassName} Without{property.Name}()");
+                sb.AppendLine("        {");
+                sb.AppendLine($"            With{property.Name}(() => {defaultValue});");
+                sb.AppendLine($"            _{CamelCase(property.Name)}IsSet = false;");
+                sb.AppendLine("            return this;");
+                sb.AppendLine("        }");
+                sb.AppendLine();
+            }
         }
 
         return (sb, extraUsings.Distinct().ToList());

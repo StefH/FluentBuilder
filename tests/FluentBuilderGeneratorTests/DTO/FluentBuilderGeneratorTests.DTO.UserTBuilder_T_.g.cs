@@ -28,13 +28,6 @@ namespace FluentBuilderGeneratorTests.DTO
             _tValueIsSet = true;
             return this;
         }
-        public UserTBuilder<T> WithoutTValue()
-        {
-            WithTValue(() => default(T));
-            _tValueIsSet = false;
-            return this;
-        }
-
 
         private bool _Constructor302462813_IsSet;
         private Lazy<FluentBuilderGeneratorTests.DTO.UserT<T>> _Constructor302462813 = new Lazy<FluentBuilderGeneratorTests.DTO.UserT<T>>(() => new FluentBuilderGeneratorTests.DTO.UserT<T>());

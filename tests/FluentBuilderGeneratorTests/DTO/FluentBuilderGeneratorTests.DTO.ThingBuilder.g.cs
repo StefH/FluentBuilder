@@ -34,13 +34,6 @@ namespace FluentBuilderGeneratorTests.DTO
             action(builder);
             return builder.Build(useObjectInitializer);
         });
-        public ThingBuilder WithoutT()
-        {
-            WithT(() => new FluentBuilderGeneratorTests.DTO.Thing());
-            _tIsSet = false;
-            return this;
-        }
-
 
         private bool _Constructor_759650433_IsSet;
         private Lazy<FluentBuilderGeneratorTests.DTO.Thing> _Constructor_759650433 = new Lazy<FluentBuilderGeneratorTests.DTO.Thing>(() => new FluentBuilderGeneratorTests.DTO.Thing());

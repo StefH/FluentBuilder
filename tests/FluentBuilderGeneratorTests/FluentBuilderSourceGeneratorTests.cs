@@ -283,7 +283,7 @@ public class FluentBuilderSourceGeneratorTests
     }
 
     [Fact]
-    public Task GenerateFiles_ForSimpleClass_Should_GenerateCorrectFiles()
+    public Task GenerateFiles_ForSimpleClass_MethodsIsWithOnly_Should_GenerateCorrectFiles()
     {
         // Arrange
         var path = "./DTO/SimpleClass.cs";
@@ -292,6 +292,34 @@ public class FluentBuilderSourceGeneratorTests
             Path = path,
             Text = File.ReadAllText(path),
             AttributeToAddToClass = "FluentBuilder.AutoGenerateBuilder"
+        };
+
+        // Act
+        var result = _sut.Execute(Namespace, new[] { sourceFile });
+
+        // Assert
+        result.Valid.Should().BeTrue();
+        result.Files.Should().HaveCount(9);
+
+        // Verify
+        var errorResult = result.GeneratorDriver.GetRunResult().Results.First().GeneratedSources[8];
+        return Verifier.Verify(errorResult);
+    }
+
+    [Fact]
+    public Task GenerateFiles_ForSimpleClass_MethodsIsWithAndWithout_Should_GenerateCorrectFiles()
+    {
+        // Arrange
+        var path = "./DTO/SimpleClass.cs";
+        var sourceFile = new SourceFile
+        {
+            Path = path,
+            Text = File.ReadAllText(path),
+            AttributeToAddToClass = new ExtraAttribute
+            {
+                Name = "FluentBuilder.AutoGenerateBuilder",
+                ArgumentList = new[] { "FluentBuilderMethods.WithAndWithout" }
+            }
         };
 
         // Act

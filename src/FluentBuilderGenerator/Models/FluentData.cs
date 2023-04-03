@@ -23,4 +23,6 @@ internal struct FluentData
     public FluentBuilderAccessibility Accessibility { get; init; }
 
     public BuilderType BuilderType { get; init; }
+
+    public FluentBuilderMethods Methods { get; init; } 
 }

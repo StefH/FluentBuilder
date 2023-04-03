@@ -62,5 +62,12 @@ namespace FluentBuilder
         Public = 0,
         PublicAndPrivate = 1
     }
+
+    [Flags]
+    internal enum FluentBuilderMethods
+    {
+        WithOnly = 0,
+        WithAndWithout = 1
+    }
 }
 #nullable disable

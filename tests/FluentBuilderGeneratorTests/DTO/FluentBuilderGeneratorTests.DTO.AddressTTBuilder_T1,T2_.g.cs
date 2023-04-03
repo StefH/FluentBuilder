@@ -28,13 +28,6 @@ namespace FluentBuilderGeneratorTests.DTO
             _testValue1IsSet = true;
             return this;
         }
-        public AddressTTBuilder<T1,T2> WithoutTestValue1()
-        {
-            WithTestValue1(() => default(T1));
-            _testValue1IsSet = false;
-            return this;
-        }
-
         private bool _testValue2IsSet;
         private Lazy<T2?> _testValue2 = new Lazy<T2?>(() => default(T2?));
         public AddressTTBuilder<T1,T2> WithTestValue2(T2? value) => WithTestValue2(() => value);
@@ -44,13 +37,6 @@ namespace FluentBuilderGeneratorTests.DTO
             _testValue2IsSet = true;
             return this;
         }
-        public AddressTTBuilder<T1,T2> WithoutTestValue2()
-        {
-            WithTestValue2(() => default(T2?));
-            _testValue2IsSet = false;
-            return this;
-        }
-
 
         private bool _Constructor_758958168_IsSet;
         private Lazy<FluentBuilderGeneratorTests.DTO.AddressTT<T1, T2>> _Constructor_758958168 = new Lazy<FluentBuilderGeneratorTests.DTO.AddressTT<T1, T2>>(() => new FluentBuilderGeneratorTests.DTO.AddressTT<T1, T2>());

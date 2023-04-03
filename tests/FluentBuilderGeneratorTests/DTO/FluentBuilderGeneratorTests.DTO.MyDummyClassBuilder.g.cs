@@ -28,13 +28,6 @@ namespace FluentBuilderGeneratorTests.DTO
             _idIsSet = true;
             return this;
         }
-        public MyDummyClassBuilder WithoutId()
-        {
-            WithId(() => default(int));
-            _idIsSet = false;
-            return this;
-        }
-
 
         private bool _Constructor921673711_IsSet;
         private Lazy<FluentBuilderGeneratorTests.DTO.DummyClass> _Constructor921673711 = new Lazy<FluentBuilderGeneratorTests.DTO.DummyClass>(() => new FluentBuilderGeneratorTests.DTO.DummyClass());
