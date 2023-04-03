@@ -111,7 +111,7 @@ namespace {classSymbol.BuilderNamespace}
     {{
 {propertiesCode.StringBuilder}
 {constructorCode.StringBuilder}
-{GenerateBuildMethod(fluentData, classSymbol)}
+{GenerateSeveralMethods(fluentData, classSymbol)}
     }}
 }}
 {(_context.SupportsNullable ? "#nullable disable" : string.Empty)}";
@@ -135,7 +135,7 @@ namespace {classSymbol.BuilderNamespace}
             var constructorHashCode = publicConstructor.GetDeterministicHashCodeAsString();
 
             sb.AppendLine(8, $"private bool _Constructor{constructorHashCode}_IsSet;");
-            
+
             var defaultValues = new List<string>();
             foreach (var p in constructorParameters)
             {
@@ -160,7 +160,7 @@ namespace {classSymbol.BuilderNamespace}
             sb.AppendLine(8, @"        (");
             sb.AppendLines(20, constructorParameters.Select(x => x.Symbol.Name), ", ");
             sb.AppendLine(8, @"        );");
-            
+
             sb.AppendLine(8, @"    });");
 
             sb.AppendLine(8, $"    _Constructor{constructorHashCode}_IsSet = true;");
@@ -396,7 +396,7 @@ namespace {classSymbol.BuilderNamespace}
         return (propertiesPublicSettable, propertiesPrivateSettable);
     }
 
-    private static string GenerateBuildMethod(FluentData fluentData, ClassSymbol classSymbol)
+    private static string GenerateSeveralMethods(FluentData fluentData, ClassSymbol classSymbol)
     {
         var publicConstructors = classSymbol.NamedTypeSymbol.Constructors.Where(c => c.DeclaredAccessibility == Accessibility.Public).ToArray();
         var (propertiesPublicSettable, propertiesPrivateSettable) = GetProperties(classSymbol, fluentData.HandleBaseClasses, fluentData.Accessibility);
@@ -411,13 +411,23 @@ namespace {classSymbol.BuilderNamespace}
 
         var hasParameterLessConstructor = publicConstructors.Any(p => p.Parameters.IsEmpty);
 
+        output.AppendLine(8, $"public {classSymbol.BuilderClassName} UsingInstance({className} value) => UsingInstance(() => value);");
+        output.AppendLine();
+
+        output.AppendLine(8, $"public {classSymbol.BuilderClassName} UsingInstance(Func<{className}> func)");
+        output.AppendLine(8, @"{");
+        output.AppendLine(8, $"    Instance = new Lazy<{className}>(func);");
+        output.AppendLine(8, @"    return this;");
+        output.AppendLine(8, @"}");
+        output.AppendLine();
+
         output.AppendLine(8, $"public override {className} Build() => Build({hasParameterLessConstructor.ToString().ToLowerInvariant()});");
         output.AppendLine();
 
         output.AppendLine(8, $"public override {className} Build(bool useObjectInitializer)");
         output.AppendLine(8, @"{");
 
-        output.AppendLine(8, @"    if (Instance?.IsValueCreated != true)");
+        output.AppendLine(8, @"    if (Instance is null)");
         output.AppendLine(8, @"    {");
         output.AppendLine(8, $"        Instance = new Lazy<{className}>(() =>");
         output.AppendLine(8, @"        {");
@@ -442,11 +452,11 @@ namespace {classSymbol.BuilderNamespace}
 
             output.AppendLine(20, @"    return instance;");
         }
-        
+
         output.AppendLine(20, @"}");
         output.AppendLine();
 
-        foreach (var x in publicConstructors.Select((publicConstructor, idx) => new { publicConstructor, idx}))
+        foreach (var x in publicConstructors.Select((publicConstructor, idx) => new { publicConstructor, idx }))
         {
             var constructorHashCode = x.publicConstructor.GetDeterministicHashCodeAsString();
 
@@ -454,17 +464,16 @@ namespace {classSymbol.BuilderNamespace}
         }
         output.AppendLine(20, "else { instance = Default(); }");
         output.AppendLine();
-
-        output.AppendLines(20, propertiesPublicSettable.Select(property => $@"if (_{CamelCase(property.Name)}IsSet) {{ instance.{property.Name} = _{CamelCase(property.Name)}.Value; }}"));
-
-        output.AppendLines(20, propertiesPrivateSettable.Select(property => $@"if (_{CamelCase(property.Name)}IsSet) {{ Set{property.Name}(instance, _{CamelCase(property.Name)}.Value); }}"));
-
+        
         output.AppendLine(20, "return instance;");
 
         output.AppendLine(8, @"        });");
         output.AppendLine(8, @"    }");
 
         output.AppendLine();
+        output.AppendLines(12, propertiesPublicSettable.Select(property => $@"if (_{CamelCase(property.Name)}IsSet) {{ Instance.Value.{property.Name} = _{CamelCase(property.Name)}.Value; }}"));
+        output.AppendLines(12, propertiesPrivateSettable.Select(property => $@"if (_{CamelCase(property.Name)}IsSet) {{ Set{property.Name}(Instance.Value, _{CamelCase(property.Name)}.Value); }}"));
+        
         output.AppendLine(8, @"    PostBuild(Instance.Value);");
 
         output.AppendLine();
