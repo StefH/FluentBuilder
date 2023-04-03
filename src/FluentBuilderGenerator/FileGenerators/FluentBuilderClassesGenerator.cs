@@ -64,7 +64,7 @@ internal partial class FluentBuilderClassesGenerator : IFilesGenerator
             .Select(classSymbol => new FileData
             (
                 classSymbol.Type,
-                $"{classSymbol.NamedTypeSymbol.GenerateSafeTypeName()}_{classSymbol.Type}.g.cs",
+                $"{classSymbol.NamedTypeSymbol.GenerateFileName()}_{classSymbol.Type}.g.cs",
                 CreateIEnumerableBuilderCode(classSymbol)
             ));
 
