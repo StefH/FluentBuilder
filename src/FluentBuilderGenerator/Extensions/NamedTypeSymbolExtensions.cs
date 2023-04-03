@@ -5,7 +5,7 @@ namespace FluentBuilderGenerator.Extensions;
 
 internal static class NamedTypeSymbolExtensions
 {
-    public static string GenerateFileName(this INamedTypeSymbol namedTypeSymbol)
+    public static string GenerateSafeTypeName(this INamedTypeSymbol namedTypeSymbol)
     {
         var typeName = namedTypeSymbol.GetFullType();
         return !(typeName.Contains('<') && typeName.Contains('>')) ?

@@ -53,7 +53,8 @@ internal partial class FluentBuilderClassesGenerator : IFilesGenerator
         var classes = applicableClassSymbols.Select(classSymbol => new FileData
         (
             FileDataType.Builder,
-            $"{classSymbol.ClassSymbol.FullBuilderClassName.Replace('<', '_').Replace('>', '_')}.g.cs",
+            //$"{classSymbol.ClassSymbol.FullBuilderClassName.Replace('<', '_').Replace('>', '_')}.g.cs",
+            $"{classSymbol.ClassSymbol.NamedTypeSymbol.GenerateSafeTypeName()}.g.cs",
             CreateClassBuilderCode(classSymbol.FluentData, classSymbol.ClassSymbol, extraClassSymbols)
         ));
 
@@ -64,7 +65,7 @@ internal partial class FluentBuilderClassesGenerator : IFilesGenerator
             .Select(classSymbol => new FileData
             (
                 classSymbol.Type,
-                $"{classSymbol.NamedTypeSymbol.GenerateFileName()}_{classSymbol.Type}.g.cs",
+                $"{classSymbol.NamedTypeSymbol.GenerateSafeTypeName()}_{classSymbol.Type}.g.cs",
                 CreateIEnumerableBuilderCode(classSymbol)
             ));
 
@@ -107,6 +108,14 @@ internal partial class FluentBuilderClassesGenerator : IFilesGenerator
 
 namespace {classSymbol.BuilderNamespace}
 {{
+    public partial static class {classSymbol.BuilderClassName}Extensions
+    {{
+        public static {classSymbol.BuilderClassName} AsBuilder(this {classSymbol.NamedTypeSymbol} instance)
+        {{
+            return new {classSymbol.BuilderClassName}().UsingInstance(instance);
+        }}
+    }}
+
     public partial class {classSymbol.BuilderClassName} : Builder<{classSymbol.NamedTypeSymbol}>{classSymbol.NamedTypeSymbol.GetWhereStatement()}
     {{
 {propertiesCode.StringBuilder}
