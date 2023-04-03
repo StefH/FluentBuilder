@@ -471,8 +471,8 @@ namespace {classSymbol.BuilderNamespace}
         output.AppendLine(8, @"    }");
 
         output.AppendLine();
-        output.AppendLines(12, propertiesPublicSettable.Select(property => $@"if (_{CamelCase(property.Name)}IsSet) {{ instance.{property.Name} = _{CamelCase(property.Name)}.Value; }}"));
-        output.AppendLines(12, propertiesPrivateSettable.Select(property => $@"if (_{CamelCase(property.Name)}IsSet) {{ Set{property.Name}(instance, _{CamelCase(property.Name)}.Value); }}"));
+        output.AppendLines(12, propertiesPublicSettable.Select(property => $@"if (_{CamelCase(property.Name)}IsSet) {{ Instance.Value.{property.Name} = _{CamelCase(property.Name)}.Value; }}"));
+        output.AppendLines(12, propertiesPrivateSettable.Select(property => $@"if (_{CamelCase(property.Name)}IsSet) {{ Set{property.Name}(Instance.Value, _{CamelCase(property.Name)}.Value); }}"));
         
         output.AppendLine(8, @"    PostBuild(Instance.Value);");
 
