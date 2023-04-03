@@ -17,6 +17,14 @@ using FluentBuilderGeneratorTests.DTO;
 
 namespace FluentBuilderGeneratorTests.DTO
 {
+    public static partial class UserTBuilder_T_Extensions
+    {
+        public static UserTBuilder<T> AsBuilder<T>(this FluentBuilderGeneratorTests.DTO.UserT<T> instance) where T : struct
+        {
+            return new UserTBuilder<T>().UsingInstance(instance);
+        }
+    }
+
     public partial class UserTBuilder<T> : Builder<FluentBuilderGeneratorTests.DTO.UserT<T>> where T : struct
     {
         private bool _tValueIsSet;
