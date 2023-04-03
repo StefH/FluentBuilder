@@ -31,6 +31,13 @@ namespace FluentBuilderGeneratorTests.DTO
             _idIsSet = true;
             return this;
         }
+        public SimpleClassBuilder WithoutId()
+        {
+            WithId(() => default(int));
+            _idIsSet = false;
+            return this;
+        }
+
 
         private bool _Constructor538961215_IsSet;
         private Lazy<FluentBuilderGeneratorTests.DTO.SimpleClass> _Constructor538961215 = new Lazy<FluentBuilderGeneratorTests.DTO.SimpleClass>(() => new FluentBuilderGeneratorTests.DTO.SimpleClass());
@@ -48,6 +55,14 @@ namespace FluentBuilderGeneratorTests.DTO
             return this;
         }
 
+
+        public SimpleClassBuilder UsingInstance(FluentBuilderGeneratorTests.DTO.SimpleClass value) => UsingInstance(() => value);
+
+        public SimpleClassBuilder UsingInstance(Func<FluentBuilderGeneratorTests.DTO.SimpleClass> value)
+        {
+            Instance = new Lazy<FluentBuilderGeneratorTests.DTO.SimpleClass>(func)
+            return this;
+        }
 
         public override SimpleClass Build() => Build(true);
 

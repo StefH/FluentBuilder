@@ -44,15 +44,7 @@ namespace {_assemblyName}.FluentBuilder
         public abstract T Build();
 
         public abstract T Build(bool useObjectInitializer);
-
-        public Builder<T> UsingInstance(T value) => UsingInstance(() => value);
-
-        public Builder<T> UsingInstance(Func<T> func)
-        {{
-            Instance = new Lazy<T>(func);
-            return this;
-        }}
-    
+   
         protected virtual void PostBuild(T value) {{}}
     }}
 }}"

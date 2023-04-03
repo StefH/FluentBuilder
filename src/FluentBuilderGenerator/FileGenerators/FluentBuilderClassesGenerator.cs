@@ -135,7 +135,7 @@ namespace {classSymbol.BuilderNamespace}
             var constructorHashCode = publicConstructor.GetDeterministicHashCodeAsString();
 
             sb.AppendLine(8, $"private bool _Constructor{constructorHashCode}_IsSet;");
-            
+
             var defaultValues = new List<string>();
             foreach (var p in constructorParameters)
             {
@@ -160,7 +160,7 @@ namespace {classSymbol.BuilderNamespace}
             sb.AppendLine(8, @"        (");
             sb.AppendLines(20, constructorParameters.Select(x => x.Symbol.Name), ", ");
             sb.AppendLine(8, @"        );");
-            
+
             sb.AppendLine(8, @"    });");
 
             sb.AppendLine(8, $"    _Constructor{constructorHashCode}_IsSet = true;");
@@ -411,6 +411,16 @@ namespace {classSymbol.BuilderNamespace}
 
         var hasParameterLessConstructor = publicConstructors.Any(p => p.Parameters.IsEmpty);
 
+        output.AppendLine(8, $"public {classSymbol.BuilderClassName} UsingInstance({classSymbol.NamedTypeSymbol} value) => UsingInstance(() => value);");
+        output.AppendLine();
+
+        output.AppendLine(8, $"public {classSymbol.BuilderClassName} UsingInstance(Func<{classSymbol.NamedTypeSymbol}> func)");
+        output.AppendLine(8, @"{");
+        output.AppendLine(8, $"    Instance = new Lazy<{classSymbol.NamedTypeSymbol}>(func);");
+        output.AppendLine(8, @"    return this;");
+        output.AppendLine(8, @"}");
+        output.AppendLine();
+
         output.AppendLine(8, $"public override {className} Build() => Build({hasParameterLessConstructor.ToString().ToLowerInvariant()});");
         output.AppendLine();
 
@@ -442,11 +452,11 @@ namespace {classSymbol.BuilderNamespace}
 
             output.AppendLine(20, @"    return instance;");
         }
-        
+
         output.AppendLine(20, @"}");
         output.AppendLine();
 
-        foreach (var x in publicConstructors.Select((publicConstructor, idx) => new { publicConstructor, idx}))
+        foreach (var x in publicConstructors.Select((publicConstructor, idx) => new { publicConstructor, idx }))
         {
             var constructorHashCode = x.publicConstructor.GetDeterministicHashCodeAsString();
 

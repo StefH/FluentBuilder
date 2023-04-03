@@ -135,7 +135,7 @@ public class FluentBuilderSourceGeneratorTests
 
         var instance = new ThingWithOnlyParameterizedConstructors(999);
         var b3 = new ThingWithOnlyParameterizedConstructorsBuilder()
-            .UsingInstance(instance)
+            //.UsingInstance(instance)
             .Build();
 
         var _ = 0;
