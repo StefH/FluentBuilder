@@ -46,11 +46,11 @@ namespace FluentBuilderGeneratorTests.DTO2
         }
 
 
-        public MyOptionBuilder UsingInstance(FluentBuilderGeneratorTests.DTO.Option value) => UsingInstance(() => value);
+        public MyOptionBuilder UsingInstance(Option value) => UsingInstance(() => value);
 
-        public MyOptionBuilder UsingInstance(Func<FluentBuilderGeneratorTests.DTO.Option> func)
+        public MyOptionBuilder UsingInstance(Func<Option> func)
         {
-            Instance = new Lazy<FluentBuilderGeneratorTests.DTO.Option>(func());
+            Instance = new Lazy<Option>(func);
             return this;
         }
 
@@ -58,7 +58,7 @@ namespace FluentBuilderGeneratorTests.DTO2
 
         public override Option Build(bool useObjectInitializer)
         {
-            if (Instance?.IsValueCreated != true)
+            if (Instance is null)
             {
                 Instance = new Lazy<Option>(() =>
                 {

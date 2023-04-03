@@ -49,11 +49,11 @@ namespace FluentBuilderGeneratorTests.DTO
         }
 
 
-        public ClassWithFluentBuilderIgnoreBuilder UsingInstance(FluentBuilderGeneratorTests.DTO.ClassWithFluentBuilderIgnore value) => UsingInstance(() => value);
+        public ClassWithFluentBuilderIgnoreBuilder UsingInstance(ClassWithFluentBuilderIgnore value) => UsingInstance(() => value);
 
-        public ClassWithFluentBuilderIgnoreBuilder UsingInstance(Func<FluentBuilderGeneratorTests.DTO.ClassWithFluentBuilderIgnore> func)
+        public ClassWithFluentBuilderIgnoreBuilder UsingInstance(Func<ClassWithFluentBuilderIgnore> func)
         {
-            Instance = new Lazy<FluentBuilderGeneratorTests.DTO.ClassWithFluentBuilderIgnore>(func());
+            Instance = new Lazy<ClassWithFluentBuilderIgnore>(func);
             return this;
         }
 
@@ -61,7 +61,7 @@ namespace FluentBuilderGeneratorTests.DTO
 
         public override ClassWithFluentBuilderIgnore Build(bool useObjectInitializer)
         {
-            if (Instance?.IsValueCreated != true)
+            if (Instance is null)
             {
                 Instance = new Lazy<ClassWithFluentBuilderIgnore>(() =>
                 {

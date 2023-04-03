@@ -55,11 +55,11 @@ namespace FluentBuilderGeneratorTests.DTO
         }
 
 
-        public AddressTTBuilder<T1,T2> UsingInstance(FluentBuilderGeneratorTests.DTO.AddressTT<T1, T2> value) => UsingInstance(() => value);
+        public AddressTTBuilder<T1,T2> UsingInstance(AddressTT<T1, T2> value) => UsingInstance(() => value);
 
-        public AddressTTBuilder<T1,T2> UsingInstance(Func<FluentBuilderGeneratorTests.DTO.AddressTT<T1, T2>> func)
+        public AddressTTBuilder<T1,T2> UsingInstance(Func<AddressTT<T1, T2>> func)
         {
-            Instance = new Lazy<FluentBuilderGeneratorTests.DTO.AddressTT<T1, T2>>(func());
+            Instance = new Lazy<AddressTT<T1, T2>>(func);
             return this;
         }
 
@@ -67,7 +67,7 @@ namespace FluentBuilderGeneratorTests.DTO
 
         public override AddressTT<T1, T2> Build(bool useObjectInitializer)
         {
-            if (Instance?.IsValueCreated != true)
+            if (Instance is null)
             {
                 Instance = new Lazy<AddressTT<T1, T2>>(() =>
                 {

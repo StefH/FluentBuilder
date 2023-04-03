@@ -56,11 +56,11 @@ namespace FluentBuilderGeneratorTests.DTO
         }
 
 
-        public SimpleClassBuilder UsingInstance(FluentBuilderGeneratorTests.DTO.SimpleClass value) => UsingInstance(() => value);
+        public SimpleClassBuilder UsingInstance(SimpleClass value) => UsingInstance(() => value);
 
-        public SimpleClassBuilder UsingInstance(Func<FluentBuilderGeneratorTests.DTO.SimpleClass> func)
+        public SimpleClassBuilder UsingInstance(Func<SimpleClass> func)
         {
-            Instance = new Lazy<FluentBuilderGeneratorTests.DTO.SimpleClass>(func());
+            Instance = new Lazy<SimpleClass>(func);
             return this;
         }
 
@@ -68,7 +68,7 @@ namespace FluentBuilderGeneratorTests.DTO
 
         public override SimpleClass Build(bool useObjectInitializer)
         {
-            if (Instance?.IsValueCreated != true)
+            if (Instance is null)
             {
                 Instance = new Lazy<SimpleClass>(() =>
                 {

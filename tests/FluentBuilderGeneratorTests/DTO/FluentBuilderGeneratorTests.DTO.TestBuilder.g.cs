@@ -52,11 +52,11 @@ namespace FluentBuilderGeneratorTests.DTO
         }
 
 
-        public TestBuilder UsingInstance(FluentBuilderGeneratorTests.DTO.Test value) => UsingInstance(() => value);
+        public TestBuilder UsingInstance(Test value) => UsingInstance(() => value);
 
-        public TestBuilder UsingInstance(Func<FluentBuilderGeneratorTests.DTO.Test> func)
+        public TestBuilder UsingInstance(Func<Test> func)
         {
-            Instance = new Lazy<FluentBuilderGeneratorTests.DTO.Test>(func());
+            Instance = new Lazy<Test>(func);
             return this;
         }
 
@@ -64,7 +64,7 @@ namespace FluentBuilderGeneratorTests.DTO
 
         public override Test Build(bool useObjectInitializer)
         {
-            if (Instance?.IsValueCreated != true)
+            if (Instance is null)
             {
                 Instance = new Lazy<Test>(() =>
                 {

@@ -80,11 +80,11 @@ namespace FluentBuilderGeneratorTests.DTO
         }
 
 
-        public ThingWithOnlyParameterizedConstructorsBuilder UsingInstance(FluentBuilderGeneratorTests.DTO.ThingWithOnlyParameterizedConstructors value) => UsingInstance(() => value);
+        public ThingWithOnlyParameterizedConstructorsBuilder UsingInstance(ThingWithOnlyParameterizedConstructors value) => UsingInstance(() => value);
 
-        public ThingWithOnlyParameterizedConstructorsBuilder UsingInstance(Func<FluentBuilderGeneratorTests.DTO.ThingWithOnlyParameterizedConstructors> func)
+        public ThingWithOnlyParameterizedConstructorsBuilder UsingInstance(Func<ThingWithOnlyParameterizedConstructors> func)
         {
-            Instance = new Lazy<FluentBuilderGeneratorTests.DTO.ThingWithOnlyParameterizedConstructors>(func());
+            Instance = new Lazy<ThingWithOnlyParameterizedConstructors>(func);
             return this;
         }
 
@@ -92,7 +92,7 @@ namespace FluentBuilderGeneratorTests.DTO
 
         public override ThingWithOnlyParameterizedConstructors Build(bool useObjectInitializer)
         {
-            if (Instance?.IsValueCreated != true)
+            if (Instance is null)
             {
                 Instance = new Lazy<ThingWithOnlyParameterizedConstructors>(() =>
                 {

@@ -52,11 +52,11 @@ namespace FluentBuilderGeneratorTests.DTO
         }
 
 
-        public ThingBuilder UsingInstance(FluentBuilderGeneratorTests.DTO.Thing value) => UsingInstance(() => value);
+        public ThingBuilder UsingInstance(Thing value) => UsingInstance(() => value);
 
-        public ThingBuilder UsingInstance(Func<FluentBuilderGeneratorTests.DTO.Thing> func)
+        public ThingBuilder UsingInstance(Func<Thing> func)
         {
-            Instance = new Lazy<FluentBuilderGeneratorTests.DTO.Thing>(func());
+            Instance = new Lazy<Thing>(func);
             return this;
         }
 
@@ -64,7 +64,7 @@ namespace FluentBuilderGeneratorTests.DTO
 
         public override Thing Build(bool useObjectInitializer)
         {
-            if (Instance?.IsValueCreated != true)
+            if (Instance is null)
             {
                 Instance = new Lazy<Thing>(() =>
                 {

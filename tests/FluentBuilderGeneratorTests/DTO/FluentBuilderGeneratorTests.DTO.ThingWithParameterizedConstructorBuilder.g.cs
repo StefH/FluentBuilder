@@ -62,11 +62,11 @@ namespace FluentBuilderGeneratorTests.DTO
         }
 
 
-        public ThingWithParameterizedConstructorBuilder UsingInstance(FluentBuilderGeneratorTests.DTO.ThingWithParameterizedConstructor value) => UsingInstance(() => value);
+        public ThingWithParameterizedConstructorBuilder UsingInstance(ThingWithParameterizedConstructor value) => UsingInstance(() => value);
 
-        public ThingWithParameterizedConstructorBuilder UsingInstance(Func<FluentBuilderGeneratorTests.DTO.ThingWithParameterizedConstructor> func)
+        public ThingWithParameterizedConstructorBuilder UsingInstance(Func<ThingWithParameterizedConstructor> func)
         {
-            Instance = new Lazy<FluentBuilderGeneratorTests.DTO.ThingWithParameterizedConstructor>(func());
+            Instance = new Lazy<ThingWithParameterizedConstructor>(func);
             return this;
         }
 
@@ -74,7 +74,7 @@ namespace FluentBuilderGeneratorTests.DTO
 
         public override ThingWithParameterizedConstructor Build(bool useObjectInitializer)
         {
-            if (Instance?.IsValueCreated != true)
+            if (Instance is null)
             {
                 Instance = new Lazy<ThingWithParameterizedConstructor>(() =>
                 {

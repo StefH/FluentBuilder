@@ -46,11 +46,11 @@ namespace FluentBuilderGeneratorTests.DTO
         }
 
 
-        public MyDummyClassBuilder UsingInstance(FluentBuilderGeneratorTests.DTO.DummyClass value) => UsingInstance(() => value);
+        public MyDummyClassBuilder UsingInstance(DummyClass value) => UsingInstance(() => value);
 
-        public MyDummyClassBuilder UsingInstance(Func<FluentBuilderGeneratorTests.DTO.DummyClass> func)
+        public MyDummyClassBuilder UsingInstance(Func<DummyClass> func)
         {
-            Instance = new Lazy<FluentBuilderGeneratorTests.DTO.DummyClass>(func());
+            Instance = new Lazy<DummyClass>(func);
             return this;
         }
 
@@ -58,7 +58,7 @@ namespace FluentBuilderGeneratorTests.DTO
 
         public override DummyClass Build(bool useObjectInitializer)
         {
-            if (Instance?.IsValueCreated != true)
+            if (Instance is null)
             {
                 Instance = new Lazy<DummyClass>(() =>
                 {

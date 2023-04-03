@@ -60,11 +60,11 @@ namespace FluentBuilderGeneratorTests.DTO
             InstanceType.GetProperty("Value1")?.SetValue(instance, value);
         }
 
-        public ClassWithPrivateSetter1Builder UsingInstance(FluentBuilderGeneratorTests.DTO.ClassWithPrivateSetter1 value) => UsingInstance(() => value);
+        public ClassWithPrivateSetter1Builder UsingInstance(ClassWithPrivateSetter1 value) => UsingInstance(() => value);
 
-        public ClassWithPrivateSetter1Builder UsingInstance(Func<FluentBuilderGeneratorTests.DTO.ClassWithPrivateSetter1> func)
+        public ClassWithPrivateSetter1Builder UsingInstance(Func<ClassWithPrivateSetter1> func)
         {
-            Instance = new Lazy<FluentBuilderGeneratorTests.DTO.ClassWithPrivateSetter1>(func());
+            Instance = new Lazy<ClassWithPrivateSetter1>(func);
             return this;
         }
 
@@ -72,7 +72,7 @@ namespace FluentBuilderGeneratorTests.DTO
 
         public override ClassWithPrivateSetter1 Build(bool useObjectInitializer)
         {
-            if (Instance?.IsValueCreated != true)
+            if (Instance is null)
             {
                 Instance = new Lazy<ClassWithPrivateSetter1>(() =>
                 {

@@ -46,11 +46,11 @@ namespace AbcTest.OtherNamespace
         }
 
 
-        public ClassOnOtherNamespaceBuilder UsingInstance(AbcTest.OtherNamespace.ClassOnOtherNamespace value) => UsingInstance(() => value);
+        public ClassOnOtherNamespaceBuilder UsingInstance(ClassOnOtherNamespace value) => UsingInstance(() => value);
 
-        public ClassOnOtherNamespaceBuilder UsingInstance(Func<AbcTest.OtherNamespace.ClassOnOtherNamespace> func)
+        public ClassOnOtherNamespaceBuilder UsingInstance(Func<ClassOnOtherNamespace> func)
         {
-            Instance = new Lazy<AbcTest.OtherNamespace.ClassOnOtherNamespace>(func());
+            Instance = new Lazy<ClassOnOtherNamespace>(func);
             return this;
         }
 
@@ -58,7 +58,7 @@ namespace AbcTest.OtherNamespace
 
         public override ClassOnOtherNamespace Build(bool useObjectInitializer)
         {
-            if (Instance?.IsValueCreated != true)
+            if (Instance is null)
             {
                 Instance = new Lazy<ClassOnOtherNamespace>(() =>
                 {

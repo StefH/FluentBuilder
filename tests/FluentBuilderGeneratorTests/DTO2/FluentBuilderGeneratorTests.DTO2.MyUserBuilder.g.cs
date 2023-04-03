@@ -88,11 +88,11 @@ namespace FluentBuilderGeneratorTests.DTO2
         }
 
 
-        public MyUserBuilder UsingInstance(FluentBuilderGeneratorTests.DTO.User value) => UsingInstance(() => value);
+        public MyUserBuilder UsingInstance(User value) => UsingInstance(() => value);
 
-        public MyUserBuilder UsingInstance(Func<FluentBuilderGeneratorTests.DTO.User> func)
+        public MyUserBuilder UsingInstance(Func<User> func)
         {
-            Instance = new Lazy<FluentBuilderGeneratorTests.DTO.User>(func());
+            Instance = new Lazy<User>(func);
             return this;
         }
 
@@ -100,7 +100,7 @@ namespace FluentBuilderGeneratorTests.DTO2
 
         public override User Build(bool useObjectInitializer)
         {
-            if (Instance?.IsValueCreated != true)
+            if (Instance is null)
             {
                 Instance = new Lazy<User>(() =>
                 {

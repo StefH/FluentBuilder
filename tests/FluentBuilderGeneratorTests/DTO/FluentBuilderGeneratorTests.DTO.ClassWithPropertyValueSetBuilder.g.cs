@@ -139,11 +139,11 @@ namespace FluentBuilderGeneratorTests.DTO
         }
 
 
-        public ClassWithPropertyValueSetBuilder UsingInstance(FluentBuilderGeneratorTests.DTO.ClassWithPropertyValueSet value) => UsingInstance(() => value);
+        public ClassWithPropertyValueSetBuilder UsingInstance(ClassWithPropertyValueSet value) => UsingInstance(() => value);
 
-        public ClassWithPropertyValueSetBuilder UsingInstance(Func<FluentBuilderGeneratorTests.DTO.ClassWithPropertyValueSet> func)
+        public ClassWithPropertyValueSetBuilder UsingInstance(Func<ClassWithPropertyValueSet> func)
         {
-            Instance = new Lazy<FluentBuilderGeneratorTests.DTO.ClassWithPropertyValueSet>(func());
+            Instance = new Lazy<ClassWithPropertyValueSet>(func);
             return this;
         }
 
@@ -151,7 +151,7 @@ namespace FluentBuilderGeneratorTests.DTO
 
         public override ClassWithPropertyValueSet Build(bool useObjectInitializer)
         {
-            if (Instance?.IsValueCreated != true)
+            if (Instance is null)
             {
                 Instance = new Lazy<ClassWithPropertyValueSet>(() =>
                 {

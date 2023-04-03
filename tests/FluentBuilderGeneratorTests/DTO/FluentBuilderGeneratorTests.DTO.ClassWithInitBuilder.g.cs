@@ -46,11 +46,11 @@ namespace FluentBuilderGeneratorTests.DTO
         }
 
 
-        public ClassWithInitBuilder UsingInstance(FluentBuilderGeneratorTests.DTO.ClassWithInit value) => UsingInstance(() => value);
+        public ClassWithInitBuilder UsingInstance(ClassWithInit value) => UsingInstance(() => value);
 
-        public ClassWithInitBuilder UsingInstance(Func<FluentBuilderGeneratorTests.DTO.ClassWithInit> func)
+        public ClassWithInitBuilder UsingInstance(Func<ClassWithInit> func)
         {
-            Instance = new Lazy<FluentBuilderGeneratorTests.DTO.ClassWithInit>(func());
+            Instance = new Lazy<ClassWithInit>(func);
             return this;
         }
 
@@ -58,7 +58,7 @@ namespace FluentBuilderGeneratorTests.DTO
 
         public override ClassWithInit Build(bool useObjectInitializer)
         {
-            if (Instance?.IsValueCreated != true)
+            if (Instance is null)
             {
                 Instance = new Lazy<ClassWithInit>(() =>
                 {

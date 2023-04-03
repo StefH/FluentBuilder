@@ -140,7 +140,7 @@ public class FluentBuilderSourceGeneratorTests
             .Build();
         b3.L.Should().Be(999);
 
-        instance = new ThingWithOnlyParameterizedConstructors(999);
+        instance = new ThingWithOnlyParameterizedConstructors(init);
         var b4 = new ThingWithOnlyParameterizedConstructorsBuilder()
             .UsingInstance(instance)
             .WithL(888)

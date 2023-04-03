@@ -111,7 +111,7 @@ namespace {classSymbol.BuilderNamespace}
     {{
 {propertiesCode.StringBuilder}
 {constructorCode.StringBuilder}
-{GenerateBuildMethod(fluentData, classSymbol)}
+{GenerateSeveralMethods(fluentData, classSymbol)}
     }}
 }}
 {(_context.SupportsNullable ? "#nullable disable" : string.Empty)}";
@@ -396,7 +396,7 @@ namespace {classSymbol.BuilderNamespace}
         return (propertiesPublicSettable, propertiesPrivateSettable);
     }
 
-    private static string GenerateBuildMethod(FluentData fluentData, ClassSymbol classSymbol)
+    private static string GenerateSeveralMethods(FluentData fluentData, ClassSymbol classSymbol)
     {
         var publicConstructors = classSymbol.NamedTypeSymbol.Constructors.Where(c => c.DeclaredAccessibility == Accessibility.Public).ToArray();
         var (propertiesPublicSettable, propertiesPrivateSettable) = GetProperties(classSymbol, fluentData.HandleBaseClasses, fluentData.Accessibility);
@@ -411,12 +411,12 @@ namespace {classSymbol.BuilderNamespace}
 
         var hasParameterLessConstructor = publicConstructors.Any(p => p.Parameters.IsEmpty);
 
-        output.AppendLine(8, $"public {classSymbol.BuilderClassName} UsingInstance({classSymbol.NamedTypeSymbol} value) => UsingInstance(() => value);");
+        output.AppendLine(8, $"public {classSymbol.BuilderClassName} UsingInstance({className} value) => UsingInstance(() => value);");
         output.AppendLine();
 
-        output.AppendLine(8, $"public {classSymbol.BuilderClassName} UsingInstance(Func<{classSymbol.NamedTypeSymbol}> func)");
+        output.AppendLine(8, $"public {classSymbol.BuilderClassName} UsingInstance(Func<{className}> func)");
         output.AppendLine(8, @"{");
-        output.AppendLine(8, $"    Instance = new Lazy<{classSymbol.NamedTypeSymbol}>(func());");
+        output.AppendLine(8, $"    Instance = new Lazy<{className}>(func);");
         output.AppendLine(8, @"    return this;");
         output.AppendLine(8, @"}");
         output.AppendLine();
@@ -427,7 +427,7 @@ namespace {classSymbol.BuilderNamespace}
         output.AppendLine(8, $"public override {className} Build(bool useObjectInitializer)");
         output.AppendLine(8, @"{");
 
-        output.AppendLine(8, @"    if (Instance?.IsValueCreated != true)");
+        output.AppendLine(8, @"    if (Instance is null)");
         output.AppendLine(8, @"    {");
         output.AppendLine(8, $"        Instance = new Lazy<{className}>(() =>");
         output.AppendLine(8, @"        {");
