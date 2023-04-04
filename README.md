@@ -47,10 +47,11 @@ public class User
 
 #### AutoGenerateBuilder - attribute
 
-This attribute has 3 arguments:
-- `type` (Type) = The type for which to create the builder, see 'Define a class which needs to act as a builder'
-- `handleBaseClasses` (bool) = Handle also base-classes. Default value is `true`.
-- `accessibility` (FluentBuilderAccessibility) = Generate builder methods for `Public` or `PublicAndPrivate`. Default value when not provided is `Public`.
+This attribute has 4 arguments:
+- `type` (Type): The type for which to create the builder, see 'Define a class which needs to act as a builder'
+- `handleBaseClasses` (bool): Handle also base-classes. Default value is `true`.
+- `accessibility` (enum FluentBuilderAccessibility): Generate builder methods for `Public` or `PublicAndPrivate`. Default value when not provided is `Public`.
+- `methods` (enum  FluentBuilderMethods): Generate `With***` methods or also `Without***` methods. Default value when not provided is `WithOnly`. See also [Notes](#Notes)
 
 ### Use FluentBuilder
 ``` c#
@@ -244,7 +245,22 @@ class Program
 }
 ```
 
-## :books: Notes
+## Extension Method
+
+By default, the `AsBuilder` extension method is also generated which allows you to change an existing instance using the `With`-methods from the builder.
+
+Example:
+``` c#
+var user = await dbContext.Users.FirstAsync();
+
+user = user.AsBuilder() // Call the AsBuilder extension method on the instance
+    .WithLastName("Different LastName") // Update the LastName
+    .Build(); // Updates the object in-place
+
+await dbContext.SaveChangesAsync(); // User's LastName property is updated.
+```
+
+## Notes
 
 Since version 0.8.0, this FluentBuilder will only generate the `With***` methods. If you want the builder to also generate the `Without***` methods, add the enum `FluentBuilderMethods.WithAndWithout` to the attribute.
 
