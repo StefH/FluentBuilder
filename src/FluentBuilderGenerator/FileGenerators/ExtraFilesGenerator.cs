@@ -22,15 +22,6 @@ internal class ExtraFilesGenerator : IFileGenerator
 
     public FileData GenerateFile()
     {
-        //var arguments = new[] { "bool handleBaseClasses", "FluentBuilderAccessibility accessibility", "FluentBuilderMethods methods" };
-        //var defaultValues = new int[] { "true", "FluentBuilderAccessibility.Public", "FluentBuilderMethods.WithOnly" };
-
-        //var constructors = new StringBuilder();
-        //foreach (var argument in arguments)
-        //{
-        //    constructors.AppendLine(8, "public AutoGenerateBuilderAttribute(");
-        //}
-
         return new FileData
         (
             FileDataType.Attribute,
