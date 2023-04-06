@@ -1,3 +1,6 @@
+# 0.9.0 (06 April 2023)
+- [#55](https://github.com/StefH/FluentBuilder/pull/55) - UsingInstance returns correct generated builder [enhancement] contributed by [StefH](https://github.com/StefH)
+
 # 0.8.0 (03 April 2023)
 - [#52](https://github.com/StefH/FluentBuilder/pull/52) - AttributeArgumentListParser : Update TryParseAsEnum [enhancement] contributed by [StefH](https://github.com/StefH)
 - [#53](https://github.com/StefH/FluentBuilder/pull/53) - By default : generate only the With*** builder methods [enhancement] contributed by [StefH](https://github.com/StefH)

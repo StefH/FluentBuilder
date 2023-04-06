@@ -1,5 +1,4 @@
-# 0.8.0 (03 April 2023)
-- #52 AttributeArgumentListParser : Update TryParseAsEnum [enhancement]
-- #53 By default : generate only the With*** builder methods [enhancement]
+# 0.9.0 (06 April 2023)
+- #55 UsingInstance returns correct generated builder [enhancement]
 
 The full release notes can be found here: https://github.com/StefH/FluentBuilder/blob/main/ReleaseNotes.md
