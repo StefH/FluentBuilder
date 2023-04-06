@@ -255,7 +255,7 @@ var user = await dbContext.Users.FirstAsync();
 
 user = user.AsBuilder() // Call the AsBuilder extension method on the instance
     .WithLastName("Different LastName") // Update the LastName
-    .Build(); // Updates the object in-place
+    .Build();
 
 await dbContext.SaveChangesAsync(); // User's LastName property is updated.
 ```

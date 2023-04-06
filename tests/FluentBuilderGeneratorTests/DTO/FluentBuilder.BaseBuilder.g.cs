@@ -7,13 +7,14 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+#nullable enable
 using System;
 
 namespace FluentBuilderGeneratorTests.FluentBuilder
 {
     public abstract class Builder<T>
     {
-        protected Lazy<T> Instance;
+        protected Lazy<T>? Instance;
 
         protected Type InstanceType = typeof(T);
 
@@ -24,3 +25,4 @@ namespace FluentBuilderGeneratorTests.FluentBuilder
         protected virtual void PostBuild(T value) {}
     }
 }
+#nullable disable
