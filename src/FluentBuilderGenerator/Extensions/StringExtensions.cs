@@ -8,6 +8,11 @@ internal static class StringExtensions
 {
     private static readonly Regex ExtractValueBetween = new("(?<=<).*(?=>)", RegexOptions.Compiled);
 
+    public static string ToSafeClassName(this string value)
+    {
+        return Regex.Replace(value, "[,<>]", "_");
+    }
+
     public static string IIf(this bool value, string valueTrue, string valueFalse = "")
     {
         return value ? valueTrue : valueFalse;

@@ -53,7 +53,7 @@ internal partial class FluentBuilderClassesGenerator : IFilesGenerator
         var classes = applicableClassSymbols.Select(classSymbol => new FileData
         (
             FileDataType.Builder,
-            $"{classSymbol.ClassSymbol.FullBuilderClassName.Replace('<', '_').Replace('>', '_')}.g.cs",
+            $"{classSymbol.ClassSymbol.FullBuilderClassName.ToSafeClassName()}.g.cs",
             CreateClassBuilderCode(classSymbol.FluentData, classSymbol.ClassSymbol, extraClassSymbols)
         ));
 
@@ -107,6 +107,14 @@ internal partial class FluentBuilderClassesGenerator : IFilesGenerator
 
 namespace {classSymbol.BuilderNamespace}
 {{
+    public static partial class {classSymbol.BuilderClassName.ToSafeClassName()}Extensions
+    {{
+        public static {classSymbol.BuilderClassName} AsBuilder{classSymbol.NamedTypeSymbol.GetTypeArguments()}(this {classSymbol.NamedTypeSymbol} instance){classSymbol.NamedTypeSymbol.GetWhereStatement()}
+        {{
+            return new {classSymbol.BuilderClassName}().UsingInstance(instance);
+        }}
+    }}
+
     public partial class {classSymbol.BuilderClassName} : Builder<{classSymbol.NamedTypeSymbol}>{classSymbol.NamedTypeSymbol.GetWhereStatement()}
     {{
 {propertiesCode.StringBuilder}
@@ -117,7 +125,7 @@ namespace {classSymbol.BuilderNamespace}
 {(_context.SupportsNullable ? "#nullable disable" : string.Empty)}";
     }
 
-    private (StringBuilder StringBuilder, IReadOnlyList<string> ExtraUsings) GenerateUsingConstructorCode(
+    private static (StringBuilder StringBuilder, IReadOnlyList<string> ExtraUsings) GenerateUsingConstructorCode(
         ClassSymbol classSymbol,
         IReadOnlyList<IMethodSymbol> publicConstructors
     )

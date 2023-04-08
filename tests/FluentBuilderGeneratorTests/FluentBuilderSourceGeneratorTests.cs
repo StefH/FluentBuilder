@@ -146,6 +146,10 @@ public class FluentBuilderSourceGeneratorTests
             .WithL(888)
             .Build();
         b4.L.Should().Be(888);
+
+        instance = new ThingWithOnlyParameterizedConstructors(1, 2, "three");
+        instance.AsBuilder().WithL(12345).Build();
+        instance.L.Should().Be(12345);
     }
 
     [Fact]
@@ -423,7 +427,7 @@ public class FluentBuilderSourceGeneratorTests
     public void GenerateFiles_For1GenericClassTT_Should_GenerateCorrectFiles()
     {
         // Arrange
-        var builderFileName = "FluentBuilderGeneratorTests.DTO.AddressTTBuilder_T1,T2_.g.cs";
+        var builderFileName = "FluentBuilderGeneratorTests.DTO.AddressTTBuilder_T1_T2_.g.cs";
         var path = "./DTO/AddressTT.cs";
         var sourceFile = new SourceFile
         {

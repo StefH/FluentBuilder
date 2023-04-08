@@ -1,5 +1,6 @@
 // This source code is based on https://justsimplycode.com/2020/12/06/auto-generate-builders-using-source-generator-in-net-5
 
+using FluentBuilderGenerator.Extensions;
 using FluentBuilderGenerator.Models;
 using FluentBuilderGenerator.Types;
 
@@ -10,10 +11,12 @@ internal class BaseBuilderGenerator : IFileGenerator
     private const string Name = "FluentBuilder.BaseBuilder.g.cs";
 
     private readonly string _assemblyName;
+    private readonly bool _supportsNullable;
 
-    public BaseBuilderGenerator(string assemblyName)
+    public BaseBuilderGenerator(string assemblyName, bool supportsNullable)
     {
         _assemblyName = assemblyName;
+        _supportsNullable = supportsNullable;
     }
 
     public FileData GenerateFile()
@@ -31,13 +34,14 @@ internal class BaseBuilderGenerator : IFileGenerator
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+{_supportsNullable.IIf("#nullable enable")}
 using System;
 
 namespace {_assemblyName}.FluentBuilder
 {{
     public abstract class Builder<T>
     {{
-        protected Lazy<T> Instance;
+        protected Lazy<T>{_supportsNullable.IIf("?")} Instance;
 
         protected Type InstanceType = typeof(T);
 
@@ -47,7 +51,8 @@ namespace {_assemblyName}.FluentBuilder
    
         protected virtual void PostBuild(T value) {{}}
     }}
-}}"
+}}
+{_supportsNullable.IIf("#nullable disable")}"
         );
     }
 }

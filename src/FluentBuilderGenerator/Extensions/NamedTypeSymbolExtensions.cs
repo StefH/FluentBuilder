@@ -43,6 +43,15 @@ internal static class NamedTypeSymbolExtensions
         return str.ToString();
     }
 
+    public static string GetTypeArguments(this INamedTypeSymbol namedTypeSymbol)
+    {
+        var list = namedTypeSymbol.TypeArguments.OfType<ITypeParameterSymbol>()
+            .Select(typeArgument => typeArgument.Name)
+            .ToArray();
+
+        return list.Any() ? $"<{string.Join(", ", list)}>" : string.Empty;
+    }
+
     public static string GetWhereStatement(this INamedTypeSymbol namedTypeSymbol)
     {
         if (!namedTypeSymbol.IsGenericType)

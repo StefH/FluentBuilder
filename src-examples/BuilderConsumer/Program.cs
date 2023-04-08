@@ -107,6 +107,9 @@ class Program
             .Build();
         Console.WriteLine(JsonSerializer.Serialize(user2, JsonSerializerOptions));
 
+        var user2b = user.AsBuilder().WithAge(101).Build();
+        Console.WriteLine(JsonSerializer.Serialize(user2b, JsonSerializerOptions));
+
         var userT1 = new UserDtoTBuilder<int>()
             .WithTValue(42)
             .Build();
