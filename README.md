@@ -253,9 +253,9 @@ Example:
 ``` c#
 var user = await dbContext.Users.FirstAsync();
 
-user = user.AsBuilder() // Call the AsBuilder extension method on the instance
-    .WithLastName("Different LastName") // Update the LastName
-    .Build();
+user = user.AsBuilder() // Lifts the user into a builder instance
+    .WithLastName("Different LastName") // Updates "LastName" while keeping existing properties
+    .Build(); // Changes are applied
 
 await dbContext.SaveChangesAsync(); // User's LastName property is updated.
 ```
