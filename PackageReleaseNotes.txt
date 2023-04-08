@@ -1,4 +1,6 @@
-# 0.9.0 (06 April 2023)
+# 0.9.0 (08 April 2023)
 - #55 UsingInstance returns correct generated builder [enhancement]
+- #56 Add AsBuilder extension method [enhancement]
+- #54 Automatic extension method generation for easy updating of existing class instances [enhancement]
 
 The full release notes can be found here: https://github.com/StefH/FluentBuilder/blob/main/ReleaseNotes.md

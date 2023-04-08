@@ -1,5 +1,7 @@
-# 0.9.0 (06 April 2023)
+# 0.9.0 (08 April 2023)
 - [#55](https://github.com/StefH/FluentBuilder/pull/55) - UsingInstance returns correct generated builder [enhancement] contributed by [StefH](https://github.com/StefH)
+- [#56](https://github.com/StefH/FluentBuilder/pull/56) - Add AsBuilder extension method [enhancement] contributed by [StefH](https://github.com/StefH)
+- [#54](https://github.com/StefH/FluentBuilder/issues/54) - Automatic extension method generation for easy updating of existing class instances [enhancement]
 
 # 0.8.0 (03 April 2023)
 - [#52](https://github.com/StefH/FluentBuilder/pull/52) - AttributeArgumentListParser : Update TryParseAsEnum [enhancement] contributed by [StefH](https://github.com/StefH)
