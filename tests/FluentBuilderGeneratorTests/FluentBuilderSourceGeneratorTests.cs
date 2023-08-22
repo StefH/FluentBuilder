@@ -746,4 +746,34 @@ public class FluentBuilderSourceGeneratorTests
             builder.Text.Should().Be(File.ReadAllText($"../../../DTO/{filename}"));
         }
     }
+
+    [Fact]
+    public void Issue60()
+    {
+        // Arrange
+        var builderFileName = "FluentBuilderGeneratorTests.Issue60.MyEntityBuilder.g.cs";
+        var path = "./Issue60/MyEntity.cs";
+        var sourceFile = new SourceFile
+        {
+            Path = path,
+            Text = File.ReadAllText(path),
+            AttributeToAddToClass = new ExtraAttribute
+            {
+                Name = "FluentBuilder.AutoGenerateBuilder"
+            }
+        };
+
+        // Act
+        var result = _sut.Execute(Namespace, new[] { sourceFile });
+
+        // Assert
+        result.Valid.Should().BeTrue();
+        result.Files.Should().HaveCount(9);
+
+        var builder = result.Files[8];
+        builder.Path.Should().EndWith(builderFileName);
+
+        if (Write) File.WriteAllText($"../../../Issue60/Generated/{builderFileName}", builder.Text);
+        builder.Text.Should().Be(File.ReadAllText($"../../../DTO/{builderFileName}"));
+    }
 }

@@ -1,3 +1,5 @@
+using FluentBuilderGenerator.Extensions;
+
 namespace FluentBuilderGenerator.Helpers;
 
 internal static class Aliashelper
