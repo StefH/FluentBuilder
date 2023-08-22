@@ -1,4 +1,5 @@
 using FluentBuilderGenerator.Extensions;
+using FluentBuilderGenerator.Models;
 using FluentBuilderGenerator.Types;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
