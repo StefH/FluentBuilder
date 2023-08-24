@@ -47,7 +47,7 @@ internal static class DefaultValueHelper
     {
         if (typeSymbol.IsValueType || typeSymbol.NullableAnnotation == NullableAnnotation.Annotated)
         {
-            return $"default({typeSymbol})";
+            return $"default({typeSymbol.GetFixedType()})";
         }
 
         var kind = typeSymbol.GetFluentTypeKind();
@@ -61,31 +61,31 @@ internal static class DefaultValueHelper
 
             case FluentTypeKind.Array:
                 var arrayTypeSymbol = (IArrayTypeSymbol)typeSymbol;
-                return $"new {arrayTypeSymbol.ElementType}[0]";
+                return $"new {arrayTypeSymbol.ElementType.GetFixedType()}[0]";
 
             case FluentTypeKind.IEnumerable:
                 // https://stackoverflow.com/questions/41466062/how-to-get-underlying-type-for-ienumerablet-with-roslyn
                 var namedTypeSymbol = (INamedTypeSymbol)typeSymbol;
-                return $"new {namedTypeSymbol.TypeArguments[0]}[0]";
+                return $"new {namedTypeSymbol.TypeArguments[0].GetFixedType()}[0]";
 
             case FluentTypeKind.ReadOnlyCollection:
                 var readOnlyCollectionSymbol = (INamedTypeSymbol)typeSymbol;
-                return $"new {typeSymbol}(new List<{readOnlyCollectionSymbol.TypeArguments[0]}>())";
+                return $"new {typeSymbol.GetFixedType()}(new List<{readOnlyCollectionSymbol.TypeArguments[0].GetFixedType()}>())";
 
             case FluentTypeKind.IList:
             case FluentTypeKind.ICollection:
             case FluentTypeKind.IReadOnlyCollection:
                 var listSymbol = (INamedTypeSymbol)typeSymbol;
-                return $"new List<{listSymbol.TypeArguments[0]}>()";
+                return $"new List<{listSymbol.TypeArguments[0].GetFixedType()}>()";
 
             case FluentTypeKind.IDictionary:
                 var dictionarySymbol = (INamedTypeSymbol)typeSymbol;
                 return dictionarySymbol.TypeArguments.Any() ?
-                    $"new Dictionary<{dictionarySymbol.TypeArguments[0]}, {dictionarySymbol.TypeArguments[1]}>()" :
+                    $"new Dictionary<{dictionarySymbol.TypeArguments[0].GetFixedType()}, {dictionarySymbol.TypeArguments[1].GetFixedType()}>()" :
                     "new Dictionary<object, object>()";
         }
 
-        return $"default({typeSymbol})";
+        return $"default({typeSymbol.GetFixedType()})";
     }
 
     private static string GetNewConstructor(ITypeSymbol typeSymbol)

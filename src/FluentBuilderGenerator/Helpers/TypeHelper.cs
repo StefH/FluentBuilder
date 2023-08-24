@@ -11,6 +11,10 @@ internal static class TypeHelper
 
     public static string GetFixedType(this ITypeSymbol typeSymbol)
     {
-        return typeSymbol.IsRunTimeType() ? typeSymbol.ToString() : $"global::{typeSymbol}";
+        var s = typeSymbol.ToString();
+
+        return
+            s == "string" ||
+            typeSymbol.IsRunTimeType() ? s : $"global::{typeSymbol}";
     }
 }
