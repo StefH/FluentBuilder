@@ -16,6 +16,8 @@ namespace FluentBuilderGeneratorTests.Issue60
         public ETag ETag { get; set; }
         #endregion
 
-        public string Test { get; set; } = null!;
+        public string StringTest { get; set; } = null!;
+
+        public int IntTest { get; set; }
     }
 }
