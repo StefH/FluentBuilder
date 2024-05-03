@@ -10,6 +10,7 @@
 
     <ItemGroup>
         <PackageReference Include="FluentAssertions" Version="6.9.0" />
+        <PackageReference Include="Azure.Data.Tables" Version="12.8.1" />
         <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.2.0" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.4.1" />
         <PackageReference Include="Moq" Version="4.18.4" />
@@ -41,6 +42,16 @@
         <Compile Update="DTO_OtherNamespace\*.cs">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Issue60\MyEntity.cs">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Issue60\Generated\" />
     </ItemGroup>
 
 </Project>
