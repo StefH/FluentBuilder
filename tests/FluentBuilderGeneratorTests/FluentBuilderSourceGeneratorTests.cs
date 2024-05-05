@@ -752,8 +752,8 @@ public class FluentBuilderSourceGeneratorTests
     public void GenerateFiles_UseGlobalForLookALikeNamespaces()
     {
         // Arrange
-        var builderFileName = "FluentBuilderGeneratorTests.Issue60.MyEntityBuilder.g.cs";
-        var path = "./Issue60/MyEntity.cs";
+        const string builderFileName = "FluentBuilderGeneratorTests.Issue60.MyEntityBuilder.g.cs";
+        const string path = "./Issue60/MyEntity.cs";
         var sourceFile = new SourceFile
         {
             Path = path,
