@@ -100,6 +100,9 @@ internal static class TypeSymbolExtensions
         return false;
     }
 
+    public static string ToFullyQualifiedDisplayString(this ITypeSymbol property) =>
+        property.ToDisplayString(NullableFlowState.None, SymbolDisplayFormat.FullyQualifiedFormat);
+
     private static bool HasAddMethod(INamespaceOrTypeSymbol typeSymbol)
     {
         return typeSymbol
@@ -108,8 +111,8 @@ internal static class TypeSymbolExtensions
     }
 
     internal static bool IsClass(this ITypeSymbol namedType) =>
-        namedType.IsReferenceType && namedType.TypeKind == TypeKind.Class;
+        namedType is { IsReferenceType: true, TypeKind: TypeKind.Class };
 
     internal static bool IsStruct(this ITypeSymbol namedType) =>
-        namedType.IsValueType && namedType.TypeKind == TypeKind.Struct;
+        namedType is { IsValueType: true, TypeKind: TypeKind.Struct };
 }

@@ -11,18 +11,18 @@ internal static class DefaultValueHelper
     private static readonly SyntaxKind[] ExcludedSyntaxKinds = { SyntaxKind.SuppressNullableWarningExpression };
 
     /// <summary>
-    /// Check if the <see cref="IPropertySymbol"/> has a value set, in that case try to get that value and return it, and return the usings.
+    /// Check if the <see cref="ISymbol"/> has a value set, in that case try to get that value and return it, and return the usings.
     /// If no value is set, just return the default value.
     /// </summary>
-    internal static (string DefaultValue, IReadOnlyList<string>? ExtraUsings) GetDefaultValue(ISymbol property, ITypeSymbol typeSymbol)
+    internal static (string DefaultValue, IReadOnlyList<string>? ExtraUsings) GetDefaultValue(ISymbol symbol, ITypeSymbol typeSymbol)
     {
-        var location = property.Locations.FirstOrDefault();
+        var location = symbol.Locations.FirstOrDefault();
         if (location != null)
         {
             var rootSyntaxNode = location.SourceTree?.GetRoot();
             if (rootSyntaxNode != null)
             {
-                var propertyDeclarationSyntax = rootSyntaxNode.FindDescendantNode<PropertyDeclarationSyntax>(p => p.Identifier.ValueText == property.Name);
+                var propertyDeclarationSyntax = rootSyntaxNode.FindDescendantNode<PropertyDeclarationSyntax>(p => p.Identifier.ValueText == symbol.Name);
 
                 if (propertyDeclarationSyntax?.Initializer != null && !ExcludedSyntaxKinds.Contains(propertyDeclarationSyntax.Initializer.Value.Kind()))
                 {
@@ -46,7 +46,7 @@ internal static class DefaultValueHelper
     {
         if (typeSymbol.IsValueType || typeSymbol.NullableAnnotation == NullableAnnotation.Annotated)
         {
-            return $"default({typeSymbol})";
+            return $"default({typeSymbol.GetGlobalPrefix()}{typeSymbol})";
         }
 
         var kind = typeSymbol.GetFluentTypeKind();

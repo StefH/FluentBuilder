@@ -6,6 +6,8 @@ namespace FluentBuilderGenerator.Extensions;
 
 internal static class SymbolExtensions
 {
+    private const string GlobalPrefix = "global::";
+    
     private static readonly string[] ExcludedAttributes =
     {
         InternalClassNames.AsyncStateMachineAttribute ,
@@ -41,4 +43,19 @@ internal static class SymbolExtensions
 
     public static string GetSanitizedName(this ISymbol symbol) =>
         symbol.IsKeywordOrReserved() ? $"@{symbol.Name}" : symbol.Name;
+
+    public static string GetGlobalPrefix(this ISymbol symbol)
+    {
+        if (symbol is IPropertySymbol { Type.SpecialType: SpecialType.None })
+        {
+            return GlobalPrefix;
+        }
+
+        if (symbol is ITypeSymbol { SpecialType: SpecialType.None })
+        {
+            return GlobalPrefix;
+        }
+
+        return string.Empty;
+    }
 }

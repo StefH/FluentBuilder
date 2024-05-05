@@ -27,6 +27,15 @@ namespace FluentBuilderGeneratorTests.Issue60
 
     public partial class MyEntityBuilder : Builder<FluentBuilderGeneratorTests.Issue60.MyEntity>
     {
+        private bool _eTagIsSet;
+        private Lazy<global::Azure.ETag> _eTag = new Lazy<global::Azure.ETag>(() => default(global::Azure.ETag));
+        public MyEntityBuilder WithETag(global::Azure.ETag value) => WithETag(() => value);
+        public MyEntityBuilder WithETag(Func<global::Azure.ETag> func)
+        {
+            _eTag = new Lazy<global::Azure.ETag>(func);
+            _eTagIsSet = true;
+            return this;
+        }
         private bool _partitionKeyIsSet;
         private Lazy<string> _partitionKey = new Lazy<string>(() => string.Empty);
         public MyEntityBuilder WithPartitionKey(string value) => WithPartitionKey(() => value);
@@ -46,21 +55,12 @@ namespace FluentBuilderGeneratorTests.Issue60
             return this;
         }
         private bool _timestampIsSet;
-        private Lazy<System.DateTimeOffset?> _timestamp = new Lazy<System.DateTimeOffset?>(() => default(System.DateTimeOffset?));
-        public MyEntityBuilder WithTimestamp(System.DateTimeOffset? value) => WithTimestamp(() => value);
-        public MyEntityBuilder WithTimestamp(Func<System.DateTimeOffset?> func)
+        private Lazy<global::System.DateTimeOffset?> _timestamp = new Lazy<global::System.DateTimeOffset?>(() => default(global::System.DateTimeOffset?));
+        public MyEntityBuilder WithTimestamp(global::System.DateTimeOffset? value) => WithTimestamp(() => value);
+        public MyEntityBuilder WithTimestamp(Func<global::System.DateTimeOffset?> func)
         {
-            _timestamp = new Lazy<System.DateTimeOffset?>(func);
+            _timestamp = new Lazy<global::System.DateTimeOffset?>(func);
             _timestampIsSet = true;
-            return this;
-        }
-        private bool _eTagIsSet;
-        private Lazy<Azure.ETag> _eTag = new Lazy<Azure.ETag>(() => default(Azure.ETag));
-        public MyEntityBuilder WithETag(Azure.ETag value) => WithETag(() => value);
-        public MyEntityBuilder WithETag(Func<Azure.ETag> func)
-        {
-            _eTag = new Lazy<Azure.ETag>(func);
-            _eTagIsSet = true;
             return this;
         }
         private bool _stringTestIsSet;
@@ -120,10 +120,10 @@ namespace FluentBuilderGeneratorTests.Issue60
                     {
                         instance = new MyEntity
                         {
+                            ETag = _eTag.Value,
                             PartitionKey = _partitionKey.Value,
                             RowKey = _rowKey.Value,
                             Timestamp = _timestamp.Value,
-                            ETag = _eTag.Value,
                             StringTest = _stringTest.Value,
                             IntTest = _intTest.Value
                         };
@@ -138,10 +138,10 @@ namespace FluentBuilderGeneratorTests.Issue60
                 });
             }
 
+            if (_eTagIsSet) { Instance.Value.ETag = _eTag.Value; }
             if (_partitionKeyIsSet) { Instance.Value.PartitionKey = _partitionKey.Value; }
             if (_rowKeyIsSet) { Instance.Value.RowKey = _rowKey.Value; }
             if (_timestampIsSet) { Instance.Value.Timestamp = _timestamp.Value; }
-            if (_eTagIsSet) { Instance.Value.ETag = _eTag.Value; }
             if (_stringTestIsSet) { Instance.Value.StringTest = _stringTest.Value; }
             if (_intTestIsSet) { Instance.Value.IntTest = _intTest.Value; }
 

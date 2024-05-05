@@ -220,11 +220,13 @@ namespace {classSymbol.BuilderNamespace}
                 extraUsings.AddRange(extraUsingsFromDefaultValue);
             }
 
+            var global = property.GetGlobalPrefix();
+
             sb.AppendLine($"        private bool _{CamelCase(property.Name)}IsSet;");
 
-            sb.AppendLine($"        private Lazy<{property.Type}> _{CamelCase(property.Name)} = new Lazy<{property.Type}>(() => {defaultValue});");
+            sb.AppendLine($"        private Lazy<{global}{property.Type}> _{CamelCase(property.Name)} = new Lazy<{global}{property.Type}>(() => {defaultValue});");
 
-            sb.AppendLine($"        public {builderClassName} With{property.Name}({type} value) => With{property.Name}(() => value);");
+            sb.AppendLine($"        public {builderClassName} With{property.Name}({global}{type} value) => With{property.Name}(() => value);");
 
             sb.Append(GenerateWithPropertyFuncMethod(classSymbol, property));
 
@@ -273,10 +275,12 @@ namespace {classSymbol.BuilderNamespace}
     {
         var className = classSymbol.BuilderClassName;
 
+        var global = property.GetGlobalPrefix();
+
         return new StringBuilder()
-            .AppendLine($"        public {className} With{property.Name}(Func<{property.Type}> func)")
+            .AppendLine($"        public {className} With{property.Name}(Func<{global}{property.Type}> func)")
             .AppendLine("        {")
-            .AppendLine($"            _{CamelCase(property.Name)} = new Lazy<{property.Type}>(func);")
+            .AppendLine($"            _{CamelCase(property.Name)} = new Lazy<{global}{property.Type}>(func);")
             .AppendLine($"            _{CamelCase(property.Name)}IsSet = true;")
             .AppendLine("            return this;")
             .AppendLine("        }");
@@ -503,10 +507,10 @@ namespace {classSymbol.BuilderNamespace}
 
     private static void BuildPrivateSetMethod(StringBuilder output, string className, IPropertySymbol property)
     {
-        output.AppendLine(8, $"private void Set{property.Name}({className} instance, {property.Type} value)");
-        output.AppendLine(8, @"{");
-        output.AppendLine(8, $"    InstanceType.GetProperty(\"{property.Name}\")?.SetValue(instance, value);");
-        output.AppendLine(8, @"}");
+        output.AppendLine(08, $"private void Set{property.Name}({className} instance, {property.Type} value)");
+        output.AppendLine(08, "{");
+        output.AppendLine(12, $"InstanceType.GetProperty(\"{property.Name}\")?.SetValue(instance, value);");
+        output.AppendLine(08, "}");
         output.AppendLine();
     }
 
