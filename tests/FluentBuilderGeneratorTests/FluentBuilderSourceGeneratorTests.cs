@@ -747,8 +747,9 @@ public class FluentBuilderSourceGeneratorTests
         }
     }
 
+    // #60
     [Fact]
-    public void Issue60()
+    public void GenerateFiles_UseGlobalForLookALikeNamespaces()
     {
         // Arrange
         var builderFileName = "FluentBuilderGeneratorTests.Issue60.MyEntityBuilder.g.cs";
