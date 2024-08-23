@@ -138,6 +138,12 @@ namespace FluentBuilderGeneratorTests.DTO
             _iReadOnlyCollectionIsSet = true;
             return this;
         }
+        public AddressBuilder WithIReadOnlyCollection(Action<FluentBuilderGeneratorTests.FluentBuilder.IReadOnlyCollectionBuilder<string>> action, bool useObjectInitializer = true) => WithIReadOnlyCollection(() =>
+        {
+            var builder = new FluentBuilderGeneratorTests.FluentBuilder.IReadOnlyCollectionBuilder<string>();
+            action(builder);
+            return builder.Build(useObjectInitializer);
+        });
         private bool _readOnlyCollectionIsSet;
         private Lazy<System.Collections.ObjectModel.ReadOnlyCollection<long>> _readOnlyCollection = new Lazy<System.Collections.ObjectModel.ReadOnlyCollection<long>>(() => new System.Collections.ObjectModel.ReadOnlyCollection<long>(new List<long>()));
         public AddressBuilder WithReadOnlyCollection(System.Collections.ObjectModel.ReadOnlyCollection<long> value) => WithReadOnlyCollection(() => value);
@@ -147,6 +153,21 @@ namespace FluentBuilderGeneratorTests.DTO
             _readOnlyCollectionIsSet = true;
             return this;
         }
+        private bool _iReadOnlyListIsSet;
+        private Lazy<System.Collections.Generic.IReadOnlyList<float>> _iReadOnlyList = new Lazy<System.Collections.Generic.IReadOnlyList<float>>(() => new List<float>());
+        public AddressBuilder WithIReadOnlyList(System.Collections.Generic.IReadOnlyList<float> value) => WithIReadOnlyList(() => value);
+        public AddressBuilder WithIReadOnlyList(Func<System.Collections.Generic.IReadOnlyList<float>> func)
+        {
+            _iReadOnlyList = new Lazy<System.Collections.Generic.IReadOnlyList<float>>(func);
+            _iReadOnlyListIsSet = true;
+            return this;
+        }
+        public AddressBuilder WithIReadOnlyList(Action<FluentBuilderGeneratorTests.FluentBuilder.IReadOnlyCollectionBuilder<float>> action, bool useObjectInitializer = true) => WithIReadOnlyList(() =>
+        {
+            var builder = new FluentBuilderGeneratorTests.FluentBuilder.IReadOnlyCollectionBuilder<float>();
+            action(builder);
+            return builder.Build(useObjectInitializer);
+        });
         private bool _enumerableIsSet;
         private Lazy<System.Collections.Generic.IEnumerable<byte>> _enumerable = new Lazy<System.Collections.Generic.IEnumerable<byte>>(() => new byte[0]);
         public AddressBuilder WithEnumerable(System.Collections.Generic.IEnumerable<byte> value) => WithEnumerable(() => value);
@@ -327,6 +348,7 @@ namespace FluentBuilderGeneratorTests.DTO
                             ThingIsStruct = _thingIsStruct.Value,
                             IReadOnlyCollection = _iReadOnlyCollection.Value,
                             ReadOnlyCollection = _readOnlyCollection.Value,
+                            IReadOnlyList = _iReadOnlyList.Value,
                             Enumerable = _enumerable.Value,
                             Enumerable2 = _enumerable2.Value,
                             List = _list.Value,
@@ -360,6 +382,7 @@ namespace FluentBuilderGeneratorTests.DTO
             if (_thingIsStructIsSet) { Instance.Value.ThingIsStruct = _thingIsStruct.Value; }
             if (_iReadOnlyCollectionIsSet) { Instance.Value.IReadOnlyCollection = _iReadOnlyCollection.Value; }
             if (_readOnlyCollectionIsSet) { Instance.Value.ReadOnlyCollection = _readOnlyCollection.Value; }
+            if (_iReadOnlyListIsSet) { Instance.Value.IReadOnlyList = _iReadOnlyList.Value; }
             if (_enumerableIsSet) { Instance.Value.Enumerable = _enumerable.Value; }
             if (_enumerable2IsSet) { Instance.Value.Enumerable2 = _enumerable2.Value; }
             if (_listIsSet) { Instance.Value.List = _list.Value; }
