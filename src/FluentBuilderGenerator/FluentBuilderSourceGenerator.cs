@@ -55,14 +55,18 @@ internal class FluentBuilderSourceGenerator : ISourceGenerator
     {
         var generators = new IFileGenerator[]
         {
-            new ExtraFilesGenerator(context.AssemblyName, context.SupportsNullable),
             new BaseBuilderGenerator(context.AssemblyName, context.SupportsNullable),
+
+            new ExtraFilesGenerator(context.AssemblyName, context.SupportsNullable),
+
+            new IDictionaryBuilderGenerator(context.AssemblyName, context.SupportsNullable),
+
             new IEnumerableBuilderGenerator(context.AssemblyName, FileDataType.ArrayBuilder, context.SupportsNullable),
+            new IEnumerableBuilderGenerator(context.AssemblyName, FileDataType.ICollectionBuilder, context.SupportsNullable),
             new IEnumerableBuilderGenerator(context.AssemblyName, FileDataType.IEnumerableBuilder, context.SupportsNullable),
             new IEnumerableBuilderGenerator(context.AssemblyName, FileDataType.IListBuilder, context.SupportsNullable),
             new IEnumerableBuilderGenerator(context.AssemblyName, FileDataType.IReadOnlyCollectionBuilder, context.SupportsNullable),
-            new IEnumerableBuilderGenerator(context.AssemblyName, FileDataType.ICollectionBuilder, context.SupportsNullable),
-            new IDictionaryBuilderGenerator(context.AssemblyName, context.SupportsNullable)
+            new IEnumerableBuilderGenerator(context.AssemblyName, FileDataType.IReadOnlyListBuilder, context.SupportsNullable),
         };
 
         foreach (var generator in generators)

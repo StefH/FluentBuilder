@@ -16,6 +16,7 @@ namespace FluentBuilderGeneratorTests;
 [UsesVerify]
 public class FluentBuilderSourceGeneratorTests
 {
+    private const int NumFiles = 10;
     private const string Namespace = "FluentBuilderGeneratorTests";
 
     private const bool Write = true;
@@ -50,8 +51,8 @@ public class FluentBuilderSourceGeneratorTests
         var result = _sut.Execute(Namespace, new[] { sourceFile });
 
         // Assert
-        result.Files.Should().HaveCount(9);
-        result.Files[8].Path.Should().EndWith("Error.g.cs");
+        result.Files.Should().HaveCount(NumFiles);
+        result.Files[NumFiles - 1].Path.Should().EndWith("Error.g.cs");
 
         // Verify
         var errorResult = result.GeneratorDriver.GetRunResult().Results.First().GeneratedSources.First(s => s.HintName.Contains("Error.g.cs"));
@@ -75,7 +76,7 @@ public class FluentBuilderSourceGeneratorTests
 
         // Assert
         result.Valid.Should().BeTrue();
-        result.Files.Should().HaveCount(9);
+        result.Files.Should().HaveCount(NumFiles);
         result.Files.Should().NotContain(r => r.Path.EndsWith("Error.g.cs"));
 
         for (int i = 8; i < 9; i++)
@@ -106,7 +107,7 @@ public class FluentBuilderSourceGeneratorTests
 
         // Assert
         result.Valid.Should().BeTrue();
-        result.Files.Should().HaveCount(9);
+        result.Files.Should().HaveCount(NumFiles);
         result.Files.Should().NotContain(r => r.Path.EndsWith("Error.g.cs"));
 
         for (int i = 8; i < 9; i++)
@@ -181,9 +182,9 @@ public class FluentBuilderSourceGeneratorTests
 
         // Assert
         result.Valid.Should().BeTrue();
-        result.Files.Should().HaveCount(10);
+        result.Files.Should().HaveCount(NumFiles + 1);
 
-        for (int i = 8; i < 10; i++)
+        for (int i = NumFiles - 2; i < NumFiles + 1; i++)
         {
             var builder = result.Files[i];
 
@@ -215,9 +216,9 @@ public class FluentBuilderSourceGeneratorTests
 
         // Assert
         result.Valid.Should().BeTrue();
-        result.Files.Should().HaveCount(9);
+        result.Files.Should().HaveCount(NumFiles);
 
-        var fileResult = result.Files[8];
+        var fileResult = result.Files[NumFiles - 1];
         var filename = Path.GetFileName(fileResult.Path);
 
         File.WriteAllText($"../../../DTO/{filename}", fileResult.Text);
@@ -252,9 +253,9 @@ public class FluentBuilderSourceGeneratorTests
 
         // Assert
         result.Valid.Should().BeTrue();
-        result.Files.Should().HaveCount(9);
+        result.Files.Should().HaveCount(NumFiles);
 
-        var fileResult = result.Files[8];
+        var fileResult = result.Files[NumFiles - 1];
         var filename = Path.GetFileName(fileResult.Path);
 
         fileResult.Text.Should().NotContain("InstanceType.GetProperty");
@@ -286,7 +287,7 @@ public class FluentBuilderSourceGeneratorTests
 
         // Assert
         result.Valid.Should().BeTrue();
-        result.Files.Should().HaveCount(9);
+        result.Files.Should().HaveCount(NumFiles);
 
         // Verify
         var errorResult = result.GeneratorDriver.GetRunResult().Results.First().GeneratedSources[8];
@@ -310,7 +311,7 @@ public class FluentBuilderSourceGeneratorTests
 
         // Assert
         result.Valid.Should().BeTrue();
-        result.Files.Should().HaveCount(9);
+        result.Files.Should().HaveCount(NumFiles);
 
         // Verify
         var errorResult = result.GeneratorDriver.GetRunResult().Results.First().GeneratedSources[8];
@@ -338,7 +339,7 @@ public class FluentBuilderSourceGeneratorTests
 
         // Assert
         result.Valid.Should().BeTrue();
-        result.Files.Should().HaveCount(9);
+        result.Files.Should().HaveCount(NumFiles);
 
         // Verify
         var errorResult = result.GeneratorDriver.GetRunResult().Results.First().GeneratedSources[8];
@@ -351,22 +352,23 @@ public class FluentBuilderSourceGeneratorTests
         // Arrange
         var fileNames = new[]
         {
-            "FluentBuilder.Extra.g.cs",
             "FluentBuilder.BaseBuilder.g.cs",
+            "FluentBuilder.Extra.g.cs",
+
+            "FluentBuilder.IDictionaryBuilder.g.cs",
 
             "FluentBuilder.ArrayBuilder.g.cs",
+            "FluentBuilder.ICollectionBuilder.g.cs",
             "FluentBuilder.IEnumerableBuilder.g.cs",
             "FluentBuilder.IListBuilder.g.cs",
             "FluentBuilder.IReadOnlyCollectionBuilder.g.cs",
-            "FluentBuilder.ICollectionBuilder.g.cs",
-            "FluentBuilder.IDictionaryBuilder.g.cs",
+            "FluentBuilder.IReadOnlyListBuilder.g.cs",
 
             "BuilderGeneratorTests.DTO.AddressBuilder.g.cs",
             "BuilderGeneratorTests.DTO.Address_ArrayBuilder.g.cs",
-            "BuilderGeneratorTests.DTO.Address_IEnumerableBuilder.g.cs",
-            "BuilderGeneratorTests.DTO.Address_IListBuilder.g.cs",
-
             "BuilderGeneratorTests.DTO.Address_ICollectionBuilder.g.cs",
+            "BuilderGeneratorTests.DTO.Address_IEnumerableBuilder.g.cs",
+            "BuilderGeneratorTests.DTO.Address_IListBuilder.g.cs"
         };
 
         var path = "./DTO/Address.cs";
@@ -414,9 +416,9 @@ public class FluentBuilderSourceGeneratorTests
 
         // Assert
         result.Valid.Should().BeTrue();
-        result.Files.Should().HaveCount(9);
+        result.Files.Should().HaveCount(NumFiles);
 
-        var builder = result.Files[8];
+        var builder = result.Files[NumFiles - 1];
         builder.Path.Should().EndWith(builderFileName);
 
         if (Write) File.WriteAllText($"../../../DTO/{builderFileName}", builder.Text);
@@ -444,9 +446,9 @@ public class FluentBuilderSourceGeneratorTests
 
         // Assert
         result.Valid.Should().BeTrue();
-        result.Files.Should().HaveCount(9);
+        result.Files.Should().HaveCount(NumFiles);
 
-        var builder = result.Files[8];
+        var builder = result.Files[NumFiles - 1];
         builder.Path.Should().EndWith(builderFileName);
 
         if (Write) File.WriteAllText($"../../../DTO/{builderFileName}", builder.Text);
@@ -484,9 +486,9 @@ public class FluentBuilderSourceGeneratorTests
 
         // Assert
         result.Valid.Should().BeTrue();
-        result.Files.Should().HaveCount(10);
+        result.Files.Should().HaveCount(NumFiles + 1);
 
-        for (int i = 8; i < 10; i++)
+        for (int i = NumFiles - 2; i < NumFiles + 1; i++)
         {
             var builder = result.Files[i];
             //builder.Path.Should().EndWith(x.fileName);
@@ -530,9 +532,9 @@ public class FluentBuilderSourceGeneratorTests
 
         // Assert
         result.Valid.Should().BeTrue();
-        result.Files.Should().HaveCount(10);
+        result.Files.Should().HaveCount(NumFiles + 1);
 
-        var builderForUserTWithAddressAndConstructor = result.Files[8];
+        var builderForUserTWithAddressAndConstructor = result.Files[NumFiles - 1];
         builderForUserTWithAddressAndConstructor.Path.Should().EndWith(builder1FileName);
 
         if (Write) File.WriteAllText($"../../../DTO/{builder1FileName}", builderForUserTWithAddressAndConstructor.Text);
@@ -560,9 +562,9 @@ public class FluentBuilderSourceGeneratorTests
 
         // Assert
         result.Valid.Should().BeTrue();
-        result.Files.Should().HaveCount(9);
+        result.Files.Should().HaveCount(NumFiles);
 
-        var builder = result.Files[8];
+        var builder = result.Files[NumFiles - 1];
         builder.Path.Should().EndWith(builderFileName);
 
         if (Write) File.WriteAllText($"../../../DTO/{builderFileName}", builder.Text);
@@ -590,9 +592,9 @@ public class FluentBuilderSourceGeneratorTests
 
         // Assert
         result.Valid.Should().BeTrue();
-        result.Files.Should().HaveCount(9);
+        result.Files.Should().HaveCount(NumFiles);
 
-        var builder = result.Files[8];
+        var builder = result.Files[NumFiles - 1];
         builder.Path.Should().EndWith(builderFileName);
 
         if (Write) File.WriteAllText($"../../../DTO/{builderFileName}", builder.Text);
@@ -620,9 +622,9 @@ public class FluentBuilderSourceGeneratorTests
 
         // Assert
         result.Valid.Should().BeTrue();
-        result.Files.Should().HaveCount(9);
+        result.Files.Should().HaveCount(NumFiles);
 
-        var builder = result.Files[8];
+        var builder = result.Files[NumFiles - 1];
         builder.Path.Should().EndWith(builderFileName);
 
         if (Write) File.WriteAllText($"../../../DTO/{builderFileName}", builder.Text);
@@ -650,9 +652,9 @@ public class FluentBuilderSourceGeneratorTests
 
         // Assert
         result.Valid.Should().BeTrue();
-        result.Files.Should().HaveCount(9);
+        result.Files.Should().HaveCount(NumFiles);
 
-        var builder = result.Files[8];
+        var builder = result.Files[NumFiles - 1];
         builder.Path.Should().EndWith(builderFileName);
 
         if (Write) File.WriteAllText($"../../../DTO/{builderFileName}", builder.Text);
@@ -695,9 +697,9 @@ public class FluentBuilderSourceGeneratorTests
 
         // Assert
         result.Valid.Should().BeTrue();
-        result.Files.Should().HaveCount(11);
+        result.Files.Should().HaveCount(NumFiles + 2);
 
-        for (int i = 8; i < result.Files.Count; i++)
+        for (int i = result.Files.Count - 2; i < result.Files.Count; i++)
         {
             var builder = result.Files[i];
             //builder.Path.Should().EndWith(x.fileName);
@@ -734,9 +736,9 @@ public class FluentBuilderSourceGeneratorTests
 
         // Assert
         result.Valid.Should().BeTrue();
-        result.Files.Should().HaveCount(11);
+        result.Files.Should().HaveCount(NumFiles + 2);
 
-        for (int i = 8; i < result.Files.Count; i++)
+        for (int i = result.Files.Count - 3; i < result.Files.Count; i++)
         {
             var builder = result.Files[i];
 

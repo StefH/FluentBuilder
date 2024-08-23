@@ -5,21 +5,23 @@ internal enum FileDataType : byte
 {
     None,
 
+    ArrayBuilder,
+
     Attribute,
 
     Base,
 
     Builder,
 
-    ArrayBuilder,
+    ICollectionBuilder,
+
+    IDictionaryBuilder,
 
     IEnumerableBuilder,
 
     IListBuilder,
 
-    ICollectionBuilder,
-
     IReadOnlyCollectionBuilder,
 
-    IDictionaryBuilder
+    IReadOnlyListBuilder,
 }

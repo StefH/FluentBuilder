@@ -10,10 +10,11 @@ internal static class IEnumerableBuilderHelper
         return dataType switch
         {
             FileDataType.ArrayBuilder => ($"{t}[]", ".ToArray()"),
-            FileDataType.IEnumerableBuilder => ($"IEnumerable<{t}>", string.Empty),
-            FileDataType.IReadOnlyCollectionBuilder => ($"IReadOnlyCollection<{t}>", string.Empty),
             FileDataType.ICollectionBuilder => ($"ICollection<{t}>", string.Empty),
+            FileDataType.IEnumerableBuilder => ($"IEnumerable<{t}>", string.Empty),
             FileDataType.IListBuilder => ($"IList<{t}>", string.Empty),
+            FileDataType.IReadOnlyCollectionBuilder => ($"IReadOnlyCollection<{t}>", string.Empty),
+            FileDataType.IReadOnlyListBuilder => ($"IReadOnlyList<{t}>", string.Empty),
             _ => throw new ArgumentException()
         };
     }
