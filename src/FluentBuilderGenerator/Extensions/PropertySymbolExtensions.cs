@@ -11,8 +11,8 @@ internal static class PropertySymbolExtensions
         FluentTypeKind.ICollection,
         FluentTypeKind.IEnumerable,
         FluentTypeKind.IList,
-        FluentTypeKind.IReadOnlyCollection,
-        FluentTypeKind.IReadOnlyList
+        //FluentTypeKind.IReadOnlyCollection,
+        //FluentTypeKind.IReadOnlyList
     };
 
     internal static bool IsPrivateSettable(this IPropertySymbol property)
