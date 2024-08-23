@@ -365,10 +365,13 @@ public class FluentBuilderSourceGeneratorTests
             "FluentBuilder.IReadOnlyListBuilder.g.cs",
 
             "BuilderGeneratorTests.DTO.AddressBuilder.g.cs",
+
             "BuilderGeneratorTests.DTO.Address_ArrayBuilder.g.cs",
             "BuilderGeneratorTests.DTO.Address_ICollectionBuilder.g.cs",
             "BuilderGeneratorTests.DTO.Address_IEnumerableBuilder.g.cs",
-            "BuilderGeneratorTests.DTO.Address_IListBuilder.g.cs"
+            "BuilderGeneratorTests.DTO.Address_IListBuilder.g.cs",
+            "BuilderGeneratorTests.DTO.Address_IReadOnlyCollectionBuilder.g.cs",
+            "BuilderGeneratorTests.DTO.Address_IReadOnlyListBuilder.g.cs"
         };
 
         var path = "./DTO/Address.cs";

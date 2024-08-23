@@ -159,6 +159,21 @@ namespace FluentBuilderGeneratorTests.DTO
             action(builder);
             return builder.Build(useObjectInitializer);
         });
+        private bool _iReadOnlyCollectionAddressIsSet;
+        private Lazy<System.Collections.Generic.IReadOnlyCollection<FluentBuilderGeneratorTests.DTO.Address>> _iReadOnlyCollectionAddress = new Lazy<System.Collections.Generic.IReadOnlyCollection<FluentBuilderGeneratorTests.DTO.Address>>(() => new List<FluentBuilderGeneratorTests.DTO.Address>());
+        public AddressBuilder WithIReadOnlyCollectionAddress(System.Collections.Generic.IReadOnlyCollection<FluentBuilderGeneratorTests.DTO.Address> value) => WithIReadOnlyCollectionAddress(() => value);
+        public AddressBuilder WithIReadOnlyCollectionAddress(Func<System.Collections.Generic.IReadOnlyCollection<FluentBuilderGeneratorTests.DTO.Address>> func)
+        {
+            _iReadOnlyCollectionAddress = new Lazy<System.Collections.Generic.IReadOnlyCollection<FluentBuilderGeneratorTests.DTO.Address>>(func);
+            _iReadOnlyCollectionAddressIsSet = true;
+            return this;
+        }
+        public AddressBuilder WithIReadOnlyCollectionAddress(Action<FluentBuilderGeneratorTests.DTO.IReadOnlyCollectionAddressBuilder> action, bool useObjectInitializer = true) => WithIReadOnlyCollectionAddress(() =>
+        {
+            var builder = new FluentBuilderGeneratorTests.DTO.IReadOnlyCollectionAddressBuilder();
+            action(builder);
+            return builder.Build(useObjectInitializer);
+        });
         private bool _readOnlyCollectionIsSet;
         private Lazy<System.Collections.ObjectModel.ReadOnlyCollection<long>> _readOnlyCollection = new Lazy<System.Collections.ObjectModel.ReadOnlyCollection<long>>(() => new System.Collections.ObjectModel.ReadOnlyCollection<long>(new List<long>()));
         public AddressBuilder WithReadOnlyCollection(System.Collections.ObjectModel.ReadOnlyCollection<long> value) => WithReadOnlyCollection(() => value);
@@ -180,6 +195,21 @@ namespace FluentBuilderGeneratorTests.DTO
         public AddressBuilder WithIReadOnlyList(Action<FluentBuilderGeneratorTests.FluentBuilder.IReadOnlyListBuilder<float>> action, bool useObjectInitializer = true) => WithIReadOnlyList(() =>
         {
             var builder = new FluentBuilderGeneratorTests.FluentBuilder.IReadOnlyListBuilder<float>();
+            action(builder);
+            return builder.Build(useObjectInitializer);
+        });
+        private bool _iReadOnlyListAddressIsSet;
+        private Lazy<System.Collections.Generic.IReadOnlyList<FluentBuilderGeneratorTests.DTO.Address>> _iReadOnlyListAddress = new Lazy<System.Collections.Generic.IReadOnlyList<FluentBuilderGeneratorTests.DTO.Address>>(() => default(System.Collections.Generic.IReadOnlyList<FluentBuilderGeneratorTests.DTO.Address>));
+        public AddressBuilder WithIReadOnlyListAddress(System.Collections.Generic.IReadOnlyList<FluentBuilderGeneratorTests.DTO.Address> value) => WithIReadOnlyListAddress(() => value);
+        public AddressBuilder WithIReadOnlyListAddress(Func<System.Collections.Generic.IReadOnlyList<FluentBuilderGeneratorTests.DTO.Address>> func)
+        {
+            _iReadOnlyListAddress = new Lazy<System.Collections.Generic.IReadOnlyList<FluentBuilderGeneratorTests.DTO.Address>>(func);
+            _iReadOnlyListAddressIsSet = true;
+            return this;
+        }
+        public AddressBuilder WithIReadOnlyListAddress(Action<FluentBuilderGeneratorTests.DTO.IReadOnlyListAddressBuilder> action, bool useObjectInitializer = true) => WithIReadOnlyListAddress(() =>
+        {
+            var builder = new FluentBuilderGeneratorTests.DTO.IReadOnlyListAddressBuilder();
             action(builder);
             return builder.Build(useObjectInitializer);
         });
@@ -363,8 +393,10 @@ namespace FluentBuilderGeneratorTests.DTO
                             ThingIsStruct = _thingIsStruct.Value,
                             IReadOnlyCollection = _iReadOnlyCollection.Value,
                             IReadOnlyCollectionThing = _iReadOnlyCollectionThing.Value,
+                            IReadOnlyCollectionAddress = _iReadOnlyCollectionAddress.Value,
                             ReadOnlyCollection = _readOnlyCollection.Value,
                             IReadOnlyList = _iReadOnlyList.Value,
+                            IReadOnlyListAddress = _iReadOnlyListAddress.Value,
                             Enumerable = _enumerable.Value,
                             Enumerable2 = _enumerable2.Value,
                             List = _list.Value,
@@ -398,8 +430,10 @@ namespace FluentBuilderGeneratorTests.DTO
             if (_thingIsStructIsSet) { Instance.Value.ThingIsStruct = _thingIsStruct.Value; }
             if (_iReadOnlyCollectionIsSet) { Instance.Value.IReadOnlyCollection = _iReadOnlyCollection.Value; }
             if (_iReadOnlyCollectionThingIsSet) { Instance.Value.IReadOnlyCollectionThing = _iReadOnlyCollectionThing.Value; }
+            if (_iReadOnlyCollectionAddressIsSet) { Instance.Value.IReadOnlyCollectionAddress = _iReadOnlyCollectionAddress.Value; }
             if (_readOnlyCollectionIsSet) { Instance.Value.ReadOnlyCollection = _readOnlyCollection.Value; }
             if (_iReadOnlyListIsSet) { Instance.Value.IReadOnlyList = _iReadOnlyList.Value; }
+            if (_iReadOnlyListAddressIsSet) { Instance.Value.IReadOnlyListAddress = _iReadOnlyListAddress.Value; }
             if (_enumerableIsSet) { Instance.Value.Enumerable = _enumerable.Value; }
             if (_enumerable2IsSet) { Instance.Value.Enumerable2 = _enumerable2.Value; }
             if (_listIsSet) { Instance.Value.List = _list.Value; }

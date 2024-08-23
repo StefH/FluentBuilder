@@ -31,9 +31,13 @@ namespace FluentBuilderGeneratorTests.DTO
 
         public IReadOnlyCollection<Thing> IReadOnlyCollectionThing { get; set; }
 
+        public IReadOnlyCollection<Address> IReadOnlyCollectionAddress { get; set; }
+
         public ReadOnlyCollection<long> ReadOnlyCollection { get; set; }
 
         public IReadOnlyList<float> IReadOnlyList { get; set; }
+
+        public IReadOnlyList<Address> IReadOnlyListAddress { get; set; }
 
         public IEnumerable<byte> Enumerable { get; set; }
 
