@@ -138,12 +138,6 @@ namespace FluentBuilderGeneratorTests.DTO
             _iReadOnlyCollectionIsSet = true;
             return this;
         }
-        public AddressBuilder WithIReadOnlyCollection(Action<FluentBuilderGeneratorTests.FluentBuilder.IReadOnlyCollectionBuilder<string>> action, bool useObjectInitializer = true) => WithIReadOnlyCollection(() =>
-        {
-            var builder = new FluentBuilderGeneratorTests.FluentBuilder.IReadOnlyCollectionBuilder<string>();
-            action(builder);
-            return builder.Build(useObjectInitializer);
-        });
         private bool _readOnlyCollectionIsSet;
         private Lazy<System.Collections.ObjectModel.ReadOnlyCollection<long>> _readOnlyCollection = new Lazy<System.Collections.ObjectModel.ReadOnlyCollection<long>>(() => new System.Collections.ObjectModel.ReadOnlyCollection<long>(new List<long>()));
         public AddressBuilder WithReadOnlyCollection(System.Collections.ObjectModel.ReadOnlyCollection<long> value) => WithReadOnlyCollection(() => value);
@@ -162,7 +156,6 @@ namespace FluentBuilderGeneratorTests.DTO
             _iReadOnlyListIsSet = true;
             return this;
         }
-        
         private bool _enumerableIsSet;
         private Lazy<System.Collections.Generic.IEnumerable<byte>> _enumerable = new Lazy<System.Collections.Generic.IEnumerable<byte>>(() => new byte[0]);
         public AddressBuilder WithEnumerable(System.Collections.Generic.IEnumerable<byte> value) => WithEnumerable(() => value);
