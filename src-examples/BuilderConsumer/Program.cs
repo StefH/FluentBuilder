@@ -15,6 +15,8 @@ class Program
 
     static void Main(string[] args)
     {
+        var settings = new SettingsBuilder().WithContents(a => a.Add().Build());
+
         var t1 = new ThingWithOnlyParameterizedConstructorsBuilder()
             .UsingConstructor(1, 2, "drie")
             .WithL(444444)

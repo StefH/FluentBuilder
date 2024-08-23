@@ -162,12 +162,7 @@ namespace FluentBuilderGeneratorTests.DTO
             _iReadOnlyListIsSet = true;
             return this;
         }
-        public AddressBuilder WithIReadOnlyList(Action<FluentBuilderGeneratorTests.FluentBuilder.IReadOnlyCollectionBuilder<float>> action, bool useObjectInitializer = true) => WithIReadOnlyList(() =>
-        {
-            var builder = new FluentBuilderGeneratorTests.FluentBuilder.IReadOnlyCollectionBuilder<float>();
-            action(builder);
-            return builder.Build(useObjectInitializer);
-        });
+        
         private bool _enumerableIsSet;
         private Lazy<System.Collections.Generic.IEnumerable<byte>> _enumerable = new Lazy<System.Collections.Generic.IEnumerable<byte>>(() => new byte[0]);
         public AddressBuilder WithEnumerable(System.Collections.Generic.IEnumerable<byte> value) => WithEnumerable(() => value);
