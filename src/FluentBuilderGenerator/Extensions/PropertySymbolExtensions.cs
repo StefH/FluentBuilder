@@ -8,9 +8,11 @@ internal static class PropertySymbolExtensions
     // ReSharper disable once InconsistentNaming
     private static readonly FluentTypeKind[] IEnumerableKinds =
     {
+        FluentTypeKind.ICollection,
         FluentTypeKind.IEnumerable,
         FluentTypeKind.IList,
-        FluentTypeKind.ICollection
+        FluentTypeKind.IReadOnlyCollection,
+        FluentTypeKind.IReadOnlyList
     };
 
     internal static bool IsPrivateSettable(this IPropertySymbol property)

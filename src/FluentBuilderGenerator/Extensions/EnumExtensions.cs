@@ -10,8 +10,9 @@ internal static class EnumExtensions
         { FluentTypeKind.Array, FileDataType.ArrayBuilder },
         { FluentTypeKind.IEnumerable, FileDataType.IEnumerableBuilder },
         { FluentTypeKind.ICollection, FileDataType.ICollectionBuilder },
+        { FluentTypeKind.IList, FileDataType.IListBuilder },
         { FluentTypeKind.IReadOnlyCollection, FileDataType.IReadOnlyCollectionBuilder },
-        { FluentTypeKind.IList, FileDataType.IListBuilder }
+        { FluentTypeKind.IReadOnlyList, FileDataType.IReadOnlyListBuilder },
     };
     private static readonly IDictionary<FileDataType, FluentTypeKind> FileToKind = KindToFile.ToDictionary(x => x.Value, x => x.Key);
 

@@ -5,21 +5,23 @@ internal enum FluentTypeKind : byte
 {
     None,
 
-    String,
-
     Array,
-
-    IEnumerable,
 
     ICollection,
 
-    IReadOnlyCollection,
-    
-    IList,
-
     IDictionary,
 
+    IEnumerable,
+
+    IList,
+
+    IReadOnlyCollection,
+
+    IReadOnlyList,
+    
     ReadOnlyCollection,
+
+    String,
 
     Other
 }

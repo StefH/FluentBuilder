@@ -16,16 +16,16 @@ using FluentBuilderGeneratorTests.DTO;
 
 namespace FluentBuilderGeneratorTests.DTO
 {
-    public partial class ArrayAddressBuilder : Builder<FluentBuilderGeneratorTests.DTO.Address[]>
+    public partial class IReadOnlyCollectionAddressBuilder : Builder<IReadOnlyCollection<FluentBuilderGeneratorTests.DTO.Address>>
     {
         private readonly Lazy<List<FluentBuilderGeneratorTests.DTO.Address>> _list = new Lazy<List<FluentBuilderGeneratorTests.DTO.Address>>(() => new List<FluentBuilderGeneratorTests.DTO.Address>());
-        public ArrayAddressBuilder Add(Address item) => Add(() => item);
-        public ArrayAddressBuilder Add(Func<Address> func)
+        public IReadOnlyCollectionAddressBuilder Add(Address item) => Add(() => item);
+        public IReadOnlyCollectionAddressBuilder Add(Func<Address> func)
         {
             _list.Value.Add(func());
             return this;
         }
-        public ArrayAddressBuilder Add(Action<FluentBuilderGeneratorTests.DTO.AddressBuilder> action, bool useObjectInitializer = true)
+        public IReadOnlyCollectionAddressBuilder Add(Action<FluentBuilderGeneratorTests.DTO.AddressBuilder> action, bool useObjectInitializer = true)
         {
             var builder = new FluentBuilderGeneratorTests.DTO.AddressBuilder();
             action(builder);
@@ -34,15 +34,15 @@ namespace FluentBuilderGeneratorTests.DTO
         }
 
 
-        public override FluentBuilderGeneratorTests.DTO.Address[] Build() => Build(true);
+        public override IReadOnlyCollection<FluentBuilderGeneratorTests.DTO.Address> Build() => Build(true);
 
-        public override FluentBuilderGeneratorTests.DTO.Address[] Build(bool useObjectInitializer)
+        public override IReadOnlyCollection<FluentBuilderGeneratorTests.DTO.Address> Build(bool useObjectInitializer)
         {
             if (Instance?.IsValueCreated != true)
             {
-                Instance = new Lazy<FluentBuilderGeneratorTests.DTO.Address[]>(() =>
+                Instance = new Lazy<IReadOnlyCollection<FluentBuilderGeneratorTests.DTO.Address>>(() =>
                 {
-                    return _list.Value.ToArray();
+                    return _list.Value;
                 });
             }
 

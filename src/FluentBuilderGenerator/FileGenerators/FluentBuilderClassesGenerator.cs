@@ -31,9 +31,11 @@ internal partial class FluentBuilderClassesGenerator : IFilesGenerator
     private static readonly FileDataType[] ExtraBuilders =
     {
         FileDataType.ArrayBuilder,
+        FileDataType.ICollectionBuilder,
         FileDataType.IEnumerableBuilder,
         FileDataType.IListBuilder,
-        FileDataType.ICollectionBuilder
+        FileDataType.IReadOnlyCollectionBuilder,
+        FileDataType.IReadOnlyListBuilder
     };
 
     private readonly IGeneratorExecutionContextWrapper _context;
