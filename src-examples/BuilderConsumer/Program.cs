@@ -15,7 +15,15 @@ class Program
 
     static void Main(string[] args)
     {
-        var settings = new SettingsBuilder();
+        var settings = new SettingsBuilder()
+            // .WithContents(new[] { new Content { Id = "a"} })
+            .WithContents(x => x
+                .Add(cb => cb.WithId("b")
+                )
+            )
+            // .WithContents(Array.Empty<Content>)
+            .Build()
+            ;
 
         var t1 = new ThingWithOnlyParameterizedConstructorsBuilder()
             .UsingConstructor(1, 2, "drie")
