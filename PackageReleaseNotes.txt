@@ -1,6 +1,5 @@
-# 0.9.0 (08 April 2023)
-- #55 UsingInstance returns correct generated builder [enhancement]
-- #56 Add AsBuilder extension method [enhancement]
-- #54 Automatic extension method generation for easy updating of existing class instances [enhancement]
+# 0.9.1 (24 August 2024)
+- #57 Update readme for new extension method [documentation]
+- #63 Fixed support for IReadOnlyCollection and IReadOnlyList [bug]
 
 The full release notes can be found here: https://github.com/StefH/FluentBuilder/blob/main/ReleaseNotes.md
