@@ -1,5 +1,6 @@
 // This source code is based on https://justsimplycode.com/2020/12/06/auto-generate-builders-using-source-generator-in-net-5
 
+using System.Diagnostics.CodeAnalysis;
 using FluentBuilderGenerator.Extensions;
 using FluentBuilderGenerator.Models;
 using FluentBuilderGenerator.Types;
@@ -10,7 +11,7 @@ namespace FluentBuilderGenerator.SyntaxReceiver;
 
 internal class AutoGenerateBuilderSyntaxReceiver : IAutoGenerateBuilderSyntaxReceiver
 {
-    private static readonly string[] AutoGenerateBuilderAttributes = { "FluentBuilder.AutoGenerateBuilder", "AutoGenerateBuilder" };
+    private static readonly string[] AutoGenerateBuilderAttributes = ["FluentBuilder.AutoGenerateBuilder", "AutoGenerateBuilder"];
 
     public IList<FluentData> CandidateFluentDataItems { get; } = new List<FluentData>();
 
@@ -32,13 +33,19 @@ internal class AutoGenerateBuilderSyntaxReceiver : IAutoGenerateBuilderSyntaxRec
         var attributeList = classDeclarationSyntax.AttributeLists.FirstOrDefault(x => x.Attributes.Any(a => AutoGenerateBuilderAttributes.Contains(a.Name.ToString())));
         if (attributeList is null)
         {
-            // ClassDeclarationSyntax should have the correct attribute
+            Console.WriteLine("ClassDeclarationSyntax should have the correct attribute.");
+            return false;
+        }
+
+        if (!TryGetClassModifier(classDeclarationSyntax, out var classModifier))
+        {
+            Console.WriteLine("Class modifier should be 'public' or 'internal'.");
             return false;
         }
 
         var usings = new List<string>();
 
-        string ns = classDeclarationSyntax.GetNamespace();
+        var ns = classDeclarationSyntax.GetNamespace();
         if (!string.IsNullOrEmpty(ns))
         {
             usings.Add(ns);
@@ -58,32 +65,16 @@ internal class AutoGenerateBuilderSyntaxReceiver : IAutoGenerateBuilderSyntaxRec
 
         if (fluentBuilderAttributeArguments.RawTypeName != null) // The class which needs to be processed by the CustomBuilder is provided as type
         {
-            var modifiers = classDeclarationSyntax.Modifiers.Select(m => m.ToString()).Distinct().ToArray();
-            if (!modifiers.Contains("partial"))
+            if (!AreBuilderClassModifiersValid(classDeclarationSyntax))
             {
-                // ClassDeclarationSyntax should be "partial"
-                return false;
-            }
-
-            string modifier;
-            if (modifiers.Contains("public"))
-            {
-                modifier = "public";
-            }
-            else if (modifiers.Contains("internal"))
-            {
-                modifier = "internal";
-            }
-            else
-            {
-                // ClassDeclarationSyntax should be "public" or "internal"
+                Console.WriteLine("Custom builder class should be 'partial' and 'public' or 'internal'.");
                 return false;
             }
 
             data = new FluentData
             {
                 Namespace = ns,
-                ClassModifier = modifier,
+                ClassModifier = classModifier,
                 ShortBuilderClassName = $"{classDeclarationSyntax.Identifier}",
                 FullBuilderClassName = CreateFullBuilderClassName(ns, classDeclarationSyntax),
                 FullRawTypeName = fluentBuilderAttributeArguments.RawTypeName,
@@ -106,6 +97,7 @@ internal class AutoGenerateBuilderSyntaxReceiver : IAutoGenerateBuilderSyntaxRec
         data = new FluentData
         {
             Namespace = ns,
+            ClassModifier = classModifier,
             ShortBuilderClassName = $"{fullBuilderType.Split('.').Last()}",
             FullBuilderClassName = fullBuilderType,
             FullRawTypeName = fullType,
@@ -121,7 +113,32 @@ internal class AutoGenerateBuilderSyntaxReceiver : IAutoGenerateBuilderSyntaxRec
         return true;
     }
 
-    private static string GetFullType(string ns, ClassDeclarationSyntax classDeclarationSyntax, bool addBuilderPostfix)
+    private static bool AreBuilderClassModifiersValid(MemberDeclarationSyntax classDeclarationSyntax)
+    {
+        var modifiers = classDeclarationSyntax.Modifiers.Select(m => m.ToString()).Distinct().ToArray();
+        return modifiers.Contains("partial") && (modifiers.Contains("public") || modifiers.Contains("internal"));
+    }
+
+    private static bool TryGetClassModifier(MemberDeclarationSyntax classDeclarationSyntax, [NotNullWhen(true)] out string? modifier)
+    {
+        var modifiers = classDeclarationSyntax.Modifiers.Select(m => m.ToString()).Distinct().ToArray();
+        if (modifiers.Contains("public"))
+        {
+            modifier = "public";
+            return true;
+        }
+
+        if (modifiers.Contains("internal"))
+        {
+            modifier = "internal";
+            return true;
+        }
+
+        modifier = default;
+        return false;
+    }
+
+    private static string GetFullType(string ns, TypeDeclarationSyntax classDeclarationSyntax, bool addBuilderPostfix)
     {
         var fullBuilderClassName = CreateFullBuilderClassName(ns, classDeclarationSyntax);
         var type = $"{fullBuilderClassName}{(addBuilderPostfix ? "Builder" : string.Empty)}";
