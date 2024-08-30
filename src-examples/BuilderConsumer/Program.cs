@@ -15,6 +15,10 @@ class Program
 
     static void Main(string[] args)
     {
+        var it = new InternalClassBuilder()
+            .WithId(42)
+            .Build();
+
         var settings = new SettingsBuilder()
             // .WithContents(new[] { new Content { Id = "a"} })
             .WithContents(x => x

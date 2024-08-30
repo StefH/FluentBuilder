@@ -111,13 +111,13 @@ namespace {classSymbol.BuilderNamespace}
 {{
     public static partial class {classSymbol.BuilderClassName.ToSafeClassName()}Extensions
     {{
-        public static {classSymbol.BuilderClassName} AsBuilder{classSymbol.NamedTypeSymbol.GetTypeArguments()}(this {classSymbol.NamedTypeSymbol} instance){classSymbol.NamedTypeSymbol.GetWhereStatement()}
+        {fluentData.ClassModifier} static {classSymbol.BuilderClassName} AsBuilder{classSymbol.NamedTypeSymbol.GetTypeArguments()}(this {classSymbol.NamedTypeSymbol} instance){classSymbol.NamedTypeSymbol.GetWhereStatement()}
         {{
             return new {classSymbol.BuilderClassName}().UsingInstance(instance);
         }}
     }}
 
-    public partial class {classSymbol.BuilderClassName} : Builder<{classSymbol.NamedTypeSymbol}>{classSymbol.NamedTypeSymbol.GetWhereStatement()}
+    {fluentData.ClassModifier} partial class {classSymbol.BuilderClassName} : Builder<{classSymbol.NamedTypeSymbol}>{classSymbol.NamedTypeSymbol.GetWhereStatement()}
     {{
 {propertiesCode.StringBuilder}
 {constructorCode.StringBuilder}

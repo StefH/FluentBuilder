@@ -196,6 +196,75 @@ public class FluentBuilderSourceGeneratorTests
     }
 
     [Fact]
+    public void GenerateFiles_ForInternalClass_Should_GenerateCorrectFiles()
+    {
+        // Arrange
+        var pathClass = "./DTO/InternalClass.cs";
+        var sourceFileClass = new SourceFile
+        {
+            Path = pathClass,
+            Text = File.ReadAllText(pathClass),
+            AttributeToAddToClass = "FluentBuilder.AutoGenerateBuilder"
+        };
+
+        // Act
+        var result = _sut.Execute(Namespace, [sourceFileClass]);
+
+        // Assert
+        result.Valid.Should().BeTrue();
+        result.Files.Should().HaveCount(NumFiles);
+
+        var builder = result.Files[NumFiles - 1];
+
+        var filename = Path.GetFileName(builder.Path);
+
+        if (Write) File.WriteAllText($"../../../DTO/{filename}", builder.Text);
+        builder.Text.Should().Be(File.ReadAllText($"../../../DTO/{filename}"));
+    }
+
+    [Fact]
+    public void GenerateFiles_ForInternalClass_WhenBuilderIsInternal_Should_GenerateCorrectFiles()
+    {
+        // Arrange
+        var pathClass = "./DTO/InternalClass.cs";
+        var sourceFileClass = new SourceFile
+        {
+            Path = pathClass,
+            Text = File.ReadAllText(pathClass),
+            AttributeToAddToClass = "FluentBuilder.AutoGenerateBuilder"
+        };
+
+        var pathBuilder = "./DTO/MyInternalClassBuilder.cs";
+        var sourceFileBuilder = new SourceFile
+        {
+            Path = pathBuilder,
+            Text = File.ReadAllText(pathBuilder),
+            AttributeToAddToClass = new ExtraAttribute
+            {
+                Name = "AutoGenerateBuilder",
+                ArgumentList = "typeof(InternalClass)"
+            }
+        };
+
+        // Act
+        var result = _sut.Execute(Namespace, [sourceFileClass, sourceFileBuilder]);
+
+        // Assert
+        result.Valid.Should().BeTrue();
+        result.Files.Should().HaveCount(NumFiles + 1);
+
+        for (int i = NumFiles - 2; i < NumFiles + 1; i++)
+        {
+            var builder = result.Files[i];
+
+            var filename = Path.GetFileName(builder.Path);
+
+            if (Write) File.WriteAllText($"../../../DTO/{filename}", builder.Text);
+            builder.Text.Should().Be(File.ReadAllText($"../../../DTO/{filename}"));
+        }
+    }
+
+    [Fact]
     public void GenerateFiles_ClassWithPrivateSetter_And_AccessibilityPublicAndPrivate_Should_GeneratePrivateSetMethodUsingReflection()
     {
         // Arrange

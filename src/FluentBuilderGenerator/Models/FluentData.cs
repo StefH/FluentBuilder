@@ -6,6 +6,8 @@ internal struct FluentData
 {
     public string Namespace { get; init; }
 
+    public string ClassModifier { get; init; }
+
     public string ShortBuilderClassName { get; init; }
 
     public string FullBuilderClassName { get; init; }
