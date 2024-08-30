@@ -11,6 +11,9 @@ namespace FluentBuilderGenerator.SyntaxReceiver;
 
 internal class AutoGenerateBuilderSyntaxReceiver : IAutoGenerateBuilderSyntaxReceiver
 {
+    private const string ModifierPartial = "partial";
+    private const string ModifierPublic = "public";
+    private const string ModifierInternal = "internal";
     private static readonly string[] AutoGenerateBuilderAttributes = ["FluentBuilder.AutoGenerateBuilder", "AutoGenerateBuilder"];
 
     public IList<FluentData> CandidateFluentDataItems { get; } = new List<FluentData>();
@@ -116,21 +119,21 @@ internal class AutoGenerateBuilderSyntaxReceiver : IAutoGenerateBuilderSyntaxRec
     private static bool AreBuilderClassModifiersValid(MemberDeclarationSyntax classDeclarationSyntax)
     {
         var modifiers = classDeclarationSyntax.Modifiers.Select(m => m.ToString()).Distinct().ToArray();
-        return modifiers.Contains("partial") && (modifiers.Contains("public") || modifiers.Contains("internal"));
+        return modifiers.Contains(ModifierPartial) && (modifiers.Contains(ModifierPublic) || modifiers.Contains(ModifierInternal));
     }
 
     private static bool TryGetClassModifier(MemberDeclarationSyntax classDeclarationSyntax, [NotNullWhen(true)] out string? modifier)
     {
         var modifiers = classDeclarationSyntax.Modifiers.Select(m => m.ToString()).Distinct().ToArray();
-        if (modifiers.Contains("public"))
+        if (modifiers.Contains(ModifierPublic))
         {
-            modifier = "public";
+            modifier = ModifierPublic;
             return true;
         }
 
-        if (modifiers.Contains("internal"))
+        if (modifiers.Contains(ModifierInternal))
         {
-            modifier = "internal";
+            modifier = ModifierInternal;
             return true;
         }
 
