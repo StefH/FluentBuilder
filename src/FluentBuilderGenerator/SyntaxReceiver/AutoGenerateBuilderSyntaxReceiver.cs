@@ -58,16 +58,32 @@ internal class AutoGenerateBuilderSyntaxReceiver : IAutoGenerateBuilderSyntaxRec
 
         if (fluentBuilderAttributeArguments.RawTypeName != null) // The class which needs to be processed by the CustomBuilder is provided as type
         {
-            var modifiers = classDeclarationSyntax.Modifiers.Select(m => m.ToString()).ToArray();
-            if (!(modifiers.Contains("public") && modifiers.Contains("partial")))
+            var modifiers = classDeclarationSyntax.Modifiers.Select(m => m.ToString()).Distinct().ToArray();
+            if (!modifiers.Contains("partial"))
             {
-                // ClassDeclarationSyntax should be "public" & "partial"
+                // ClassDeclarationSyntax should be "partial"
+                return false;
+            }
+
+            string modifier;
+            if (modifiers.Contains("public"))
+            {
+                modifier = "public";
+            }
+            else if (modifiers.Contains("internal"))
+            {
+                modifier = "internal";
+            }
+            else
+            {
+                // ClassDeclarationSyntax should be "public" or "internal"
                 return false;
             }
 
             data = new FluentData
             {
                 Namespace = ns,
+                ClassModifier = modifier,
                 ShortBuilderClassName = $"{classDeclarationSyntax.Identifier}",
                 FullBuilderClassName = CreateFullBuilderClassName(ns, classDeclarationSyntax),
                 FullRawTypeName = fluentBuilderAttributeArguments.RawTypeName,
