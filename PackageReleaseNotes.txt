@@ -1,5 +1,4 @@
-# 0.9.1 (24 August 2024)
-- #57 Update readme for new extension method [documentation]
-- #63 Fixed support for IReadOnlyCollection and IReadOnlyList [bug]
+# 0.9.2 (30 August 2024)
+- #64 Support &quot;internal&quot; for class and custom builder [enhancement]
 
 The full release notes can be found here: https://github.com/StefH/FluentBuilder/blob/main/ReleaseNotes.md
