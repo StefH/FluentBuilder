@@ -2,7 +2,6 @@
 - [#64](https://github.com/StefH/FluentBuilder/pull/64) - Support &quot;internal&quot; for class and custom builder [enhancement] contributed by [StefH](https://github.com/StefH)
 
 # 0.9.1 (24 August 2024)
-- [#57](https://github.com/StefH/FluentBuilder/pull/57) - Update readme for new extension method [documentation] contributed by [Meigs2](https://github.com/Meigs2)
 - [#63](https://github.com/StefH/FluentBuilder/pull/63) - Fixed support for IReadOnlyCollection and IReadOnlyList [bug] contributed by [StefH](https://github.com/StefH)
 
 # 0.9.0 (08 April 2023)
