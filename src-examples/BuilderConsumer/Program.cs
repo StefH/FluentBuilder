@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text.Json;
 using ConsumerClassLibrary;
 using FluentBuilder;
+using Greet;
 
 namespace BuilderConsumer;
 
@@ -15,6 +16,12 @@ class Program
 
     static void Main(string[] args)
     {
+        var r = new HelloReply();
+        r.Messages.Add("x");
+
+        var hb = new HelloReplyBuilder();
+        var h = hb.Build();
+
         var it = new InternalClassBuilder()
             .WithId(42)
             .Build();
@@ -226,7 +233,6 @@ public class MyTestDto
 [AutoGenerateBuilder(typeof(MyTestDto))]
 public partial class MyCustomTestDtoBuilder
 {
-
 }
 
 public class MyDummyVersion
@@ -237,11 +243,9 @@ public class MyDummyVersion
 [AutoGenerateBuilder(typeof(MyDummyVersion))]
 public partial class MyVersionBuilder
 {
-
 }
 
-//[AutoGenerateBuilder(typeof(AppDomain))]
-//public partial class MyAppDomainBuilder
-//{
-
-//}
+[AutoGenerateBuilder(typeof(HelloReply))]
+public partial class HelloReplyBuilder
+{
+}
