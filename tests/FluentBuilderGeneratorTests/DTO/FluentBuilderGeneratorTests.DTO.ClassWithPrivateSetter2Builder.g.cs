@@ -36,6 +36,33 @@ namespace FluentBuilderGeneratorTests.DTO
             _value2IsSet = true;
             return this;
         }
+        private bool _normalListIsSet;
+        private Lazy<System.Collections.Generic.List<int>> _normalList = new Lazy<System.Collections.Generic.List<int>>(() => new());
+        public ClassWithPrivateSetter2Builder WithNormalList(System.Collections.Generic.List<int> value) => WithNormalList(() => value);
+        public ClassWithPrivateSetter2Builder WithNormalList(Func<System.Collections.Generic.List<int>> func)
+        {
+            _normalList = new Lazy<System.Collections.Generic.List<int>>(func);
+            _normalListIsSet = true;
+            return this;
+        }
+        public ClassWithPrivateSetter2Builder WithNormalList(Action<FluentBuilderGeneratorTests.FluentBuilder.IListBuilder<int>> action, bool useObjectInitializer = true) => WithNormalList(() =>
+        {
+            var builder = new FluentBuilderGeneratorTests.FluentBuilder.IListBuilder<int>();
+            action(builder);
+            return (System.Collections.Generic.List<int>) builder.Build(useObjectInitializer);
+        });
+
+        public ClassWithPrivateSetter2Builder WithGetOnlyList(Action<FluentBuilderGeneratorTests.FluentBuilder.IListBuilder<long>> action)
+        {
+            var builder = new FluentBuilderGeneratorTests.FluentBuilder.IListBuilder<long>();
+            action(builder);
+
+            var list = builder.Build(false);
+            
+
+            return this;
+        }
+
 
         private bool _Constructor1164815551_IsSet;
         private Lazy<FluentBuilderGeneratorTests.DTO.ClassWithPrivateSetter2> _Constructor1164815551 = new Lazy<FluentBuilderGeneratorTests.DTO.ClassWithPrivateSetter2>(() => new FluentBuilderGeneratorTests.DTO.ClassWithPrivateSetter2());
@@ -75,7 +102,8 @@ namespace FluentBuilderGeneratorTests.DTO
                     {
                         instance = new ClassWithPrivateSetter2
                         {
-                            Value2 = _value2.Value
+                            Value2 = _value2.Value,
+                            NormalList = _normalList.Value
                         };
 
                         return instance;
@@ -89,6 +117,7 @@ namespace FluentBuilderGeneratorTests.DTO
             }
 
             if (_value2IsSet) { Instance.Value.Value2 = _value2.Value; }
+            if (_normalListIsSet) { Instance.Value.NormalList = _normalList.Value; }
 
             PostBuild(Instance.Value);
 
