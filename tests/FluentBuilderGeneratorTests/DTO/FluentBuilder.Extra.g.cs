@@ -73,6 +73,43 @@ namespace FluentBuilder
         }
     }
 
+    [AttributeUsage(AttributeTargets.Class)]
+    internal sealed class AutoGenerateBuilderAttribute<T> : Attribute where T : class
+    {
+        public Type Type { get; }
+        public bool HandleBaseClasses { get; }
+        public FluentBuilderAccessibility Accessibility { get; }
+        public FluentBuilderMethods Methods { get; }
+
+        public AutoGenerateBuilderAttribute() : this(true, FluentBuilderAccessibility.Public, FluentBuilderMethods.WithOnly)
+        {
+        }
+
+        public AutoGenerateBuilderAttribute(bool handleBaseClasses) : this(handleBaseClasses, FluentBuilderAccessibility.Public, FluentBuilderMethods.WithOnly)
+        {
+        }
+
+        public AutoGenerateBuilderAttribute(FluentBuilderAccessibility accessibility) : this(true, accessibility, FluentBuilderMethods.WithOnly)
+        {
+        }
+
+        public AutoGenerateBuilderAttribute(bool handleBaseClasses, FluentBuilderAccessibility accessibility) : this(handleBaseClasses, accessibility, FluentBuilderMethods.WithOnly)
+        {
+        }
+
+        public AutoGenerateBuilderAttribute(bool handleBaseClasses, FluentBuilderMethods methods) : this(handleBaseClasses, FluentBuilderAccessibility.Public, methods)
+        {
+        }
+
+        public AutoGenerateBuilderAttribute(bool handleBaseClasses, FluentBuilderAccessibility accessibility, FluentBuilderMethods methods)
+        {
+            Type = typeof(T);
+            HandleBaseClasses = handleBaseClasses;
+            Accessibility = accessibility;
+            Methods = methods;
+        }
+    }
+
     [AttributeUsage(AttributeTargets.Property)]
     internal sealed class FluentBuilderIgnoreAttribute : Attribute
     {
