@@ -1,4 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
+using System.Text.RegularExpressions;
 using FluentBuilderGenerator.Types;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -7,24 +8,53 @@ namespace FluentBuilderGenerator.SyntaxReceiver;
 
 internal static class AttributeArgumentListParser
 {
-    public static FluentBuilderAttributeArguments ParseAttributeArguments(AttributeArgumentListSyntax? argumentList)
+    private static readonly Regex AutoGenerateBuilderAttributesRegex = new(@"^.*AutoGenerateBuilder(?:<([^>]+)>)?$", RegexOptions.Compiled, TimeSpan.FromSeconds(1));
+
+    public static bool IsMatch(AttributeSyntax attributeSyntax)
+    {
+        return AutoGenerateBuilderAttributesRegex.IsMatch(attributeSyntax.Name.ToString());
+    }
+
+    public static FluentBuilderAttributeArguments ParseAttributeArguments(AttributeSyntax? attributeSyntax)
     {
         var result = new FluentBuilderAttributeArguments();
 
-        if (argumentList == null)
+        if (attributeSyntax == null)
         {
             return result;
         }
 
-        if (argumentList.Arguments.Count is < 0 or > 4)
+        int argumentsParsed = 0;
+
+        var matchesGenericAttribute = AutoGenerateBuilderAttributesRegex.Match(attributeSyntax.Name.ToString());
+        var genericType = matchesGenericAttribute.Groups[1].Value;
+        var isGenericAttribute = !string.IsNullOrEmpty(genericType);
+        if (isGenericAttribute)
         {
-            throw new ArgumentException("The AutoGenerateBuilderAttribute requires 0, 1, 2, 3 or 4 arguments.");
+            if (attributeSyntax.ArgumentList?.Arguments.Count is > 3)
+            {
+                throw new ArgumentException("The AutoGenerateBuilderAttribute<T> requires 0, 1, 2, 3 arguments.");
+            }
+
+            result = result with { RawTypeName = genericType };
+            argumentsParsed++;
+        }
+        else
+        {
+            if (attributeSyntax.ArgumentList?.Arguments.Count is > 4)
+            {
+                throw new ArgumentException("The AutoGenerateBuilderAttribute requires 0, 1, 2, 3 or 4 arguments.");
+            }
         }
 
-        int argumentsParsed = 0;
-        foreach (var argument in argumentList.Arguments)
+        if (attributeSyntax.ArgumentList == null)
         {
-            if (TryParseAsType(argument.Expression, out var rawTypeValue))
+            return result;
+        }
+
+        foreach (var argument in attributeSyntax.ArgumentList.Arguments)
+        {
+            if (!isGenericAttribute && TryParseAsType(argument.Expression, out var rawTypeValue))
             {
                 result = result with { RawTypeName = rawTypeValue };
                 argumentsParsed++;
@@ -49,7 +79,7 @@ internal static class AttributeArgumentListParser
             }
         }
 
-        if (argumentList.Arguments.Count == 1 & argumentsParsed == 0)
+        if (!matchesGenericAttribute.Success && attributeSyntax.ArgumentList.Arguments.Count == 1 && argumentsParsed == 0)
         {
             throw new ArgumentException($"When the AutoGenerateBuilderAttribute is used with 1 argument, the only argument should be a Type, bool, {nameof(FluentBuilderAccessibility)} or {nameof(FluentBuilderMethods)}.");
         }

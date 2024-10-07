@@ -57,7 +57,7 @@ internal class FluentBuilderSourceGenerator : ISourceGenerator
         {
             new BaseBuilderGenerator(context.AssemblyName, context.SupportsNullable),
 
-            new ExtraFilesGenerator(context.AssemblyName, context.SupportsNullable),
+            new ExtraFilesGenerator(context),
 
             new IDictionaryBuilderGenerator(context.AssemblyName, context.SupportsNullable),
 

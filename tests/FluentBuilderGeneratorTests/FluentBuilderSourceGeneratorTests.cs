@@ -747,8 +747,7 @@ public class FluentBuilderSourceGeneratorTests
             Text = File.ReadAllText(pathUser),
             AttributeToAddToClass = new ExtraAttribute
             {
-                Name = "FluentBuilder.AutoGenerateBuilder",
-                ArgumentList = "typeof(FluentBuilderGeneratorTests.DTO.User)"
+                Name = "FluentBuilder.AutoGenerateBuilder<FluentBuilderGeneratorTests.DTO.User>",
             }
         };
 
@@ -765,7 +764,7 @@ public class FluentBuilderSourceGeneratorTests
         };
 
         // Act
-        var result = _sut.Execute(Namespace, new[] { sourceFileUser, sourceFileOption });
+        var result = _sut.Execute(Namespace, [sourceFileUser, sourceFileOption]);
 
         // Assert
         result.Valid.Should().BeTrue();

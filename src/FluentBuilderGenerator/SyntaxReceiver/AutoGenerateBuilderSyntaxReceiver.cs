@@ -14,7 +14,6 @@ internal class AutoGenerateBuilderSyntaxReceiver : IAutoGenerateBuilderSyntaxRec
     private const string ModifierPartial = "partial";
     private const string ModifierPublic = "public";
     private const string ModifierInternal = "internal";
-    private static readonly string[] AutoGenerateBuilderAttributes = ["FluentBuilder.AutoGenerateBuilder", "AutoGenerateBuilder"];
 
     public IList<FluentData> CandidateFluentDataItems { get; } = new List<FluentData>();
 
@@ -33,7 +32,8 @@ internal class AutoGenerateBuilderSyntaxReceiver : IAutoGenerateBuilderSyntaxRec
     {
         data = default;
 
-        var attributeList = classDeclarationSyntax.AttributeLists.FirstOrDefault(x => x.Attributes.Any(a => AutoGenerateBuilderAttributes.Contains(a.Name.ToString())));
+        var attributeList = classDeclarationSyntax.AttributeLists
+            .FirstOrDefault(x => x.Attributes.Any(a => AttributeArgumentListParser.IsMatch(a)));
         if (attributeList is null)
         {
             Console.WriteLine("ClassDeclarationSyntax should have the correct attribute.");
@@ -64,7 +64,7 @@ internal class AutoGenerateBuilderSyntaxReceiver : IAutoGenerateBuilderSyntaxRec
 
         usings = usings.Distinct().ToList();
 
-        var fluentBuilderAttributeArguments = AttributeArgumentListParser.ParseAttributeArguments(attributeList.Attributes.FirstOrDefault()?.ArgumentList);
+        var fluentBuilderAttributeArguments = AttributeArgumentListParser.ParseAttributeArguments(attributeList.Attributes.FirstOrDefault());
 
         if (fluentBuilderAttributeArguments.RawTypeName != null) // The class which needs to be processed by the CustomBuilder is provided as type
         {

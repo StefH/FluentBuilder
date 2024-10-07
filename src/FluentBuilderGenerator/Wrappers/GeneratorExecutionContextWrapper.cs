@@ -22,6 +22,7 @@ internal class GeneratorExecutionContextWrapper : IGeneratorExecutionContextWrap
 
         // https://github.com/reactiveui/refit/blob/main/InterfaceStubGenerator.Core/InterfaceStubGenerator.cs
         SupportsNullable = csharpParseOptions.LanguageVersion >= LanguageVersion.CSharp8;
+        SupportsGenericAttributes = csharpParseOptions.LanguageVersion >= LanguageVersion.CSharp11;
         NullableEnabled = context.Compilation.Options.NullableContextOptions == NullableContextOptions.Enable;
     }
 
@@ -30,6 +31,8 @@ internal class GeneratorExecutionContextWrapper : IGeneratorExecutionContextWrap
     public bool SupportsNullable { get; }
 
     public bool NullableEnabled { get; }
+
+    public bool SupportsGenericAttributes { get; }
 
     public void AddSource(string hintName, SourceText sourceText) => _context.AddSource(hintName, sourceText);
 

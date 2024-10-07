@@ -3,6 +3,7 @@
 using FluentBuilderGenerator.Extensions;
 using FluentBuilderGenerator.Models;
 using FluentBuilderGenerator.Types;
+using FluentBuilderGenerator.Wrappers;
 
 namespace FluentBuilderGenerator.FileGenerators;
 
@@ -10,29 +11,18 @@ internal class ExtraFilesGenerator : IFileGenerator
 {
     private const string Name = "FluentBuilder.Extra.g.cs";
 
-    private readonly string _assemblyName;
     private readonly bool _supportsNullable;
+    private readonly bool _supportsGenericAttributes;
 
-    public ExtraFilesGenerator(string assemblyName, bool supportsNullable)
+    public ExtraFilesGenerator(IGeneratorExecutionContextWrapper context)
     {
-        _assemblyName = assemblyName;
-        _supportsNullable = supportsNullable;
+        _supportsNullable = context.SupportsNullable;
+        _supportsGenericAttributes = context.SupportsGenericAttributes;
     }
 
     public FileData GenerateFile()
     {
-        return new FileData
-        (
-            FileDataType.Attribute,
-            Name,
-            $@"{Header.Text}
-
-{_supportsNullable.IIf("#nullable enable")}
-using System;
-
-namespace FluentBuilder
-{{
-    [AttributeUsage(AttributeTargets.Class)]
+        var autoGenerateBuilderAttribute = $@"[AttributeUsage(AttributeTargets.Class)]
     internal sealed class AutoGenerateBuilderAttribute : Attribute
     {{
         public Type{_supportsNullable.IIf("?")} Type {{ get; }}
@@ -91,7 +81,59 @@ namespace FluentBuilder
             Accessibility = accessibility;
             Methods = methods;
         }}
-    }}
+    }}";
+
+        var autoGenerateBuilderAttributeGeneric = @"[AttributeUsage(AttributeTargets.Class)]
+    internal sealed class AutoGenerateBuilderAttribute<T> : Attribute where T : class
+    {{
+        public Type Type {{ get; }}
+        public bool HandleBaseClasses {{ get; }}
+        public FluentBuilderAccessibility Accessibility {{ get; }}
+        public FluentBuilderMethods Methods {{ get; }}
+
+        public AutoGenerateBuilderAttribute() : this(true, FluentBuilderAccessibility.Public, FluentBuilderMethods.WithOnly)
+        {{
+        }}
+
+        public AutoGenerateBuilderAttribute(bool handleBaseClasses) : this(handleBaseClasses, FluentBuilderAccessibility.Public, FluentBuilderMethods.WithOnly)
+        {{
+        }}
+
+        public AutoGenerateBuilderAttribute(FluentBuilderAccessibility accessibility) : this(true, accessibility, FluentBuilderMethods.WithOnly)
+        {{
+        }}
+
+        public AutoGenerateBuilderAttribute(bool handleBaseClasses, FluentBuilderAccessibility accessibility) : this(handleBaseClasses, accessibility, FluentBuilderMethods.WithOnly)
+        {{
+        }}
+
+        public AutoGenerateBuilderAttribute(bool handleBaseClasses, FluentBuilderMethods methods) : this(handleBaseClasses, FluentBuilderAccessibility.Public, methods)
+        {{
+        }}
+
+        public AutoGenerateBuilderAttribute(bool handleBaseClasses, FluentBuilderAccessibility accessibility, FluentBuilderMethods methods)
+        {{
+            Type = typeof(T);
+            HandleBaseClasses = handleBaseClasses;
+            Accessibility = accessibility;
+            Methods = methods;
+        }}
+    }}";
+
+        return new FileData
+        (
+            FileDataType.Attribute,
+            Name,
+            $@"{Header.Text}
+
+{_supportsNullable.IIf("#nullable enable")}
+using System;
+
+namespace FluentBuilder
+{{
+    {autoGenerateBuilderAttribute}
+
+    {_supportsGenericAttributes.IIf(autoGenerateBuilderAttributeGeneric)}
 
     [AttributeUsage(AttributeTargets.Property)]
     internal sealed class FluentBuilderIgnoreAttribute : Attribute
