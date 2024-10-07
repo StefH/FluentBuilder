@@ -747,7 +747,7 @@ public class FluentBuilderSourceGeneratorTests
             Text = File.ReadAllText(pathUser),
             AttributeToAddToClass = new ExtraAttribute
             {
-                Name = "FluentBuilder.AutoGenerateBuilder<FluentBuilderGeneratorTests.DTO.User>",
+                Name = "FluentBuilder.AutoGenerateBuilder<FluentBuilderGeneratorTests.DTO.User>"
             }
         };
 
