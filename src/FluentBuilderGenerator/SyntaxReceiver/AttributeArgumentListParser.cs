@@ -25,14 +25,14 @@ internal static class AttributeArgumentListParser
         {
             return result;
         }
-        
+
         var argumentsParsed = 0;
         var skip = 0;
         var isGeneric = false;
-        
+
         if (TryParseAsType(attributeSyntax.Name, semanticModel, out var infoGeneric))
         {
-            result = result with { RawTypeName = infoGeneric.Value.FullyQualifiedDisplayString };
+            result = result with { RawTypeName = infoGeneric.Value.MetadataName };
             isGeneric = true;
             argumentsParsed++;
         }
@@ -42,7 +42,7 @@ internal static class AttributeArgumentListParser
         }
         else if (attributeSyntax.ArgumentList != null && TryParseAsType(attributeSyntax.ArgumentList.Arguments[0].Expression, semanticModel, out var info))
         {
-            result = result with { RawTypeName = info.Value.FullyQualifiedDisplayString };
+            result = result with { RawTypeName = info.Value.MetadataName };
             skip = 1;
             argumentsParsed++;
         }
@@ -94,7 +94,7 @@ internal static class AttributeArgumentListParser
     private static bool TryParseAsType(
         CSharpSyntaxNode? syntaxNode,
         SemanticModel semanticModel,
-        [NotNullWhen(true)] out (string FullyQualifiedDisplayString, string MetadataName, bool IsGeneric)? info
+        [NotNullWhen(true)] out (string MetadataName, bool IsGeneric)? info
     )
     {
         info = null;
@@ -120,7 +120,7 @@ internal static class AttributeArgumentListParser
         var typeInfo = semanticModel.GetTypeInfo(typeSyntax);
         var typeSymbol = typeInfo.Type!;
 
-        info = new(typeSymbol.GetFullMetadataName(), typeSymbol.GetFullMetadataName(), isGeneric);
+        info = new(typeSymbol.GetFullMetadataName(), isGeneric);
 
         return true;
     }
