@@ -8,7 +8,7 @@ namespace FluentBuilderGenerator.SyntaxReceiver;
 
 internal static class AttributeArgumentListParser
 {
-    private static readonly Regex AutoGenerateBuilderAttributesRegex = new("^.*AutoGenerateBuilder(?:<([^>]+)>)?$", RegexOptions.Compiled, TimeSpan.FromSeconds(1));
+    private static readonly Regex AutoGenerateBuilderAttributesRegex = new("^(FluentBuilder.AutoGenerateBuilder|AutoGenerateBuilder)(?:<([^>]+)>)?$", RegexOptions.Compiled, TimeSpan.FromSeconds(1));
 
     public static bool IsMatch(AttributeSyntax attributeSyntax)
     {

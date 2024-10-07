@@ -33,7 +33,7 @@ internal class AutoGenerateBuilderSyntaxReceiver : IAutoGenerateBuilderSyntaxRec
         data = default;
 
         var attributeList = classDeclarationSyntax.AttributeLists
-            .FirstOrDefault(x => x.Attributes.Any(a => AttributeArgumentListParser.IsMatch(a)));
+            .FirstOrDefault(x => x.Attributes.Any(AttributeArgumentListParser.IsMatch));
         if (attributeList is null)
         {
             Console.WriteLine("ClassDeclarationSyntax should have the correct attribute.");
