@@ -89,7 +89,7 @@ internal class ExtraFilesGenerator : IFileGenerator
         public Type Type { get; }
         public bool HandleBaseClasses { get; }
         public FluentBuilderAccessibility Accessibility { get; }
-        public FluentBuilderMethods Methods {{ get; }}
+        public FluentBuilderMethods Methods { get; }
 
         public AutoGenerateBuilderAttribute() : this(true, FluentBuilderAccessibility.Public, FluentBuilderMethods.WithOnly)
         {
