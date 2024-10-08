@@ -224,6 +224,19 @@ public partial class MyUserDtoBuilder
 }
 ```
 
+#### ℹ️ Generic Attribute
+If you are using **C# 11.0** (`.NET 7` and up), you can also use the generic `AutoGenerateBuilder<T>`-attribute.
+Example:
+``` c#
+using FluentBuilder;
+
+[AutoGenerateBuilder<UserDto>()]
+public partial class MyUserDtoBuilder
+{
+}
+```
+
+
 ### Use FluentBuilder
 ``` c#
 using System;
