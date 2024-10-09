@@ -36,10 +36,6 @@ internal static class AttributeArgumentListParser
             isGeneric = true;
             argumentsParsed++;
         }
-        else if (attributeSyntax.ArgumentList is { Arguments.Count: > 4 })
-        {
-            throw new ArgumentException("The AutoGenerateBuilderAttribute requires 0, 1, 2, 3 or 4 arguments.");
-        }
         else if (attributeSyntax.ArgumentList != null && TryParseAsType(attributeSyntax.ArgumentList.Arguments[0].Expression, semanticModel, out var info))
         {
             result = result with { RawTypeName = info.Value.MetadataName };
