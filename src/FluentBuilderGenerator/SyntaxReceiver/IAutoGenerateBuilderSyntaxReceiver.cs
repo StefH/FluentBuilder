@@ -3,7 +3,7 @@ using Microsoft.CodeAnalysis;
 
 namespace FluentBuilderGenerator.SyntaxReceiver;
 
-internal interface IAutoGenerateBuilderSyntaxReceiver : ISyntaxReceiver
+internal interface IAutoGenerateBuilderSyntaxReceiver : ISyntaxContextReceiver
 {
     public IList<FluentData> CandidateFluentDataItems { get; }
 }

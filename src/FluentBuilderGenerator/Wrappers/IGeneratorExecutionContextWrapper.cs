@@ -14,8 +14,10 @@ internal interface IGeneratorExecutionContextWrapper
 
     public bool NullableEnabled { get; }
 
+    public bool SupportsGenericAttributes { get; }
+
     /// <see cref="GeneratorExecutionContext.AddSource(string, SourceText)"/>
     public void AddSource(string hintName, SourceText sourceText);
-    
+
     bool TryGetNamedTypeSymbolByFullMetadataName(FluentData fluentDataItem, [NotNullWhen(true)] out ClassSymbol? classSymbol);
 }
