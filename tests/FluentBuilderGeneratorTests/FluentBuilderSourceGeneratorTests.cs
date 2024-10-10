@@ -745,10 +745,7 @@ public class FluentBuilderSourceGeneratorTests
         {
             Path = pathUser,
             Text = File.ReadAllText(pathUser),
-            AttributeToAddToClass = new ExtraAttribute
-            {
-                Name = "FluentBuilder.AutoGenerateBuilder<FluentBuilderGeneratorTests.DTO.User>"
-            }
+            AttributeToAddToClass = "FluentBuilder.AutoGenerateBuilder<FluentBuilderGeneratorTests.DTO.User>"
         };
 
         var pathOption = "./DTO2/MyOptionBuilder.cs";
@@ -770,15 +767,14 @@ public class FluentBuilderSourceGeneratorTests
         result.Valid.Should().BeTrue();
         result.Files.Should().HaveCount(NumFiles + 2);
 
-        for (int i = result.Files.Count - 2; i < result.Files.Count; i++)
+        for (var i = result.Files.Count - 2; i < result.Files.Count; i++)
         {
             var builder = result.Files[i];
-            //builder.Path.Should().EndWith(x.fileName);
-
             var filename = Path.GetFileName(builder.Path);
+            var destinationPath = $"../../../DTO2/{filename}";
 
-            if (Write) File.WriteAllText($"../../../DTO2/{filename}", builder.Text);
-            builder.Text.Should().Be(File.ReadAllText($"../../../DTO2/{filename}"));
+            if (Write) File.WriteAllText(destinationPath, builder.Text);
+            builder.Text.Should().Be(File.ReadAllText(destinationPath));
         }
     }
 
