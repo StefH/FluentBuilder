@@ -125,6 +125,10 @@ public static class SourceGeneratorExtensions
 
             // https://stackoverflow.com/questions/35927427/how-to-create-an-attributesyntax-with-a-parameter
             var nameSyntax = SyntaxFactory.ParseName(name);
+            if (nameSyntax is QualifiedNameSyntax { Right: GenericNameSyntax genericNameSyntax })
+            {
+                nameSyntax = genericNameSyntax;
+            }
 
             AttributeSyntax attributeSyntax;
             if (TryParseArguments(attributeToAdd, out var attributeArgumentListSyntax))

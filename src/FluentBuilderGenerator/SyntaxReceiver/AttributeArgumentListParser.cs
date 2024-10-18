@@ -104,7 +104,7 @@ internal static class AttributeArgumentListParser
                 isGeneric = false;
                 break;
 
-            case QualifiedNameSyntax { Right: GenericNameSyntax genericRightNameSyntax }:
+            case GenericNameSyntax genericRightNameSyntax:
                 typeSyntax = genericRightNameSyntax.TypeArgumentList.Arguments.First();
                 isGeneric = true;
                 break;
