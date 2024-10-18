@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.ObjectModel;
+using System.Text;
 using FluentBuilderGenerator.Types;
 using Microsoft.CodeAnalysis;
 
@@ -12,7 +13,7 @@ namespace FluentBuilderGenerator.Extensions;
 /// </summary>
 internal static class TypeSymbolExtensions
 {
-    public static FluentTypeKind GetFluentTypeKind(this ITypeSymbol typeSymbol)
+    internal static FluentTypeKind GetFluentTypeKind(this ITypeSymbol typeSymbol)
     {
         if (typeSymbol.SpecialType == SpecialType.System_String)
         {
@@ -63,7 +64,7 @@ internal static class TypeSymbolExtensions
     }
 
     // https://stackoverflow.com/questions/39708316/roslyn-is-a-inamedtypesymbol-of-a-class-or-subclass-of-a-given-type
-    public static bool ImplementsInterfaceOrBaseClass(this ITypeSymbol typeSymbol, Type typeToCheck)
+    internal static bool ImplementsInterfaceOrBaseClass(this ITypeSymbol typeSymbol, Type typeToCheck)
     {
         if (typeSymbol.MetadataName == typeToCheck.Name)
         {
@@ -86,7 +87,7 @@ internal static class TypeSymbolExtensions
         return false;
     }
 
-    public static bool CanSupportCollectionInitializer(this ITypeSymbol typeSymbol)
+    internal static bool CanSupportCollectionInitializer(this ITypeSymbol typeSymbol)
     {
         if (typeSymbol.AllInterfaces.Any(i => i.SpecialType == SpecialType.System_Collections_IEnumerable))
         {
@@ -105,16 +106,53 @@ internal static class TypeSymbolExtensions
         return false;
     }
 
+    internal static bool IsClass(this ITypeSymbol namedType) =>
+        namedType is { IsReferenceType: true, TypeKind: TypeKind.Class };
+
+    internal static bool IsStruct(this ITypeSymbol namedType) =>
+        namedType is { IsValueType: true, TypeKind: TypeKind.Struct };
+
+    internal static string ToFullyQualifiedDisplayString(this ITypeSymbol property) =>
+        property.ToDisplayString(NullableFlowState.None, SymbolDisplayFormat.FullyQualifiedFormat);
+
+    //https://stackoverflow.com/questions/27105909/get-fully-qualified-metadata-name-in-roslyn
+    public static string GetFullMetadataName(this ISymbol? s)
+    {
+        if (s == null || IsRootNamespace(s))
+        {
+            return string.Empty;
+        }
+
+        var sb = new StringBuilder(s.MetadataName);
+        var last = s;
+
+        s = s.ContainingSymbol;
+
+        while (!IsRootNamespace(s))
+        {
+            if (s is ITypeSymbol && last is ITypeSymbol)
+            {
+                sb.Insert(0, '+');
+            }
+            else
+            {
+                sb.Insert(0, '.');
+            }
+
+            sb.Insert(0, s.OriginalDefinition.ToDisplayString(SymbolDisplayFormat.MinimallyQualifiedFormat));
+            s = s.ContainingSymbol;
+        }
+
+        return sb.ToString();
+    }
+
+    private static bool IsRootNamespace(ISymbol symbol) =>
+        symbol is INamespaceSymbol { IsGlobalNamespace: true };
+
     private static bool HasAddMethod(INamespaceOrTypeSymbol typeSymbol)
     {
         return typeSymbol
             .GetMembers(WellKnownMemberNames.CollectionInitializerAddMethodName)
             .OfType<IMethodSymbol>().Any(m => m.Parameters.Any());
     }
-
-    internal static bool IsClass(this ITypeSymbol namedType) =>
-        namedType.IsReferenceType && namedType.TypeKind == TypeKind.Class;
-
-    internal static bool IsStruct(this ITypeSymbol namedType) =>
-        namedType.IsValueType && namedType.TypeKind == TypeKind.Struct;
 }

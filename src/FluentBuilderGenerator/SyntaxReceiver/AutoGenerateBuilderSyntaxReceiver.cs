@@ -14,26 +14,26 @@ internal class AutoGenerateBuilderSyntaxReceiver : IAutoGenerateBuilderSyntaxRec
     private const string ModifierPartial = "partial";
     private const string ModifierPublic = "public";
     private const string ModifierInternal = "internal";
-    private static readonly string[] AutoGenerateBuilderAttributes = ["FluentBuilder.AutoGenerateBuilder", "AutoGenerateBuilder"];
 
     public IList<FluentData> CandidateFluentDataItems { get; } = new List<FluentData>();
 
-    /// <summary>
-    /// Called for every syntax node in the compilation, we can inspect the nodes and save any information useful for generation
-    /// </summary>
-    public void OnVisitSyntaxNode(SyntaxNode syntaxNode)
+    public void OnVisitSyntaxNode(GeneratorSyntaxContext context)
     {
-        if (syntaxNode is ClassDeclarationSyntax classDeclarationSyntax && TryGet(classDeclarationSyntax, out var data))
+        var syntaxNode = context.Node;
+        var semanticModel = context.SemanticModel;
+        
+        if (syntaxNode is ClassDeclarationSyntax classDeclarationSyntax && TryGet(classDeclarationSyntax, semanticModel, out var data))
         {
             CandidateFluentDataItems.Add(data);
         }
     }
 
-    private static bool TryGet(ClassDeclarationSyntax classDeclarationSyntax, out FluentData data)
+    private static bool TryGet(ClassDeclarationSyntax classDeclarationSyntax, SemanticModel semanticModel, out FluentData data)
     {
         data = default;
 
-        var attributeList = classDeclarationSyntax.AttributeLists.FirstOrDefault(x => x.Attributes.Any(a => AutoGenerateBuilderAttributes.Contains(a.Name.ToString())));
+        var attributeList = classDeclarationSyntax.AttributeLists
+            .FirstOrDefault(x => x.Attributes.Any(AttributeArgumentListParser.IsMatch));
         if (attributeList is null)
         {
             Console.WriteLine("ClassDeclarationSyntax should have the correct attribute.");
@@ -56,15 +56,15 @@ internal class AutoGenerateBuilderSyntaxReceiver : IAutoGenerateBuilderSyntaxRec
 
         if (classDeclarationSyntax.TryGetParentSyntax(out CompilationUnitSyntax? cc))
         {
-            usings.AddRange(cc.Usings.Select(@using => @using.Name.ToString()));
+            usings.AddRange(cc.Usings.Select(@using => @using.Name!.ToString()));
         }
 
         // https://github.com/StefH/FluentBuilder/issues/36
-        usings.AddRange(classDeclarationSyntax.GetAncestorsUsings().Select(@using => @using.Name.ToString()));
+        usings.AddRange(classDeclarationSyntax.GetAncestorsUsings().Select(@using => @using.Name!.ToString()));
 
         usings = usings.Distinct().ToList();
 
-        var fluentBuilderAttributeArguments = AttributeArgumentListParser.ParseAttributeArguments(attributeList.Attributes.FirstOrDefault()?.ArgumentList);
+        var fluentBuilderAttributeArguments = AttributeArgumentListParser.Parse(attributeList.Attributes.FirstOrDefault(), semanticModel);
 
         if (fluentBuilderAttributeArguments.RawTypeName != null) // The class which needs to be processed by the CustomBuilder is provided as type
         {

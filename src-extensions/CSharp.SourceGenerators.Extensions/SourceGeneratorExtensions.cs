@@ -1,12 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using AnyOfTypes;
 using CSharp.SourceGenerators.Extensions.Models;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using AnyOfTypes;
 
 namespace CSharp.SourceGenerators.Extensions;
 
@@ -124,9 +125,21 @@ public static class SourceGeneratorExtensions
 
             // https://stackoverflow.com/questions/35927427/how-to-create-an-attributesyntax-with-a-parameter
             var nameSyntax = SyntaxFactory.ParseName(name);
-            var attributeArgumentListSyntax = ParseArguments(attributeToAdd);
+            if (nameSyntax is QualifiedNameSyntax { Right: GenericNameSyntax genericNameSyntax })
+            {
+                nameSyntax = genericNameSyntax;
+            }
 
-            var attributeSyntax = SyntaxFactory.Attribute(nameSyntax, attributeArgumentListSyntax);
+            AttributeSyntax attributeSyntax;
+            if (TryParseArguments(attributeToAdd, out var attributeArgumentListSyntax))
+            {
+                attributeSyntax = SyntaxFactory.Attribute(nameSyntax, attributeArgumentListSyntax);
+            }
+            else
+            {
+                attributeSyntax = SyntaxFactory.Attribute(nameSyntax);
+            }
+
             var separatedSyntaxList = new SeparatedSyntaxList<AttributeSyntax>().Add(attributeSyntax);
 
             var attributeListSyntax = SyntaxFactory.AttributeList(separatedSyntaxList);
@@ -139,17 +152,19 @@ public static class SourceGeneratorExtensions
         return rootSyntaxNode;
     }
 
-    private static AttributeArgumentListSyntax ParseArguments(AnyOf<string, ExtraAttribute> attributeToAdd)
+    private static bool TryParseArguments(AnyOf<string, ExtraAttribute> attributeToAdd, [NotNullWhen(true)] out AttributeArgumentListSyntax? attributeArgumentListSyntax)
     {
-        string arguments = string.Empty;
-
         if (attributeToAdd.IsSecond && attributeToAdd.Second.ArgumentList is not null)
         {
-            arguments = attributeToAdd.Second.ArgumentList.Value.IsFirst ?
+            var arguments = attributeToAdd.Second.ArgumentList.Value.IsFirst ?
                 attributeToAdd.Second.ArgumentList.Value.First :
                 string.Join(",", attributeToAdd.Second.ArgumentList.Value.Second);
+
+            attributeArgumentListSyntax = SyntaxFactory.ParseAttributeArgumentList($"({arguments})");
+            return attributeArgumentListSyntax != null;
         }
 
-        return SyntaxFactory.ParseAttributeArgumentList($"({arguments})");
+        attributeArgumentListSyntax = null;
+        return false;
     }
 }

@@ -1,5 +1,8 @@
 using System.Diagnostics.CodeAnalysis;
+using System.Text.RegularExpressions;
+using FluentBuilderGenerator.Extensions;
 using FluentBuilderGenerator.Types;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
@@ -7,29 +10,43 @@ namespace FluentBuilderGenerator.SyntaxReceiver;
 
 internal static class AttributeArgumentListParser
 {
-    public static FluentBuilderAttributeArguments ParseAttributeArguments(AttributeArgumentListSyntax? argumentList)
+    private static readonly Regex AutoGenerateBuilderAttributesRegex = new(@"^FluentBuilder\.AutoGenerateBuilder|AutoGenerateBuilder(?:<([^>]+)>)?$", RegexOptions.Compiled, TimeSpan.FromSeconds(1));
+
+    public static bool IsMatch(AttributeSyntax attributeSyntax)
+    {
+        return AutoGenerateBuilderAttributesRegex.IsMatch(attributeSyntax.Name.ToString());
+    }
+
+    public static FluentBuilderAttributeArguments Parse(AttributeSyntax? attributeSyntax, SemanticModel semanticModel)
     {
         var result = new FluentBuilderAttributeArguments();
 
-        if (argumentList == null)
+        if (attributeSyntax == null)
         {
             return result;
         }
 
-        if (argumentList.Arguments.Count is < 0 or > 4)
+        var argumentsParsed = 0;
+        var skip = 0;
+        var isGeneric = false;
+
+        if (TryParseAsType(attributeSyntax.Name, semanticModel, out var infoGeneric))
         {
-            throw new ArgumentException("The AutoGenerateBuilderAttribute requires 0, 1, 2, 3 or 4 arguments.");
+            result = result with { RawTypeName = infoGeneric.Value.MetadataName };
+            isGeneric = true;
+            argumentsParsed++;
+        }
+        else if (attributeSyntax.ArgumentList != null && TryParseAsType(attributeSyntax.ArgumentList.Arguments[0].Expression, semanticModel, out var info))
+        {
+            result = result with { RawTypeName = info.Value.MetadataName };
+            skip = 1;
+            argumentsParsed++;
         }
 
-        int argumentsParsed = 0;
-        foreach (var argument in argumentList.Arguments)
-        {
-            if (TryParseAsType(argument.Expression, out var rawTypeValue))
-            {
-                result = result with { RawTypeName = rawTypeValue };
-                argumentsParsed++;
-            }
+        var array = attributeSyntax.ArgumentList?.Arguments.ToArray() ?? [];
 
+        foreach (var argument in array.Skip(skip))
+        {
             if (TryParseAsBoolean(argument.Expression, out var handleBaseClasses))
             {
                 result = result with { HandleBaseClasses = handleBaseClasses };
@@ -49,7 +66,7 @@ internal static class AttributeArgumentListParser
             }
         }
 
-        if (argumentList.Arguments.Count == 1 & argumentsParsed == 0)
+        if (!isGeneric && array.Length == 1 && argumentsParsed == 0)
         {
             throw new ArgumentException($"When the AutoGenerateBuilderAttribute is used with 1 argument, the only argument should be a Type, bool, {nameof(FluentBuilderAccessibility)} or {nameof(FluentBuilderMethods)}.");
         }
@@ -70,17 +87,38 @@ internal static class AttributeArgumentListParser
         return false;
     }
 
-    private static bool TryParseAsType(ExpressionSyntax expressionSyntax, [NotNullWhen(true)] out string? rawTypeName)
+    private static bool TryParseAsType(
+        CSharpSyntaxNode? syntaxNode,
+        SemanticModel semanticModel,
+        [NotNullWhen(true)] out (string MetadataName, bool IsGeneric)? info
+    )
     {
-        rawTypeName = null;
+        info = null;
 
-        if (expressionSyntax is TypeOfExpressionSyntax typeOfExpressionSyntax)
+        bool isGeneric;
+        TypeSyntax typeSyntax;
+        switch (syntaxNode)
         {
-            rawTypeName = typeOfExpressionSyntax.Type.ToString();
-            return true;
+            case TypeOfExpressionSyntax typeOfExpressionSyntax:
+                typeSyntax = typeOfExpressionSyntax.Type;
+                isGeneric = false;
+                break;
+
+            case GenericNameSyntax genericRightNameSyntax:
+                typeSyntax = genericRightNameSyntax.TypeArgumentList.Arguments.First();
+                isGeneric = true;
+                break;
+
+            default:
+                return false;
         }
 
-        return false;
+        var typeInfo = semanticModel.GetTypeInfo(typeSyntax);
+        var typeSymbol = typeInfo.Type!;
+
+        info = new(typeSymbol.GetFullMetadataName(), isGeneric);
+
+        return true;
     }
 
     private static bool TryParseAsEnum<TEnum>(ExpressionSyntax expressionSyntax, out TEnum value)

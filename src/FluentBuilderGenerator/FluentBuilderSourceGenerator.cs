@@ -32,7 +32,7 @@ internal class FluentBuilderSourceGenerator : ISourceGenerator
         {
             InjectGeneratedClasses(contextWrapper);
 
-            if (context.SyntaxReceiver is not AutoGenerateBuilderSyntaxReceiver receiver)
+            if (context.SyntaxContextReceiver is not AutoGenerateBuilderSyntaxReceiver receiver)
             {
                 return;
             }
@@ -57,7 +57,7 @@ internal class FluentBuilderSourceGenerator : ISourceGenerator
         {
             new BaseBuilderGenerator(context.AssemblyName, context.SupportsNullable),
 
-            new ExtraFilesGenerator(context.AssemblyName, context.SupportsNullable),
+            new ExtraFilesGenerator(context),
 
             new IDictionaryBuilderGenerator(context.AssemblyName, context.SupportsNullable),
 
