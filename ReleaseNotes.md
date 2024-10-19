@@ -1,3 +1,6 @@
+# 0.10.0 (19 October 2024)
+- [#65](https://github.com/StefH/FluentBuilder/pull/65) - Add support for generic AutoGenerateBuilderAttribute [enhancement] contributed by [StefH](https://github.com/StefH)
+
 # 0.9.2 (30 August 2024)
 - [#64](https://github.com/StefH/FluentBuilder/pull/64) - Support &quot;internal&quot; for class and custom builder [enhancement] contributed by [StefH](https://github.com/StefH)
 
