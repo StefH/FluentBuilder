@@ -26,6 +26,8 @@ public class FluentBuilderSourceGeneratorTests
     public FluentBuilderSourceGeneratorTests()
     {
         _sut = new FluentBuilderSourceGenerator();
+
+        //Greet
     }
 
     [ModuleInitializer]
