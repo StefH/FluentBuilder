@@ -12,16 +12,10 @@ A project which uses Source Generation to create a FluentBuilder for a specified
 
 This project is based on [Tom Phan : "auto-generate-builders-using-source-generator-in-net-5"](https://justsimplycode.com/2020/12/06/auto-generate-builders-using-source-generator-in-net-5/).
 
-## Install
+## NuGet
 [![NuGet Badge](https://shields.io/nuget/v/FluentBuilder)](https://www.nuget.org/packages/FluentBuilder)
 
-You can install from NuGet using the following command in the package manager window:
-
-`Install-Package FluentBuilder`
-
-Or via the Visual Studio NuGet package manager or if you use the `dotnet` command:
-
-`dotnet add package FluentBuilder`
+:memo: Note that FluentBuilder version 0.10.0 requires at least Visual Studio 17.11.5
 
 ## :one: Usage on a existing class
 ### Annotate a class
