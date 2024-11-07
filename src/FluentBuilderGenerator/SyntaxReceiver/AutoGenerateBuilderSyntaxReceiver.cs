@@ -9,28 +9,18 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace FluentBuilderGenerator.SyntaxReceiver;
 
-internal class AutoGenerateBuilderSyntaxReceiver : IAutoGenerateBuilderSyntaxReceiver
+internal class AutoGenerateBuilderSyntaxReceiver
 {
     private const string ModifierPartial = "partial";
     private const string ModifierPublic = "public";
     private const string ModifierInternal = "internal";
 
-    public IList<FluentData> CandidateFluentDataItems { get; } = new List<FluentData>();
-
-    public void OnVisitSyntaxNode(GeneratorSyntaxContext context)
+    public static bool CheckSyntaxNode(SyntaxNode syntaxNode)
     {
-        var syntaxNode = context.Node;
-        var semanticModel = context.SemanticModel;
-        
-        if (syntaxNode is ClassDeclarationSyntax classDeclarationSyntax && TryGet(classDeclarationSyntax, semanticModel, out var data))
+        if (syntaxNode is not ClassDeclarationSyntax classDeclarationSyntax)
         {
-            CandidateFluentDataItems.Add(data);
+            return false;
         }
-    }
-
-    private static bool TryGet(ClassDeclarationSyntax classDeclarationSyntax, SemanticModel semanticModel, out FluentData data)
-    {
-        data = default;
 
         var attributeList = classDeclarationSyntax.AttributeLists
             .FirstOrDefault(x => x.Attributes.Any(AttributeArgumentListParser.IsMatch));
@@ -40,9 +30,34 @@ internal class AutoGenerateBuilderSyntaxReceiver : IAutoGenerateBuilderSyntaxRec
             return false;
         }
 
-        if (!TryGetClassModifier(classDeclarationSyntax, out var classModifier))
+        if (!TryGetClassModifier(classDeclarationSyntax, out _))
         {
             Console.WriteLine("Class modifier should be 'public' or 'internal'.");
+            return false;
+        }
+
+        return true;
+    }
+
+    public static FluentData HandleSyntaxNode(SyntaxNode syntaxNode, SemanticModel semanticModel)
+    {
+        if (TryGet((ClassDeclarationSyntax) syntaxNode, semanticModel, out var data))
+        {
+            return data;
+        }
+
+        throw new InvalidOperationException();
+    }
+
+    private static bool TryGet(ClassDeclarationSyntax classDeclarationSyntax, SemanticModel semanticModel, out FluentData data)
+    {
+        data = default;
+        
+        var attributeList = classDeclarationSyntax.AttributeLists
+            .FirstOrDefault(x => x.Attributes.Any(AttributeArgumentListParser.IsMatch))!;
+        
+        if (!TryGetClassModifier(classDeclarationSyntax, out var classModifier))
+        {
             return false;
         }
 

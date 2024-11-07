@@ -20,11 +20,11 @@ internal partial class FluentBuilderClassesGenerator
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-{(_context.SupportsNullable ? "#nullable enable" : string.Empty)}
+{(_supportsNullable ? "#nullable enable" : string.Empty)}
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using {_context.AssemblyName}.FluentBuilder;
+using {_compilationHelper.AssemblyName}.FluentBuilder;
 using {classSymbol.NamedTypeSymbol.ContainingNamespace};
 
 namespace {classSymbol.BuilderNamespace}
@@ -37,7 +37,7 @@ namespace {classSymbol.BuilderNamespace}
 {GenerateBuildMethodForIEnumerableBuilder(classSymbol)}
     }}
 }}
-{(_context.SupportsNullable ? "#nullable disable" : string.Empty)}";
+{(_supportsNullable ? "#nullable disable" : string.Empty)}";
     }
 
     private static StringBuilder GenerateAddMethodsForIEnumerableBuilder(ClassSymbol classSymbol)
