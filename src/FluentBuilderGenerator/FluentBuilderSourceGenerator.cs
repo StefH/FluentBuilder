@@ -12,12 +12,6 @@ using System.Text;
 
 namespace FluentBuilderGenerator;
 
-public struct LanguageData
-{
-    public bool SupportsNullable { get; set; }
-    public bool SupportsGenericAttributes { get; set; }
-}
-
 [Generator(LanguageNames.CSharp)]
 internal class FluentBuilderSourceGenerator : IIncrementalGenerator
 {
@@ -34,7 +28,7 @@ internal class FluentBuilderSourceGenerator : IIncrementalGenerator
         {
             if (options is not CSharpParseOptions csParseOptions)
             {
-                throw new NotSupportedException("Only C# is supported.");
+                throw new NotSupportedException($"Only {LanguageNames.CSharp} is supported.");
             }
 
             return new LanguageData
@@ -60,7 +54,7 @@ internal class FluentBuilderSourceGenerator : IIncrementalGenerator
                 new ExtraFilesGenerator(supportsNullable, x.LanguageData.SupportsGenericAttributes),
 
                 new IDictionaryBuilderGenerator(assemblyName, supportsNullable),
-                                                
+
                 new IEnumerableBuilderGenerator(assemblyName, FileDataType.ArrayBuilder, supportsNullable),
                 new IEnumerableBuilderGenerator(assemblyName, FileDataType.ICollectionBuilder, supportsNullable),
                 new IEnumerableBuilderGenerator(assemblyName, FileDataType.IEnumerableBuilder, supportsNullable),
@@ -105,7 +99,6 @@ internal class FluentBuilderSourceGenerator : IIncrementalGenerator
             }
         });
     }
-
 
     private static bool ShouldHandle(SyntaxNode syntaxNode, CancellationToken cancellationToken)
     {
