@@ -209,8 +209,10 @@ internal partial class FluentBuilderClassesGenerator : IFilesGenerator
         var sb = new StringBuilder();
         foreach (var property in propertiesPublicSettable.Union(propertiesPrivateSettable))
         {
+            var propertyType = property.Type.GetFixedType();
+
             // Use "params" in case it's an Array, else just use type-T.
-            var type = property.Type.GetFluentTypeKind() == FluentTypeKind.Array ? $"params {property.Type}" : property.Type.ToString();
+            var type = property.Type.GetFluentTypeKind() == FluentTypeKind.Array ? $"params {propertyType}" : propertyType;
 
             var (defaultValue, extraUsingsFromDefaultValue) = DefaultValueHelper.GetDefaultValue(property, property.Type);
             if (extraUsingsFromDefaultValue != null)
@@ -220,7 +222,7 @@ internal partial class FluentBuilderClassesGenerator : IFilesGenerator
 
             sb.AppendLine($"        private bool _{CamelCase(property.Name)}IsSet;");
 
-            sb.AppendLine($"        private Lazy<{property.Type}> _{CamelCase(property.Name)} = new Lazy<{property.Type}>(() => {defaultValue});");
+            sb.AppendLine($"        private Lazy<{propertyType}> _{CamelCase(property.Name)} = new Lazy<{propertyType}>(() => {defaultValue});");
 
             sb.AppendLine($"        public {builderClassName} With{property.Name}({type} value) => With{property.Name}(() => value);");
 
