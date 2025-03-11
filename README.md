@@ -3,6 +3,7 @@
 See also these blogs:
 - [mstack.nl - source-generators part 1](https://mstack.nl/blog/20210801-source-generators)
 - [mstack.nl - source-generators part 2](https://mstack.nl/blog/20220801-source-generators-part2/)
+- [mstack.nl - source-generators part 3](https://mstack.nl/blogs/source-generators-part3/)
 
 ## CSharp.SourceGenerators.Extensions
 See this [page](https://github.com/StefH/FluentBuilder/tree/main/src-extensions).
