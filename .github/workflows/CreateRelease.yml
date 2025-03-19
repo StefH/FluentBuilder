@@ -15,4 +15,5 @@ jobs:
       - name: Release
         uses: softprops/action-gh-release@v2
         with:
-          body_path: PackageReleaseNotes.txt
+          generate_release_notes: true
+          # body_path: PackageReleaseNotes.txt
