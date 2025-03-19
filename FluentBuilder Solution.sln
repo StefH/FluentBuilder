@@ -46,6 +46,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BuilderConsumerFileScopedNa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BuilderConsumerNET6_ViaNuGet", "src-examples\BuilderConsumerNET6_ViaNuGet\BuilderConsumerNET6_ViaNuGet.csproj", "{8852E4D0-EC0A-4243-990E-FB331C9D4573}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GitHub Actions", "GitHub Actions", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\CreateRelease.yml = .github\workflows\CreateRelease.yml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -126,6 +131,7 @@ Global
 		{00E5B8E0-50CB-4D29-87C8-2E38960E0B41} = {38805E90-A955-4097-97DC-537F7A0CD773}
 		{24CD32D1-12D5-49BA-A254-A15B48F8C572} = {38805E90-A955-4097-97DC-537F7A0CD773}
 		{8852E4D0-EC0A-4243-990E-FB331C9D4573} = {38805E90-A955-4097-97DC-537F7A0CD773}
+		{02EA681E-C7D8-13C7-8484-4AC65E1B71E8} = {56142EC5-9C2F-4055-A9C8-40F80A6595D6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3586BB89-A981-4CD0-88DB-2DF513FE2B90}
