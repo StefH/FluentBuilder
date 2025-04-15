@@ -12,20 +12,20 @@ namespace FluentBuilderGenerator.FileGenerators;
 internal partial class FluentBuilderClassesGenerator : IFilesGenerator
 {
     private static readonly string[] FluentBuilderIgnoreAttributeClassNames =
-    {
+    [
         "FluentBuilder.FluentBuilderIgnoreAttribute",
         "FluentBuilderIgnoreAttribute",
         "FluentBuilder.FluentBuilderIgnore",
         "FluentBuilderIgnore"
-    };
+    ];
 
     private static readonly string[] SystemUsings =
-    {
+    [
         "System",
         "System.Collections",
         "System.Collections.Generic",
         "System.Reflection"
-    };
+    ];
 
     private static readonly FileDataType[] ExtraBuilders =
     {
@@ -39,15 +39,6 @@ internal partial class FluentBuilderClassesGenerator : IFilesGenerator
     private readonly IList<FluentData> _items;
     private readonly CompilationHelper _compilationHelper;
     private readonly bool _supportsNullable;
-
-    //private readonly IGeneratorExecutionContextWrapper _context;
-    //private readonly IAutoGenerateBuilderSyntaxReceiver _receiver;
-
-    //public FluentBuilderClassesGenerator(IGeneratorExecutionContextWrapper context, IAutoGenerateBuilderSyntaxReceiver receiver)
-    //{
-    //    _context = context;
-    //    _receiver = receiver;
-    //}
 
     public FluentBuilderClassesGenerator(IList<FluentData> items, CompilationHelper compilationHelper, bool supportsNullable)
     {
