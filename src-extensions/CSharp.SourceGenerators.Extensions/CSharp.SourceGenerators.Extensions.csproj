@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <Version>0.0.12</Version>
+        <Version>0.0.12.1</Version>
         <TargetFramework>netstandard2.1</TargetFramework>
         <LangVersion>latest</LangVersion>
         <Nullable>enable</Nullable>
@@ -10,9 +10,9 @@
         <PackageTags>CSharp;SourceGenerator;SourceGenerators;Extensions;Execute;UnitTest;Test</PackageTags>
         <PackageIcon>icon.png</PackageIcon>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
-        <PackageProjectUrl>https://github.com/StefH/FluentBuilder/src-extensions</PackageProjectUrl>
+        <PackageProjectUrl>https://github.com/StefH/FluentBuilder/tree/main/src-extensions</PackageProjectUrl>
         <RepositoryType>git</RepositoryType>
-        <RepositoryUrl>https://github.com/StefH/FluentBuilder/src-extensions</RepositoryUrl>
+        <RepositoryUrl>https://github.com/StefH/FluentBuilder/tree/main/src-extensions</RepositoryUrl>
         <PackageReadmeFile>PackageReadme.md</PackageReadmeFile>
         <Configurations>Debug;Release;DebugAttach</Configurations>
     </PropertyGroup>
