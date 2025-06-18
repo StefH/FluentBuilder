@@ -10,9 +10,9 @@
         <PackageTags>CSharp;SourceGenerator;SourceGenerators;Extensions;Execute;UnitTest;Test</PackageTags>
         <PackageIcon>icon.png</PackageIcon>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
-        <PackageProjectUrl>https://github.com/StefH/FluentBuilder/src-extensions</PackageProjectUrl>
+        <PackageProjectUrl>https://github.com/StefH/FluentBuilder/tree/main/src-extensions</PackageProjectUrl>
         <RepositoryType>git</RepositoryType>
-        <RepositoryUrl>https://github.com/StefH/FluentBuilder/src-extensions</RepositoryUrl>
+        <RepositoryUrl>https://github.com/StefH/FluentBuilder/tree/main/src-extensions</RepositoryUrl>
         <PackageReadmeFile>PackageReadme.md</PackageReadmeFile>
         <Configurations>Debug;Release;DebugAttach</Configurations>
     </PropertyGroup>

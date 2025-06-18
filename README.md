@@ -1,19 +1,19 @@
-# Projects
+# ![Icon](./resources/icon_32x32.png) Projects
 
 See also these blogs:
 - [mstack.nl - source-generators part 1](https://mstack.nl/blog/20210801-source-generators)
 - [mstack.nl - source-generators part 2](https://mstack.nl/blog/20220801-source-generators-part2/)
 - [mstack.nl - source-generators part 3](https://mstack.nl/blogs/source-generators-part3/)
 
-## CSharp.SourceGenerators.Extensions
+## ⭐ CSharp.SourceGenerators.Extensions
 See this [page](https://github.com/StefH/FluentBuilder/tree/main/src-extensions).
 
-## FluentBuilder
+## ⭐ FluentBuilder
 A project which uses Source Generation to create a FluentBuilder for a specified model or DTO.
 
 This project is based on [Tom Phan : "auto-generate-builders-using-source-generator-in-net-5"](https://justsimplycode.com/2020/12/06/auto-generate-builders-using-source-generator-in-net-5/).
 
-## NuGet
+## 📦 NuGet
 [![NuGet Badge](https://shields.io/nuget/v/FluentBuilder)](https://www.nuget.org/packages/FluentBuilder)
 
 :memo: Note that FluentBuilder version 0.10.0 requires at least Visual Studio 17.11.5
@@ -281,7 +281,16 @@ public partial class MyUserDtoBuilder
 }
 ```
 
-# Links
+## Links
 - https://protogen.marcgravell.com/
 - https://protobuf-decoder.netlify.app/
 - https://www.protobufpal.com/
+
+
+## Sponsors
+
+[Entity Framework Extensions](https://entityframework-extensions.net/?utm_source=StefH) and [Dapper Plus](https://dapper-plus.net/?utm_source=StefH) are major sponsors and proud to contribute to the development of **FluentBuilder** and **CSharp.SourceGenerators.Extensions**.
+
+[![Entity Framework Extensions](https://raw.githubusercontent.com/StefH/resources/main/sponsor/entity-framework-extensions-sponsor.png)](https://entityframework-extensions.net/bulk-insert?utm_source=StefH)
+
+[![Dapper Plus](https://raw.githubusercontent.com/StefH/resources/main/sponsor/dapper-plus-sponsor.png)](https://dapper-plus.net/bulk-insert?utm_source=StefH)
