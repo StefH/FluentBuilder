@@ -29,7 +29,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Configurations>Debug;Release;DebugAttach</Configurations>
 
-        <!--<EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>-->
+        <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)' == 'Release'">

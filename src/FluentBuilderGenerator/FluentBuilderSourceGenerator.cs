@@ -1,5 +1,7 @@
 // This source code is based on https://justsimplycode.com/2020/12/06/auto-generate-builders-using-source-generator-in-net-5
 
+using System.Text;
+using FluentBuilderGenerator.Extensions;
 using FluentBuilderGenerator.FileGenerators;
 using FluentBuilderGenerator.Models;
 using FluentBuilderGenerator.SyntaxReceiver;
@@ -8,7 +10,6 @@ using FluentBuilderGenerator.Wrappers;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Text;
-using System.Text;
 
 namespace FluentBuilderGenerator;
 
@@ -70,10 +71,15 @@ internal class FluentBuilderSourceGenerator : IIncrementalGenerator
             }
         });
 
+        var diagnostics = new List<Diagnostic>();
+        
         var fluentBuilderClassesProvider = context.SyntaxProvider
-            .CreateSyntaxProvider(ShouldHandle, Transform)
+            .CreateSyntaxProvider(
+                (syntaxNode, ct) => ShouldHandle(syntaxNode, ct, diagnostics),
+                (generatorSyntaxContext, ct) => Transform(generatorSyntaxContext, ct, diagnostics)
+            )
             .Collect();
-
+        
         var combined2 = fluentBuilderClassesProvider.Combine(commonProvider).Select((x, _) => new
         {
             Items = x.Left,
@@ -81,32 +87,51 @@ internal class FluentBuilderSourceGenerator : IIncrementalGenerator
             CompilationHelper = x.Right.Right
         });
 
-        context.RegisterSourceOutput(combined2, static (spc, data) =>
+        context.RegisterSourceOutput(combined2, (sourceProductionContext, data) =>
         {
+            foreach (var diagnostic in diagnostics)
+            {
+                sourceProductionContext.ReportDiagnostic(diagnostic);
+            }
+
             var generator = new FluentBuilderClassesGenerator(data.Items, data.CompilationHelper, data.LanguageData.SupportsNullable);
 
             try
             {
                 foreach (var fileData in generator.GenerateFiles())
                 {
-                    spc.AddSource(fileData.FileName, SourceText.From(fileData.Text, Encoding.UTF8));
+                    sourceProductionContext.AddSource(fileData.FileName, SourceText.From(fileData.Text, Encoding.UTF8));
                 }
             }
             catch (Exception exception)
             {
                 var message = $"/*\r\n{nameof(FluentBuilderSourceGenerator)}\r\n\r\n[Exception]\r\n{exception}\r\n\r\n[StackTrace]\r\n{exception.StackTrace}*/";
-                spc.AddSource("Error.g.cs", SourceText.From(message, Encoding.UTF8));
+                sourceProductionContext.AddSource("Error.g.cs", SourceText.From(message, Encoding.UTF8));
+
+                sourceProductionContext.ReportDiagnostic(exception.ToDiagnostic());
             }
         });
     }
 
-    private static bool ShouldHandle(SyntaxNode syntaxNode, CancellationToken cancellationToken)
+    private static bool ShouldHandle(SyntaxNode syntaxNode, CancellationToken _, List<Diagnostic> diagnostics)
     {
-        return AutoGenerateBuilderSyntaxReceiver.CheckSyntaxNode(syntaxNode);
+        var result = AutoGenerateBuilderSyntaxReceiver.CheckSyntaxNode(syntaxNode, out var diagnostic);
+        if (diagnostic != null)
+        {
+            diagnostics.Add(diagnostic);
+        }
+
+        return result;
     }
 
-    private static FluentData Transform(GeneratorSyntaxContext gsc, CancellationToken cancellationToken)
+    private static FluentData Transform(GeneratorSyntaxContext gsc, CancellationToken _, List<Diagnostic> diagnostics)
     {
-        return AutoGenerateBuilderSyntaxReceiver.HandleSyntaxNode(gsc.Node, gsc.SemanticModel);
+        var result = AutoGenerateBuilderSyntaxReceiver.HandleSyntaxNode(gsc.Node, gsc.SemanticModel, out var diagnostic);
+        if (diagnostic != null)
+        {
+            diagnostics.Add(diagnostic);
+        }
+
+        return result;
     }
 }

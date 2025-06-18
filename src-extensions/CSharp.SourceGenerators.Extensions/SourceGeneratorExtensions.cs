@@ -129,8 +129,9 @@ public static class SourceGeneratorExtensions
         return new ExecuteResult
         {
             GeneratorDriver = executedDriver,
-            WarningMessages = diagnostics.Where(d => d.Severity == DiagnosticSeverity.Warning).Select(d => d.GetMessage()).ToList(),
-            ErrorMessages = diagnostics.Where(d => d.Severity == DiagnosticSeverity.Error).Select(d => d.GetMessage()).ToList(),
+            InformationMessages = diagnostics.Where(d => d.Severity == DiagnosticSeverity.Info).Select(d => d.GetMessage()).ToArray(),
+            WarningMessages = diagnostics.Where(d => d.Severity == DiagnosticSeverity.Warning).Select(d => d.GetMessage()).ToArray(),
+            ErrorMessages = diagnostics.Where(d => d.Severity == DiagnosticSeverity.Error).Select(d => d.GetMessage()).ToArray(),
             Files = outputCompilation.SyntaxTrees
                 .Where(st => !sources.Any(s => s.Path == st.FilePath))
                 .Select(st => new FileResult

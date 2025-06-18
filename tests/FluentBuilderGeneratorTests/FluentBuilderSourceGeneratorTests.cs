@@ -732,8 +732,7 @@ public class FluentBuilderSourceGeneratorTests
         if (Write) File.WriteAllText($"../../../DTO/{builderFileName}", builder.Text);
         builder.Text.Should().Be(File.ReadAllText($"../../../DTO/{builderFileName}"));
 
-        //var b = new ClassWithCultureInfoBuilder();
-        //var c = b.Build();
+        result.InformationMessages.Should().HaveCount(3);
     }
 
     [Fact]

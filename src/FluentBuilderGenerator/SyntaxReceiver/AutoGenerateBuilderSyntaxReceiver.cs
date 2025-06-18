@@ -1,6 +1,7 @@
 // This source code is based on https://justsimplycode.com/2020/12/06/auto-generate-builders-using-source-generator-in-net-5
 
 using System.Diagnostics.CodeAnalysis;
+using FluentBuilderGenerator.Constants;
 using FluentBuilderGenerator.Extensions;
 using FluentBuilderGenerator.Models;
 using FluentBuilderGenerator.Types;
@@ -15,10 +16,11 @@ internal static class AutoGenerateBuilderSyntaxReceiver
     private const string ModifierPublic = "public";
     private const string ModifierInternal = "internal";
 
-    public static bool CheckSyntaxNode(SyntaxNode syntaxNode)
+    public static bool CheckSyntaxNode(SyntaxNode syntaxNode, out Diagnostic? diagnostic)
     {
         if (syntaxNode is not ClassDeclarationSyntax classDeclarationSyntax)
         {
+            diagnostic = null;
             return false;
         }
 
@@ -26,22 +28,23 @@ internal static class AutoGenerateBuilderSyntaxReceiver
             .FirstOrDefault(x => x.Attributes.Any(AttributeArgumentListParser.IsMatch));
         if (attributeList is null)
         {
-            Console.WriteLine("ClassDeclarationSyntax should have the correct attribute.");
+            diagnostic = Diagnostic.Create(DiagnosticDescriptors.Information, classDeclarationSyntax.GetLocation(), "Skipping SyntaxNode: ClassDeclarationSyntax should have the correct attribute.");
             return false;
         }
 
         if (!TryGetClassModifier(classDeclarationSyntax, out _))
         {
-            Console.WriteLine("Class modifier should be 'public' or 'internal'.");
+            diagnostic = Diagnostic.Create(DiagnosticDescriptors.Information, classDeclarationSyntax.GetLocation(), "Skipping SyntaxNode: Class modifier should be 'public' or 'internal'.");
             return false;
         }
 
+        diagnostic = null;
         return true;
     }
 
-    public static FluentData HandleSyntaxNode(SyntaxNode syntaxNode, SemanticModel semanticModel)
+    public static FluentData HandleSyntaxNode(SyntaxNode syntaxNode, SemanticModel semanticModel, out Diagnostic? diagnostic)
     {
-        if (TryGet((ClassDeclarationSyntax) syntaxNode, semanticModel, out var data))
+        if (TryGet((ClassDeclarationSyntax) syntaxNode, semanticModel, out var data, out diagnostic))
         {
             return data;
         }
@@ -49,7 +52,7 @@ internal static class AutoGenerateBuilderSyntaxReceiver
         throw new InvalidOperationException();
     }
 
-    private static bool TryGet(ClassDeclarationSyntax classDeclarationSyntax, SemanticModel semanticModel, out FluentData data)
+    private static bool TryGet(ClassDeclarationSyntax classDeclarationSyntax, SemanticModel semanticModel, out FluentData data, out Diagnostic? diagnostic)
     {
         data = default;
         
@@ -58,6 +61,7 @@ internal static class AutoGenerateBuilderSyntaxReceiver
         
         if (!TryGetClassModifier(classDeclarationSyntax, out var classModifier))
         {
+            diagnostic = Diagnostic.Create(DiagnosticDescriptors.Information, classDeclarationSyntax.GetLocation(), "Skipping ClassDeclarationSyntax: Class modifier should be 'public' or 'internal'.");
             return false;
         }
 
@@ -85,7 +89,7 @@ internal static class AutoGenerateBuilderSyntaxReceiver
         {
             if (!AreBuilderClassModifiersValid(classDeclarationSyntax))
             {
-                Console.WriteLine("Custom builder class should be 'partial' and 'public' or 'internal'.");
+                diagnostic = Diagnostic.Create(DiagnosticDescriptors.Information, classDeclarationSyntax.GetLocation(), "Skipping ClassDeclarationSyntax: Custom builder class should be 'partial' and 'public' or 'internal'.");
                 return false;
             }
 
@@ -105,6 +109,7 @@ internal static class AutoGenerateBuilderSyntaxReceiver
                 Methods = fluentBuilderAttributeArguments.Methods
             };
 
+            diagnostic = null;
             return true;
         }
 
@@ -128,6 +133,7 @@ internal static class AutoGenerateBuilderSyntaxReceiver
             Methods = fluentBuilderAttributeArguments.Methods
         };
 
+        diagnostic = null;
         return true;
     }
 
