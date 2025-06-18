@@ -1,6 +1,7 @@
 // This source code is based on https://justsimplycode.com/2020/12/06/auto-generate-builders-using-source-generator-in-net-5
 
 using System.Diagnostics.CodeAnalysis;
+using FluentBuilderGenerator.Constants;
 using FluentBuilderGenerator.Extensions;
 using FluentBuilderGenerator.Models;
 using FluentBuilderGenerator.Types;
@@ -9,40 +10,58 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace FluentBuilderGenerator.SyntaxReceiver;
 
-internal class AutoGenerateBuilderSyntaxReceiver : IAutoGenerateBuilderSyntaxReceiver
+internal static class AutoGenerateBuilderSyntaxReceiver
 {
     private const string ModifierPartial = "partial";
     private const string ModifierPublic = "public";
     private const string ModifierInternal = "internal";
 
-    public IList<FluentData> CandidateFluentDataItems { get; } = new List<FluentData>();
-
-    public void OnVisitSyntaxNode(GeneratorSyntaxContext context)
+    public static bool CheckSyntaxNode(SyntaxNode syntaxNode, out Diagnostic? diagnostic)
     {
-        var syntaxNode = context.Node;
-        var semanticModel = context.SemanticModel;
-        
-        if (syntaxNode is ClassDeclarationSyntax classDeclarationSyntax && TryGet(classDeclarationSyntax, semanticModel, out var data))
+        if (syntaxNode is not ClassDeclarationSyntax classDeclarationSyntax)
         {
-            CandidateFluentDataItems.Add(data);
+            diagnostic = null;
+            return false;
         }
-    }
-
-    private static bool TryGet(ClassDeclarationSyntax classDeclarationSyntax, SemanticModel semanticModel, out FluentData data)
-    {
-        data = default;
 
         var attributeList = classDeclarationSyntax.AttributeLists
             .FirstOrDefault(x => x.Attributes.Any(AttributeArgumentListParser.IsMatch));
         if (attributeList is null)
         {
-            Console.WriteLine("ClassDeclarationSyntax should have the correct attribute.");
+            diagnostic = Diagnostic.Create(DiagnosticDescriptors.Information, classDeclarationSyntax.GetLocation(), "Skipping SyntaxNode: ClassDeclarationSyntax should have the correct attribute.");
             return false;
         }
 
+        if (!TryGetClassModifier(classDeclarationSyntax, out _))
+        {
+            diagnostic = Diagnostic.Create(DiagnosticDescriptors.Information, classDeclarationSyntax.GetLocation(), "Skipping SyntaxNode: Class modifier should be 'public' or 'internal'.");
+            return false;
+        }
+
+        diagnostic = null;
+        return true;
+    }
+
+    public static FluentData HandleSyntaxNode(SyntaxNode syntaxNode, SemanticModel semanticModel, out Diagnostic? diagnostic)
+    {
+        if (TryGet((ClassDeclarationSyntax) syntaxNode, semanticModel, out var data, out diagnostic))
+        {
+            return data;
+        }
+
+        throw new InvalidOperationException();
+    }
+
+    private static bool TryGet(ClassDeclarationSyntax classDeclarationSyntax, SemanticModel semanticModel, out FluentData data, out Diagnostic? diagnostic)
+    {
+        data = default;
+        
+        var attributeList = classDeclarationSyntax.AttributeLists
+            .FirstOrDefault(x => x.Attributes.Any(AttributeArgumentListParser.IsMatch))!;
+        
         if (!TryGetClassModifier(classDeclarationSyntax, out var classModifier))
         {
-            Console.WriteLine("Class modifier should be 'public' or 'internal'.");
+            diagnostic = Diagnostic.Create(DiagnosticDescriptors.Information, classDeclarationSyntax.GetLocation(), "Skipping ClassDeclarationSyntax: Class modifier should be 'public' or 'internal'.");
             return false;
         }
 
@@ -70,7 +89,7 @@ internal class AutoGenerateBuilderSyntaxReceiver : IAutoGenerateBuilderSyntaxRec
         {
             if (!AreBuilderClassModifiersValid(classDeclarationSyntax))
             {
-                Console.WriteLine("Custom builder class should be 'partial' and 'public' or 'internal'.");
+                diagnostic = Diagnostic.Create(DiagnosticDescriptors.Information, classDeclarationSyntax.GetLocation(), "Skipping ClassDeclarationSyntax: Custom builder class should be 'partial' and 'public' or 'internal'.");
                 return false;
             }
 
@@ -90,6 +109,7 @@ internal class AutoGenerateBuilderSyntaxReceiver : IAutoGenerateBuilderSyntaxRec
                 Methods = fluentBuilderAttributeArguments.Methods
             };
 
+            diagnostic = null;
             return true;
         }
 
@@ -113,6 +133,7 @@ internal class AutoGenerateBuilderSyntaxReceiver : IAutoGenerateBuilderSyntaxRec
             Methods = fluentBuilderAttributeArguments.Methods
         };
 
+        diagnostic = null;
         return true;
     }
 
