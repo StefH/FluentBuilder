@@ -9,7 +9,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace FluentBuilderGenerator.SyntaxReceiver;
 
-internal class AutoGenerateBuilderSyntaxReceiver
+internal static class AutoGenerateBuilderSyntaxReceiver
 {
     private const string ModifierPartial = "partial";
     private const string ModifierPublic = "public";
