@@ -2,9 +2,9 @@ using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using AwesomeAssertions;
 using CSharp.SourceGenerators.Extensions;
 using CSharp.SourceGenerators.Extensions.Models;
-using FluentAssertions;
 using FluentBuilderGenerator;
 using FluentBuilderGeneratorTests.DTO;
 using VerifyTests;
@@ -813,5 +813,12 @@ public class FluentBuilderSourceGeneratorTests
         var filename = Path.GetFileName(fileResult.Path);
 
         File.WriteAllText($"../../../DTO/{filename}", fileResult.Text);
+
+        var data = new ClassWithInitPropertiesBuilder()
+            .WithNormal("normal")
+            .WithSiteId(10)
+            .Build();
+
+        data.Should().BeEquivalentTo(new { Normal = "normal", SiteId = 10, ProductName = "" });
     }
 }

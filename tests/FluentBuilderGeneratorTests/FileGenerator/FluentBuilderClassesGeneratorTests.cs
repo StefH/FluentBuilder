@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
-using FluentAssertions;
+using AwesomeAssertions;
 using FluentBuilderGenerator.FileGenerators;
 using FluentBuilderGenerator.Models;
 using FluentBuilderGenerator.SyntaxReceiver;

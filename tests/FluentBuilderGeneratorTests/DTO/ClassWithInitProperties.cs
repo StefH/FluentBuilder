@@ -7,5 +7,7 @@ namespace FluentBuilderGeneratorTests.DTO
         public int SiteId { get; init; }
 
         public string ProductName { get; init; }
+
+        public string PrivateProductName { get; private init; }
     }
 }

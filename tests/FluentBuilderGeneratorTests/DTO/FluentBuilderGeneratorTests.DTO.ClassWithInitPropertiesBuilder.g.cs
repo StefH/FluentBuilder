@@ -36,22 +36,18 @@ namespace FluentBuilderGeneratorTests.DTO
             _normalIsSet = true;
             return this;
         }
-        private bool _siteIdIsSet;
         private Lazy<int> _siteId = new Lazy<int>(() => default(int));
         public ClassWithInitPropertiesBuilder WithSiteId(int value) => WithSiteId(() => value);
         public ClassWithInitPropertiesBuilder WithSiteId(Func<int> func)
         {
             _siteId = new Lazy<int>(func);
-            _siteIdIsSet = true;
             return this;
         }
-        private bool _productNameIsSet;
         private Lazy<string> _productName = new Lazy<string>(() => string.Empty);
         public ClassWithInitPropertiesBuilder WithProductName(string value) => WithProductName(() => value);
         public ClassWithInitPropertiesBuilder WithProductName(Func<string> func)
         {
             _productName = new Lazy<string>(func);
-            _productNameIsSet = true;
             return this;
         }
 
