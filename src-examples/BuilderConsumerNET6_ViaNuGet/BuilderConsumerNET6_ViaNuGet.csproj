@@ -10,12 +10,12 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="FluentBuilder" Version="0.9.1">
+        <PackageReference Include="FluentBuilder" Version="0.11.0-preview-01">
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="RestEase" Version="1.6.1" />
-        <PackageReference Include="RestEase.SourceGenerator" Version="1.6.1">
+        <PackageReference Include="RestEase" Version="1.6.4" />
+        <PackageReference Include="RestEase.SourceGenerator" Version="1.6.4">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
