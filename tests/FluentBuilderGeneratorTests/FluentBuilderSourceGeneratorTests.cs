@@ -815,4 +815,33 @@ public class FluentBuilderSourceGeneratorTests
             builder.Text.Should().Be(File.ReadAllText($"../../../DTO/{filename}"));
         }
     }
+
+    [Fact]
+    public void GenerateFiles_ClassWithInitProperties()
+    {
+        // Arrange
+        var path = "./DTO/ClassWithInitProperties.cs";
+        var sourceFile = new SourceFile
+        {
+            Path = path,
+            Text = File.ReadAllText(path),
+            AttributeToAddToClass = new ExtraAttribute
+            {
+                Name = "FluentBuilder.AutoGenerateBuilder",
+                //ArgumentList = new[] { "FluentBuilderAccessibility.PublicAndPrivate" }
+            }
+        };
+
+        // Act
+        var result = _sut.Execute(Namespace, [sourceFile]);
+
+        // Assert
+        result.Valid.Should().BeTrue();
+        result.Files.Should().HaveCount(NumFiles);
+
+        var fileResult = result.Files[NumFiles - 1];
+        var filename = Path.GetFileName(fileResult.Path);
+
+        File.WriteAllText($"../../../DTO/{filename}", fileResult.Text);
+    }
 }
