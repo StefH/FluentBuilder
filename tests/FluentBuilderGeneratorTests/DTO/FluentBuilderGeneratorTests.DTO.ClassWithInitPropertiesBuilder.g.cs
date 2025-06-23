@@ -27,6 +27,33 @@ namespace FluentBuilderGeneratorTests.DTO
 
     public partial class ClassWithInitPropertiesBuilder : Builder<FluentBuilderGeneratorTests.DTO.ClassWithInitProperties>
     {
+        private bool _normalIsSet;
+        private Lazy<string> _normal = new Lazy<string>(() => string.Empty);
+        public ClassWithInitPropertiesBuilder WithNormal(string value) => WithNormal(() => value);
+        public ClassWithInitPropertiesBuilder WithNormal(Func<string> func)
+        {
+            _normal = new Lazy<string>(func);
+            _normalIsSet = true;
+            return this;
+        }
+        private bool _siteIdIsSet;
+        private Lazy<int> _siteId = new Lazy<int>(() => default(int));
+        public ClassWithInitPropertiesBuilder WithSiteId(int value) => WithSiteId(() => value);
+        public ClassWithInitPropertiesBuilder WithSiteId(Func<int> func)
+        {
+            _siteId = new Lazy<int>(func);
+            _siteIdIsSet = true;
+            return this;
+        }
+        private bool _productNameIsSet;
+        private Lazy<string> _productName = new Lazy<string>(() => string.Empty);
+        public ClassWithInitPropertiesBuilder WithProductName(string value) => WithProductName(() => value);
+        public ClassWithInitPropertiesBuilder WithProductName(Func<string> func)
+        {
+            _productName = new Lazy<string>(func);
+            _productNameIsSet = true;
+            return this;
+        }
 
         private bool _Constructor1040722879_IsSet;
         private Lazy<FluentBuilderGeneratorTests.DTO.ClassWithInitProperties> _Constructor1040722879 = new Lazy<FluentBuilderGeneratorTests.DTO.ClassWithInitProperties>(() => new FluentBuilderGeneratorTests.DTO.ClassWithInitProperties());
@@ -66,7 +93,9 @@ namespace FluentBuilderGeneratorTests.DTO
                     {
                         instance = new ClassWithInitProperties
                         {
-
+                            Normal = _normal.Value,
+                            SiteId = _siteId.Value,
+                            ProductName = _productName.Value
                         };
 
                         return instance;
@@ -79,7 +108,7 @@ namespace FluentBuilderGeneratorTests.DTO
                 });
             }
 
-
+            if (_normalIsSet) { Instance.Value.Normal = _normal.Value; }
 
             PostBuild(Instance.Value);
 

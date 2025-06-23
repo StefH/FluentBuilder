@@ -674,36 +674,6 @@ public class FluentBuilderSourceGeneratorTests
     }
 
     [Fact]
-    public void GenerateFiles_ClassWithInit_Should_GenerateCorrectFiles()
-    {
-        // Arrange
-        var builderFileName = "FluentBuilderGeneratorTests.DTO.ClassWithInitBuilder.g.cs";
-        var path = "./DTO/ClassWithInit.cs";
-        var sourceFile = new SourceFile
-        {
-            Path = path,
-            Text = File.ReadAllText(path),
-            AttributeToAddToClass = new ExtraAttribute
-            {
-                Name = "FluentBuilder.AutoGenerateBuilder"
-            }
-        };
-
-        // Act
-        var result = _sut.Execute(Namespace, new[] { sourceFile });
-
-        // Assert
-        result.Valid.Should().BeTrue();
-        result.Files.Should().HaveCount(NumFiles);
-
-        var builder = result.Files[NumFiles - 1];
-        builder.Path.Should().EndWith(builderFileName);
-
-        if (Write) File.WriteAllText($"../../../DTO/{builderFileName}", builder.Text);
-        builder.Text.Should().Be(File.ReadAllText($"../../../DTO/{builderFileName}"));
-    }
-
-    [Fact]
     public void GenerateFiles_ClassWithPropertyWhichHasAValue_Should_GenerateCorrectFiles()
     {
         // Arrange
@@ -817,7 +787,7 @@ public class FluentBuilderSourceGeneratorTests
     }
 
     [Fact]
-    public void GenerateFiles_ClassWithInitProperties()
+    public void GenerateFiles_ClassWithInitProperties_Should_GenerateCorrectFiles()
     {
         // Arrange
         var path = "./DTO/ClassWithInitProperties.cs";

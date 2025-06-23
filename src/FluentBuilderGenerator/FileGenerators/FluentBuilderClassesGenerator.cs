@@ -395,9 +395,8 @@ internal partial class FluentBuilderClassesGenerator : IFilesGenerator
             }
         }
 
-        var propertiesPublicSettable = properties.Where(property => property.IsPublicSettable()).ToArray();
-        var propertiesPrivateSettable = accessibility == FluentBuilderAccessibility.PublicAndPrivate ?
-            properties.Where(property => property.IsPrivateSettable()).ToArray() : Array.Empty<IPropertySymbol>();
+        var propertiesPublicSettable = properties.Where(p => p.IsPublicSettable()).ToArray();
+        var propertiesPrivateSettable = accessibility == FluentBuilderAccessibility.PublicAndPrivate ? properties.Where(p => p.IsPrivateSettable()).ToArray() : [];
 
         return (propertiesPublicSettable, propertiesPrivateSettable);
     }
@@ -477,8 +476,8 @@ internal partial class FluentBuilderClassesGenerator : IFilesGenerator
         output.AppendLine(8, @"    }");
 
         output.AppendLine();
-        output.AppendLines(12, propertiesPublicSettable.Select(property => $@"if (_{CamelCase(property.Name)}IsSet) {{ Instance.Value.{property.Name} = _{CamelCase(property.Name)}.Value; }}"));
-        output.AppendLines(12, propertiesPrivateSettable.Select(property => $@"if (_{CamelCase(property.Name)}IsSet) {{ Set{property.Name}(Instance.Value, _{CamelCase(property.Name)}.Value); }}"));
+        output.AppendLines(12, propertiesPublicSettable.Where(p => !p.IsInitOnly()).Select(property => $"if (_{CamelCase(property.Name)}IsSet) {{ Instance.Value.{property.Name} = _{CamelCase(property.Name)}.Value; }}"));
+        output.AppendLines(12, propertiesPrivateSettable.Where(p => !p.IsInitOnly()).Select(property => $"if (_{CamelCase(property.Name)}IsSet) {{ Set{property.Name}(Instance.Value, _{CamelCase(property.Name)}.Value); }}"));
         
         output.AppendLine(8, @"    PostBuild(Instance.Value);");
 
