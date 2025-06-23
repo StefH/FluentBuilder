@@ -1,4 +1,4 @@
-# 0.10.0 (19 October 2024)
-- #65 Add support for generic AutoGenerateBuilderAttribute [enhancement]
+# 0.11.0-preview-01 (23 June 2025)
+- #69 Add support for Internal types
 
 The full release notes can be found here: https://github.com/StefH/FluentBuilder/blob/main/ReleaseNotes.md
