@@ -1,4 +1,4 @@
-# 0.11.0-preview-01 (23 June 2025)
+# 0.11.0-preview-02 (24 June 2025)
 - Incremental
 
 The full release notes can be found here: https://github.com/StefH/FluentBuilder/blob/main/ReleaseNotes.md

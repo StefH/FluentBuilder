@@ -28,13 +28,13 @@ internal static class AutoGenerateBuilderSyntaxReceiver
             .FirstOrDefault(x => x.Attributes.Any(AttributeArgumentListParser.IsMatch));
         if (attributeList is null)
         {
-            diagnostic = Diagnostic.Create(DiagnosticDescriptors.Information, classDeclarationSyntax.GetLocation(), "Skipping SyntaxNode: ClassDeclarationSyntax should have the correct attribute.");
+            diagnostic = null;
             return false;
         }
 
         if (!TryGetClassModifier(classDeclarationSyntax, out _))
         {
-            diagnostic = Diagnostic.Create(DiagnosticDescriptors.Information, classDeclarationSyntax.GetLocation(), "Skipping SyntaxNode: Class modifier should be 'public' or 'internal'.");
+            diagnostic = Diagnostic.Create(DiagnosticDescriptors.ClassModifierShouldBeInternalOrPublic, classDeclarationSyntax.GetLocation());
             return false;
         }
 
@@ -61,7 +61,7 @@ internal static class AutoGenerateBuilderSyntaxReceiver
         
         if (!TryGetClassModifier(classDeclarationSyntax, out var classModifier))
         {
-            diagnostic = Diagnostic.Create(DiagnosticDescriptors.Information, classDeclarationSyntax.GetLocation(), "Skipping ClassDeclarationSyntax: Class modifier should be 'public' or 'internal'.");
+            diagnostic = Diagnostic.Create(DiagnosticDescriptors.ClassModifierShouldBeInternalOrPublic, classDeclarationSyntax.GetLocation());
             return false;
         }
 
@@ -89,7 +89,7 @@ internal static class AutoGenerateBuilderSyntaxReceiver
         {
             if (!AreBuilderClassModifiersValid(classDeclarationSyntax))
             {
-                diagnostic = Diagnostic.Create(DiagnosticDescriptors.Information, classDeclarationSyntax.GetLocation(), "Skipping ClassDeclarationSyntax: Custom builder class should be 'partial' and 'public' or 'internal'.");
+                diagnostic = Diagnostic.Create(DiagnosticDescriptors.CustomBuilderClassModifierShouldBePartialAndInternalOrPublic, classDeclarationSyntax.GetLocation());
                 return false;
             }
 
