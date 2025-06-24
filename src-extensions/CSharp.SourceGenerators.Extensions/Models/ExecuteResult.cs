@@ -16,6 +16,11 @@ public class ExecuteResult
     public required IReadOnlyList<FileResult> Files { get; init; }
 
     /// <summary>
+    /// Gets the collection of diagnostics associated with the current operation or state.
+    /// </summary>
+    public required IReadOnlyList<Diagnostic> Diagnostics { get; init; }
+
+    /// <summary>
     /// A list of Error messages
     /// </summary>
     public required IReadOnlyList<string> ErrorMessages { get; init; }

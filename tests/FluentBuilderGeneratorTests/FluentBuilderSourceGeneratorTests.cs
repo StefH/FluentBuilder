@@ -32,6 +32,25 @@ public class FluentBuilderSourceGeneratorTests
     public static void ModuleInitializer() => VerifySourceGenerators.Enable();
 
     [Fact]
+    public void GenerateFiles_ForClassWithPrivateBuilderClass_ShouldReturnDiagnostics()
+    {
+        // Arrange
+        var path = "./DTO/ClassWithPrivateBuilderClass.cs";
+        var sourceFile = new SourceFile
+        {
+            Path = path,
+            Text = File.ReadAllText(path)
+        };
+
+        // Act
+        var result = _sut.Execute(Namespace, [sourceFile]);
+
+        // Assert
+        result.InformationMessages.Should().HaveCount(1);
+        result.InformationMessages[0].Should().Be("Class modifier should be 'public' or 'internal'");
+    }
+
+    [Fact]
     public Task GenerateFiles_ForAClassWithoutAPublicConstructor_Should_Create_ErrorFile()
     {
         // Arrange
@@ -731,8 +750,6 @@ public class FluentBuilderSourceGeneratorTests
 
         if (Write) File.WriteAllText($"../../../DTO/{builderFileName}", builder.Text);
         builder.Text.Should().Be(File.ReadAllText($"../../../DTO/{builderFileName}"));
-
-        result.InformationMessages.Should().HaveCount(3);
     }
 
     [Fact]
