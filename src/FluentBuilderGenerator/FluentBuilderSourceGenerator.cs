@@ -41,9 +41,9 @@ internal class FluentBuilderSourceGenerator : IIncrementalGenerator
 
         var compilationHelperProvider = context.CompilationProvider.Select(static (compilation, _) => new CompilationHelper(compilation));
 
-        var commonProvider = languageDataProvider.Combine(compilationHelperProvider);
+        var combinedProvider = languageDataProvider.Combine(compilationHelperProvider);
 
-        context.RegisterSourceOutput(commonProvider, static (SourceProductionContext spc, (LanguageData LanguageData, CompilationHelper CompilationHelper) x) =>
+        context.RegisterSourceOutput(combinedProvider, static (SourceProductionContext spc, (LanguageData LanguageData, CompilationHelper CompilationHelper) x) =>
         {
             var assemblyName = x.CompilationHelper.AssemblyName;
             var supportsNullable = x.LanguageData.SupportsNullable;
@@ -80,7 +80,7 @@ internal class FluentBuilderSourceGenerator : IIncrementalGenerator
             )
             .Collect();
         
-        var combined2 = fluentBuilderClassesProvider.Combine(commonProvider).Select((x, _) => new
+        var combined2 = fluentBuilderClassesProvider.Combine(combinedProvider).Select((x, _) => new
         {
             Items = x.Left,
             LanguageData = x.Right.Left,
