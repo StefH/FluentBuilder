@@ -29,23 +29,7 @@ public static class SourceGeneratorExtensions
         IReadOnlyList<string>? additionalTextPaths = null
     )
     {
-        return ExecuteInternal(sourceGenerator, GetRandomAssemblyName(), sources, additionalTextPaths);
-    }
-
-    /// <summary>
-    /// Executes and runs the specified <see cref="IIncrementalGenerator"/>.
-    /// </summary>
-    /// <param name="sourceGenerator">The SourceGenerator to execute.</param>
-    /// <param name="sources">Provide a list of sources which need to be analyzed and processed.</param>
-    /// <param name="additionalTextPaths">A list of additional files.</param>
-    /// <returns><see cref="ExecuteResult"/></returns>
-    public static ExecuteResult Execute(
-        this IIncrementalGenerator sourceGenerator,
-        IReadOnlyList<SourceFile> sources,
-        IReadOnlyList<string>? additionalTextPaths = null
-    )
-    {
-        return ExecuteInternal(sourceGenerator, GetRandomAssemblyName(), sources, additionalTextPaths);
+        return Execute(sourceGenerator, GetRandomAssemblyName(), sources, additionalTextPaths);
     }
 
     /// <summary>
@@ -63,7 +47,23 @@ public static class SourceGeneratorExtensions
         IReadOnlyList<string>? additionalTextPaths = null
     )
     {
-        return ExecuteInternal(sourceGenerator, assemblyName, sources, additionalTextPaths);
+        return ExecuteInternal(() => CSharpGeneratorDriver.Create(sourceGenerator), assemblyName, sources, additionalTextPaths);
+    }
+
+    /// <summary>
+    /// Executes and runs the specified <see cref="IIncrementalGenerator"/>.
+    /// </summary>
+    /// <param name="sourceGenerator">The SourceGenerator to execute.</param>
+    /// <param name="sources">Provide a list of sources which need to be analyzed and processed.</param>
+    /// <param name="additionalTextPaths">A list of additional files.</param>
+    /// <returns><see cref="ExecuteResult"/></returns>
+    public static ExecuteResult Execute(
+        this IIncrementalGenerator sourceGenerator,
+        IReadOnlyList<SourceFile> sources,
+        IReadOnlyList<string>? additionalTextPaths = null
+    )
+    {
+        return Execute(sourceGenerator, GetRandomAssemblyName(), sources, additionalTextPaths);
     }
 
     /// <summary>
@@ -81,29 +81,17 @@ public static class SourceGeneratorExtensions
         IReadOnlyList<string>? additionalTextPaths = null
     )
     {
-        return ExecuteInternal(sourceGenerator, assemblyName, sources, additionalTextPaths);
+        return ExecuteInternal(() => CSharpGeneratorDriver.Create(sourceGenerator), assemblyName, sources, additionalTextPaths);
     }
 
     private static ExecuteResult ExecuteInternal(
-        object generator,
+        Func<GeneratorDriver> driverFactory,
         string assemblyName,
         IReadOnlyList<SourceFile> sources,
         IReadOnlyList<string>? additionalTextPaths = null
     )
     {
-        GeneratorDriver driver;
-        if (generator is IIncrementalGenerator incrementalGenerator)
-        {
-            driver = CSharpGeneratorDriver.Create(incrementalGenerator);
-        }
-        else if (generator is ISourceGenerator sourceGenerator)
-        {
-            driver = CSharpGeneratorDriver.Create(sourceGenerator);
-        }
-        else
-        {
-            throw new NotSupportedException();
-        }
+        var driver = driverFactory();
 
         var metadataReferences = AppDomain.CurrentDomain.GetAssemblies()
             .Where(a => !a.IsDynamic)
