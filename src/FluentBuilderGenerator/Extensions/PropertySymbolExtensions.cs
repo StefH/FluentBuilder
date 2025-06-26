@@ -7,22 +7,27 @@ internal static class PropertySymbolExtensions
 {
     // ReSharper disable once InconsistentNaming
     private static readonly FluentTypeKind[] IEnumerableKinds =
-    {
+    [
         FluentTypeKind.ICollection,
         FluentTypeKind.IEnumerable,
         FluentTypeKind.IList,
         FluentTypeKind.IReadOnlyCollection,
         FluentTypeKind.IReadOnlyList
-    };
+    ];
+
+    internal static bool IsInitOnly(this IPropertySymbol property)
+    {
+        return property.SetMethod is { IsInitOnly: true };
+    }
 
     internal static bool IsPrivateSettable(this IPropertySymbol property)
     {
-        return property.SetMethod is { IsInitOnly: false, DeclaredAccessibility: Accessibility.Private };
+        return property.SetMethod is { DeclaredAccessibility: Accessibility.Private };
     }
 
     internal static bool IsPublicSettable(this IPropertySymbol property)
     {
-        return property.SetMethod is { IsInitOnly: false, DeclaredAccessibility: Accessibility.Public };
+        return property.SetMethod is { DeclaredAccessibility: Accessibility.Public };
     }
 
     internal static bool TryGetIDictionaryElementTypes(this IPropertySymbol property, out (INamedTypeSymbol key, INamedTypeSymbol value)? tuple)

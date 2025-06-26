@@ -209,6 +209,8 @@ internal partial class FluentBuilderClassesGenerator : IFilesGenerator
         var sb = new StringBuilder();
         foreach (var property in propertiesPublicSettable.Union(propertiesPrivateSettable))
         {
+            var initOnly = property.IsInitOnly();
+
             // Use "params" in case it's an Array, else just use type-T.
             var type = property.Type.GetFluentTypeKind() == FluentTypeKind.Array ? $"params {property.Type}" : property.Type.ToString();
 
@@ -218,8 +220,8 @@ internal partial class FluentBuilderClassesGenerator : IFilesGenerator
                 extraUsings.AddRange(extraUsingsFromDefaultValue);
             }
 
-            sb.AppendLine($"        private bool _{CamelCase(property.Name)}IsSet;");
-
+            sb.AppendLine(!initOnly, $"        private bool _{CamelCase(property.Name)}IsSet;");
+        
             sb.AppendLine($"        private Lazy<{property.Type}> _{CamelCase(property.Name)} = new Lazy<{property.Type}>(() => {defaultValue});");
 
             sb.AppendLine($"        public {builderClassName} With{property.Name}({type} value) => With{property.Name}(() => value);");
@@ -233,7 +235,10 @@ internal partial class FluentBuilderClassesGenerator : IFilesGenerator
                 sb.AppendLine($"        public {builderClassName} Without{property.Name}()");
                 sb.AppendLine("        {");
                 sb.AppendLine($"            With{property.Name}(() => {defaultValue});");
-                sb.AppendLine($"            _{CamelCase(property.Name)}IsSet = false;");
+
+
+
+                sb.AppendLine(!initOnly, $"            _{CamelCase(property.Name)}IsSet = false;");
                 sb.AppendLine("            return this;");
                 sb.AppendLine("        }");
                 sb.AppendLine();
@@ -275,7 +280,7 @@ internal partial class FluentBuilderClassesGenerator : IFilesGenerator
             .AppendLine($"        public {className} With{property.Name}(Func<{property.Type}> func)")
             .AppendLine("        {")
             .AppendLine($"            _{CamelCase(property.Name)} = new Lazy<{property.Type}>(func);")
-            .AppendLine($"            _{CamelCase(property.Name)}IsSet = true;")
+            .AppendLine(!property.IsInitOnly(), $"            _{CamelCase(property.Name)}IsSet = true;")
             .AppendLine("            return this;")
             .AppendLine("        }");
     }
@@ -395,9 +400,8 @@ internal partial class FluentBuilderClassesGenerator : IFilesGenerator
             }
         }
 
-        var propertiesPublicSettable = properties.Where(property => property.IsPublicSettable()).ToArray();
-        var propertiesPrivateSettable = accessibility == FluentBuilderAccessibility.PublicAndPrivate ?
-            properties.Where(property => property.IsPrivateSettable()).ToArray() : Array.Empty<IPropertySymbol>();
+        var propertiesPublicSettable = properties.Where(p => p.IsPublicSettable()).ToArray();
+        var propertiesPrivateSettable = accessibility == FluentBuilderAccessibility.PublicAndPrivate ? properties.Where(p => p.IsPrivateSettable()).ToArray() : [];
 
         return (propertiesPublicSettable, propertiesPrivateSettable);
     }
@@ -477,8 +481,8 @@ internal partial class FluentBuilderClassesGenerator : IFilesGenerator
         output.AppendLine(8, @"    }");
 
         output.AppendLine();
-        output.AppendLines(12, propertiesPublicSettable.Select(property => $@"if (_{CamelCase(property.Name)}IsSet) {{ Instance.Value.{property.Name} = _{CamelCase(property.Name)}.Value; }}"));
-        output.AppendLines(12, propertiesPrivateSettable.Select(property => $@"if (_{CamelCase(property.Name)}IsSet) {{ Set{property.Name}(Instance.Value, _{CamelCase(property.Name)}.Value); }}"));
+        output.AppendLines(12, propertiesPublicSettable.Where(p => !p.IsInitOnly()).Select(property => $"if (_{CamelCase(property.Name)}IsSet) {{ Instance.Value.{property.Name} = _{CamelCase(property.Name)}.Value; }}"));
+        output.AppendLines(12, propertiesPrivateSettable.Where(p => !p.IsInitOnly()).Select(property => $"if (_{CamelCase(property.Name)}IsSet) {{ Set{property.Name}(Instance.Value, _{CamelCase(property.Name)}.Value); }}"));
         
         output.AppendLine(8, @"    PostBuild(Instance.Value);");
 
