@@ -7,6 +7,7 @@ using CSharp.SourceGenerators.Extensions;
 using CSharp.SourceGenerators.Extensions.Models;
 using FluentBuilderGenerator;
 using FluentBuilderGeneratorTests.DTO;
+using Microsoft.CodeAnalysis;
 using VerifyTests;
 using VerifyXunit;
 using Xunit;
@@ -41,9 +42,10 @@ public class FluentBuilderSourceGeneratorTests
             Path = path,
             Text = File.ReadAllText(path)
         };
+        IIncrementalGenerator sut = new FluentBuilderSourceGenerator();
 
         // Act
-        var result = _sut.Execute(Namespace, [sourceFile]);
+        var result = sut.Execute(Namespace, [sourceFile]);
 
         // Assert
         result.InformationMessages.Should().HaveCount(1);
@@ -67,7 +69,7 @@ public class FluentBuilderSourceGeneratorTests
         };
 
         // Act
-        var result = _sut.Execute(Namespace, new[] { sourceFile });
+        var result = _sut.Execute(Namespace, [sourceFile]);
 
         // Assert
         result.Files.Should().HaveCount(NumFiles);
@@ -91,7 +93,7 @@ public class FluentBuilderSourceGeneratorTests
         };
 
         // Act
-        var result = _sut.Execute(Namespace, new[] { sourceFile });
+        var result = _sut.Execute(Namespace, [sourceFile]);
 
         // Assert
         result.Valid.Should().BeTrue();
@@ -122,7 +124,7 @@ public class FluentBuilderSourceGeneratorTests
         };
 
         // Act
-        var result = _sut.Execute(Namespace, new[] { sourceFile });
+        var result = _sut.Execute(Namespace, [sourceFile]);
 
         // Assert
         result.Valid.Should().BeTrue();
@@ -197,7 +199,7 @@ public class FluentBuilderSourceGeneratorTests
         };
 
         // Act
-        var result = _sut.Execute(Namespace, new[] { sourceFileUser, sourceFileBuilder });
+        var result = _sut.Execute(Namespace, [sourceFileUser, sourceFileBuilder]);
 
         // Assert
         result.Valid.Should().BeTrue();
@@ -300,7 +302,7 @@ public class FluentBuilderSourceGeneratorTests
         };
 
         // Act
-        var result = _sut.Execute(Namespace, new[] { sourceFile });
+        var result = _sut.Execute(Namespace, [sourceFile]);
 
         // Assert
         result.Valid.Should().BeTrue();
@@ -337,7 +339,7 @@ public class FluentBuilderSourceGeneratorTests
         };
 
         // Act
-        var result = _sut.Execute(Namespace, new[] { sourceFile });
+        var result = _sut.Execute(Namespace, [sourceFile]);
 
         // Assert
         result.Valid.Should().BeTrue();
@@ -371,7 +373,7 @@ public class FluentBuilderSourceGeneratorTests
         };
 
         // Act
-        var result = _sut.Execute(Namespace, new[] { sourceFile });
+        var result = _sut.Execute(Namespace, [sourceFile]);
 
         // Assert
         result.Valid.Should().BeTrue();
@@ -395,7 +397,7 @@ public class FluentBuilderSourceGeneratorTests
         };
 
         // Act
-        var result = _sut.Execute(Namespace, new[] { sourceFile });
+        var result = _sut.Execute(Namespace, [sourceFile]);
 
         // Assert
         result.Valid.Should().BeTrue();
@@ -423,7 +425,7 @@ public class FluentBuilderSourceGeneratorTests
         };
 
         // Act
-        var result = _sut.Execute(Namespace, new[] { sourceFile });
+        var result = _sut.Execute(Namespace, [sourceFile]);
 
         // Assert
         result.Valid.Should().BeTrue();
@@ -471,7 +473,7 @@ public class FluentBuilderSourceGeneratorTests
         };
 
         // Act
-        var result = _sut.Execute(Namespace, new[] { sourceFile });
+        var result = _sut.Execute(Namespace, [sourceFile]);
 
         // Assert
         result.Valid.Should().BeTrue();
@@ -503,7 +505,7 @@ public class FluentBuilderSourceGeneratorTests
         };
 
         // Act
-        var result = _sut.Execute(Namespace, new[] { sourceFile });
+        var result = _sut.Execute(Namespace, [sourceFile]);
 
         // Assert
         result.Valid.Should().BeTrue();
@@ -533,7 +535,7 @@ public class FluentBuilderSourceGeneratorTests
         };
 
         // Act
-        var result = _sut.Execute(Namespace, new[] { sourceFile });
+        var result = _sut.Execute(Namespace, [sourceFile]);
 
         // Assert
         result.Valid.Should().BeTrue();
@@ -573,7 +575,7 @@ public class FluentBuilderSourceGeneratorTests
         };
 
         // Act
-        var result = _sut.Execute(Namespace, new[] { sourceFile1, sourceFile2 });
+        var result = _sut.Execute(Namespace, [sourceFile1, sourceFile2]);
 
         // Assert
         result.Valid.Should().BeTrue();
@@ -619,7 +621,7 @@ public class FluentBuilderSourceGeneratorTests
         };
 
         // Act
-        var result = _sut.Execute(Namespace, new[] { sourceFile1, sourceFile2 });
+        var result = _sut.Execute(Namespace, [sourceFile1, sourceFile2]);
 
         // Assert
         result.Valid.Should().BeTrue();
@@ -649,7 +651,7 @@ public class FluentBuilderSourceGeneratorTests
         };
 
         // Act
-        var result = _sut.Execute(Namespace, new[] { sourceFile });
+        var result = _sut.Execute(Namespace, [sourceFile]);
 
         // Assert
         result.Valid.Should().BeTrue();
@@ -679,7 +681,7 @@ public class FluentBuilderSourceGeneratorTests
         };
 
         // Act
-        var result = _sut.Execute(Namespace, new[] { sourceFile });
+        var result = _sut.Execute(Namespace, [sourceFile]);
 
         // Assert
         result.Valid.Should().BeTrue();
@@ -709,7 +711,7 @@ public class FluentBuilderSourceGeneratorTests
         };
 
         // Act
-        var result = _sut.Execute(Namespace, new[] { sourceFile });
+        var result = _sut.Execute(Namespace, [sourceFile]);
 
         // Assert
         result.Valid.Should().BeTrue();
@@ -785,7 +787,7 @@ public class FluentBuilderSourceGeneratorTests
         };
 
         // Act
-        var result = _sut.Execute(Namespace, new[] { sourceFileTest, sourceFileOther });
+        var result = _sut.Execute(Namespace, [sourceFileTest, sourceFileOther]);
 
         // Assert
         result.Valid.Should().BeTrue();
@@ -813,8 +815,7 @@ public class FluentBuilderSourceGeneratorTests
             Text = File.ReadAllText(path),
             AttributeToAddToClass = new ExtraAttribute
             {
-                Name = "FluentBuilder.AutoGenerateBuilder",
-                //ArgumentList = new[] { "FluentBuilderAccessibility.PublicAndPrivate" }
+                Name = "FluentBuilder.AutoGenerateBuilder"
             }
         };
 
