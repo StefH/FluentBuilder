@@ -1,4 +1,6 @@
-# 0.10.0 (19 October 2024)
-- #65 Add support for generic AutoGenerateBuilderAttribute [enhancement]
+# 0.10.0.2 (26 June 2025)
+- #68 Update CreateRelease.yml [enhancement]
+- #71 Add support for InitOnly properties [enhancement]
+- #70 Support for init-only properties
 
 The full release notes can be found here: https://github.com/StefH/FluentBuilder/blob/main/ReleaseNotes.md

@@ -1,3 +1,8 @@
+# 0.10.0.2 (26 June 2025)
+- [#68](https://github.com/StefH/FluentBuilder/pull/68) - Update CreateRelease.yml [enhancement] contributed by [StefH](https://github.com/StefH)
+- [#71](https://github.com/StefH/FluentBuilder/pull/71) - Add support for InitOnly properties [enhancement] contributed by [StefH](https://github.com/StefH)
+- [#70](https://github.com/StefH/FluentBuilder/issues/70) - Support for init-only properties
+
 # 0.10.0 (19 October 2024)
 - [#65](https://github.com/StefH/FluentBuilder/pull/65) - Add support for generic AutoGenerateBuilderAttribute [enhancement] contributed by [StefH](https://github.com/StefH)
 
@@ -63,12 +68,10 @@
 - [#26](https://github.com/StefH/FluentBuilder/pull/26) - Replace Array.Empty by new T[0] (supporting .NET45) [bug] contributed by [StefH](https://github.com/StefH)
 
 # 0.4.3 (27 April 2022)
+- [#23](https://github.com/StefH/FluentBuilder/pull/23) - Add support for file scoped namespaces [enhancement] contributed by [StefH](https://github.com/StefH)
 - [#24](https://github.com/StefH/FluentBuilder/pull/24) - Use correct default value for reference types [bug] contributed by [StefH](https://github.com/StefH)
 - [#25](https://github.com/StefH/FluentBuilder/pull/25) - Create correct default() statement (use New constructor when possible) [enhancement] contributed by [StefH](https://github.com/StefH)
 - [#22](https://github.com/StefH/FluentBuilder/issues/22) - The type or namespace name 'UserBuilder' does not exist in the namespace 'FluentBuilder' (are you missing an assembly reference?) [bug]
-
-# 0.4.2 (03 April 2022)
-- [#23](https://github.com/StefH/FluentBuilder/pull/23) - Add support for file scoped namespaces [enhancement] contributed by [StefH](https://github.com/StefH)
 
 # 0.4.0 (18 February 2022)
 - [#21](https://github.com/StefH/FluentBuilder/pull/21) - Use full type name + change namespace from builders [bug] contributed by [StefH](https://github.com/StefH)
@@ -77,10 +80,8 @@
 - [#20](https://github.com/StefH/FluentBuilder/pull/20) - Do not inherit IEnumerableBuilder anymore [enhancement] contributed by [StefH](https://github.com/StefH)
 
 # 0.3.1 (14 February 2022)
-- [#19](https://github.com/StefH/FluentBuilder/pull/19) - Generate Error.g.cs file in case no public and parameterless constructor is present in the target class contributed by [StefH](https://github.com/StefH)
-
-# 0.3.0 (12 February 2022)
 - [#18](https://github.com/StefH/FluentBuilder/pull/18) - Add support to use this FluentBuilder for all classes [enhancement] contributed by [StefH](https://github.com/StefH)
+- [#19](https://github.com/StefH/FluentBuilder/pull/19) - Generate Error.g.cs file in case no public and parameterless constructor is present in the target class contributed by [StefH](https://github.com/StefH)
 
 # 0.2.5 (08 February 2022)
 - [#17](https://github.com/StefH/FluentBuilder/pull/17) - For interface or array, no cast is needed [bug] contributed by [StefH](https://github.com/StefH)
