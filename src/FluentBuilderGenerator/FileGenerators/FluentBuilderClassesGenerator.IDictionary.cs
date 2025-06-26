@@ -29,9 +29,9 @@ internal partial class FluentBuilderClassesGenerator
         var cast = property.Type.TypeKind == TypeKind.Interface ? "" : $"({property.Type}) ";
 
         return new StringBuilder()
-            .AppendLine($"        public {className} With{property.Name}(Action<{_context.AssemblyName}.FluentBuilder.{dictionaryBuilderName}> action, bool useObjectInitializer = true) => With{property.Name}(() =>")
+            .AppendLine($"        public {className} With{property.Name}(Action<{_compilationHelper.AssemblyName}.FluentBuilder.{dictionaryBuilderName}> action, bool useObjectInitializer = true) => With{property.Name}(() =>")
             .AppendLine("        {")
-            .AppendLine($"            var builder = new {_context.AssemblyName}.FluentBuilder.{dictionaryBuilderName}();")
+            .AppendLine($"            var builder = new {_compilationHelper.AssemblyName}.FluentBuilder.{dictionaryBuilderName}();")
             .AppendLine("            action(builder);")
             .AppendLine($"            return {cast}builder.Build(useObjectInitializer);")
             .AppendLine("        });");

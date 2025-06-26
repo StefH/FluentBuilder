@@ -7,6 +7,7 @@ using CSharp.SourceGenerators.Extensions;
 using CSharp.SourceGenerators.Extensions.Models;
 using FluentBuilderGenerator;
 using FluentBuilderGeneratorTests.DTO;
+using Microsoft.CodeAnalysis;
 using VerifyTests;
 using VerifyXunit;
 using Xunit;
@@ -32,6 +33,26 @@ public class FluentBuilderSourceGeneratorTests
     public static void ModuleInitializer() => VerifySourceGenerators.Enable();
 
     [Fact]
+    public void GenerateFiles_ForClassWithPrivateBuilderClass_ShouldReturnDiagnostics()
+    {
+        // Arrange
+        var path = "./DTO/ClassWithPrivateBuilderClass.cs";
+        var sourceFile = new SourceFile
+        {
+            Path = path,
+            Text = File.ReadAllText(path)
+        };
+        IIncrementalGenerator sut = new FluentBuilderSourceGenerator();
+
+        // Act
+        var result = sut.Execute(Namespace, [sourceFile]);
+
+        // Assert
+        result.InformationMessages.Should().HaveCount(1);
+        result.InformationMessages[0].Should().Be("Class modifier should be 'public' or 'internal'");
+    }
+
+    [Fact]
     public Task GenerateFiles_ForAClassWithoutAPublicConstructor_Should_Create_ErrorFile()
     {
         // Arrange
@@ -48,7 +69,7 @@ public class FluentBuilderSourceGeneratorTests
         };
 
         // Act
-        var result = _sut.Execute(Namespace, new[] { sourceFile });
+        var result = _sut.Execute(Namespace, [sourceFile]);
 
         // Assert
         result.Files.Should().HaveCount(NumFiles);
@@ -72,7 +93,7 @@ public class FluentBuilderSourceGeneratorTests
         };
 
         // Act
-        var result = _sut.Execute(Namespace, new[] { sourceFile });
+        var result = _sut.Execute(Namespace, [sourceFile]);
 
         // Assert
         result.Valid.Should().BeTrue();
@@ -103,7 +124,7 @@ public class FluentBuilderSourceGeneratorTests
         };
 
         // Act
-        var result = _sut.Execute(Namespace, new[] { sourceFile });
+        var result = _sut.Execute(Namespace, [sourceFile]);
 
         // Assert
         result.Valid.Should().BeTrue();
@@ -178,7 +199,7 @@ public class FluentBuilderSourceGeneratorTests
         };
 
         // Act
-        var result = _sut.Execute(Namespace, new[] { sourceFileUser, sourceFileBuilder });
+        var result = _sut.Execute(Namespace, [sourceFileUser, sourceFileBuilder]);
 
         // Assert
         result.Valid.Should().BeTrue();
@@ -281,7 +302,7 @@ public class FluentBuilderSourceGeneratorTests
         };
 
         // Act
-        var result = _sut.Execute(Namespace, new[] { sourceFile });
+        var result = _sut.Execute(Namespace, [sourceFile]);
 
         // Assert
         result.Valid.Should().BeTrue();
@@ -318,7 +339,7 @@ public class FluentBuilderSourceGeneratorTests
         };
 
         // Act
-        var result = _sut.Execute(Namespace, new[] { sourceFile });
+        var result = _sut.Execute(Namespace, [sourceFile]);
 
         // Assert
         result.Valid.Should().BeTrue();
@@ -352,7 +373,7 @@ public class FluentBuilderSourceGeneratorTests
         };
 
         // Act
-        var result = _sut.Execute(Namespace, new[] { sourceFile });
+        var result = _sut.Execute(Namespace, [sourceFile]);
 
         // Assert
         result.Valid.Should().BeTrue();
@@ -376,7 +397,7 @@ public class FluentBuilderSourceGeneratorTests
         };
 
         // Act
-        var result = _sut.Execute(Namespace, new[] { sourceFile });
+        var result = _sut.Execute(Namespace, [sourceFile]);
 
         // Assert
         result.Valid.Should().BeTrue();
@@ -404,7 +425,7 @@ public class FluentBuilderSourceGeneratorTests
         };
 
         // Act
-        var result = _sut.Execute(Namespace, new[] { sourceFile });
+        var result = _sut.Execute(Namespace, [sourceFile]);
 
         // Assert
         result.Valid.Should().BeTrue();
@@ -452,7 +473,7 @@ public class FluentBuilderSourceGeneratorTests
         };
 
         // Act
-        var result = _sut.Execute(Namespace, new[] { sourceFile });
+        var result = _sut.Execute(Namespace, [sourceFile]);
 
         // Assert
         result.Valid.Should().BeTrue();
@@ -484,7 +505,7 @@ public class FluentBuilderSourceGeneratorTests
         };
 
         // Act
-        var result = _sut.Execute(Namespace, new[] { sourceFile });
+        var result = _sut.Execute(Namespace, [sourceFile]);
 
         // Assert
         result.Valid.Should().BeTrue();
@@ -514,7 +535,7 @@ public class FluentBuilderSourceGeneratorTests
         };
 
         // Act
-        var result = _sut.Execute(Namespace, new[] { sourceFile });
+        var result = _sut.Execute(Namespace, [sourceFile]);
 
         // Assert
         result.Valid.Should().BeTrue();
@@ -554,7 +575,7 @@ public class FluentBuilderSourceGeneratorTests
         };
 
         // Act
-        var result = _sut.Execute(Namespace, new[] { sourceFile1, sourceFile2 });
+        var result = _sut.Execute(Namespace, [sourceFile1, sourceFile2]);
 
         // Assert
         result.Valid.Should().BeTrue();
@@ -600,7 +621,7 @@ public class FluentBuilderSourceGeneratorTests
         };
 
         // Act
-        var result = _sut.Execute(Namespace, new[] { sourceFile1, sourceFile2 });
+        var result = _sut.Execute(Namespace, [sourceFile1, sourceFile2]);
 
         // Assert
         result.Valid.Should().BeTrue();
@@ -630,7 +651,7 @@ public class FluentBuilderSourceGeneratorTests
         };
 
         // Act
-        var result = _sut.Execute(Namespace, new[] { sourceFile });
+        var result = _sut.Execute(Namespace, [sourceFile]);
 
         // Assert
         result.Valid.Should().BeTrue();
@@ -660,7 +681,7 @@ public class FluentBuilderSourceGeneratorTests
         };
 
         // Act
-        var result = _sut.Execute(Namespace, new[] { sourceFile });
+        var result = _sut.Execute(Namespace, [sourceFile]);
 
         // Assert
         result.Valid.Should().BeTrue();
@@ -690,7 +711,7 @@ public class FluentBuilderSourceGeneratorTests
         };
 
         // Act
-        var result = _sut.Execute(Namespace, new[] { sourceFile });
+        var result = _sut.Execute(Namespace, [sourceFile]);
 
         // Assert
         result.Valid.Should().BeTrue();
@@ -701,9 +722,6 @@ public class FluentBuilderSourceGeneratorTests
 
         if (Write) File.WriteAllText($"../../../DTO/{builderFileName}", builder.Text);
         builder.Text.Should().Be(File.ReadAllText($"../../../DTO/{builderFileName}"));
-
-        //var b = new ClassWithCultureInfoBuilder();
-        //var c = b.Build();
     }
 
     [Fact]
@@ -769,7 +787,7 @@ public class FluentBuilderSourceGeneratorTests
         };
 
         // Act
-        var result = _sut.Execute(Namespace, new[] { sourceFileTest, sourceFileOther });
+        var result = _sut.Execute(Namespace, [sourceFileTest, sourceFileOther]);
 
         // Assert
         result.Valid.Should().BeTrue();
@@ -797,8 +815,7 @@ public class FluentBuilderSourceGeneratorTests
             Text = File.ReadAllText(path),
             AttributeToAddToClass = new ExtraAttribute
             {
-                Name = "FluentBuilder.AutoGenerateBuilder",
-                //ArgumentList = new[] { "FluentBuilderAccessibility.PublicAndPrivate" }
+                Name = "FluentBuilder.AutoGenerateBuilder"
             }
         };
 
