@@ -38,7 +38,10 @@ namespace FluentBuilderGeneratorTests.DTO
         }
 
         private bool _Constructor1164815551_IsSet;
-        private Lazy<FluentBuilderGeneratorTests.DTO.ClassWithPrivateSetter2> _Constructor1164815551 = new Lazy<FluentBuilderGeneratorTests.DTO.ClassWithPrivateSetter2>(() => new FluentBuilderGeneratorTests.DTO.ClassWithPrivateSetter2());
+        private Lazy<FluentBuilderGeneratorTests.DTO.ClassWithPrivateSetter2> _Constructor1164815551 = new Lazy<FluentBuilderGeneratorTests.DTO.ClassWithPrivateSetter2>(() => new FluentBuilderGeneratorTests.DTO.ClassWithPrivateSetter2()
+        {
+
+        });
         public ClassWithPrivateSetter2Builder UsingConstructor()
         {
             _Constructor1164815551 = new Lazy<FluentBuilderGeneratorTests.DTO.ClassWithPrivateSetter2>(() =>
@@ -46,7 +49,10 @@ namespace FluentBuilderGeneratorTests.DTO
                 return new FluentBuilderGeneratorTests.DTO.ClassWithPrivateSetter2
                 (
 
-                );
+                )
+                {
+
+                };
             });
             _Constructor1164815551_IsSet = true;
 
@@ -95,7 +101,10 @@ namespace FluentBuilderGeneratorTests.DTO
             return Instance.Value;
         }
 
-        public static ClassWithPrivateSetter2 Default() => new ClassWithPrivateSetter2();
+        public static ClassWithPrivateSetter2 Default() => new ClassWithPrivateSetter2()
+        {
+
+        };
 
     }
 }

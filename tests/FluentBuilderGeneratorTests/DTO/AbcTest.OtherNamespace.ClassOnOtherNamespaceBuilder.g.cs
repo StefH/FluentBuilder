@@ -38,7 +38,10 @@ namespace AbcTest.OtherNamespace
         }
 
         private bool _Constructor1204632294_IsSet;
-        private Lazy<AbcTest.OtherNamespace.ClassOnOtherNamespace> _Constructor1204632294 = new Lazy<AbcTest.OtherNamespace.ClassOnOtherNamespace>(() => new AbcTest.OtherNamespace.ClassOnOtherNamespace());
+        private Lazy<AbcTest.OtherNamespace.ClassOnOtherNamespace> _Constructor1204632294 = new Lazy<AbcTest.OtherNamespace.ClassOnOtherNamespace>(() => new AbcTest.OtherNamespace.ClassOnOtherNamespace()
+        {
+
+        });
         public ClassOnOtherNamespaceBuilder UsingConstructor()
         {
             _Constructor1204632294 = new Lazy<AbcTest.OtherNamespace.ClassOnOtherNamespace>(() =>
@@ -46,7 +49,10 @@ namespace AbcTest.OtherNamespace
                 return new AbcTest.OtherNamespace.ClassOnOtherNamespace
                 (
 
-                );
+                )
+                {
+
+                };
             });
             _Constructor1204632294_IsSet = true;
 
@@ -95,7 +101,10 @@ namespace AbcTest.OtherNamespace
             return Instance.Value;
         }
 
-        public static ClassOnOtherNamespace Default() => new ClassOnOtherNamespace();
+        public static ClassOnOtherNamespace Default() => new ClassOnOtherNamespace()
+        {
+
+        };
 
     }
 }

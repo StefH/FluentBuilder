@@ -131,7 +131,10 @@ namespace FluentBuilderGeneratorTests.DTO
         }
 
         private bool _Constructor_1318089537_IsSet;
-        private Lazy<FluentBuilderGeneratorTests.DTO.ClassWithPropertyValueSet> _Constructor_1318089537 = new Lazy<FluentBuilderGeneratorTests.DTO.ClassWithPropertyValueSet>(() => new FluentBuilderGeneratorTests.DTO.ClassWithPropertyValueSet());
+        private Lazy<FluentBuilderGeneratorTests.DTO.ClassWithPropertyValueSet> _Constructor_1318089537 = new Lazy<FluentBuilderGeneratorTests.DTO.ClassWithPropertyValueSet>(() => new FluentBuilderGeneratorTests.DTO.ClassWithPropertyValueSet()
+        {
+
+        });
         public ClassWithPropertyValueSetBuilder UsingConstructor()
         {
             _Constructor_1318089537 = new Lazy<FluentBuilderGeneratorTests.DTO.ClassWithPropertyValueSet>(() =>
@@ -139,7 +142,10 @@ namespace FluentBuilderGeneratorTests.DTO
                 return new FluentBuilderGeneratorTests.DTO.ClassWithPropertyValueSet
                 (
 
-                );
+                )
+                {
+
+                };
             });
             _Constructor_1318089537_IsSet = true;
 
@@ -208,7 +214,10 @@ namespace FluentBuilderGeneratorTests.DTO
             return Instance.Value;
         }
 
-        public static ClassWithPropertyValueSet Default() => new ClassWithPropertyValueSet();
+        public static ClassWithPropertyValueSet Default() => new ClassWithPropertyValueSet()
+        {
+
+        };
 
     }
 }
