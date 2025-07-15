@@ -129,10 +129,10 @@ internal partial class FluentBuilderClassesGenerator : IFilesGenerator
         IReadOnlyList<IMethodSymbol> publicConstructors
     )
     {
+        var extraUsings = new List<string>();
+
         var builderClassName = classSymbol.BuilderClassName;
         var (propertiesPublicSettable, _) = GetProperties(classSymbol, fluentData.HandleBaseClasses, fluentData.Accessibility);
-
-        var extraUsings = new List<string>();
 
         var sb = new StringBuilder();
         foreach (var publicConstructor in publicConstructors)
@@ -156,9 +156,11 @@ internal partial class FluentBuilderClassesGenerator : IFilesGenerator
                 defaultValues.Add(defaultValue);
             }
 
+            var requiredProperties = GetRequiredProperties(propertiesPublicSettable);
+
             sb.AppendLine(8, $"private Lazy<{classSymbol.NamedTypeSymbol}> _Constructor{constructorHashCode} = new Lazy<{classSymbol.NamedTypeSymbol}>(() => new {classSymbol.NamedTypeSymbol}({string.Join(",", defaultValues)})");
             sb.AppendLine(8, "{");
-            AddRequiredProperties(sb, propertiesPublicSettable.Where(p => p.IsRequired));
+            sb.AppendLines(12, requiredProperties, ",\r\n");
             sb.AppendLine(8, "});");
 
 
@@ -171,7 +173,10 @@ internal partial class FluentBuilderClassesGenerator : IFilesGenerator
             sb.AppendLine(8, $"        return new {classSymbol.NamedTypeSymbol}");
             sb.AppendLine(8, @"        (");
             sb.AppendLines(20, constructorParameters.Select(x => x.Symbol.Name), ", ");
-            sb.AppendLine(8, @"        );");
+            sb.AppendLine(8, @"        )");
+            sb.AppendLine(8, @"        {");
+            sb.AppendLines(20, requiredProperties, ",\r\n");
+            sb.AppendLine(8, @"        };");
 
             sb.AppendLine(8, @"    });");
 
@@ -227,7 +232,7 @@ internal partial class FluentBuilderClassesGenerator : IFilesGenerator
             }
 
             sb.AppendLine(!initOnly, $"        private bool _{CamelCase(property.Name)}IsSet;");
-        
+
             sb.AppendLine($"        private Lazy<{property.Type}> _{CamelCase(property.Name)} = new Lazy<{property.Type}>(() => {defaultValue});");
 
             sb.AppendLine($"        public {builderClassName} With{property.Name}({type} value) => With{property.Name}(() => value);");
@@ -480,7 +485,7 @@ internal partial class FluentBuilderClassesGenerator : IFilesGenerator
         }
         output.AppendLine(20, "else { instance = Default(); }");
         output.AppendLine();
-        
+
         output.AppendLine(20, "return instance;");
 
         output.AppendLine(8, @"        });");
@@ -489,7 +494,7 @@ internal partial class FluentBuilderClassesGenerator : IFilesGenerator
         output.AppendLine();
         output.AppendLines(12, propertiesPublicSettable.Where(p => !p.IsInitOnly()).Select(property => $"if (_{CamelCase(property.Name)}IsSet) {{ Instance.Value.{property.Name} = _{CamelCase(property.Name)}.Value; }}"));
         output.AppendLines(12, propertiesPrivateSettable.Where(p => !p.IsInitOnly()).Select(property => $"if (_{CamelCase(property.Name)}IsSet) {{ Set{property.Name}(Instance.Value, _{CamelCase(property.Name)}.Value); }}"));
-        
+
         output.AppendLine(8, @"    PostBuild(Instance.Value);");
 
         output.AppendLine();
@@ -506,13 +511,14 @@ internal partial class FluentBuilderClassesGenerator : IFilesGenerator
         }
         output.AppendLine(8, $"public static {className} Default() => new {className}({string.Join(", ", defaultValues)})");
         output.AppendLine(8, "{");
-        AddRequiredProperties(output, propertiesPublicSettable.Where(p => p.IsRequired));
+        var requiredProperties = GetRequiredProperties(propertiesPublicSettable);
+        output.AppendLines(12, requiredProperties, ",\r\n");
         output.AppendLine(8, "};");
 
         return output.ToString();
     }
 
-    private static void AddRequiredProperties(StringBuilder output, IEnumerable<IPropertySymbol> properties)
+    private static IReadOnlyList<string> GetRequiredProperties(IEnumerable<IPropertySymbol> properties)
     {
         var requiredValues = new List<string>();
         foreach (var p in properties.Where(p => p.IsRequired))
@@ -520,7 +526,8 @@ internal partial class FluentBuilderClassesGenerator : IFilesGenerator
             var (defaultValue, _) = DefaultValueHelper.GetDefaultValue(p, p.Type);
             requiredValues.Add($"{p.Name} = {defaultValue}");
         }
-        output.AppendLines(12, requiredValues, ",\r\n");
+
+        return requiredValues;
     }
 
     private static void BuildPrivateSetMethod(StringBuilder output, string className, IPropertySymbol property)

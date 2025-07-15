@@ -69,7 +69,13 @@ namespace FluentBuilderGeneratorTests.DTO
         {
             _Constructor1040722879 = new Lazy<FluentBuilderGeneratorTests.DTO.ClassWithInitProperties>(() =>
             {
-                return null;
+                return new FluentBuilderGeneratorTests.DTO.ClassWithInitProperties
+                (
+
+                )
+                {
+                    RequiredTest = string.Empty
+                };
             });
             _Constructor1040722879_IsSet = true;
 
