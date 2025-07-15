@@ -498,9 +498,24 @@ internal partial class FluentBuilderClassesGenerator : IFilesGenerator
             var (defaultValue, _) = DefaultValueHelper.GetDefaultValue(p.Symbol, p.Symbol.Type);
             defaultValues.Add(defaultValue);
         }
-        output.AppendLine(8, $"public static {className} Default() => new {className}({string.Join(", ", defaultValues)});");
+        output.AppendLine(8, $"public static {className} Default() => new {className}({string.Join(", ", defaultValues)})");
+        output.AppendLine(8, "{");
+        AddRequiredProperties(output, propertiesPublicSettable.Where(p => p.IsRequired));
+        output.AppendLine(8, "};");
 
         return output.ToString();
+    }
+
+    private static void AddRequiredProperties(StringBuilder output, IEnumerable<IPropertySymbol> properties)
+    {
+        var requiredValues = new List<string>();
+        foreach (var p in properties.Where(p => p.IsRequired))
+        {
+            var (defaultValue, _) = DefaultValueHelper.GetDefaultValue(p, p.Type);
+            requiredValues.Add($"{p.Name} = {defaultValue}");
+        }
+        output.AppendLines(12, requiredValues, ",\r\n");
+        output.AppendLine(8, "};");
     }
 
     private static void BuildPrivateSetMethod(StringBuilder output, string className, IPropertySymbol property)
