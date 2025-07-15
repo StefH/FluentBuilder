@@ -1,4 +1,5 @@
 using FluentBuilderGenerator.Extensions;
+using FluentBuilderGenerator.Models;
 using FluentBuilderGenerator.Types;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -108,7 +109,7 @@ internal static class DefaultValueHelper
 
             var body = namedTypeSymbol.DelegateInvokeMethod.ReturnsVoid
                 ? "{ }" // It's an Action
-                : GetDefault(namedTypeSymbol.DelegateInvokeMethod.ReturnType); // It's an Func
+                : GetDefault(namedTypeSymbol.DelegateInvokeMethod.ReturnType); // It's a Func
 
             return $"new {typeSymbol}(({string.Join(", ", delegateParameters)}) => {body})";
         }
@@ -134,6 +135,11 @@ internal static class DefaultValueHelper
 
         var constructorParameters = bestMatchingConstructor.Parameters.Select(parameter => GetDefault(parameter.Type));
 
-        return $"new {typeSymbol}({string.Join(", ", constructorParameters)})";
+        var publicRequiredSetProperties = typeSymbol.GetMembers().OfType<IPropertySymbol>()
+            .Where(p => p.IsRequired)
+            .Where(x => x.SetMethod is not null)
+            .Where(x => x.CanBeReferencedByName);
+
+        return $"new {typeSymbol}({string.Join(", ", constructorParameters)}) {{ {string.Join(", ", publicRequiredSetProperties.GetRequiredPropertiesAsAssignments())} }}";
     }
 }
