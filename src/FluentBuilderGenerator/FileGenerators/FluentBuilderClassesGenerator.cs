@@ -160,7 +160,7 @@ internal partial class FluentBuilderClassesGenerator : IFilesGenerator
 
             sb.AppendLine(8, $"private Lazy<{classSymbol.NamedTypeSymbol}> _Constructor{constructorHashCode} = new Lazy<{classSymbol.NamedTypeSymbol}>(() => new {classSymbol.NamedTypeSymbol}({string.Join(",", defaultValues)})");
             sb.AppendLine(8, "{");
-            sb.AppendLines(12, requiredProperties, ",\r\n");
+            sb.AppendLines(12, requiredProperties, ",");
             sb.AppendLine(8, "});");
 
 
@@ -175,7 +175,7 @@ internal partial class FluentBuilderClassesGenerator : IFilesGenerator
             sb.AppendLines(20, constructorParameters.Select(x => x.Symbol.Name), ", ");
             sb.AppendLine(8, @"        )");
             sb.AppendLine(8, @"        {");
-            sb.AppendLines(20, requiredProperties, ",\r\n");
+            sb.AppendLines(20, requiredProperties, ",");
             sb.AppendLine(8, @"        };");
 
             sb.AppendLine(8, @"    });");
@@ -512,7 +512,7 @@ internal partial class FluentBuilderClassesGenerator : IFilesGenerator
         output.AppendLine(8, $"public static {className} Default() => new {className}({string.Join(", ", defaultValues)})");
         output.AppendLine(8, "{");
         var requiredProperties = GetRequiredProperties(propertiesPublicSettable);
-        output.AppendLines(12, requiredProperties, ",\r\n");
+        output.AppendLines(12, requiredProperties, ",");
         output.AppendLine(8, "};");
 
         return output.ToString();

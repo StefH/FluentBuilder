@@ -59,11 +59,19 @@ namespace FluentBuilderGeneratorTests.DTO
             _requiredTestIsSet = true;
             return this;
         }
+        private Lazy<string> _requiredTestInit = new Lazy<string>(() => string.Empty);
+        public ClassWithInitPropertiesBuilder WithRequiredTestInit(string value) => WithRequiredTestInit(() => value);
+        public ClassWithInitPropertiesBuilder WithRequiredTestInit(Func<string> func)
+        {
+            _requiredTestInit = new Lazy<string>(func);
+            return this;
+        }
 
         private bool _Constructor1040722879_IsSet;
         private Lazy<FluentBuilderGeneratorTests.DTO.ClassWithInitProperties> _Constructor1040722879 = new Lazy<FluentBuilderGeneratorTests.DTO.ClassWithInitProperties>(() => new FluentBuilderGeneratorTests.DTO.ClassWithInitProperties()
         {
-            RequiredTest = string.Empty
+            RequiredTest = string.Empty,
+            RequiredTestInit = string.Empty
         });
         public ClassWithInitPropertiesBuilder UsingConstructor()
         {
@@ -74,7 +82,8 @@ namespace FluentBuilderGeneratorTests.DTO
 
                 )
                 {
-                    RequiredTest = string.Empty
+                    RequiredTest = string.Empty,
+                    RequiredTestInit = string.Empty
                 };
             });
             _Constructor1040722879_IsSet = true;
@@ -107,7 +116,8 @@ namespace FluentBuilderGeneratorTests.DTO
                             Normal = _normal.Value,
                             SiteId = _siteId.Value,
                             ProductName = _productName.Value,
-                            RequiredTest = _requiredTest.Value
+                            RequiredTest = _requiredTest.Value,
+                            RequiredTestInit = _requiredTestInit.Value
                         };
 
                         return instance;
@@ -130,7 +140,8 @@ namespace FluentBuilderGeneratorTests.DTO
 
         public static ClassWithInitProperties Default() => new ClassWithInitProperties()
         {
-            RequiredTest = string.Empty
+            RequiredTest = string.Empty,
+            RequiredTestInit = string.Empty
         };
 
     }

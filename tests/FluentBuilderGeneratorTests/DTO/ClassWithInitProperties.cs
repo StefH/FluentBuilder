@@ -11,5 +11,7 @@ namespace FluentBuilderGeneratorTests.DTO
         public string PrivateProductName { get; private init; }
 
         public required string RequiredTest { get; set; }
+
+        public required string RequiredTestInit { get; init; }
     }
 }
