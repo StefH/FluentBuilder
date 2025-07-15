@@ -9,5 +9,7 @@ namespace FluentBuilderGeneratorTests.DTO
         public string ProductName { get; init; }
 
         public string PrivateProductName { get; private init; }
+
+        public required string RequiredTest { get; set; }
     }
 }
