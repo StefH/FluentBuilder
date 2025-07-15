@@ -50,22 +50,31 @@ namespace FluentBuilderGeneratorTests.DTO
             _productName = new Lazy<string>(func);
             return this;
         }
+        private bool _requiredTestIsSet;
+        private Lazy<string> _requiredTest = new Lazy<string>(() => string.Empty);
+        public ClassWithInitPropertiesBuilder WithRequiredTest(string value) => WithRequiredTest(() => value);
+        public ClassWithInitPropertiesBuilder WithRequiredTest(Func<string> func)
+        {
+            _requiredTest = new Lazy<string>(func);
+            _requiredTestIsSet = true;
+            return this;
+        }
 
-        //private bool _Constructor1040722879_IsSet;
-        //private Lazy<FluentBuilderGeneratorTests.DTO.ClassWithInitProperties> _Constructor1040722879 = new Lazy<FluentBuilderGeneratorTests.DTO.ClassWithInitProperties>(() => new FluentBuilderGeneratorTests.DTO.ClassWithInitProperties());
-        //public ClassWithInitPropertiesBuilder UsingConstructor()
-        //{
-        //    _Constructor1040722879 = new Lazy<FluentBuilderGeneratorTests.DTO.ClassWithInitProperties>(() =>
-        //    {
-        //        return new FluentBuilderGeneratorTests.DTO.ClassWithInitProperties
-        //        (
+        private bool _Constructor1040722879_IsSet;
+        private Lazy<FluentBuilderGeneratorTests.DTO.ClassWithInitProperties> _Constructor1040722879 = new Lazy<FluentBuilderGeneratorTests.DTO.ClassWithInitProperties>(() => new FluentBuilderGeneratorTests.DTO.ClassWithInitProperties()
+        {
+            RequiredTest = string.Empty
+        });
+        public ClassWithInitPropertiesBuilder UsingConstructor()
+        {
+            _Constructor1040722879 = new Lazy<FluentBuilderGeneratorTests.DTO.ClassWithInitProperties>(() =>
+            {
+                return null;
+            });
+            _Constructor1040722879_IsSet = true;
 
-        //        );
-        //    });
-        //    _Constructor1040722879_IsSet = true;
-
-        //    return this;
-        //}
+            return this;
+        }
 
 
         public ClassWithInitPropertiesBuilder UsingInstance(ClassWithInitProperties value) => UsingInstance(() => value);
@@ -92,13 +101,13 @@ namespace FluentBuilderGeneratorTests.DTO
                             Normal = _normal.Value,
                             SiteId = _siteId.Value,
                             ProductName = _productName.Value,
-                            RequiredTest = default!
+                            RequiredTest = _requiredTest.Value
                         };
 
                         return instance;
                     }
 
-                    //if (_Constructor1040722879_IsSet) { instance = _Constructor1040722879.Value; }
+                    if (_Constructor1040722879_IsSet) { instance = _Constructor1040722879.Value; }
                     else { instance = Default(); }
 
                     return instance;
@@ -106,15 +115,16 @@ namespace FluentBuilderGeneratorTests.DTO
             }
 
             if (_normalIsSet) { Instance.Value.Normal = _normal.Value; }
+            if (_requiredTestIsSet) { Instance.Value.RequiredTest = _requiredTest.Value; }
 
             PostBuild(Instance.Value);
 
             return Instance.Value;
         }
 
-        public static ClassWithInitProperties Default() => new ClassWithInitProperties
+        public static ClassWithInitProperties Default() => new ClassWithInitProperties()
         {
-            RequiredTest = default!
+            RequiredTest = string.Empty
         };
 
     }

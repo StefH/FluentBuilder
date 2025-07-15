@@ -84,7 +84,7 @@ internal partial class FluentBuilderClassesGenerator : IFilesGenerator
             throw new NotSupportedException($"Unable to generate a FluentBuilder for the class '{classSymbol.NamedTypeSymbol}' because no public constructor is defined.");
         }
 
-        var constructorCode = GenerateUsingConstructorCode(classSymbol, publicConstructors);
+        var constructorCode = GenerateUsingConstructorCode(fluentData, classSymbol, publicConstructors);
 
         var propertiesCode = GenerateWithPropertyCode(fluentData, classSymbol, allClassSymbols);
 
@@ -124,11 +124,13 @@ internal partial class FluentBuilderClassesGenerator : IFilesGenerator
     }
 
     private static (StringBuilder StringBuilder, IReadOnlyList<string> ExtraUsings) GenerateUsingConstructorCode(
+        FluentData fluentData,
         ClassSymbol classSymbol,
         IReadOnlyList<IMethodSymbol> publicConstructors
     )
     {
         var builderClassName = classSymbol.BuilderClassName;
+        var (propertiesPublicSettable, _) = GetProperties(classSymbol, fluentData.HandleBaseClasses, fluentData.Accessibility);
 
         var extraUsings = new List<string>();
 
@@ -154,7 +156,11 @@ internal partial class FluentBuilderClassesGenerator : IFilesGenerator
                 defaultValues.Add(defaultValue);
             }
 
-            sb.AppendLine(8, $"private Lazy<{classSymbol.NamedTypeSymbol}> _Constructor{constructorHashCode} = new Lazy<{classSymbol.NamedTypeSymbol}>(() => new {classSymbol.NamedTypeSymbol}({string.Join(",", defaultValues)}));");
+            sb.AppendLine(8, $"private Lazy<{classSymbol.NamedTypeSymbol}> _Constructor{constructorHashCode} = new Lazy<{classSymbol.NamedTypeSymbol}>(() => new {classSymbol.NamedTypeSymbol}({string.Join(",", defaultValues)})");
+            sb.AppendLine(8, "{");
+            AddRequiredProperties(sb, propertiesPublicSettable.Where(p => p.IsRequired));
+            sb.AppendLine(8, "});");
+
 
             sb.AppendLine(8, $"public {builderClassName} UsingConstructor({constructorParametersAsString})");
             sb.AppendLine(8, @"{");
@@ -515,7 +521,6 @@ internal partial class FluentBuilderClassesGenerator : IFilesGenerator
             requiredValues.Add($"{p.Name} = {defaultValue}");
         }
         output.AppendLines(12, requiredValues, ",\r\n");
-        output.AppendLine(8, "};");
     }
 
     private static void BuildPrivateSetMethod(StringBuilder output, string className, IPropertySymbol property)
