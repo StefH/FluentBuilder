@@ -57,8 +57,7 @@ internal static class StringExtensions
         }
     }
 
-    private static string CamelCase(this string value) => $"{value.Substring(0, 1).ToLowerInvariant()}{value.Substring(1)}";
-    private static string CamelCase(this string value)
+    internal static string ToCamelCase(this string value)
     {
         if (string.IsNullOrEmpty(value) || char.IsLower(value[0]))
         {
@@ -74,7 +73,8 @@ internal static class StringExtensions
         chars[0] = char.ToLowerInvariant(chars[0]);
         return new string(chars);
     }
-    public static string ToPascalCase(this string value)
+
+    internal static string ToPascalCase(this string value)
     {
         if (string.IsNullOrEmpty(value) || char.IsUpper(value[0]))
         {

@@ -222,10 +222,11 @@ internal partial class FluentBuilderClassesGenerator : IFilesGenerator
             }
 
             var pascalCaseName = property.Name.ToPascalCase();
+            var camelCaseName = property.Name.ToCamelCase();
 
-            sb.AppendLine(!initOnly, $"        private bool _{CamelCase(property.Name)}IsSet;");
+            sb.AppendLine(!initOnly, $"        private bool _{camelCaseName}IsSet;");
 
-            sb.AppendLine(8, $"private Lazy<{property.Type}> _{CamelCase(property.Name)} = new Lazy<{property.Type}>(() => {defaultValue});");
+            sb.AppendLine(8, $"private Lazy<{property.Type}> _{camelCaseName} = new Lazy<{property.Type}>(() => {defaultValue});");
 
             sb.AppendLine(8, $"public {builderClassName} With{pascalCaseName}({type} value) => With{pascalCaseName}(() => value);");
 
@@ -241,7 +242,7 @@ internal partial class FluentBuilderClassesGenerator : IFilesGenerator
 
 
 
-                sb.AppendLine(!initOnly, $"            _{CamelCase(property.Name)}IsSet = false;");
+                sb.AppendLine(!initOnly, $"            _{camelCaseName}IsSet = false;");
                 sb.AppendLine(12, "return this;");
                 sb.AppendLine(8, "}");
                 sb.AppendLine();
@@ -278,12 +279,13 @@ internal partial class FluentBuilderClassesGenerator : IFilesGenerator
     private static StringBuilder GenerateWithPropertyFuncMethod(ClassSymbol classSymbol, IPropertyOrParameterSymbol property)
     {
         var className = classSymbol.BuilderClassName;
+        var camelCaseName = property.Name.ToCamelCase();
 
         return new StringBuilder()
             .AppendLine($"        public {className} With{property.Name.ToPascalCase()}(Func<{property.Type}> func)")
             .AppendLine("        {")
-            .AppendLine($"            _{CamelCase(property.Name)} = new Lazy<{property.Type}>(func);")
-            .AppendLine(!property.ExcludeFromIsSetLogic, $"            _{CamelCase(property.Name)}IsSet = true;")
+            .AppendLine($"            _{camelCaseName} = new Lazy<{property.Type}>(func);")
+            .AppendLine(!property.ExcludeFromIsSetLogic, $"            _{camelCaseName}IsSet = true;")
             .AppendLine("            return this;")
             .AppendLine("        }");
     }
@@ -480,10 +482,10 @@ internal partial class FluentBuilderClassesGenerator : IFilesGenerator
         {
             output.AppendLine(20, $"    instance = new {className}");
             output.AppendLine(20, @"    {");
-            output.AppendLines(20, propertiesPublicSettable.Select(property => $@"        {property.Name} = _{CamelCase(property.Name)}.Value"), ",");
+            output.AppendLines(20, propertiesPublicSettable.Select(property => $@"        {property.Name} = _{property.Name.ToCamelCase()}.Value"), ",");
             output.AppendLine(20, @"    };");
 
-            output.AppendLines(20, propertiesPrivateSettable.Select(property => $@"    if (_{CamelCase(property.Name)}IsSet) {{ Set{property.Name}(instance, _{CamelCase(property.Name)}.Value); }}"));
+            output.AppendLines(20, propertiesPrivateSettable.Select(property => $@"    if (_{property.Name.ToCamelCase()}IsSet) {{ Set{property.Name}(instance, _{property.Name.ToCamelCase()}.Value); }}"));
 
             output.AppendLine(20, @"    return instance;");
         }
@@ -502,14 +504,14 @@ internal partial class FluentBuilderClassesGenerator : IFilesGenerator
         {
             var parameters = propertiesPublicSettable
                 .Where(p => p.PropertyType == PropertyType.Parameter)
-                .Select(p => $"_{CamelCase(p.Name)}.Value");
+                .Select(p => $"_{p.Name.ToCamelCase()}.Value");
 
             output.AppendLine(20, $"else {{ instance = new {className}({string.Join(", ", parameters)}); }}");
         }
         else
         {
             output.AppendLine(20, "else { instance = Default(); }");
-        }   
+        }
         output.AppendLine();
 
         output.AppendLine(20, "return instance;");
@@ -518,8 +520,8 @@ internal partial class FluentBuilderClassesGenerator : IFilesGenerator
         output.AppendLine(8, @"    }");
 
         output.AppendLine();
-        output.AppendLines(12, propertiesPublicSettable.Where(p => !p.ExcludeFromIsSetLogic).Select(property => $"if (_{CamelCase(property.Name)}IsSet) {{ Instance.Value.{property.Name} = _{CamelCase(property.Name)}.Value; }}"));
-        output.AppendLines(12, propertiesPrivateSettable.Where(p => !p.ExcludeFromIsSetLogic).Select(property => $"if (_{CamelCase(property.Name)}IsSet) {{ Set{property.Name}(Instance.Value, _{CamelCase(property.Name)}.Value); }}"));
+        output.AppendLines(12, propertiesPublicSettable.Where(p => !p.ExcludeFromIsSetLogic).Select(property => $"if (_{property.Name.ToCamelCase()}IsSet) {{ Instance.Value.{property.Name} = _{property.Name.ToCamelCase()}.Value; }}"));
+        output.AppendLines(12, propertiesPrivateSettable.Where(p => !p.ExcludeFromIsSetLogic).Select(property => $"if (_{property.Name.ToCamelCase()}IsSet) {{ Set{property.Name}(Instance.Value, _{property.Name.ToCamelCase()}.Value); }}"));
 
         output.AppendLine(8, @"    PostBuild(Instance.Value);");
 
@@ -562,6 +564,4 @@ internal partial class FluentBuilderClassesGenerator : IFilesGenerator
 
         return classSymbols;
     }
-
-    private static string CamelCase(string value) => $"{value.Substring(0, 1).ToLowerInvariant()}{value.Substring(1)}";
 }
