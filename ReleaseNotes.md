@@ -1,7 +1,11 @@
+# 0.11.0 (23 August 2025)
+- [#72](https://github.com/StefH/FluentBuilder/pull/72) - Support primary constructor for classes and records [enhancement] contributed by [StefH](https://github.com/StefH)
+- [#59](https://github.com/StefH/FluentBuilder/issues/59) - Support primary constructors [enhancement]
+
 # 0.10.0.2 (26 June 2025)
 - [#68](https://github.com/StefH/FluentBuilder/pull/68) - Update CreateRelease.yml [enhancement] contributed by [StefH](https://github.com/StefH)
 - [#71](https://github.com/StefH/FluentBuilder/pull/71) - Add support for InitOnly properties [enhancement] contributed by [StefH](https://github.com/StefH)
-- [#70](https://github.com/StefH/FluentBuilder/issues/70) - Support for init-only properties
+- [#70](https://github.com/StefH/FluentBuilder/issues/70) - Support for init-only properties [enhancement]
 
 # 0.10.0 (19 October 2024)
 - [#65](https://github.com/StefH/FluentBuilder/pull/65) - Add support for generic AutoGenerateBuilderAttribute [enhancement] contributed by [StefH](https://github.com/StefH)
