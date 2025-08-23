@@ -15,10 +15,3 @@ internal interface IPropertyOrParameterSymbol
 
     bool ExcludeFromIsSetLogic { get; }
 }
-
-internal record PropertyOrParameterSymbol(ISymbol Symbol, ITypeSymbol Type, bool ExcludeFromIsSetLogic) : IPropertyOrParameterSymbol
-{
-    public PropertyType PropertyType => Symbol is IPropertySymbol ? PropertyType.Property : PropertyType.Parameter;
-
-    public string Name => Symbol.Name;
-}
