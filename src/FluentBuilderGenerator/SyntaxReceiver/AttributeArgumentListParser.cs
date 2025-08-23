@@ -76,14 +76,13 @@ internal static class AttributeArgumentListParser
 
     private static bool TryParseAsBoolean(ExpressionSyntax expressionSyntax, out bool value)
     {
-        value = default;
-
         if (expressionSyntax is LiteralExpressionSyntax literalExpressionSyntax)
         {
             value = literalExpressionSyntax.Kind() == SyntaxKind.TrueLiteralExpression;
             return true;
         }
 
+        value = false;
         return false;
     }
 

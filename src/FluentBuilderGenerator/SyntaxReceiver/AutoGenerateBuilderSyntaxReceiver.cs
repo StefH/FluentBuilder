@@ -167,7 +167,7 @@ internal static class AutoGenerateBuilderSyntaxReceiver
             return true;
         }
 
-        modifier = default;
+        modifier = null;
         return false;
     }
 

@@ -17,14 +17,13 @@ internal static class SyntaxNodeExtensions
     {
         // If we don't have a namespace at all we'll return an empty string
         // This accounts for the "default namespace" case
-        string nameSpace = string.Empty;
+        var nameSpace = string.Empty;
 
         // Get the containing syntax node for the type declaration
         // (could be a nested type, for example)
-        SyntaxNode? potentialNamespaceParent = syntaxNode.Parent;
+        var potentialNamespaceParent = syntaxNode.Parent;
 
-        // Keep moving "out" of nested classes etc until we get to a namespace
-        // or until we run out of parents
+        // Keep moving "out" of nested classes until we get to a namespace or until we run out of parents
         while (potentialNamespaceParent != null &&
                potentialNamespaceParent is not NamespaceDeclarationSyntax
                && potentialNamespaceParent is not FileScopedNamespaceDeclarationSyntax)

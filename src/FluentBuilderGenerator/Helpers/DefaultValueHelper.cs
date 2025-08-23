@@ -108,7 +108,7 @@ internal static class DefaultValueHelper
 
             var body = namedTypeSymbol.DelegateInvokeMethod.ReturnsVoid
                 ? "{ }" // It's an Action
-                : GetDefault(namedTypeSymbol.DelegateInvokeMethod.ReturnType); // It's an Func
+                : GetDefault(namedTypeSymbol.DelegateInvokeMethod.ReturnType); // It's a Func
 
             return $"new {typeSymbol}(({string.Join(", ", delegateParameters)}) => {body})";
         }
