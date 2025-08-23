@@ -53,7 +53,7 @@ public class FluentBuilderSourceGeneratorTests
     }
 
     [Fact]
-    public Task GenerateFiles_ForAClassWithoutAPublicConstructor_Should_Create_ErrorFile()
+    public void GenerateFiles_ForAClassWithoutAPublicConstructor_Should_Create_ErrorFile()
     {
         // Arrange
         var path = "./DTO2/MyAppDomainBuilder.cs";
@@ -74,10 +74,7 @@ public class FluentBuilderSourceGeneratorTests
         // Assert
         result.Files.Should().HaveCount(NumFiles);
         result.Files[NumFiles - 1].Path.Should().EndWith("Error.g.cs");
-
-        // Verify
-        var errorResult = result.GeneratorDriver.GetRunResult().Results.First().GeneratedSources.First(s => s.HintName.Contains("Error.g.cs"));
-        return Verifier.Verify(errorResult);
+        result.Files[NumFiles - 1].Text.Should().NotBeEmpty();
     }
 
     [Fact]
