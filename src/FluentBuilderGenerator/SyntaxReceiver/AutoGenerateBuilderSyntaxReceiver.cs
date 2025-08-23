@@ -43,7 +43,7 @@ internal static class AutoGenerateBuilderSyntaxReceiver
 
         if (!TryGetModifier(typeDeclarationSyntax, out _))
         {
-            diagnostic = Diagnostic.Create(DiagnosticDescriptors.ClassModifierShouldBeInternalOrPublic, typeDeclarationSyntax.GetLocation());
+            diagnostic = Diagnostic.Create(DiagnosticDescriptors.ClassOrRecordModifierShouldBeInternalOrPublic, typeDeclarationSyntax.GetLocation());
             return false;
         }
 
@@ -70,7 +70,7 @@ internal static class AutoGenerateBuilderSyntaxReceiver
 
         if (!TryGetModifier(typeDeclarationSyntax, out var modifier))
         {
-            diagnostic = Diagnostic.Create(DiagnosticDescriptors.ClassModifierShouldBeInternalOrPublic, typeDeclarationSyntax.GetLocation());
+            diagnostic = Diagnostic.Create(DiagnosticDescriptors.ClassOrRecordModifierShouldBeInternalOrPublic, typeDeclarationSyntax.GetLocation());
             return false;
         }
 

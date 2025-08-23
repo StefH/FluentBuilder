@@ -5,7 +5,7 @@ namespace FluentBuilderGenerator.Constants;
 internal static class DiagnosticDescriptors
 {
     internal static readonly DiagnosticDescriptor Error = new(
-        "SGERR0001",
+        "FBGERR0001",
         "Source generator exception",
         "An exception occurred during source generation: {0}",
         nameof(FluentBuilderGenerator),
@@ -14,8 +14,8 @@ internal static class DiagnosticDescriptors
         "An unhandled exception occurred while generating source code."
     );
 
-    internal static readonly DiagnosticDescriptor ClassModifierShouldBeInternalOrPublic = new(
-        "SGINF0001",
+    internal static readonly DiagnosticDescriptor ClassOrRecordModifierShouldBeInternalOrPublic = new(
+        "FBGINF0001",
         "Information",
         "Class or Record modifier should be 'public' or 'internal'",
         nameof(FluentBuilderGenerator),
@@ -24,7 +24,7 @@ internal static class DiagnosticDescriptors
     );
 
     internal static readonly DiagnosticDescriptor CustomBuilderClassModifierShouldBePartialAndInternalOrPublic = new(
-        "SGINF0002",
+        "FBGINF0002",
         "Information",
         "Custom builder class should be 'partial' and 'public' or 'internal'",
         nameof(FluentBuilderGenerator),
