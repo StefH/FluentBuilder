@@ -18,13 +18,22 @@ internal static class AutoGenerateBuilderSyntaxReceiver
 
     public static bool CheckSyntaxNode(SyntaxNode syntaxNode, out Diagnostic? diagnostic)
     {
-        if (syntaxNode is not ClassDeclarationSyntax classDeclarationSyntax)
+        TypeDeclarationSyntax typeDeclarationSyntax;
+        if (syntaxNode is ClassDeclarationSyntax classDeclarationSyntax)
+        {
+            typeDeclarationSyntax = classDeclarationSyntax;
+        }
+        else if (syntaxNode is RecordDeclarationSyntax recordDeclarationSyntax)
+        {
+            typeDeclarationSyntax = recordDeclarationSyntax;
+        }
+        else
         {
             diagnostic = null;
             return false;
         }
 
-        var attributeList = classDeclarationSyntax.AttributeLists
+        var attributeList = typeDeclarationSyntax.AttributeLists
             .FirstOrDefault(x => x.Attributes.Any(AttributeArgumentListParser.IsMatch));
         if (attributeList is null)
         {
@@ -32,9 +41,9 @@ internal static class AutoGenerateBuilderSyntaxReceiver
             return false;
         }
 
-        if (!TryGetClassModifier(classDeclarationSyntax, out _))
+        if (!TryGetModifier(typeDeclarationSyntax, out _))
         {
-            diagnostic = Diagnostic.Create(DiagnosticDescriptors.ClassModifierShouldBeInternalOrPublic, classDeclarationSyntax.GetLocation());
+            diagnostic = Diagnostic.Create(DiagnosticDescriptors.ClassModifierShouldBeInternalOrPublic, typeDeclarationSyntax.GetLocation());
             return false;
         }
 
@@ -44,42 +53,42 @@ internal static class AutoGenerateBuilderSyntaxReceiver
 
     public static FluentData HandleSyntaxNode(SyntaxNode syntaxNode, SemanticModel semanticModel, out Diagnostic? diagnostic)
     {
-        if (TryGet((ClassDeclarationSyntax) syntaxNode, semanticModel, out var data, out diagnostic))
+        return syntaxNode switch
         {
-            return data;
-        }
-
-        throw new InvalidOperationException();
+            ClassDeclarationSyntax classDeclarationSyntax when TryGet(classDeclarationSyntax, semanticModel, out var data, out diagnostic) => data,
+            RecordDeclarationSyntax recordDeclarationSyntax when TryGet(recordDeclarationSyntax, semanticModel, out var data, out diagnostic) => data,
+            _ => throw new InvalidOperationException("Only classes or records are supported."),
+        };
     }
 
-    private static bool TryGet(ClassDeclarationSyntax classDeclarationSyntax, SemanticModel semanticModel, out FluentData data, out Diagnostic? diagnostic)
+    private static bool TryGet(TypeDeclarationSyntax typeDeclarationSyntax, SemanticModel semanticModel, out FluentData data, out Diagnostic? diagnostic)
     {
         data = default;
-        
-        var attributeList = classDeclarationSyntax.AttributeLists
+
+        var attributeList = typeDeclarationSyntax.AttributeLists
             .FirstOrDefault(x => x.Attributes.Any(AttributeArgumentListParser.IsMatch))!;
-        
-        if (!TryGetClassModifier(classDeclarationSyntax, out var classModifier))
+
+        if (!TryGetModifier(typeDeclarationSyntax, out var modifier))
         {
-            diagnostic = Diagnostic.Create(DiagnosticDescriptors.ClassModifierShouldBeInternalOrPublic, classDeclarationSyntax.GetLocation());
+            diagnostic = Diagnostic.Create(DiagnosticDescriptors.ClassModifierShouldBeInternalOrPublic, typeDeclarationSyntax.GetLocation());
             return false;
         }
 
         var usings = new List<string>();
 
-        var ns = classDeclarationSyntax.GetNamespace();
+        var ns = typeDeclarationSyntax.GetNamespace();
         if (!string.IsNullOrEmpty(ns))
         {
             usings.Add(ns);
         }
 
-        if (classDeclarationSyntax.TryGetParentSyntax(out CompilationUnitSyntax? cc))
+        if (typeDeclarationSyntax.TryGetParentSyntax(out CompilationUnitSyntax? cc))
         {
             usings.AddRange(cc.Usings.Select(@using => @using.Name!.ToString()));
         }
 
         // https://github.com/StefH/FluentBuilder/issues/36
-        usings.AddRange(classDeclarationSyntax.GetAncestorsUsings().Select(@using => @using.Name!.ToString()));
+        usings.AddRange(typeDeclarationSyntax.GetAncestorsUsings().Select(@using => @using.Name!.ToString()));
 
         usings = usings.Distinct().ToList();
 
@@ -87,18 +96,18 @@ internal static class AutoGenerateBuilderSyntaxReceiver
 
         if (fluentBuilderAttributeArguments.RawTypeName != null) // The class which needs to be processed by the CustomBuilder is provided as type
         {
-            if (!AreBuilderClassModifiersValid(classDeclarationSyntax))
+            if (!AreBuilderClassModifiersValid(typeDeclarationSyntax))
             {
-                diagnostic = Diagnostic.Create(DiagnosticDescriptors.CustomBuilderClassModifierShouldBePartialAndInternalOrPublic, classDeclarationSyntax.GetLocation());
+                diagnostic = Diagnostic.Create(DiagnosticDescriptors.CustomBuilderClassModifierShouldBePartialAndInternalOrPublic, typeDeclarationSyntax.GetLocation());
                 return false;
             }
 
             data = new FluentData
             {
                 Namespace = ns,
-                ClassModifier = classModifier,
-                ShortBuilderClassName = $"{classDeclarationSyntax.Identifier}",
-                FullBuilderClassName = CreateFullBuilderClassName(ns, classDeclarationSyntax),
+                ClassModifier = modifier,
+                ShortBuilderClassName = $"{typeDeclarationSyntax.Identifier}",
+                FullBuilderClassName = CreateFullBuilderClassName(ns, typeDeclarationSyntax),
                 FullRawTypeName = fluentBuilderAttributeArguments.RawTypeName,
                 ShortTypeName = ConvertTypeName(fluentBuilderAttributeArguments.RawTypeName).Split('.').Last(),
                 MetadataName = ConvertTypeName(fluentBuilderAttributeArguments.RawTypeName),
@@ -113,14 +122,14 @@ internal static class AutoGenerateBuilderSyntaxReceiver
             return true;
         }
 
-        var fullType = GetFullType(ns, classDeclarationSyntax, false); // FluentBuilderGeneratorTests.DTO.UserT<T>
-        var fullBuilderType = GetFullType(ns, classDeclarationSyntax, true);
-        var metadataName = classDeclarationSyntax.GetMetadataName();
+        var fullType = GetFullType(ns, typeDeclarationSyntax, false); // FluentBuilderGeneratorTests.DTO.UserT<T>
+        var fullBuilderType = GetFullType(ns, typeDeclarationSyntax, true);
+        var metadataName = typeDeclarationSyntax.GetMetadataName();
 
         data = new FluentData
         {
             Namespace = ns,
-            ClassModifier = classModifier,
+            ClassModifier = modifier,
             ShortBuilderClassName = $"{fullBuilderType.Split('.').Last()}",
             FullBuilderClassName = fullBuilderType,
             FullRawTypeName = fullType,
@@ -143,7 +152,7 @@ internal static class AutoGenerateBuilderSyntaxReceiver
         return modifiers.Contains(ModifierPartial) && (modifiers.Contains(ModifierPublic) || modifiers.Contains(ModifierInternal));
     }
 
-    private static bool TryGetClassModifier(MemberDeclarationSyntax classDeclarationSyntax, [NotNullWhen(true)] out string? modifier)
+    private static bool TryGetModifier(MemberDeclarationSyntax classDeclarationSyntax, [NotNullWhen(true)] out string? modifier)
     {
         var modifiers = classDeclarationSyntax.Modifiers.Select(m => m.ToString()).Distinct().ToArray();
         if (modifiers.Contains(ModifierPublic))

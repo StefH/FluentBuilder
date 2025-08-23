@@ -1,6 +1,5 @@
-# 0.10.0.2 (26 June 2025)
-- #68 Update CreateRelease.yml [enhancement]
-- #71 Add support for InitOnly properties [enhancement]
-- #70 Support for init-only properties
+# 0.11.0 (23 August 2025)
+- #72 Support primary constructor for classes and records [enhancement]
+- #59 Support primary constructors [enhancement]
 
 The full release notes can be found here: https://github.com/StefH/FluentBuilder/blob/main/ReleaseNotes.md

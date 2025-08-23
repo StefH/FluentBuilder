@@ -1,6 +1,6 @@
 using System.Text.Json;
 
-namespace BuilderConsumerNET6;
+namespace BuilderConsumerNET8;
 
 internal class Program
 {
@@ -32,5 +32,18 @@ internal class Program
             .Build();
 
         Console.WriteLine($"{userC.FirstName.Length} {userC.LastName == null}");
+
+
+        var rec = new RecordWithPrimaryConstructorBuilder()
+            .WithNormal("normal")
+            .WithTest("t")
+            .WithNum(50)
+            .Build();
+
+        var cls = new ClassWithPrimaryConstructorBuilder()
+            .WithNormal("normal")
+            .WithTest("t")
+            .WithNum(50)
+            .Build();
     }
 }

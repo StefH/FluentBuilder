@@ -49,7 +49,7 @@ public class FluentBuilderSourceGeneratorTests
 
         // Assert
         result.InformationMessages.Should().HaveCount(1);
-        result.InformationMessages[0].Should().Be("Class modifier should be 'public' or 'internal'");
+        result.InformationMessages[0].Should().Be("Class or Record modifier should be 'public' or 'internal'");
     }
 
     [Fact]
@@ -837,5 +837,77 @@ public class FluentBuilderSourceGeneratorTests
             .Build();
 
         data.Should().BeEquivalentTo(new { Normal = "normal", SiteId = 10, ProductName = "" });
+    }
+
+    [Fact]
+    public void GenerateFiles_ForClassWithPrimaryConstructor_Should_GenerateCorrectFiles()
+    {
+        // Arrange
+        var path = "./DTO/ClassWithPrimaryConstructor.cs";
+        var sourceFile = new SourceFile
+        {
+            Path = path,
+            Text = File.ReadAllText(path),
+            AttributeToAddToClass = new ExtraAttribute
+            {
+                Name = "FluentBuilder.AutoGenerateBuilder"
+            }
+        };
+
+        // Act
+        var result = _sut.Execute(Namespace, [sourceFile]);
+
+        // Assert
+        result.Valid.Should().BeTrue();
+        result.Files.Should().HaveCount(NumFiles);
+
+        var fileResult = result.Files[NumFiles - 1];
+        var filename = Path.GetFileName(fileResult.Path);
+
+        File.WriteAllText($"../../../DTO/{filename}", fileResult.Text);
+
+        var data = new ClassWithPrimaryConstructorBuilder()
+            .WithNormal("normal")
+            .WithTest("t")
+            .WithNum(50)
+            .Build();
+
+        data.Should().BeEquivalentTo(new { Normal = "normal", Data = "t50" });
+    }
+
+    [Fact]
+    public void GenerateFiles_ForRecordWithPrimaryConstructor_Should_GenerateCorrectFiles()
+    {
+        // Arrange
+        var path = "./DTO/RecordWithPrimaryConstructor.cs";
+        var sourceFile = new SourceFile
+        {
+            Path = path,
+            Text = File.ReadAllText(path),
+            AttributeToAddToClass = new ExtraAttribute
+            {
+                Name = "FluentBuilder.AutoGenerateBuilder"
+            }
+        };
+
+        // Act
+        var result = _sut.Execute(Namespace, [sourceFile]);
+
+        // Assert
+        result.Valid.Should().BeTrue();
+        result.Files.Should().HaveCount(NumFiles);
+
+        var fileResult = result.Files[NumFiles - 1];
+        var filename = Path.GetFileName(fileResult.Path);
+
+        File.WriteAllText($"../../../DTO/{filename}", fileResult.Text);
+
+        var data = new RecordWithPrimaryConstructorBuilder()
+            .WithNormal("normal")
+            .WithTest("t")
+            .WithNum(50)
+            .Build();
+
+        data.Should().BeEquivalentTo(new { Normal = "normal", Data = "t50" });
     }
 }

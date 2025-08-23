@@ -1,6 +1,7 @@
 // This source code is based on https://justsimplycode.com/2020/12/06/auto-generate-builders-using-source-generator-in-net-5
 using FluentBuilderGenerator.Extensions;
 using FluentBuilderGenerator.Helpers;
+using FluentBuilderGenerator.Interfaces;
 using FluentBuilderGenerator.Models;
 using FluentBuilderGenerator.Types;
 using FluentBuilderGenerator.Wrappers;
@@ -158,7 +159,7 @@ namespace {classSymbol.BuilderNamespace}
                 defaultValues.Add(defaultValue);
             }
 
-            sb.AppendLine(8, $"private Lazy<{classSymbol.NamedTypeSymbol}> _Constructor{constructorHashCode} = new Lazy<{classSymbol.NamedTypeSymbol}>(() => new {classSymbol.NamedTypeSymbol}({string.Join(",", defaultValues)}));");
+            sb.AppendLine(8, $"private Lazy<{classSymbol.NamedTypeSymbol}> _Constructor{constructorHashCode} = new Lazy<{classSymbol.NamedTypeSymbol}>(() => new {classSymbol.NamedTypeSymbol}({string.Join(", ", defaultValues)}));");
 
             sb.AppendLine(8, $"public {builderClassName} UsingConstructor({constructorParametersAsString})");
             sb.AppendLine(8, @"{");
@@ -206,29 +207,32 @@ namespace {classSymbol.BuilderNamespace}
     {
         var builderClassName = classSymbol.BuilderClassName;
 
-        var (propertiesPublicSettable, propertiesPrivateSettable) = GetProperties(classSymbol, fluentData.HandleBaseClasses, fluentData.Accessibility);
+        var (_, propertiesPublicSettable, propertiesPrivateSettable) = GetProperties(classSymbol, fluentData.HandleBaseClasses, fluentData.Accessibility);
 
         var extraUsings = new List<string>();
 
         var sb = new StringBuilder();
         foreach (var property in propertiesPublicSettable.Union(propertiesPrivateSettable))
         {
-            var initOnly = property.IsInitOnly();
+            var initOnly = property.ExcludeFromIsSetLogic;
 
             // Use "params" in case it's an Array, else just use type-T.
             var type = property.Type.GetFluentTypeKind() == FluentTypeKind.Array ? $"params {property.Type}" : property.Type.ToString();
 
-            var (defaultValue, extraUsingsFromDefaultValue) = DefaultValueHelper.GetDefaultValue(property, property.Type);
+            var (defaultValue, extraUsingsFromDefaultValue) = DefaultValueHelper.GetDefaultValue(property.Symbol, property.Type);
             if (extraUsingsFromDefaultValue != null)
             {
                 extraUsings.AddRange(extraUsingsFromDefaultValue);
             }
 
-            sb.AppendLine(!initOnly, $"        private bool _{CamelCase(property.Name)}IsSet;");
-        
-            sb.AppendLine($"        private Lazy<{property.Type}> _{CamelCase(property.Name)} = new Lazy<{property.Type}>(() => {defaultValue});");
+            var pascalCaseName = property.Name.ToPascalCase();
+            var camelCaseName = property.Name.ToCamelCase();
 
-            sb.AppendLine($"        public {builderClassName} With{property.Name}({type} value) => With{property.Name}(() => value);");
+            sb.AppendLine(!initOnly, $"        private bool _{camelCaseName}IsSet;");
+
+            sb.AppendLine(8, $"private Lazy<{property.Type}> _{camelCaseName} = new Lazy<{property.Type}>(() => {defaultValue});");
+
+            sb.AppendLine(8, $"public {builderClassName} With{pascalCaseName}({type} value) => With{pascalCaseName}(() => value);");
 
             sb.Append(GenerateWithPropertyFuncMethod(classSymbol, property));
 
@@ -236,15 +240,15 @@ namespace {classSymbol.BuilderNamespace}
 
             if (fluentData.Methods == FluentBuilderMethods.WithAndWithout)
             {
-                sb.AppendLine($"        public {builderClassName} Without{property.Name}()");
-                sb.AppendLine("        {");
-                sb.AppendLine($"            With{property.Name}(() => {defaultValue});");
+                sb.AppendLine(8, $"public {builderClassName} Without{pascalCaseName}()");
+                sb.AppendLine(8, "{");
+                sb.AppendLine(12, $"With{pascalCaseName}(() => {defaultValue});");
 
 
 
-                sb.AppendLine(!initOnly, $"            _{CamelCase(property.Name)}IsSet = false;");
-                sb.AppendLine("            return this;");
-                sb.AppendLine("        }");
+                sb.AppendLine(!initOnly, $"            _{camelCaseName}IsSet = false;");
+                sb.AppendLine(12, "return this;");
+                sb.AppendLine(8, "}");
                 sb.AppendLine();
             }
         }
@@ -254,7 +258,7 @@ namespace {classSymbol.BuilderNamespace}
 
     private StringBuilder GeneratePropertyActionMethodIfApplicable(
         ClassSymbol classSymbol,
-        IPropertySymbol property,
+        IPropertyOrParameterSymbol property,
         List<ClassSymbol> allClassSymbols)
     {
         var existingClassSymbol = allClassSymbols.FirstOrDefault(c => c.NamedTypeSymbol.Name == property.Type.Name);
@@ -276,20 +280,21 @@ namespace {classSymbol.BuilderNamespace}
         return new StringBuilder();
     }
 
-    private static StringBuilder GenerateWithPropertyFuncMethod(ClassSymbol classSymbol, IPropertySymbol property)
+    private static StringBuilder GenerateWithPropertyFuncMethod(ClassSymbol classSymbol, IPropertyOrParameterSymbol property)
     {
         var className = classSymbol.BuilderClassName;
+        var camelCaseName = property.Name.ToCamelCase();
 
         return new StringBuilder()
-            .AppendLine($"        public {className} With{property.Name}(Func<{property.Type}> func)")
+            .AppendLine($"        public {className} With{property.Name.ToPascalCase()}(Func<{property.Type}> func)")
             .AppendLine("        {")
-            .AppendLine($"            _{CamelCase(property.Name)} = new Lazy<{property.Type}>(func);")
-            .AppendLine(!property.IsInitOnly(), $"            _{CamelCase(property.Name)}IsSet = true;")
+            .AppendLine($"            _{camelCaseName} = new Lazy<{property.Type}>(func);")
+            .AppendLine(!property.ExcludeFromIsSetLogic, $"            _{camelCaseName}IsSet = true;")
             .AppendLine("            return this;")
             .AppendLine("        }");
     }
 
-    private static StringBuilder GenerateWithPropertyActionMethod(ClassSymbol classSymbol, ClassSymbol propertyClassSymbol, IPropertySymbol property)
+    private static StringBuilder GenerateWithPropertyActionMethod(ClassSymbol classSymbol, ClassSymbol propertyClassSymbol, IPropertyOrParameterSymbol property)
     {
         var className = classSymbol.BuilderClassName;
         var builderName = propertyClassSymbol.FullBuilderClassName;
@@ -313,7 +318,7 @@ namespace {classSymbol.BuilderNamespace}
     private StringBuilder GenerateWithIEnumerableBuilderActionMethod(
         FluentTypeKind kind,
         ClassSymbol classSymbol,
-        IPropertySymbol property,
+        IPropertyOrParameterSymbol property,
         INamedTypeSymbol? typeSymbol,
         List<ClassSymbol> allClassSymbols)
     {
@@ -379,15 +384,29 @@ namespace {classSymbol.BuilderNamespace}
             .AppendLine(@"        });");
     }
 
-    private static (IReadOnlyList<IPropertySymbol> PublicSettable, IReadOnlyList<IPropertySymbol> PrivateSettable) GetProperties(ClassSymbol classSymbol, bool handleBaseClasses, FluentBuilderAccessibility accessibility)
+    private static (bool IsPrimaryConstructor, IReadOnlyList<IPropertyOrParameterSymbol> PublicSettable, IReadOnlyList<IPropertyOrParameterSymbol> PrivateSettable) GetProperties(ClassSymbol classSymbol, bool handleBaseClasses, FluentBuilderAccessibility accessibility)
     {
+        var propertiesPublicSettable = new List<IPropertyOrParameterSymbol>();
+
+        var publicConstructors = classSymbol.NamedTypeSymbol.Constructors
+            .Where(co => co.DeclaredAccessibility == Accessibility.Public)
+            .ToArray();
+
+        var isPrimaryConstructor = false;
+        if (publicConstructors.Length == 1 && publicConstructors[0].Parameters.Length > 0)
+        {
+            isPrimaryConstructor = true;
+
+            propertiesPublicSettable.AddRange(publicConstructors[0].Parameters.Select(p => new PropertyOrParameterSymbol(p, p.Type, true)));
+        }
+
         var properties = classSymbol.NamedTypeSymbol.GetMembers().OfType<IPropertySymbol>()
             .Where(x => x.SetMethod is not null)
             .Where(x => x.CanBeReferencedByName)
             .Where(x => !x.GetAttributes().Any(a => FluentBuilderIgnoreAttributeClassNames.Contains(a.AttributeClass?.GetFullType())))
             .ToList();
 
-        var propertyNames = properties.Select(x => x.Name);
+        var propertyNames = propertiesPublicSettable.Select(p => p.Name).Union(properties.Select(x => x.Name)).ToArray();
 
         if (handleBaseClasses)
         {
@@ -396,24 +415,32 @@ namespace {classSymbol.BuilderNamespace}
             while (baseType != null)
             {
                 properties.AddRange(baseType.GetMembers().OfType<IPropertySymbol>()
-                    .Where(x => x.CanBeReferencedByName)
                     .Where(x => x.SetMethod is not null)
+                    .Where(x => x.CanBeReferencedByName)
                     .Where(x => !propertyNames.Contains(x.Name)));
 
                 baseType = baseType.BaseType;
             }
         }
 
-        var propertiesPublicSettable = properties.Where(p => p.IsPublicSettable()).ToArray();
-        var propertiesPrivateSettable = accessibility == FluentBuilderAccessibility.PublicAndPrivate ? properties.Where(p => p.IsPrivateSettable()).ToArray() : [];
+        foreach (var property in properties.Where(p => p.IsPublicSettable()).Select(p => new PropertyOrParameterSymbol(p, p.Type, p.IsInitOnly())))
+        {
+            if (propertiesPublicSettable.All(p => p.Name != property.Name))
+            {
+                propertiesPublicSettable.Add(property);
+            }
+        }
 
-        return (propertiesPublicSettable, propertiesPrivateSettable);
+        var propertiesPrivateSettable = accessibility != FluentBuilderAccessibility.PublicAndPrivate ? [] :
+            properties.Where(p => p.IsPrivateSettable()).Select(p => new PropertyOrParameterSymbol(p, p.Type, p.IsInitOnly())).ToArray();
+
+        return (isPrimaryConstructor, propertiesPublicSettable, propertiesPrivateSettable);
     }
 
     private static string GenerateSeveralMethods(FluentData fluentData, ClassSymbol classSymbol)
     {
         var publicConstructors = classSymbol.NamedTypeSymbol.Constructors.Where(c => c.DeclaredAccessibility == Accessibility.Public).ToArray();
-        var (propertiesPublicSettable, propertiesPrivateSettable) = GetProperties(classSymbol, fluentData.HandleBaseClasses, fluentData.Accessibility);
+        var (isPrimaryConstructor, propertiesPublicSettable, propertiesPrivateSettable) = GetProperties(classSymbol, fluentData.HandleBaseClasses, fluentData.Accessibility);
         var className = classSymbol.NamedTypeSymbol.GenerateShortTypeName();
 
         var output = new StringBuilder();
@@ -459,10 +486,10 @@ namespace {classSymbol.BuilderNamespace}
         {
             output.AppendLine(20, $"    instance = new {className}");
             output.AppendLine(20, @"    {");
-            output.AppendLines(20, propertiesPublicSettable.Select(property => $@"        {property.Name} = _{CamelCase(property.Name)}.Value"), ",");
+            output.AppendLines(20, propertiesPublicSettable.Select(property => $@"        {property.Name} = _{property.Name.ToCamelCase()}.Value"), ",");
             output.AppendLine(20, @"    };");
 
-            output.AppendLines(20, propertiesPrivateSettable.Select(property => $@"    if (_{CamelCase(property.Name)}IsSet) {{ Set{property.Name}(instance, _{CamelCase(property.Name)}.Value); }}"));
+            output.AppendLines(20, propertiesPrivateSettable.Select(property => $@"    if (_{property.Name.ToCamelCase()}IsSet) {{ Set{property.Name}(instance, _{property.Name.ToCamelCase()}.Value); }}"));
 
             output.AppendLine(20, @"    return instance;");
         }
@@ -476,18 +503,30 @@ namespace {classSymbol.BuilderNamespace}
 
             output.AppendLine(20, $"{(x.idx > 0).IIf("else ")}if (_Constructor{constructorHashCode}_IsSet) {{ instance = _Constructor{constructorHashCode}.Value; }}");
         }
-        output.AppendLine(20, "else { instance = Default(); }");
+
+        if (isPrimaryConstructor)
+        {
+            var parameters = propertiesPublicSettable
+                .Where(p => p.PropertyType == PropertyType.Parameter)
+                .Select(p => $"_{p.Name.ToCamelCase()}.Value");
+
+            output.AppendLine(20, $"else {{ instance = new {className}({string.Join(", ", parameters)}); }}");
+        }
+        else
+        {
+            output.AppendLine(20, "else { instance = Default(); }");
+        }
         output.AppendLine();
-        
+
         output.AppendLine(20, "return instance;");
 
         output.AppendLine(8, @"        });");
         output.AppendLine(8, @"    }");
 
         output.AppendLine();
-        output.AppendLines(12, propertiesPublicSettable.Where(p => !p.IsInitOnly()).Select(property => $"if (_{CamelCase(property.Name)}IsSet) {{ Instance.Value.{property.Name} = _{CamelCase(property.Name)}.Value; }}"));
-        output.AppendLines(12, propertiesPrivateSettable.Where(p => !p.IsInitOnly()).Select(property => $"if (_{CamelCase(property.Name)}IsSet) {{ Set{property.Name}(Instance.Value, _{CamelCase(property.Name)}.Value); }}"));
-        
+        output.AppendLines(12, propertiesPublicSettable.Where(p => !p.ExcludeFromIsSetLogic).Select(property => $"if (_{property.Name.ToCamelCase()}IsSet) {{ Instance.Value.{property.Name} = _{property.Name.ToCamelCase()}.Value; }}"));
+        output.AppendLines(12, propertiesPrivateSettable.Where(p => !p.ExcludeFromIsSetLogic).Select(property => $"if (_{property.Name.ToCamelCase()}IsSet) {{ Set{property.Name}(Instance.Value, _{property.Name.ToCamelCase()}.Value); }}"));
+
         output.AppendLine(8, @"    PostBuild(Instance.Value);");
 
         output.AppendLine();
@@ -507,7 +546,7 @@ namespace {classSymbol.BuilderNamespace}
         return output.ToString();
     }
 
-    private static void BuildPrivateSetMethod(StringBuilder output, string className, IPropertySymbol property)
+    private static void BuildPrivateSetMethod(StringBuilder output, string className, IPropertyOrParameterSymbol property)
     {
         output.AppendLine(8, $"private void Set{property.Name}({className} instance, {property.Type} value)");
         output.AppendLine(8, @"{");
@@ -529,6 +568,4 @@ namespace {classSymbol.BuilderNamespace}
 
         return classSymbols;
     }
-
-    private static string CamelCase(string value) => $"{value.Substring(0, 1).ToLowerInvariant()}{value.Substring(1)}";
 }

@@ -95,11 +95,12 @@ public static class SourceGeneratorExtensions
 
         var metadataReferences = AppDomain.CurrentDomain.GetAssemblies()
             .Where(a => !a.IsDynamic)
-            .Select(a => MetadataReference.CreateFromFile(a.Location));
+            .Select(a => MetadataReference.CreateFromFile(a.Location))
+            .ToArray();
 
-        var sourceSyntaxTrees = sources.Select(GetSyntaxTree);
+        var sourceSyntaxTrees = sources.Select(GetSyntaxTree).ToArray();
 
-        var additionalTexts = additionalTextPaths?.Select(tp => new CustomAdditionalText(tp)) ?? Enumerable.Empty<AdditionalText>();
+        var additionalTexts = additionalTextPaths?.Select(tp => new CustomAdditionalText(tp)).ToArray() ?? Enumerable.Empty<AdditionalText>();
 
         var compilation = CSharpCompilation.Create(
             assemblyName,
@@ -145,11 +146,22 @@ public static class SourceGeneratorExtensions
         SyntaxNode rootSyntaxNode;
         if (source.AttributeToAddToClass is not null)
         {
-            rootSyntaxNode = AddExtraAttribute<ClassDeclarationSyntax>(syntaxTree, source.AttributeToAddToClass.Value);
+            if (TryAddExtraAttribute<ClassDeclarationSyntax>(syntaxTree, source.AttributeToAddToClass.Value, out var classNode))
+            {
+                rootSyntaxNode = classNode;
+            }
+            else if (TryAddExtraAttribute<RecordDeclarationSyntax>(syntaxTree, source.AttributeToAddToClass.Value, out var recordNode))
+            {
+                rootSyntaxNode = recordNode;
+            }
+            else
+            {
+                throw new InvalidOperationException("If AttributeToAddToClass is defined, the target must be a class or record.");
+            }
         }
-        else if (source.AttributeToAddToInterface is not null)
+        else if (source.AttributeToAddToInterface is not null && TryAddExtraAttribute<InterfaceDeclarationSyntax>(syntaxTree, source.AttributeToAddToInterface.Value, out var interfaceNode))
         {
-            rootSyntaxNode = AddExtraAttribute<InterfaceDeclarationSyntax>(syntaxTree, source.AttributeToAddToInterface.Value);
+            rootSyntaxNode = interfaceNode;
         }
         else
         {
@@ -161,11 +173,18 @@ public static class SourceGeneratorExtensions
         return CSharpSyntaxTree.ParseText(updatedText, null, source.Path);
     }
 
-    private static SyntaxNode AddExtraAttribute<T>(SyntaxTree syntaxTree, AnyOf<string, ExtraAttribute> attributeToAdd)
+    private static bool TryAddExtraAttribute<T>(SyntaxTree syntaxTree, AnyOf<string, ExtraAttribute> attributeToAdd, [NotNullWhen(true)] out SyntaxNode? syntaxNode)
         where T : TypeDeclarationSyntax
     {
         var rootSyntaxNode = syntaxTree.GetRoot();
-        foreach (var classDeclaration in rootSyntaxNode.DescendantNodes().OfType<T>())
+        var descendantNodes = rootSyntaxNode.DescendantNodes().OfType<T>().ToArray();
+        if (!descendantNodes.Any())
+        {
+            syntaxNode = null;
+            return false; // No class, record or interface found to add the attribute.
+        }
+
+        foreach (var classDeclaration in descendantNodes)
         {
             var name = attributeToAdd.IsFirst ? attributeToAdd.First : attributeToAdd.Second.Name;
 
@@ -195,7 +214,8 @@ public static class SourceGeneratorExtensions
             rootSyntaxNode = rootSyntaxNode.ReplaceNode(classDeclaration, newClassDeclarationSyntax);
         }
 
-        return rootSyntaxNode;
+        syntaxNode = rootSyntaxNode;
+        return true;
     }
 
     private static bool TryParseArguments(AnyOf<string, ExtraAttribute> attributeToAdd, [NotNullWhen(true)] out AttributeArgumentListSyntax? attributeArgumentListSyntax)

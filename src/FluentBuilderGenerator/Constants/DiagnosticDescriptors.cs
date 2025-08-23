@@ -17,7 +17,7 @@ internal static class DiagnosticDescriptors
     internal static readonly DiagnosticDescriptor ClassModifierShouldBeInternalOrPublic = new(
         "SGINF0001",
         "Information",
-        "Class modifier should be 'public' or 'internal'",
+        "Class or Record modifier should be 'public' or 'internal'",
         nameof(FluentBuilderGenerator),
         DiagnosticSeverity.Info,
         true
