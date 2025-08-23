@@ -1,5 +1,6 @@
 using System.Text;
 using FluentBuilderGenerator.Extensions;
+using FluentBuilderGenerator.Interfaces;
 using FluentBuilderGenerator.Models;
 using Microsoft.CodeAnalysis;
 
@@ -9,7 +10,7 @@ internal partial class FluentBuilderClassesGenerator
 {
     private StringBuilder GenerateWithIDictionaryBuilderActionMethod(
         ClassSymbol classSymbol,
-        IPropertySymbol property,
+        IPropertyOrParameterSymbol property,
         (INamedTypeSymbol key, INamedTypeSymbol value)? tuple)
     {
         var className = classSymbol.BuilderClassName;

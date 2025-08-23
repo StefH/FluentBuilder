@@ -22,13 +22,19 @@ internal class AutoGenerateBuilderSyntaxReceiver : IAutoGenerateBuilderSyntaxRec
         var syntaxNode = context.Node;
         var semanticModel = context.SemanticModel;
         
-        if (syntaxNode is ClassDeclarationSyntax classDeclarationSyntax && TryGet(classDeclarationSyntax, semanticModel, out var data))
+        switch (syntaxNode)
         {
-            CandidateFluentDataItems.Add(data);
+            case ClassDeclarationSyntax classDeclarationSyntax when TryGet(classDeclarationSyntax, semanticModel, out var classData):
+                CandidateFluentDataItems.Add(classData);
+                break;
+
+            case RecordDeclarationSyntax recordDeclarationSyntax when TryGet(recordDeclarationSyntax, semanticModel, out var recordData):
+                CandidateFluentDataItems.Add(recordData);
+                break;
         }
     }
 
-    private static bool TryGet(ClassDeclarationSyntax classDeclarationSyntax, SemanticModel semanticModel, out FluentData data)
+    private static bool TryGet(TypeDeclarationSyntax classDeclarationSyntax, SemanticModel semanticModel, out FluentData data)
     {
         data = default;
 

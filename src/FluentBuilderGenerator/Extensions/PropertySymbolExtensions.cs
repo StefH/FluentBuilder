@@ -1,3 +1,4 @@
+using FluentBuilderGenerator.Interfaces;
 using FluentBuilderGenerator.Types;
 using Microsoft.CodeAnalysis;
 
@@ -30,7 +31,7 @@ internal static class PropertySymbolExtensions
         return property.SetMethod is { DeclaredAccessibility: Accessibility.Public };
     }
 
-    internal static bool TryGetIDictionaryElementTypes(this IPropertySymbol property, out (INamedTypeSymbol key, INamedTypeSymbol value)? tuple)
+    internal static bool TryGetIDictionaryElementTypes(this IPropertyOrParameterSymbol property, out (INamedTypeSymbol key, INamedTypeSymbol value)? tuple)
     {
         var type = property.Type.GetFluentTypeKind();
 
@@ -51,7 +52,7 @@ internal static class PropertySymbolExtensions
     }
 
     internal static bool TryGetIEnumerableElementType(
-        this IPropertySymbol property,
+        this IPropertyOrParameterSymbol property,
         out INamedTypeSymbol? elementNamedTypeSymbol,
         out FluentTypeKind kind)
     {
