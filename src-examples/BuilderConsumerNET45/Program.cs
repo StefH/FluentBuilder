@@ -14,7 +14,7 @@ namespace BuilderConsumerNET45
             Console.WriteLine("t0 = " + JsonConvert.SerializeObject(t0));
 
             var t1 = new ThingWithOnlyParameterizedConstructorsBuilder()
-                .WithConstructor(1,2,"xxx")
+                .UsingConstructor(1,2,"xxx")
                 .Build();
             Console.WriteLine("t1 = " + JsonConvert.SerializeObject(t1));
 

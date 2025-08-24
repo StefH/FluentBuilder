@@ -6,7 +6,7 @@
         <LangVersion>latest</LangVersion>
         <Nullable>enable</Nullable>
         <Authors>Stef Heyenrath</Authors>
-        <Description>Some extensions for a ISourceGenerator which can be used to execute a SourceGenerator manually which makes unit-testing easy.</Description>
+        <Description>Some extensions for a ISourceGenerator and IIncrementalGenerator which can be used to execute a SourceGenerator manually which makes unit-testing easy.</Description>
         <PackageTags>CSharp;SourceGenerator;SourceGenerators;Extensions;Execute;UnitTest;Test</PackageTags>
         <PackageIcon>icon.png</PackageIcon>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -27,8 +27,8 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.11.0" />
-        <PackageReference Include="AnyOf" Version="0.4.0" />
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.14.0" />
+        <PackageReference Include="AnyOf" Version="0.5.0.1" />
     </ItemGroup>
 
 </Project>

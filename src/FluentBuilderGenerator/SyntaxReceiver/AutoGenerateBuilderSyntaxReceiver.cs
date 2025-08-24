@@ -1,6 +1,7 @@
 // This source code is based on https://justsimplycode.com/2020/12/06/auto-generate-builders-using-source-generator-in-net-5
 
 using System.Diagnostics.CodeAnalysis;
+using FluentBuilderGenerator.Constants;
 using FluentBuilderGenerator.Extensions;
 using FluentBuilderGenerator.Models;
 using FluentBuilderGenerator.Types;
@@ -9,64 +10,85 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace FluentBuilderGenerator.SyntaxReceiver;
 
-internal class AutoGenerateBuilderSyntaxReceiver : IAutoGenerateBuilderSyntaxReceiver
+internal static class AutoGenerateBuilderSyntaxReceiver
 {
     private const string ModifierPartial = "partial";
     private const string ModifierPublic = "public";
     private const string ModifierInternal = "internal";
 
-    public IList<FluentData> CandidateFluentDataItems { get; } = new List<FluentData>();
-
-    public void OnVisitSyntaxNode(GeneratorSyntaxContext context)
+    public static bool CheckSyntaxNode(SyntaxNode syntaxNode, out Diagnostic? diagnostic)
     {
-        var syntaxNode = context.Node;
-        var semanticModel = context.SemanticModel;
-        
-        switch (syntaxNode)
+        TypeDeclarationSyntax typeDeclarationSyntax;
+        if (syntaxNode is ClassDeclarationSyntax classDeclarationSyntax)
         {
-            case ClassDeclarationSyntax classDeclarationSyntax when TryGet(classDeclarationSyntax, semanticModel, out var classData):
-                CandidateFluentDataItems.Add(classData);
-                break;
-
-            case RecordDeclarationSyntax recordDeclarationSyntax when TryGet(recordDeclarationSyntax, semanticModel, out var recordData):
-                CandidateFluentDataItems.Add(recordData);
-                break;
+            typeDeclarationSyntax = classDeclarationSyntax;
         }
-    }
-
-    private static bool TryGet(TypeDeclarationSyntax classDeclarationSyntax, SemanticModel semanticModel, out FluentData data)
-    {
-        data = default;
-
-        var attributeList = classDeclarationSyntax.AttributeLists
-            .FirstOrDefault(x => x.Attributes.Any(AttributeArgumentListParser.IsMatch));
-        if (attributeList is null)
+        else if (syntaxNode is RecordDeclarationSyntax recordDeclarationSyntax)
         {
-            Console.WriteLine("ClassDeclarationSyntax should have the correct attribute.");
+            typeDeclarationSyntax = recordDeclarationSyntax;
+        }
+        else
+        {
+            diagnostic = null;
             return false;
         }
 
-        if (!TryGetClassModifier(classDeclarationSyntax, out var classModifier))
+        var attributeList = typeDeclarationSyntax.AttributeLists
+            .FirstOrDefault(x => x.Attributes.Any(AttributeArgumentListParser.IsMatch));
+        if (attributeList is null)
         {
-            Console.WriteLine("Class modifier should be 'public' or 'internal'.");
+            diagnostic = null;
+            return false;
+        }
+
+        if (!TryGetModifier(typeDeclarationSyntax, out _))
+        {
+            diagnostic = Diagnostic.Create(DiagnosticDescriptors.ClassOrRecordModifierShouldBeInternalOrPublic, typeDeclarationSyntax.GetLocation());
+            return false;
+        }
+
+        diagnostic = null;
+        return true;
+    }
+
+    public static FluentData HandleSyntaxNode(SyntaxNode syntaxNode, SemanticModel semanticModel, out Diagnostic? diagnostic)
+    {
+        return syntaxNode switch
+        {
+            ClassDeclarationSyntax classDeclarationSyntax when TryGet(classDeclarationSyntax, semanticModel, out var data, out diagnostic) => data,
+            RecordDeclarationSyntax recordDeclarationSyntax when TryGet(recordDeclarationSyntax, semanticModel, out var data, out diagnostic) => data,
+            _ => throw new InvalidOperationException("Only classes or records are supported."),
+        };
+    }
+
+    private static bool TryGet(TypeDeclarationSyntax typeDeclarationSyntax, SemanticModel semanticModel, out FluentData data, out Diagnostic? diagnostic)
+    {
+        data = default;
+
+        var attributeList = typeDeclarationSyntax.AttributeLists
+            .FirstOrDefault(x => x.Attributes.Any(AttributeArgumentListParser.IsMatch))!;
+
+        if (!TryGetModifier(typeDeclarationSyntax, out var modifier))
+        {
+            diagnostic = Diagnostic.Create(DiagnosticDescriptors.ClassOrRecordModifierShouldBeInternalOrPublic, typeDeclarationSyntax.GetLocation());
             return false;
         }
 
         var usings = new List<string>();
 
-        var ns = classDeclarationSyntax.GetNamespace();
+        var ns = typeDeclarationSyntax.GetNamespace();
         if (!string.IsNullOrEmpty(ns))
         {
             usings.Add(ns);
         }
 
-        if (classDeclarationSyntax.TryGetParentSyntax(out CompilationUnitSyntax? cc))
+        if (typeDeclarationSyntax.TryGetParentSyntax(out CompilationUnitSyntax? cc))
         {
             usings.AddRange(cc.Usings.Select(@using => @using.Name!.ToString()));
         }
 
         // https://github.com/StefH/FluentBuilder/issues/36
-        usings.AddRange(classDeclarationSyntax.GetAncestorsUsings().Select(@using => @using.Name!.ToString()));
+        usings.AddRange(typeDeclarationSyntax.GetAncestorsUsings().Select(@using => @using.Name!.ToString()));
 
         usings = usings.Distinct().ToList();
 
@@ -74,18 +96,18 @@ internal class AutoGenerateBuilderSyntaxReceiver : IAutoGenerateBuilderSyntaxRec
 
         if (fluentBuilderAttributeArguments.RawTypeName != null) // The class which needs to be processed by the CustomBuilder is provided as type
         {
-            if (!AreBuilderClassModifiersValid(classDeclarationSyntax))
+            if (!AreBuilderClassModifiersValid(typeDeclarationSyntax))
             {
-                Console.WriteLine("Custom builder class should be 'partial' and 'public' or 'internal'.");
+                diagnostic = Diagnostic.Create(DiagnosticDescriptors.CustomBuilderClassModifierShouldBePartialAndInternalOrPublic, typeDeclarationSyntax.GetLocation());
                 return false;
             }
 
             data = new FluentData
             {
                 Namespace = ns,
-                ClassModifier = classModifier,
-                ShortBuilderClassName = $"{classDeclarationSyntax.Identifier}",
-                FullBuilderClassName = CreateFullBuilderClassName(ns, classDeclarationSyntax),
+                ClassModifier = modifier,
+                ShortBuilderClassName = $"{typeDeclarationSyntax.Identifier}",
+                FullBuilderClassName = CreateFullBuilderClassName(ns, typeDeclarationSyntax),
                 FullRawTypeName = fluentBuilderAttributeArguments.RawTypeName,
                 ShortTypeName = ConvertTypeName(fluentBuilderAttributeArguments.RawTypeName).Split('.').Last(),
                 MetadataName = ConvertTypeName(fluentBuilderAttributeArguments.RawTypeName),
@@ -96,17 +118,18 @@ internal class AutoGenerateBuilderSyntaxReceiver : IAutoGenerateBuilderSyntaxRec
                 Methods = fluentBuilderAttributeArguments.Methods
             };
 
+            diagnostic = null;
             return true;
         }
 
-        var fullType = GetFullType(ns, classDeclarationSyntax, false); // FluentBuilderGeneratorTests.DTO.UserT<T>
-        var fullBuilderType = GetFullType(ns, classDeclarationSyntax, true);
-        var metadataName = classDeclarationSyntax.GetMetadataName();
+        var fullType = GetFullType(ns, typeDeclarationSyntax, false); // FluentBuilderGeneratorTests.DTO.UserT<T>
+        var fullBuilderType = GetFullType(ns, typeDeclarationSyntax, true);
+        var metadataName = typeDeclarationSyntax.GetMetadataName();
 
         data = new FluentData
         {
             Namespace = ns,
-            ClassModifier = classModifier,
+            ClassModifier = modifier,
             ShortBuilderClassName = $"{fullBuilderType.Split('.').Last()}",
             FullBuilderClassName = fullBuilderType,
             FullRawTypeName = fullType,
@@ -119,6 +142,7 @@ internal class AutoGenerateBuilderSyntaxReceiver : IAutoGenerateBuilderSyntaxRec
             Methods = fluentBuilderAttributeArguments.Methods
         };
 
+        diagnostic = null;
         return true;
     }
 
@@ -128,7 +152,7 @@ internal class AutoGenerateBuilderSyntaxReceiver : IAutoGenerateBuilderSyntaxRec
         return modifiers.Contains(ModifierPartial) && (modifiers.Contains(ModifierPublic) || modifiers.Contains(ModifierInternal));
     }
 
-    private static bool TryGetClassModifier(MemberDeclarationSyntax classDeclarationSyntax, [NotNullWhen(true)] out string? modifier)
+    private static bool TryGetModifier(MemberDeclarationSyntax classDeclarationSyntax, [NotNullWhen(true)] out string? modifier)
     {
         var modifiers = classDeclarationSyntax.Modifiers.Select(m => m.ToString()).Distinct().ToArray();
         if (modifiers.Contains(ModifierPublic))
@@ -143,7 +167,7 @@ internal class AutoGenerateBuilderSyntaxReceiver : IAutoGenerateBuilderSyntaxRec
             return true;
         }
 
-        modifier = default;
+        modifier = null;
         return false;
     }
 

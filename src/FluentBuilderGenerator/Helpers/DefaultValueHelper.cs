@@ -8,7 +8,7 @@ namespace FluentBuilderGenerator.Helpers;
 
 internal static class DefaultValueHelper
 {
-    private static readonly SyntaxKind[] ExcludedSyntaxKinds = { SyntaxKind.SuppressNullableWarningExpression };
+    private static readonly SyntaxKind[] ExcludedSyntaxKinds = [SyntaxKind.SuppressNullableWarningExpression];
 
     /// <summary>
     /// Check if the <see cref="IPropertySymbol"/> has a value set, in that case try to get that value and return it, and return the usings.
@@ -26,9 +26,9 @@ internal static class DefaultValueHelper
 
                 if (propertyDeclarationSyntax?.Initializer != null && !ExcludedSyntaxKinds.Contains(propertyDeclarationSyntax.Initializer.Value.Kind()))
                 {
-                    var thisUsings = rootSyntaxNode.FindDescendantNodes<UsingDirectiveSyntax>().Select(ud => ud.Name.ToString());
+                    var thisUsings = rootSyntaxNode.FindDescendantNodes<UsingDirectiveSyntax>().Select(ud => ud.Name?.ToString()).OfType<string>();
 
-                    var ancestorUsings = rootSyntaxNode.GetAncestorsUsings().Select(ud => ud.Name.ToString());
+                    var ancestorUsings = rootSyntaxNode.GetAncestorsUsings().Select(ud => ud.Name?.ToString()).OfType<string>();
 
                     var extraUsings = thisUsings.Union(ancestorUsings).Distinct().ToList();
 
@@ -108,7 +108,7 @@ internal static class DefaultValueHelper
 
             var body = namedTypeSymbol.DelegateInvokeMethod.ReturnsVoid
                 ? "{ }" // It's an Action
-                : GetDefault(namedTypeSymbol.DelegateInvokeMethod.ReturnType); // It's an Func
+                : GetDefault(namedTypeSymbol.DelegateInvokeMethod.ReturnType); // It's a Func
 
             return $"new {typeSymbol}(({string.Join(", ", delegateParameters)}) => {body})";
         }

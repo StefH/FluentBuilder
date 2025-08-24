@@ -8,22 +8,32 @@ public class ExecuteResult
     /// <summary>
     /// The internally used GeneratorDriver is also returned here to support using https://github.com/VerifyTests/Verify.SourceGenerators.
     /// </summary>
-    public GeneratorDriver GeneratorDriver { get; set; } = null!;
+    public required GeneratorDriver GeneratorDriver { get; init; }
 
     /// <summary>
     /// A list of generated files.
     /// </summary>
-    public IReadOnlyList<FileResult> Files { get; set; } = new List<FileResult>();
+    public required IReadOnlyList<FileResult> Files { get; init; }
 
     /// <summary>
-    /// A list of Errors
+    /// Gets the collection of diagnostics associated with the current operation or state.
     /// </summary>
-    public IReadOnlyList<string> ErrorMessages { get; set; } = new List<string>();
+    public required IReadOnlyList<Diagnostic> Diagnostics { get; init; }
 
     /// <summary>
-    /// A list of Warnings
+    /// A list of Error messages
     /// </summary>
-    public IReadOnlyList<string> WarningMessages { get; set; } = new List<string>();
+    public required IReadOnlyList<string> ErrorMessages { get; init; }
+
+    /// <summary>
+    /// A list of Warning messages
+    /// </summary>
+    public required IReadOnlyList<string> WarningMessages { get; init; }
+
+    /// <summary>
+    /// A list of Information messages
+    /// </summary>
+    public required IReadOnlyList<string> InformationMessages { get; init; }
 
     /// <summary>
     /// Is the result valid.

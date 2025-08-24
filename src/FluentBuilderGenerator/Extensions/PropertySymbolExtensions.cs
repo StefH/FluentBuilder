@@ -37,7 +37,7 @@ internal static class PropertySymbolExtensions
 
         if (type == FluentTypeKind.IDictionary && property.Type is INamedTypeSymbol namedTypeSymbol)
         {
-            if (namedTypeSymbol.IsGenericType && namedTypeSymbol.TypeArguments.Length == 2)
+            if (namedTypeSymbol is { IsGenericType: true, TypeArguments.Length: 2 })
             {
                 if (namedTypeSymbol.TypeArguments[0] is INamedTypeSymbol key && namedTypeSymbol.TypeArguments[1] is INamedTypeSymbol value)
                 {
@@ -47,7 +47,7 @@ internal static class PropertySymbolExtensions
             }
         }
 
-        tuple = default;
+        tuple = null;
         return false;
     }
 
