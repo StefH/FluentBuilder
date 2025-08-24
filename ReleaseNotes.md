@@ -1,3 +1,6 @@
+# 0.12.0 (24 August 2025)
+- [#67](https://github.com/StefH/FluentBuilder/pull/67) - Refactor code to implement IncrementalGenerator [enhancement] contributed by [StefH](https://github.com/StefH)
+
 # 0.11.0 (23 August 2025)
 - [#72](https://github.com/StefH/FluentBuilder/pull/72) - Support primary constructor for classes and records [enhancement] contributed by [StefH](https://github.com/StefH)
 - [#59](https://github.com/StefH/FluentBuilder/issues/59) - Support primary constructors [enhancement]
