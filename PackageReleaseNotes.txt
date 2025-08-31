@@ -1,4 +1,4 @@
-# 0.12.0 (24 August 2025)
-- #67 Refactor code to implement IncrementalGenerator [enhancement]
+# 0.13.0 (31 August 2025)
+- #73 Revert Microsoft.CodeAnalysis.CSharp to version 4.8.0 [bug]
 
 The full release notes can be found here: https://github.com/StefH/FluentBuilder/blob/main/ReleaseNotes.md

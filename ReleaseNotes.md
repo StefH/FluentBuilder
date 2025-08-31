@@ -1,3 +1,6 @@
+# 0.13.0 (31 August 2025)
+- [#73](https://github.com/StefH/FluentBuilder/pull/73) - Revert Microsoft.CodeAnalysis.CSharp to version 4.8.0 [bug] contributed by [StefH](https://github.com/StefH)
+
 # 0.12.0 (24 August 2025)
 - [#67](https://github.com/StefH/FluentBuilder/pull/67) - Refactor code to implement IncrementalGenerator [enhancement] contributed by [StefH](https://github.com/StefH)
 
