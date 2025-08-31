@@ -33,17 +33,16 @@ internal class Program
 
         Console.WriteLine($"{userC.FirstName.Length} {userC.LastName == null}");
 
+        var rec = new RecordWithPrimaryConstructorBuilder()
+            .WithNormal("normal")
+            .WithTest("t")
+            .WithNum(50)
+            .Build();
 
-        //var rec = new RecordWithPrimaryConstructorBuilder()
-        //    .WithNormal("normal")
-        //    .WithTest("t")
-        //    .WithNum(50)
-        //    .Build();
-
-        //var cls = new ClassWithPrimaryConstructorBuilder()
-        //    .WithNormal("normal")
-        //    .WithTest("t")
-        //    .WithNum(50)
-        //    .Build();
+        var cls = new ClassWithPrimaryConstructorBuilder()
+            .WithNormal("normal")
+            .WithTest("t")
+            .WithNum(50)
+            .Build();
     }
 }
