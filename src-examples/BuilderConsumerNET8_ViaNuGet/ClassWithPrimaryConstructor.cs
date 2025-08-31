@@ -1,11 +1,11 @@
-using FluentBuilder;
+//using FluentBuilder;
 
-namespace BuilderConsumerNET8;
+//namespace BuilderConsumerNET8;
 
-[AutoGenerateBuilder]
-public class ClassWithPrimaryConstructor(string test, int num)
-{
-    public string Normal { get; set; } = string.Empty;
+//[AutoGenerateBuilder]
+//public class ClassWithPrimaryConstructor(string test, int num)
+//{
+//    public string Normal { get; set; } = string.Empty;
 
-    public string Data { get; } = test + num;
-}
+//    public string Data { get; } = test + num;
+//}
