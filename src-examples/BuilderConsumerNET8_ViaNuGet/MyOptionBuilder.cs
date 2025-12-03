@@ -1,6 +1,6 @@
 using FluentBuilder;
 
-namespace BuilderConsumerNET6;
+namespace BuilderConsumerNET8;
 
 [AutoGenerateBuilder(typeof(Option))]
 public partial class MyOptionBuilder

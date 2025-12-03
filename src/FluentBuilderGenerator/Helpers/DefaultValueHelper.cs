@@ -27,9 +27,9 @@ internal static class DefaultValueHelper
 
                 if (propertyDeclarationSyntax?.Initializer != null && !ExcludedSyntaxKinds.Contains(propertyDeclarationSyntax.Initializer.Value.Kind()))
                 {
-                    var thisUsings = rootSyntaxNode.FindDescendantNodes<UsingDirectiveSyntax>().Select(ud => ud.Name!.ToString());
+                    var thisUsings = rootSyntaxNode.FindDescendantNodes<UsingDirectiveSyntax>().Select(ud => ud.Name?.ToString()).OfType<string>();
 
-                    var ancestorUsings = rootSyntaxNode.GetAncestorsUsings().Select(ud => ud.Name!.ToString());
+                    var ancestorUsings = rootSyntaxNode.GetAncestorsUsings().Select(ud => ud.Name?.ToString()).OfType<string>();
 
                     var extraUsings = thisUsings.Union(ancestorUsings).Distinct().ToList();
 

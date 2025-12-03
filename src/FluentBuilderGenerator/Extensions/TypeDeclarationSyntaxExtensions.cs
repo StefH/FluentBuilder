@@ -8,9 +8,9 @@ namespace FluentBuilderGenerator.Extensions;
 /// </summary>
 internal static class TypeDeclarationSyntaxExtensions
 {
-    const char NESTED_CLASS_DELIMITER = '+';
-    const char NAMESPACE_CLASS_DELIMITER = '.';
-    const char TYPEPARAMETER_CLASS_DELIMITER = '`';
+    private const char NestedClassDelimiter = '+';
+    private const char NamespaceClassDelimiter = '.';
+    private const char TypeparameterClassDelimiter = '`';
 
     public static string GetMetadataName(this TypeDeclarationSyntax source)
     {
@@ -31,14 +31,14 @@ internal static class TypeDeclarationSyntaxExtensions
         var result = new StringBuilder();
         for (var item = namespaces.First; item is not null; item = item.Next)
         {
-            result.Append(item.Value.Name).Append(NAMESPACE_CLASS_DELIMITER);
+            result.Append(item.Value.Name).Append(NamespaceClassDelimiter);
         }
 
         for (var item = types.First; item is not null; item = item.Next)
         {
             var type = item.Value;
             AppendName(result, type);
-            result.Append(NESTED_CLASS_DELIMITER);
+            result.Append(NestedClassDelimiter);
         }
         AppendName(result, source);
 
@@ -51,7 +51,7 @@ internal static class TypeDeclarationSyntaxExtensions
         var typeArguments = type.TypeParameterList?.ChildNodes().Count(node => node is TypeParameterSyntax) ?? 0;
         if (typeArguments != 0)
         {
-            builder.Append(TYPEPARAMETER_CLASS_DELIMITER).Append(typeArguments);
+            builder.Append(TypeparameterClassDelimiter).Append(typeArguments);
         }
     }
 }

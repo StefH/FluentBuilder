@@ -1,6 +1,6 @@
 using FluentBuilder;
 
-namespace BuilderConsumerNET6;
+namespace BuilderConsumerNET8;
 
 [AutoGenerateBuilder(typeof(User))]
 public partial class MyUserBuilder

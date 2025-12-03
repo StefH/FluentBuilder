@@ -7,10 +7,10 @@ namespace FluentBuilderGenerator.Extensions;
 internal static class SymbolExtensions
 {
     private static readonly string[] ExcludedAttributes =
-    {
+    [
         InternalClassNames.AsyncStateMachineAttribute ,
         InternalClassNames.NullableAttribute
-    };
+    ];
 
     public static string GetDeterministicHashCodeAsString(this ISymbol symbol)
     {

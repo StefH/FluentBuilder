@@ -29,7 +29,7 @@ public static class SourceGeneratorExtensions
         IReadOnlyList<string>? additionalTextPaths = null
     )
     {
-        return Execute(sourceGenerator, $"GeneratedNamespace_{Guid.NewGuid().ToString().Replace("-", "")}", sources, additionalTextPaths);
+        return Execute(sourceGenerator, GetRandomAssemblyName(), sources, additionalTextPaths);
     }
 
     /// <summary>
@@ -47,13 +47,60 @@ public static class SourceGeneratorExtensions
         IReadOnlyList<string>? additionalTextPaths = null
     )
     {
+        return ExecuteInternal(() => CSharpGeneratorDriver.Create(sourceGenerator), assemblyName, sources, additionalTextPaths);
+    }
+
+    /// <summary>
+    /// Executes and runs the specified <see cref="IIncrementalGenerator"/>.
+    /// </summary>
+    /// <param name="sourceGenerator">The SourceGenerator to execute.</param>
+    /// <param name="sources">Provide a list of sources which need to be analyzed and processed.</param>
+    /// <param name="additionalTextPaths">A list of additional files.</param>
+    /// <returns><see cref="ExecuteResult"/></returns>
+    public static ExecuteResult Execute(
+        this IIncrementalGenerator sourceGenerator,
+        IReadOnlyList<SourceFile> sources,
+        IReadOnlyList<string>? additionalTextPaths = null
+    )
+    {
+        return Execute(sourceGenerator, GetRandomAssemblyName(), sources, additionalTextPaths);
+    }
+
+    /// <summary>
+    /// Executes and runs the specified <see cref="IIncrementalGenerator"/>.
+    /// </summary>
+    /// <param name="sourceGenerator">The SourceGenerator to execute.</param>
+    /// <param name="assemblyName">The assembly name.</param>
+    /// <param name="sources">Provide a list of sources which need to be analyzed and processed.</param>
+    /// <param name="additionalTextPaths">A list of additional files.</param>
+    /// <returns><see cref="ExecuteResult"/></returns>
+    public static ExecuteResult Execute(
+        this IIncrementalGenerator sourceGenerator,
+        string assemblyName,
+        IReadOnlyList<SourceFile> sources,
+        IReadOnlyList<string>? additionalTextPaths = null
+    )
+    {
+        return ExecuteInternal(() => CSharpGeneratorDriver.Create(sourceGenerator), assemblyName, sources, additionalTextPaths);
+    }
+
+    private static ExecuteResult ExecuteInternal(
+        Func<GeneratorDriver> driverFactory,
+        string assemblyName,
+        IReadOnlyList<SourceFile> sources,
+        IReadOnlyList<string>? additionalTextPaths = null
+    )
+    {
+        var driver = driverFactory();
+
         var metadataReferences = AppDomain.CurrentDomain.GetAssemblies()
             .Where(a => !a.IsDynamic)
-            .Select(a => MetadataReference.CreateFromFile(a.Location));
+            .Select(a => MetadataReference.CreateFromFile(a.Location))
+            .ToArray();
 
-        var sourceSyntaxTrees = sources.Select(GetSyntaxTree);
+        var sourceSyntaxTrees = sources.Select(GetSyntaxTree).ToArray();
 
-        var additionalTexts = additionalTextPaths?.Select(tp => new CustomAdditionalText(tp)) ?? Enumerable.Empty<AdditionalText>();
+        var additionalTexts = additionalTextPaths?.Select(tp => new CustomAdditionalText(tp)).ToArray() ?? Enumerable.Empty<AdditionalText>();
 
         var compilation = CSharpCompilation.Create(
             assemblyName,
@@ -61,9 +108,7 @@ public static class SourceGeneratorExtensions
             metadataReferences,
             new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
 
-        var driver = CSharpGeneratorDriver
-            .Create(sourceGenerator)
-            .AddAdditionalTexts(ImmutableArray.CreateRange(additionalTexts));
+        driver = driver.AddAdditionalTexts(ImmutableArray.CreateRange(additionalTexts));
 
         var executedDriver = driver.RunGeneratorsAndUpdateCompilation(
             compilation,
@@ -73,8 +118,10 @@ public static class SourceGeneratorExtensions
         return new ExecuteResult
         {
             GeneratorDriver = executedDriver,
-            WarningMessages = diagnostics.Where(d => d.Severity == DiagnosticSeverity.Warning).Select(d => d.GetMessage()).ToList(),
-            ErrorMessages = diagnostics.Where(d => d.Severity == DiagnosticSeverity.Error).Select(d => d.GetMessage()).ToList(),
+            Diagnostics = diagnostics,
+            InformationMessages = diagnostics.Where(d => d.Severity == DiagnosticSeverity.Info).Select(d => d.GetMessage()).ToArray(),
+            WarningMessages = diagnostics.Where(d => d.Severity == DiagnosticSeverity.Warning).Select(d => d.GetMessage()).ToArray(),
+            ErrorMessages = diagnostics.Where(d => d.Severity == DiagnosticSeverity.Error).Select(d => d.GetMessage()).ToArray(),
             Files = outputCompilation.SyntaxTrees
                 .Where(st => !sources.Any(s => s.Path == st.FilePath))
                 .Select(st => new FileResult
@@ -99,11 +146,22 @@ public static class SourceGeneratorExtensions
         SyntaxNode rootSyntaxNode;
         if (source.AttributeToAddToClass is not null)
         {
-            rootSyntaxNode = AddExtraAttribute<ClassDeclarationSyntax>(syntaxTree, source.AttributeToAddToClass.Value);
+            if (TryAddExtraAttribute<ClassDeclarationSyntax>(syntaxTree, source.AttributeToAddToClass.Value, out var classNode))
+            {
+                rootSyntaxNode = classNode;
+            }
+            else if (TryAddExtraAttribute<RecordDeclarationSyntax>(syntaxTree, source.AttributeToAddToClass.Value, out var recordNode))
+            {
+                rootSyntaxNode = recordNode;
+            }
+            else
+            {
+                throw new InvalidOperationException("If AttributeToAddToClass is defined, the target must be a class or record.");
+            }
         }
-        else if (source.AttributeToAddToInterface is not null)
+        else if (source.AttributeToAddToInterface is not null && TryAddExtraAttribute<InterfaceDeclarationSyntax>(syntaxTree, source.AttributeToAddToInterface.Value, out var interfaceNode))
         {
-            rootSyntaxNode = AddExtraAttribute<InterfaceDeclarationSyntax>(syntaxTree, source.AttributeToAddToInterface.Value);
+            rootSyntaxNode = interfaceNode;
         }
         else
         {
@@ -115,11 +173,18 @@ public static class SourceGeneratorExtensions
         return CSharpSyntaxTree.ParseText(updatedText, null, source.Path);
     }
 
-    private static SyntaxNode AddExtraAttribute<T>(SyntaxTree syntaxTree, AnyOf<string, ExtraAttribute> attributeToAdd)
+    private static bool TryAddExtraAttribute<T>(SyntaxTree syntaxTree, AnyOf<string, ExtraAttribute> attributeToAdd, [NotNullWhen(true)] out SyntaxNode? syntaxNode)
         where T : TypeDeclarationSyntax
     {
         var rootSyntaxNode = syntaxTree.GetRoot();
-        foreach (var classDeclaration in rootSyntaxNode.DescendantNodes().OfType<T>())
+        var descendantNodes = rootSyntaxNode.DescendantNodes().OfType<T>().ToArray();
+        if (!descendantNodes.Any())
+        {
+            syntaxNode = null;
+            return false; // No class, record or interface found to add the attribute.
+        }
+
+        foreach (var classDeclaration in descendantNodes)
         {
             var name = attributeToAdd.IsFirst ? attributeToAdd.First : attributeToAdd.Second.Name;
 
@@ -149,7 +214,8 @@ public static class SourceGeneratorExtensions
             rootSyntaxNode = rootSyntaxNode.ReplaceNode(classDeclaration, newClassDeclarationSyntax);
         }
 
-        return rootSyntaxNode;
+        syntaxNode = rootSyntaxNode;
+        return true;
     }
 
     private static bool TryParseArguments(AnyOf<string, ExtraAttribute> attributeToAdd, [NotNullWhen(true)] out AttributeArgumentListSyntax? attributeArgumentListSyntax)
@@ -166,5 +232,10 @@ public static class SourceGeneratorExtensions
 
         attributeArgumentListSyntax = null;
         return false;
+    }
+
+    private static string GetRandomAssemblyName()
+    {
+        return $"CSharp.SourceGenerators.Extensions.Generated_{Guid.NewGuid().ToString().Replace("-", "")}";
     }
 }

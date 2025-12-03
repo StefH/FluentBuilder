@@ -56,4 +56,38 @@ internal static class StringExtensions
             return result.ToString(CultureInfo.InvariantCulture).Replace('-', '_');
         }
     }
+
+    internal static string ToCamelCase(this string value)
+    {
+        if (string.IsNullOrEmpty(value) || char.IsLower(value[0]))
+        {
+            return value;
+        }
+
+        if (value.Length == 1)
+        {
+            return value.ToLowerInvariant();
+        }
+
+        var chars = value.ToCharArray();
+        chars[0] = char.ToLowerInvariant(chars[0]);
+        return new string(chars);
+    }
+
+    internal static string ToPascalCase(this string value)
+    {
+        if (string.IsNullOrEmpty(value) || char.IsUpper(value[0]))
+        {
+            return value;
+        }
+
+        if (value.Length == 1)
+        {
+            return value.ToUpperInvariant();
+        }
+
+        var chars = value.ToCharArray();
+        chars[0] = char.ToUpperInvariant(chars[0]);
+        return new string(chars);
+    }
 }

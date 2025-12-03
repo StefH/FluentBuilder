@@ -1,3 +1,4 @@
+using FluentBuilderGenerator.Interfaces;
 using FluentBuilderGenerator.Helpers;
 using FluentBuilderGenerator.Types;
 using Microsoft.CodeAnalysis;
@@ -28,6 +29,18 @@ internal static class PropertySymbolExtensions
         return requiredValues;
     }
 
+    internal static IReadOnlyList<string> GetRequiredPropertiesAsAssignments(this IEnumerable<IPropertyOrParameterSymbol> properties)
+    {
+        var requiredValues = new List<string>();
+        foreach (var p in properties.Where(p => p.Required))
+        {
+            var (defaultValue, _) = DefaultValueHelper.GetDefaultValue(p.Symbol, p.Type);
+            requiredValues.Add($"{p.Name} = {defaultValue}");
+        }
+
+        return requiredValues;
+    }
+
     internal static bool IsInitOnly(this IPropertySymbol property)
     {
         return property.SetMethod is { IsInitOnly: true };
@@ -43,13 +56,13 @@ internal static class PropertySymbolExtensions
         return property.SetMethod is { DeclaredAccessibility: Accessibility.Public };
     }
 
-    internal static bool TryGetIDictionaryElementTypes(this IPropertySymbol property, out (INamedTypeSymbol key, INamedTypeSymbol value)? tuple)
+    internal static bool TryGetIDictionaryElementTypes(this IPropertyOrParameterSymbol property, out (INamedTypeSymbol key, INamedTypeSymbol value)? tuple)
     {
         var type = property.Type.GetFluentTypeKind();
 
         if (type == FluentTypeKind.IDictionary && property.Type is INamedTypeSymbol namedTypeSymbol)
         {
-            if (namedTypeSymbol.IsGenericType && namedTypeSymbol.TypeArguments.Length == 2)
+            if (namedTypeSymbol is { IsGenericType: true, TypeArguments.Length: 2 })
             {
                 if (namedTypeSymbol.TypeArguments[0] is INamedTypeSymbol key && namedTypeSymbol.TypeArguments[1] is INamedTypeSymbol value)
                 {
@@ -59,12 +72,12 @@ internal static class PropertySymbolExtensions
             }
         }
 
-        tuple = default;
+        tuple = null;
         return false;
     }
 
     internal static bool TryGetIEnumerableElementType(
-        this IPropertySymbol property,
+        this IPropertyOrParameterSymbol property,
         out INamedTypeSymbol? elementNamedTypeSymbol,
         out FluentTypeKind kind)
     {

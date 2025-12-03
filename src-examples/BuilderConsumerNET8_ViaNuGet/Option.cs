@@ -1,4 +1,4 @@
-namespace BuilderConsumerNET6;
+namespace BuilderConsumerNET8;
 
 public class Option
 {
