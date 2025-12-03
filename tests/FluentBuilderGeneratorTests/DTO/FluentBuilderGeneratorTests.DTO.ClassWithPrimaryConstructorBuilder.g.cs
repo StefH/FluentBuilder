@@ -54,8 +54,7 @@ namespace FluentBuilderGeneratorTests.DTO
         private bool _Constructor827069805_IsSet;
         private Lazy<FluentBuilderGeneratorTests.DTO.ClassWithPrimaryConstructor> _Constructor827069805 = new Lazy<FluentBuilderGeneratorTests.DTO.ClassWithPrimaryConstructor>(() => new FluentBuilderGeneratorTests.DTO.ClassWithPrimaryConstructor(string.Empty,default(int))
         {
-            //test = string.Empty,
-           // num = default(int)
+
         });
         public ClassWithPrimaryConstructorBuilder UsingConstructor(string test, int num)
         {
@@ -67,8 +66,7 @@ namespace FluentBuilderGeneratorTests.DTO
                     num
                 )
                 {
-                   // test = string.Empty,
-                   // num = default(int)
+
                 };
             });
             _Constructor827069805_IsSet = true;
@@ -115,8 +113,7 @@ namespace FluentBuilderGeneratorTests.DTO
 
         public static ClassWithPrimaryConstructor Default() => new ClassWithPrimaryConstructor(string.Empty, default(int))
         {
-            //test = string.Empty,
-           // num = default(int)
+
         };
 
     }

@@ -78,8 +78,6 @@ namespace FluentBuilderGeneratorTests.DTO
         private Lazy<FluentBuilderGeneratorTests.DTO.ClassWithInitProperties> _Constructor1040722879 = new Lazy<FluentBuilderGeneratorTests.DTO.ClassWithInitProperties>(() => new FluentBuilderGeneratorTests.DTO.ClassWithInitProperties()
         {
             RequiredTest = string.Empty,
-            SiteId = default(int),
-            ProductName = string.Empty,
             RequiredTestInit = string.Empty,
             X = new FluentBuilderGeneratorTests.DTO.ClassWithInitProperties2() { X = string.Empty }
         });
@@ -93,8 +91,6 @@ namespace FluentBuilderGeneratorTests.DTO
                 )
                 {
                     RequiredTest = string.Empty,
-                    SiteId = default(int),
-                    ProductName = string.Empty,
                     RequiredTestInit = string.Empty,
                     X = new FluentBuilderGeneratorTests.DTO.ClassWithInitProperties2() { X = string.Empty }
                 };
@@ -155,8 +151,6 @@ namespace FluentBuilderGeneratorTests.DTO
         public static ClassWithInitProperties Default() => new ClassWithInitProperties()
         {
             RequiredTest = string.Empty,
-            SiteId = default(int),
-            ProductName = string.Empty,
             RequiredTestInit = string.Empty,
             X = new FluentBuilderGeneratorTests.DTO.ClassWithInitProperties2() { X = string.Empty }
         };
