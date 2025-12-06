@@ -1,4 +1,8 @@
-# 0.13.0 (31 August 2025)
+# 0.14.0 (06 December 2025)
+- [#75](https://github.com/StefH/FluentBuilder/pull/75) - Add support for required keyword [enhancement] contributed by [StefH](https://github.com/StefH)
+- [#74](https://github.com/StefH/FluentBuilder/issues/74) - Support for required keyword [enhancement]
+
+# 0.13.0 (15 September 2025)
 - [#73](https://github.com/StefH/FluentBuilder/pull/73) - Revert Microsoft.CodeAnalysis.CSharp to version 4.8.0 [bug] contributed by [StefH](https://github.com/StefH)
 
 # 0.12.0 (24 August 2025)
