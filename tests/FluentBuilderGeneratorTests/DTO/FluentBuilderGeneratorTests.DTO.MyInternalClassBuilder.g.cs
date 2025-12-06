@@ -38,7 +38,10 @@ namespace FluentBuilderGeneratorTests.DTO
         }
 
         private bool _Constructor_1847127841_IsSet;
-        private Lazy<FluentBuilderGeneratorTests.DTO.InternalClass> _Constructor_1847127841 = new Lazy<FluentBuilderGeneratorTests.DTO.InternalClass>(() => new FluentBuilderGeneratorTests.DTO.InternalClass());
+        private Lazy<FluentBuilderGeneratorTests.DTO.InternalClass> _Constructor_1847127841 = new Lazy<FluentBuilderGeneratorTests.DTO.InternalClass>(() => new FluentBuilderGeneratorTests.DTO.InternalClass()
+        {
+
+        });
         public MyInternalClassBuilder UsingConstructor()
         {
             _Constructor_1847127841 = new Lazy<FluentBuilderGeneratorTests.DTO.InternalClass>(() =>
@@ -46,7 +49,10 @@ namespace FluentBuilderGeneratorTests.DTO
                 return new FluentBuilderGeneratorTests.DTO.InternalClass
                 (
 
-                );
+                )
+                {
+
+                };
             });
             _Constructor_1847127841_IsSet = true;
 
@@ -95,7 +101,10 @@ namespace FluentBuilderGeneratorTests.DTO
             return Instance.Value;
         }
 
-        public static InternalClass Default() => new InternalClass();
+        public static InternalClass Default() => new InternalClass()
+        {
+
+        };
 
     }
 }

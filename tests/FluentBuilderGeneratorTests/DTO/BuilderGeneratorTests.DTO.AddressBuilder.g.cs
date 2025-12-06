@@ -76,7 +76,7 @@ namespace FluentBuilderGeneratorTests.DTO
             return builder.Build(useObjectInitializer);
         });
         private bool _thingUsingConstructorWithItselfIsSet;
-        private Lazy<FluentBuilderGeneratorTests.DTO.ThingUsingConstructorWithItself> _thingUsingConstructorWithItself = new Lazy<FluentBuilderGeneratorTests.DTO.ThingUsingConstructorWithItself>(() => new FluentBuilderGeneratorTests.DTO.ThingUsingConstructorWithItself(string.Empty, string.Empty));
+        private Lazy<FluentBuilderGeneratorTests.DTO.ThingUsingConstructorWithItself> _thingUsingConstructorWithItself = new Lazy<FluentBuilderGeneratorTests.DTO.ThingUsingConstructorWithItself>(() => new FluentBuilderGeneratorTests.DTO.ThingUsingConstructorWithItself(string.Empty, string.Empty) {  });
         public AddressBuilder WithThingUsingConstructorWithItself(FluentBuilderGeneratorTests.DTO.ThingUsingConstructorWithItself value) => WithThingUsingConstructorWithItself(() => value);
         public AddressBuilder WithThingUsingConstructorWithItself(Func<FluentBuilderGeneratorTests.DTO.ThingUsingConstructorWithItself> func)
         {
@@ -85,7 +85,7 @@ namespace FluentBuilderGeneratorTests.DTO
             return this;
         }
         private bool _thingUsingConstructorWith2ParametersIsSet;
-        private Lazy<FluentBuilderGeneratorTests.DTO.ThingUsingConstructorWith2Parameters> _thingUsingConstructorWith2Parameters = new Lazy<FluentBuilderGeneratorTests.DTO.ThingUsingConstructorWith2Parameters>(() => new FluentBuilderGeneratorTests.DTO.ThingUsingConstructorWith2Parameters(default(int), default(int)));
+        private Lazy<FluentBuilderGeneratorTests.DTO.ThingUsingConstructorWith2Parameters> _thingUsingConstructorWith2Parameters = new Lazy<FluentBuilderGeneratorTests.DTO.ThingUsingConstructorWith2Parameters>(() => new FluentBuilderGeneratorTests.DTO.ThingUsingConstructorWith2Parameters(default(int), default(int)) {  });
         public AddressBuilder WithThingUsingConstructorWith2Parameters(FluentBuilderGeneratorTests.DTO.ThingUsingConstructorWith2Parameters value) => WithThingUsingConstructorWith2Parameters(() => value);
         public AddressBuilder WithThingUsingConstructorWith2Parameters(Func<FluentBuilderGeneratorTests.DTO.ThingUsingConstructorWith2Parameters> func)
         {
@@ -94,7 +94,7 @@ namespace FluentBuilderGeneratorTests.DTO
             return this;
         }
         private bool _thingWithoutDefaultConstructorIsSet;
-        private Lazy<FluentBuilderGeneratorTests.DTO.ThingWithoutDefaultConstructor> _thingWithoutDefaultConstructor = new Lazy<FluentBuilderGeneratorTests.DTO.ThingWithoutDefaultConstructor>(() => new FluentBuilderGeneratorTests.DTO.ThingWithoutDefaultConstructor(default(int)));
+        private Lazy<FluentBuilderGeneratorTests.DTO.ThingWithoutDefaultConstructor> _thingWithoutDefaultConstructor = new Lazy<FluentBuilderGeneratorTests.DTO.ThingWithoutDefaultConstructor>(() => new FluentBuilderGeneratorTests.DTO.ThingWithoutDefaultConstructor(default(int)) {  });
         public AddressBuilder WithThingWithoutDefaultConstructor(FluentBuilderGeneratorTests.DTO.ThingWithoutDefaultConstructor value) => WithThingWithoutDefaultConstructor(() => value);
         public AddressBuilder WithThingWithoutDefaultConstructor(Func<FluentBuilderGeneratorTests.DTO.ThingWithoutDefaultConstructor> func)
         {
@@ -112,7 +112,7 @@ namespace FluentBuilderGeneratorTests.DTO
             return this;
         }
         private bool _thingIsSet;
-        private Lazy<FluentBuilderGeneratorTests.DTO.Thing> _thing = new Lazy<FluentBuilderGeneratorTests.DTO.Thing>(() => new FluentBuilderGeneratorTests.DTO.Thing());
+        private Lazy<FluentBuilderGeneratorTests.DTO.Thing> _thing = new Lazy<FluentBuilderGeneratorTests.DTO.Thing>(() => new FluentBuilderGeneratorTests.DTO.Thing() {  });
         public AddressBuilder WithThing(FluentBuilderGeneratorTests.DTO.Thing value) => WithThing(() => value);
         public AddressBuilder WithThing(Func<FluentBuilderGeneratorTests.DTO.Thing> func)
         {
@@ -344,7 +344,10 @@ namespace FluentBuilderGeneratorTests.DTO
         });
 
         private bool _Constructor_1362952513_IsSet;
-        private Lazy<FluentBuilderGeneratorTests.DTO.Address> _Constructor_1362952513 = new Lazy<FluentBuilderGeneratorTests.DTO.Address>(() => new FluentBuilderGeneratorTests.DTO.Address());
+        private Lazy<FluentBuilderGeneratorTests.DTO.Address> _Constructor_1362952513 = new Lazy<FluentBuilderGeneratorTests.DTO.Address>(() => new FluentBuilderGeneratorTests.DTO.Address()
+        {
+
+        });
         public AddressBuilder UsingConstructor()
         {
             _Constructor_1362952513 = new Lazy<FluentBuilderGeneratorTests.DTO.Address>(() =>
@@ -352,7 +355,10 @@ namespace FluentBuilderGeneratorTests.DTO
                 return new FluentBuilderGeneratorTests.DTO.Address
                 (
 
-                );
+                )
+                {
+
+                };
             });
             _Constructor_1362952513_IsSet = true;
 
@@ -449,7 +455,10 @@ namespace FluentBuilderGeneratorTests.DTO
             return Instance.Value;
         }
 
-        public static Address Default() => new Address();
+        public static Address Default() => new Address()
+        {
+
+        };
 
     }
 }

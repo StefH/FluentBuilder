@@ -85,7 +85,7 @@ internal partial class FluentBuilderClassesGenerator : IFilesGenerator
             throw new NotSupportedException($"Unable to generate a FluentBuilder for the class '{classSymbol.NamedTypeSymbol}' because no public constructor is defined.");
         }
 
-        var constructorCode = GenerateUsingConstructorCode(classSymbol, publicConstructors);
+        var constructorCode = GenerateUsingConstructorCode(fluentData, classSymbol, publicConstructors);
 
         var propertiesCode = GenerateWithPropertyCode(fluentData, classSymbol, allClassSymbols);
 
@@ -129,13 +129,15 @@ namespace {classSymbol.BuilderNamespace}
     }
 
     private static (StringBuilder StringBuilder, IReadOnlyList<string> ExtraUsings) GenerateUsingConstructorCode(
+        FluentData fluentData,
         ClassSymbol classSymbol,
         IReadOnlyList<IMethodSymbol> publicConstructors
     )
     {
-        var builderClassName = classSymbol.BuilderClassName;
-
         var extraUsings = new List<string>();
+
+        var builderClassName = classSymbol.BuilderClassName;
+        var (_, propertiesPublicSettable, _) = GetProperties(classSymbol, fluentData.HandleBaseClasses, fluentData.Accessibility);
 
         var sb = new StringBuilder();
         foreach (var publicConstructor in publicConstructors)
@@ -159,7 +161,13 @@ namespace {classSymbol.BuilderNamespace}
                 defaultValues.Add(defaultValue);
             }
 
-            sb.AppendLine(8, $"private Lazy<{classSymbol.NamedTypeSymbol}> _Constructor{constructorHashCode} = new Lazy<{classSymbol.NamedTypeSymbol}>(() => new {classSymbol.NamedTypeSymbol}({string.Join(", ", defaultValues)}));");
+            var requiredProperties = propertiesPublicSettable.GetRequiredPropertiesAsAssignments();
+
+            sb.AppendLine(8, $"private Lazy<{classSymbol.NamedTypeSymbol}> _Constructor{constructorHashCode} = new Lazy<{classSymbol.NamedTypeSymbol}>(() => new {classSymbol.NamedTypeSymbol}({string.Join(",", defaultValues)})");
+            sb.AppendLine(8, "{");
+            sb.AppendLines(12, requiredProperties, ",");
+            sb.AppendLine(8, "});");
+
 
             sb.AppendLine(8, $"public {builderClassName} UsingConstructor({constructorParametersAsString})");
             sb.AppendLine(8, @"{");
@@ -170,7 +178,10 @@ namespace {classSymbol.BuilderNamespace}
             sb.AppendLine(8, $"        return new {classSymbol.NamedTypeSymbol}");
             sb.AppendLine(8, @"        (");
             sb.AppendLines(20, constructorParameters.Select(x => x.Symbol.Name), ", ");
-            sb.AppendLine(8, @"        );");
+            sb.AppendLine(8, @"        )");
+            sb.AppendLine(8, @"        {");
+            sb.AppendLines(20, requiredProperties, ",");
+            sb.AppendLine(8, @"        };");
 
             sb.AppendLine(8, @"    });");
 
@@ -397,7 +408,7 @@ namespace {classSymbol.BuilderNamespace}
         {
             isPrimaryConstructor = true;
 
-            propertiesPublicSettable.AddRange(publicConstructors[0].Parameters.Select(p => new PropertyOrParameterSymbol(p, p.Type, true)));
+            propertiesPublicSettable.AddRange(publicConstructors[0].Parameters.Select(p => new PropertyOrParameterSymbol(p, p.Type, true, false)));
         }
 
         var properties = classSymbol.NamedTypeSymbol.GetMembers().OfType<IPropertySymbol>()
@@ -423,7 +434,7 @@ namespace {classSymbol.BuilderNamespace}
             }
         }
 
-        foreach (var property in properties.Where(p => p.IsPublicSettable()).Select(p => new PropertyOrParameterSymbol(p, p.Type, p.IsInitOnly())))
+        foreach (var property in properties.Where(p => p.IsPublicSettable()).Select(p => new PropertyOrParameterSymbol(p, p.Type, p.IsInitOnly(), p.IsRequired)))
         {
             if (propertiesPublicSettable.All(p => p.Name != property.Name))
             {
@@ -432,7 +443,7 @@ namespace {classSymbol.BuilderNamespace}
         }
 
         var propertiesPrivateSettable = accessibility != FluentBuilderAccessibility.PublicAndPrivate ? [] :
-            properties.Where(p => p.IsPrivateSettable()).Select(p => new PropertyOrParameterSymbol(p, p.Type, p.IsInitOnly())).ToArray();
+            properties.Where(p => p.IsPrivateSettable()).Select(p => new PropertyOrParameterSymbol(p, p.Type, p.IsInitOnly(), p.IsRequired)).ToArray();
 
         return (isPrimaryConstructor, propertiesPublicSettable, propertiesPrivateSettable);
     }
@@ -541,7 +552,11 @@ namespace {classSymbol.BuilderNamespace}
             var (defaultValue, _) = DefaultValueHelper.GetDefaultValue(p.Symbol, p.Symbol.Type);
             defaultValues.Add(defaultValue);
         }
-        output.AppendLine(8, $"public static {className} Default() => new {className}({string.Join(", ", defaultValues)});");
+        output.AppendLine(8, $"public static {className} Default() => new {className}({string.Join(", ", defaultValues)})");
+        output.AppendLine(8, "{");
+        var requiredProperties = propertiesPublicSettable.GetRequiredPropertiesAsAssignments();
+        output.AppendLines(12, requiredProperties, ",");
+        output.AppendLine(8, "};");
 
         return output.ToString();
     }

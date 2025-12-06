@@ -4,7 +4,7 @@ using Microsoft.CodeAnalysis;
 
 namespace FluentBuilderGenerator.Models;
 
-internal record PropertyOrParameterSymbol(ISymbol Symbol, ITypeSymbol Type, bool ExcludeFromIsSetLogic) : IPropertyOrParameterSymbol
+internal record PropertyOrParameterSymbol(ISymbol Symbol, ITypeSymbol Type, bool ExcludeFromIsSetLogic, bool Required) : IPropertyOrParameterSymbol
 {
     public PropertyType PropertyType => Symbol is IPropertySymbol ? PropertyType.Property : PropertyType.Parameter;
 

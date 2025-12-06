@@ -38,7 +38,10 @@ namespace FluentBuilderGeneratorTests.DTO2
         }
 
         private bool _Constructor155259363_IsSet;
-        private Lazy<FluentBuilderGeneratorTests.DTO.Option> _Constructor155259363 = new Lazy<FluentBuilderGeneratorTests.DTO.Option>(() => new FluentBuilderGeneratorTests.DTO.Option());
+        private Lazy<FluentBuilderGeneratorTests.DTO.Option> _Constructor155259363 = new Lazy<FluentBuilderGeneratorTests.DTO.Option>(() => new FluentBuilderGeneratorTests.DTO.Option()
+        {
+
+        });
         public MyOptionBuilder UsingConstructor()
         {
             _Constructor155259363 = new Lazy<FluentBuilderGeneratorTests.DTO.Option>(() =>
@@ -46,7 +49,10 @@ namespace FluentBuilderGeneratorTests.DTO2
                 return new FluentBuilderGeneratorTests.DTO.Option
                 (
 
-                );
+                )
+                {
+
+                };
             });
             _Constructor155259363_IsSet = true;
 
@@ -95,7 +101,10 @@ namespace FluentBuilderGeneratorTests.DTO2
             return Instance.Value;
         }
 
-        public static Option Default() => new Option();
+        public static Option Default() => new Option()
+        {
+
+        };
 
     }
 }

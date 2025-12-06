@@ -44,7 +44,10 @@ namespace FluentBuilderGeneratorTests.DTO
         });
 
         private bool _Constructor1204588943_IsSet;
-        private Lazy<FluentBuilderGeneratorTests.DTO.Test> _Constructor1204588943 = new Lazy<FluentBuilderGeneratorTests.DTO.Test>(() => new FluentBuilderGeneratorTests.DTO.Test());
+        private Lazy<FluentBuilderGeneratorTests.DTO.Test> _Constructor1204588943 = new Lazy<FluentBuilderGeneratorTests.DTO.Test>(() => new FluentBuilderGeneratorTests.DTO.Test()
+        {
+
+        });
         public TestBuilder UsingConstructor()
         {
             _Constructor1204588943 = new Lazy<FluentBuilderGeneratorTests.DTO.Test>(() =>
@@ -52,7 +55,10 @@ namespace FluentBuilderGeneratorTests.DTO
                 return new FluentBuilderGeneratorTests.DTO.Test
                 (
 
-                );
+                )
+                {
+
+                };
             });
             _Constructor1204588943_IsSet = true;
 
@@ -101,7 +107,10 @@ namespace FluentBuilderGeneratorTests.DTO
             return Instance.Value;
         }
 
-        public static Test Default() => new Test();
+        public static Test Default() => new Test()
+        {
+
+        };
 
     }
 }

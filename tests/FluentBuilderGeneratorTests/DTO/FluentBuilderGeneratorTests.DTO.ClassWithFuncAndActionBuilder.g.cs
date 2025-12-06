@@ -65,7 +65,10 @@ namespace FluentBuilderGeneratorTests.DTO
         }
 
         private bool _Constructor_1844167085_IsSet;
-        private Lazy<FluentBuilderGeneratorTests.DTO.ClassWithFuncAndAction> _Constructor_1844167085 = new Lazy<FluentBuilderGeneratorTests.DTO.ClassWithFuncAndAction>(() => new FluentBuilderGeneratorTests.DTO.ClassWithFuncAndAction());
+        private Lazy<FluentBuilderGeneratorTests.DTO.ClassWithFuncAndAction> _Constructor_1844167085 = new Lazy<FluentBuilderGeneratorTests.DTO.ClassWithFuncAndAction>(() => new FluentBuilderGeneratorTests.DTO.ClassWithFuncAndAction()
+        {
+
+        });
         public ClassWithFuncAndActionBuilder UsingConstructor()
         {
             _Constructor_1844167085 = new Lazy<FluentBuilderGeneratorTests.DTO.ClassWithFuncAndAction>(() =>
@@ -73,7 +76,10 @@ namespace FluentBuilderGeneratorTests.DTO
                 return new FluentBuilderGeneratorTests.DTO.ClassWithFuncAndAction
                 (
 
-                );
+                )
+                {
+
+                };
             });
             _Constructor_1844167085_IsSet = true;
 
@@ -128,7 +134,10 @@ namespace FluentBuilderGeneratorTests.DTO
             return Instance.Value;
         }
 
-        public static ClassWithFuncAndAction Default() => new ClassWithFuncAndAction();
+        public static ClassWithFuncAndAction Default() => new ClassWithFuncAndAction()
+        {
+
+        };
 
     }
 }

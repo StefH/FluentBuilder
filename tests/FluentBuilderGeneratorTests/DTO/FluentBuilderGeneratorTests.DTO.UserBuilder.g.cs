@@ -55,7 +55,7 @@ namespace FluentBuilderGeneratorTests.DTO
             return this;
         }
         private bool _testDummyClassIsSet;
-        private Lazy<FluentBuilderGeneratorTests.DTO.DummyClass> _testDummyClass = new Lazy<FluentBuilderGeneratorTests.DTO.DummyClass>(() => new FluentBuilderGeneratorTests.DTO.DummyClass());
+        private Lazy<FluentBuilderGeneratorTests.DTO.DummyClass> _testDummyClass = new Lazy<FluentBuilderGeneratorTests.DTO.DummyClass>(() => new FluentBuilderGeneratorTests.DTO.DummyClass() {  });
         public UserBuilder WithTestDummyClass(FluentBuilderGeneratorTests.DTO.DummyClass value) => WithTestDummyClass(() => value);
         public UserBuilder WithTestDummyClass(Func<FluentBuilderGeneratorTests.DTO.DummyClass> func)
         {
@@ -86,7 +86,10 @@ namespace FluentBuilderGeneratorTests.DTO
         });
 
         private bool _Constructor_1436654309_IsSet;
-        private Lazy<FluentBuilderGeneratorTests.DTO.User> _Constructor_1436654309 = new Lazy<FluentBuilderGeneratorTests.DTO.User>(() => new FluentBuilderGeneratorTests.DTO.User());
+        private Lazy<FluentBuilderGeneratorTests.DTO.User> _Constructor_1436654309 = new Lazy<FluentBuilderGeneratorTests.DTO.User>(() => new FluentBuilderGeneratorTests.DTO.User()
+        {
+
+        });
         public UserBuilder UsingConstructor()
         {
             _Constructor_1436654309 = new Lazy<FluentBuilderGeneratorTests.DTO.User>(() =>
@@ -94,7 +97,10 @@ namespace FluentBuilderGeneratorTests.DTO
                 return new FluentBuilderGeneratorTests.DTO.User
                 (
 
-                );
+                )
+                {
+
+                };
             });
             _Constructor_1436654309_IsSet = true;
 
@@ -151,7 +157,10 @@ namespace FluentBuilderGeneratorTests.DTO
             return Instance.Value;
         }
 
-        public static User Default() => new User();
+        public static User Default() => new User()
+        {
+
+        };
 
     }
 }

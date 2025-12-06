@@ -14,4 +14,6 @@ internal interface IPropertyOrParameterSymbol
     ITypeSymbol Type { get; }
 
     bool ExcludeFromIsSetLogic { get; }
+
+    bool Required { get; }
 }

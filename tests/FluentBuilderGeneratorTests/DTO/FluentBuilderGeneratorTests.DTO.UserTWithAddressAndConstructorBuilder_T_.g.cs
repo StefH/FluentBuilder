@@ -37,7 +37,7 @@ namespace FluentBuilderGeneratorTests.DTO
             return this;
         }
         private bool _addressIsSet;
-        private Lazy<FluentBuilderGeneratorTests.DTO.Address<short>> _address = new Lazy<FluentBuilderGeneratorTests.DTO.Address<short>>(() => new FluentBuilderGeneratorTests.DTO.Address<short>());
+        private Lazy<FluentBuilderGeneratorTests.DTO.Address<short>> _address = new Lazy<FluentBuilderGeneratorTests.DTO.Address<short>>(() => new FluentBuilderGeneratorTests.DTO.Address<short>() {  });
         public UserTWithAddressAndConstructorBuilder<T> WithAddress(FluentBuilderGeneratorTests.DTO.Address<short> value) => WithAddress(() => value);
         public UserTWithAddressAndConstructorBuilder<T> WithAddress(Func<FluentBuilderGeneratorTests.DTO.Address<short>> func)
         {
@@ -53,7 +53,10 @@ namespace FluentBuilderGeneratorTests.DTO
         });
 
         private bool _Constructor1978124393_IsSet;
-        private Lazy<FluentBuilderGeneratorTests.DTO.UserTWithAddressAndConstructor<T>> _Constructor1978124393 = new Lazy<FluentBuilderGeneratorTests.DTO.UserTWithAddressAndConstructor<T>>(() => new FluentBuilderGeneratorTests.DTO.UserTWithAddressAndConstructor<T>());
+        private Lazy<FluentBuilderGeneratorTests.DTO.UserTWithAddressAndConstructor<T>> _Constructor1978124393 = new Lazy<FluentBuilderGeneratorTests.DTO.UserTWithAddressAndConstructor<T>>(() => new FluentBuilderGeneratorTests.DTO.UserTWithAddressAndConstructor<T>()
+        {
+
+        });
         public UserTWithAddressAndConstructorBuilder<T> UsingConstructor()
         {
             _Constructor1978124393 = new Lazy<FluentBuilderGeneratorTests.DTO.UserTWithAddressAndConstructor<T>>(() =>
@@ -61,7 +64,10 @@ namespace FluentBuilderGeneratorTests.DTO
                 return new FluentBuilderGeneratorTests.DTO.UserTWithAddressAndConstructor<T>
                 (
 
-                );
+                )
+                {
+
+                };
             });
             _Constructor1978124393_IsSet = true;
 
@@ -112,7 +118,10 @@ namespace FluentBuilderGeneratorTests.DTO
             return Instance.Value;
         }
 
-        public static UserTWithAddressAndConstructor<T> Default() => new UserTWithAddressAndConstructor<T>();
+        public static UserTWithAddressAndConstructor<T> Default() => new UserTWithAddressAndConstructor<T>()
+        {
+
+        };
 
     }
 }

@@ -28,7 +28,7 @@ namespace FluentBuilderGeneratorTests.DTO
     public partial class ThingBuilder : Builder<FluentBuilderGeneratorTests.DTO.Thing>
     {
         private bool _tIsSet;
-        private Lazy<FluentBuilderGeneratorTests.DTO.Thing> _t = new Lazy<FluentBuilderGeneratorTests.DTO.Thing>(() => new FluentBuilderGeneratorTests.DTO.Thing());
+        private Lazy<FluentBuilderGeneratorTests.DTO.Thing> _t = new Lazy<FluentBuilderGeneratorTests.DTO.Thing>(() => new FluentBuilderGeneratorTests.DTO.Thing() {  });
         public ThingBuilder WithT(FluentBuilderGeneratorTests.DTO.Thing value) => WithT(() => value);
         public ThingBuilder WithT(Func<FluentBuilderGeneratorTests.DTO.Thing> func)
         {
@@ -44,7 +44,10 @@ namespace FluentBuilderGeneratorTests.DTO
         });
 
         private bool _Constructor_759650433_IsSet;
-        private Lazy<FluentBuilderGeneratorTests.DTO.Thing> _Constructor_759650433 = new Lazy<FluentBuilderGeneratorTests.DTO.Thing>(() => new FluentBuilderGeneratorTests.DTO.Thing());
+        private Lazy<FluentBuilderGeneratorTests.DTO.Thing> _Constructor_759650433 = new Lazy<FluentBuilderGeneratorTests.DTO.Thing>(() => new FluentBuilderGeneratorTests.DTO.Thing()
+        {
+
+        });
         public ThingBuilder UsingConstructor()
         {
             _Constructor_759650433 = new Lazy<FluentBuilderGeneratorTests.DTO.Thing>(() =>
@@ -52,7 +55,10 @@ namespace FluentBuilderGeneratorTests.DTO
                 return new FluentBuilderGeneratorTests.DTO.Thing
                 (
 
-                );
+                )
+                {
+
+                };
             });
             _Constructor_759650433_IsSet = true;
 
@@ -101,7 +107,10 @@ namespace FluentBuilderGeneratorTests.DTO
             return Instance.Value;
         }
 
-        public static Thing Default() => new Thing();
+        public static Thing Default() => new Thing()
+        {
+
+        };
 
     }
 }

@@ -1,4 +1,5 @@
 using FluentBuilderGenerator.Interfaces;
+using FluentBuilderGenerator.Helpers;
 using FluentBuilderGenerator.Types;
 using Microsoft.CodeAnalysis;
 
@@ -15,6 +16,30 @@ internal static class PropertySymbolExtensions
         FluentTypeKind.IReadOnlyCollection,
         FluentTypeKind.IReadOnlyList
     ];
+
+    internal static IReadOnlyList<string> GetRequiredPropertiesAsAssignments(this IEnumerable<IPropertySymbol> properties)
+    {
+        var requiredValues = new List<string>();
+        foreach (var p in properties.Where(p => p.IsRequired))
+        {
+            var (defaultValue, _) = DefaultValueHelper.GetDefaultValue(p, p.Type);
+            requiredValues.Add($"{p.Name} = {defaultValue}");
+        }
+
+        return requiredValues;
+    }
+
+    internal static IReadOnlyList<string> GetRequiredPropertiesAsAssignments(this IEnumerable<IPropertyOrParameterSymbol> properties)
+    {
+        var requiredValues = new List<string>();
+        foreach (var p in properties.Where(p => p.Required))
+        {
+            var (defaultValue, _) = DefaultValueHelper.GetDefaultValue(p.Symbol, p.Type);
+            requiredValues.Add($"{p.Name} = {defaultValue}");
+        }
+
+        return requiredValues;
+    }
 
     internal static bool IsInitOnly(this IPropertySymbol property)
     {

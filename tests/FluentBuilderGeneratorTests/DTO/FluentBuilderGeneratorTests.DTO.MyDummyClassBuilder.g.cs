@@ -38,7 +38,10 @@ namespace FluentBuilderGeneratorTests.DTO
         }
 
         private bool _Constructor921673711_IsSet;
-        private Lazy<FluentBuilderGeneratorTests.DTO.DummyClass> _Constructor921673711 = new Lazy<FluentBuilderGeneratorTests.DTO.DummyClass>(() => new FluentBuilderGeneratorTests.DTO.DummyClass());
+        private Lazy<FluentBuilderGeneratorTests.DTO.DummyClass> _Constructor921673711 = new Lazy<FluentBuilderGeneratorTests.DTO.DummyClass>(() => new FluentBuilderGeneratorTests.DTO.DummyClass()
+        {
+
+        });
         public MyDummyClassBuilder UsingConstructor()
         {
             _Constructor921673711 = new Lazy<FluentBuilderGeneratorTests.DTO.DummyClass>(() =>
@@ -46,7 +49,10 @@ namespace FluentBuilderGeneratorTests.DTO
                 return new FluentBuilderGeneratorTests.DTO.DummyClass
                 (
 
-                );
+                )
+                {
+
+                };
             });
             _Constructor921673711_IsSet = true;
 
@@ -95,7 +101,10 @@ namespace FluentBuilderGeneratorTests.DTO
             return Instance.Value;
         }
 
-        public static DummyClass Default() => new DummyClass();
+        public static DummyClass Default() => new DummyClass()
+        {
+
+        };
 
     }
 }

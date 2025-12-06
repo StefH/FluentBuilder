@@ -1,5 +1,8 @@
-namespace FluentBuilderGeneratorTests.DTO
+using FluentBuilder;
+
+namespace BuilderConsumer
 {
+    [AutoGenerateBuilder]
     public class ClassWithInitProperties
     {
         public string Normal { get; set; }

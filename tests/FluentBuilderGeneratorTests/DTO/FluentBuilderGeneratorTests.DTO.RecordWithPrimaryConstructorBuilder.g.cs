@@ -52,7 +52,10 @@ namespace FluentBuilderGeneratorTests.DTO
         }
 
         private bool _Constructor_380013639_IsSet;
-        private Lazy<FluentBuilderGeneratorTests.DTO.RecordWithPrimaryConstructor> _Constructor_380013639 = new Lazy<FluentBuilderGeneratorTests.DTO.RecordWithPrimaryConstructor>(() => new FluentBuilderGeneratorTests.DTO.RecordWithPrimaryConstructor(string.Empty, default(int)));
+        private Lazy<FluentBuilderGeneratorTests.DTO.RecordWithPrimaryConstructor> _Constructor_380013639 = new Lazy<FluentBuilderGeneratorTests.DTO.RecordWithPrimaryConstructor>(() => new FluentBuilderGeneratorTests.DTO.RecordWithPrimaryConstructor(string.Empty,default(int))
+        {
+
+        });
         public RecordWithPrimaryConstructorBuilder UsingConstructor(string Test, int Num)
         {
             _Constructor_380013639 = new Lazy<FluentBuilderGeneratorTests.DTO.RecordWithPrimaryConstructor>(() =>
@@ -61,7 +64,10 @@ namespace FluentBuilderGeneratorTests.DTO
                 (
                     Test, 
                     Num
-                );
+                )
+                {
+
+                };
             });
             _Constructor_380013639_IsSet = true;
 
@@ -105,7 +111,10 @@ namespace FluentBuilderGeneratorTests.DTO
             return Instance.Value;
         }
 
-        public static RecordWithPrimaryConstructor Default() => new RecordWithPrimaryConstructor(string.Empty, default(int));
+        public static RecordWithPrimaryConstructor Default() => new RecordWithPrimaryConstructor(string.Empty, default(int))
+        {
+
+        };
 
     }
 }

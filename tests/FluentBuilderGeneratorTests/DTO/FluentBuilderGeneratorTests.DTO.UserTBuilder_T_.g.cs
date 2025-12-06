@@ -38,7 +38,10 @@ namespace FluentBuilderGeneratorTests.DTO
         }
 
         private bool _Constructor302462813_IsSet;
-        private Lazy<FluentBuilderGeneratorTests.DTO.UserT<T>> _Constructor302462813 = new Lazy<FluentBuilderGeneratorTests.DTO.UserT<T>>(() => new FluentBuilderGeneratorTests.DTO.UserT<T>());
+        private Lazy<FluentBuilderGeneratorTests.DTO.UserT<T>> _Constructor302462813 = new Lazy<FluentBuilderGeneratorTests.DTO.UserT<T>>(() => new FluentBuilderGeneratorTests.DTO.UserT<T>()
+        {
+
+        });
         public UserTBuilder<T> UsingConstructor()
         {
             _Constructor302462813 = new Lazy<FluentBuilderGeneratorTests.DTO.UserT<T>>(() =>
@@ -46,7 +49,10 @@ namespace FluentBuilderGeneratorTests.DTO
                 return new FluentBuilderGeneratorTests.DTO.UserT<T>
                 (
 
-                );
+                )
+                {
+
+                };
             });
             _Constructor302462813_IsSet = true;
 
@@ -95,7 +101,10 @@ namespace FluentBuilderGeneratorTests.DTO
             return Instance.Value;
         }
 
-        public static UserT<T> Default() => new UserT<T>();
+        public static UserT<T> Default() => new UserT<T>()
+        {
+
+        };
 
     }
 }

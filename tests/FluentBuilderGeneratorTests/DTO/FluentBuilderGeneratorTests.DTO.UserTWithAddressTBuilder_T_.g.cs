@@ -37,7 +37,7 @@ namespace FluentBuilderGeneratorTests.DTO
             return this;
         }
         private bool _addressIsSet;
-        private Lazy<FluentBuilderGeneratorTests.DTO.Address<short>> _address = new Lazy<FluentBuilderGeneratorTests.DTO.Address<short>>(() => new FluentBuilderGeneratorTests.DTO.Address<short>());
+        private Lazy<FluentBuilderGeneratorTests.DTO.Address<short>> _address = new Lazy<FluentBuilderGeneratorTests.DTO.Address<short>>(() => new FluentBuilderGeneratorTests.DTO.Address<short>() {  });
         public UserTWithAddressTBuilder<T> WithAddress(FluentBuilderGeneratorTests.DTO.Address<short> value) => WithAddress(() => value);
         public UserTWithAddressTBuilder<T> WithAddress(Func<FluentBuilderGeneratorTests.DTO.Address<short>> func)
         {
@@ -53,7 +53,10 @@ namespace FluentBuilderGeneratorTests.DTO
         });
 
         private bool _Constructor1691800221_IsSet;
-        private Lazy<FluentBuilderGeneratorTests.DTO.UserTWithAddressT<T>> _Constructor1691800221 = new Lazy<FluentBuilderGeneratorTests.DTO.UserTWithAddressT<T>>(() => new FluentBuilderGeneratorTests.DTO.UserTWithAddressT<T>());
+        private Lazy<FluentBuilderGeneratorTests.DTO.UserTWithAddressT<T>> _Constructor1691800221 = new Lazy<FluentBuilderGeneratorTests.DTO.UserTWithAddressT<T>>(() => new FluentBuilderGeneratorTests.DTO.UserTWithAddressT<T>()
+        {
+
+        });
         public UserTWithAddressTBuilder<T> UsingConstructor()
         {
             _Constructor1691800221 = new Lazy<FluentBuilderGeneratorTests.DTO.UserTWithAddressT<T>>(() =>
@@ -61,7 +64,10 @@ namespace FluentBuilderGeneratorTests.DTO
                 return new FluentBuilderGeneratorTests.DTO.UserTWithAddressT<T>
                 (
 
-                );
+                )
+                {
+
+                };
             });
             _Constructor1691800221_IsSet = true;
 
@@ -112,7 +118,10 @@ namespace FluentBuilderGeneratorTests.DTO
             return Instance.Value;
         }
 
-        public static UserTWithAddressT<T> Default() => new UserTWithAddressT<T>();
+        public static UserTWithAddressT<T> Default() => new UserTWithAddressT<T>()
+        {
+
+        };
 
     }
 }

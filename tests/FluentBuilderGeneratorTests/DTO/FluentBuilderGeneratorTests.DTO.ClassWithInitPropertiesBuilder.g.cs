@@ -50,9 +50,37 @@ namespace FluentBuilderGeneratorTests.DTO
             _productName = new Lazy<string>(func);
             return this;
         }
+        private bool _requiredTestIsSet;
+        private Lazy<string> _requiredTest = new Lazy<string>(() => string.Empty);
+        public ClassWithInitPropertiesBuilder WithRequiredTest(string value) => WithRequiredTest(() => value);
+        public ClassWithInitPropertiesBuilder WithRequiredTest(Func<string> func)
+        {
+            _requiredTest = new Lazy<string>(func);
+            _requiredTestIsSet = true;
+            return this;
+        }
+        private Lazy<string> _requiredTestInit = new Lazy<string>(() => string.Empty);
+        public ClassWithInitPropertiesBuilder WithRequiredTestInit(string value) => WithRequiredTestInit(() => value);
+        public ClassWithInitPropertiesBuilder WithRequiredTestInit(Func<string> func)
+        {
+            _requiredTestInit = new Lazy<string>(func);
+            return this;
+        }
+        private Lazy<FluentBuilderGeneratorTests.DTO.ClassWithInitProperties2> _x = new Lazy<FluentBuilderGeneratorTests.DTO.ClassWithInitProperties2>(() => new FluentBuilderGeneratorTests.DTO.ClassWithInitProperties2() { X = string.Empty });
+        public ClassWithInitPropertiesBuilder WithX(FluentBuilderGeneratorTests.DTO.ClassWithInitProperties2 value) => WithX(() => value);
+        public ClassWithInitPropertiesBuilder WithX(Func<FluentBuilderGeneratorTests.DTO.ClassWithInitProperties2> func)
+        {
+            _x = new Lazy<FluentBuilderGeneratorTests.DTO.ClassWithInitProperties2>(func);
+            return this;
+        }
 
         private bool _Constructor1040722879_IsSet;
-        private Lazy<FluentBuilderGeneratorTests.DTO.ClassWithInitProperties> _Constructor1040722879 = new Lazy<FluentBuilderGeneratorTests.DTO.ClassWithInitProperties>(() => new FluentBuilderGeneratorTests.DTO.ClassWithInitProperties());
+        private Lazy<FluentBuilderGeneratorTests.DTO.ClassWithInitProperties> _Constructor1040722879 = new Lazy<FluentBuilderGeneratorTests.DTO.ClassWithInitProperties>(() => new FluentBuilderGeneratorTests.DTO.ClassWithInitProperties()
+        {
+            RequiredTest = string.Empty,
+            RequiredTestInit = string.Empty,
+            X = new FluentBuilderGeneratorTests.DTO.ClassWithInitProperties2() { X = string.Empty }
+        });
         public ClassWithInitPropertiesBuilder UsingConstructor()
         {
             _Constructor1040722879 = new Lazy<FluentBuilderGeneratorTests.DTO.ClassWithInitProperties>(() =>
@@ -60,7 +88,12 @@ namespace FluentBuilderGeneratorTests.DTO
                 return new FluentBuilderGeneratorTests.DTO.ClassWithInitProperties
                 (
 
-                );
+                )
+                {
+                    RequiredTest = string.Empty,
+                    RequiredTestInit = string.Empty,
+                    X = new FluentBuilderGeneratorTests.DTO.ClassWithInitProperties2() { X = string.Empty }
+                };
             });
             _Constructor1040722879_IsSet = true;
 
@@ -91,7 +124,10 @@ namespace FluentBuilderGeneratorTests.DTO
                         {
                             Normal = _normal.Value,
                             SiteId = _siteId.Value,
-                            ProductName = _productName.Value
+                            ProductName = _productName.Value,
+                            RequiredTest = _requiredTest.Value,
+                            RequiredTestInit = _requiredTestInit.Value,
+                            X = _x.Value
                         };
 
                         return instance;
@@ -105,13 +141,19 @@ namespace FluentBuilderGeneratorTests.DTO
             }
 
             if (_normalIsSet) { Instance.Value.Normal = _normal.Value; }
+            if (_requiredTestIsSet) { Instance.Value.RequiredTest = _requiredTest.Value; }
 
             PostBuild(Instance.Value);
 
             return Instance.Value;
         }
 
-        public static ClassWithInitProperties Default() => new ClassWithInitProperties();
+        public static ClassWithInitProperties Default() => new ClassWithInitProperties()
+        {
+            RequiredTest = string.Empty,
+            RequiredTestInit = string.Empty,
+            X = new FluentBuilderGeneratorTests.DTO.ClassWithInitProperties2() { X = string.Empty }
+        };
 
     }
 }

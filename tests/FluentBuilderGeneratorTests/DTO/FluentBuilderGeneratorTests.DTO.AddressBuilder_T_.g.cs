@@ -38,7 +38,10 @@ namespace FluentBuilderGeneratorTests.DTO
         }
 
         private bool _Constructor478882805_IsSet;
-        private Lazy<FluentBuilderGeneratorTests.DTO.Address<T>> _Constructor478882805 = new Lazy<FluentBuilderGeneratorTests.DTO.Address<T>>(() => new FluentBuilderGeneratorTests.DTO.Address<T>());
+        private Lazy<FluentBuilderGeneratorTests.DTO.Address<T>> _Constructor478882805 = new Lazy<FluentBuilderGeneratorTests.DTO.Address<T>>(() => new FluentBuilderGeneratorTests.DTO.Address<T>()
+        {
+
+        });
         public AddressBuilder<T> UsingConstructor()
         {
             _Constructor478882805 = new Lazy<FluentBuilderGeneratorTests.DTO.Address<T>>(() =>
@@ -46,7 +49,10 @@ namespace FluentBuilderGeneratorTests.DTO
                 return new FluentBuilderGeneratorTests.DTO.Address<T>
                 (
 
-                );
+                )
+                {
+
+                };
             });
             _Constructor478882805_IsSet = true;
 
@@ -95,7 +101,10 @@ namespace FluentBuilderGeneratorTests.DTO
             return Instance.Value;
         }
 
-        public static Address<T> Default() => new Address<T>();
+        public static Address<T> Default() => new Address<T>()
+        {
+
+        };
 
     }
 }
