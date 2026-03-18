@@ -436,7 +436,7 @@ namespace {classSymbol.BuilderNamespace}
 
         foreach (var property in properties.Where(p => p.IsPublicSettable()).Select(p => new PropertyOrParameterSymbol(p, p.Type, p.IsInitOnly(), p.IsRequired)))
         {
-            if (propertiesPublicSettable.All(p => p.Name != property.Name))
+            if (propertiesPublicSettable.All(p => !string.Equals(p.Name, property.Name, StringComparison.OrdinalIgnoreCase)))
             {
                 propertiesPublicSettable.Add(property);
             }
