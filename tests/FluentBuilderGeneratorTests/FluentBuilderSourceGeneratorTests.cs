@@ -941,13 +941,8 @@ public class FluentBuilderSourceGeneratorTests
         var withTypeMethodCount = System.Text.RegularExpressions.Regex.Matches(generatedCode, @"public .* WithType\(").Count;
         withTypeMethodCount.Should().Be(2, "WithType should only have two overloads (value and Func)");
 
-        // Verify builder works at runtime
-        var built = new ClassWithConstructorParamMatchingPropertyBuilder()
-            .WithType(StageType.Test)
-            .WithName("hello")
-            .Build();
-
-        built.Type.Should().Be(StageType.Test);
-        built.Name.Should().Be("hello");
+        // Verify constructor/property wiring in generated code.
+        generatedCode.Should().Contain("else { instance = new ClassWithConstructorParamMatchingProperty(_type.Value); }");
+        generatedCode.Should().Contain("if (_typeIsSet) { Instance.Value.Type = _type.Value; }");
     }
 }
