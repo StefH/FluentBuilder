@@ -907,4 +907,42 @@ public class FluentBuilderSourceGeneratorTests
 
         data.Should().BeEquivalentTo(new { Normal = "normal", Data = "t50" });
     }
+
+    [Fact]
+    public void GenerateFiles_ForClassWithConstructorParamMatchingProperty_ShouldNotDuplicate()
+    {
+        // Arrange (Issue #76: constructor parameter name matching a property name should not create duplicate members)
+        var path = "./DTO/ClassWithConstructorParamMatchingProperty.cs";
+        var sourceFile = new SourceFile
+        {
+            Path = path,
+            Text = File.ReadAllText(path),
+            AttributeToAddToClass = "FluentBuilder.AutoGenerateBuilder"
+        };
+
+        // Act
+        var result = _sut.Execute(Namespace, [sourceFile]);
+
+        // Assert
+        result.Valid.Should().BeTrue();
+        result.Files.Should().HaveCount(NumFiles);
+        result.Files.Should().NotContain(r => r.Path.EndsWith("Error.g.cs"));
+
+        var fileResult = result.Files[NumFiles - 1];
+        var filename = Path.GetFileName(fileResult.Path);
+
+        if (Write) File.WriteAllText($"../../../DTO/{filename}", fileResult.Text);
+
+        // Verify the generated code does not contain duplicate '_type' fields
+        var generatedCode = fileResult.Text;
+        var typeFieldCount = System.Text.RegularExpressions.Regex.Matches(generatedCode, @"private Lazy<.*> _type\b").Count;
+        typeFieldCount.Should().Be(1, "the '_type' field should only be declared once");
+
+        var withTypeMethodCount = System.Text.RegularExpressions.Regex.Matches(generatedCode, @"public .* WithType\(").Count;
+        withTypeMethodCount.Should().Be(2, "WithType should only have two overloads (value and Func)");
+
+        // Verify constructor/property wiring in generated code.
+        generatedCode.Should().Contain("else { instance = new ClassWithConstructorParamMatchingProperty(_type.Value); }");
+        generatedCode.Should().Contain("if (_typeIsSet) { Instance.Value.Type = _type.Value; }");
+    }
 }
