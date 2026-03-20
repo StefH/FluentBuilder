@@ -524,7 +524,7 @@ namespace {classSymbol.BuilderNamespace}
 
         if (isPrimaryConstructor)
         {
-            var parameters = publicConstructors[0].Parameters
+            var parameters = publicConstructors.Single().Parameters
                 .Select(p => $"_{p.Name.ToCamelCase()}.Value");
 
             output.AppendLine(20, $"else {{ instance = new {className}({string.Join(", ", parameters)}); }}");
