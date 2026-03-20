@@ -1,5 +1,5 @@
-# 0.14.0 (06 December 2025)
-- #75 Add support for required keyword [enhancement]
-- #74 Support for required keyword [enhancement]
+# 0.15.0 (20 March 2026)
+- #77 Fix duplicate builder members when constructor parameter matches property [bug]
+- #76 Builder already contains a definition [bug]
 
 The full release notes can be found here: https://github.com/StefH/FluentBuilder/blob/main/ReleaseNotes.md

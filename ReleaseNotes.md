@@ -1,3 +1,7 @@
+# 0.15.0 (20 March 2026)
+- [#77](https://github.com/StefH/FluentBuilder/pull/77) - Fix duplicate builder members when constructor parameter matches property [bug] contributed by [WojciechNagorski](https://github.com/WojciechNagorski)
+- [#76](https://github.com/StefH/FluentBuilder/issues/76) - Builder already contains a definition [bug]
+
 # 0.14.0 (06 December 2025)
 - [#75](https://github.com/StefH/FluentBuilder/pull/75) - Add support for required keyword [enhancement] contributed by [StefH](https://github.com/StefH)
 - [#74](https://github.com/StefH/FluentBuilder/issues/74) - Support for required keyword [enhancement]
