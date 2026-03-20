@@ -1,6 +1,7 @@
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using AwesomeAssertions;
 using CSharp.SourceGenerators.Extensions;
@@ -935,14 +936,21 @@ public class FluentBuilderSourceGeneratorTests
 
         // Verify the generated code does not contain duplicate '_type' fields
         var generatedCode = fileResult.Text;
-        var typeFieldCount = System.Text.RegularExpressions.Regex.Matches(generatedCode, @"private Lazy<.*> _type\b").Count;
+        var typeFieldCount = Regex.Matches(generatedCode, @"private Lazy<.*> _type\b").Count;
         typeFieldCount.Should().Be(1, "the '_type' field should only be declared once");
 
-        var withTypeMethodCount = System.Text.RegularExpressions.Regex.Matches(generatedCode, @"public .* WithType\(").Count;
+        var withTypeMethodCount = Regex.Matches(generatedCode, @"public .* WithType\(").Count;
         withTypeMethodCount.Should().Be(2, "WithType should only have two overloads (value and Func)");
 
         // Verify constructor/property wiring in generated code.
         generatedCode.Should().Contain("else { instance = new ClassWithConstructorParamMatchingProperty(_type.Value); }");
         generatedCode.Should().Contain("if (_typeIsSet) { Instance.Value.Type = _type.Value; }");
+
+        var data = new ClassWithConstructorParamMatchingPropertyBuilder()
+            .WithType(StageType.Build)
+            .WithName("test")
+            .Build();
+
+        data.Should().BeEquivalentTo(new { Type = StageType.Build, Name = "test" });
     }
 }
