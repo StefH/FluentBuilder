@@ -436,9 +436,16 @@ namespace {classSymbol.BuilderNamespace}
 
         foreach (var property in properties.Where(p => p.IsPublicSettable()).Select(p => new PropertyOrParameterSymbol(p, p.Type, p.IsInitOnly(), p.IsRequired)))
         {
-            if (propertiesPublicSettable.All(p => !string.Equals(p.Name, property.Name, StringComparison.OrdinalIgnoreCase)))
+            var existingIndex = propertiesPublicSettable.FindIndex(p => string.Equals(p.Name, property.Name, StringComparison.OrdinalIgnoreCase));
+            if (existingIndex < 0)
             {
                 propertiesPublicSettable.Add(property);
+            }
+            else if (propertiesPublicSettable[existingIndex].PropertyType == PropertyType.Parameter)
+            {
+                // Replace the constructor parameter entry with the property entry so that
+                // _isSet tracking and property-assignment logic are correctly generated.
+                propertiesPublicSettable[existingIndex] = property;
             }
         }
 
@@ -517,8 +524,7 @@ namespace {classSymbol.BuilderNamespace}
 
         if (isPrimaryConstructor)
         {
-            var parameters = propertiesPublicSettable
-                .Where(p => p.PropertyType == PropertyType.Parameter)
+            var parameters = publicConstructors[0].Parameters
                 .Select(p => $"_{p.Name.ToCamelCase()}.Value");
 
             output.AppendLine(20, $"else {{ instance = new {className}({string.Join(", ", parameters)}); }}");
