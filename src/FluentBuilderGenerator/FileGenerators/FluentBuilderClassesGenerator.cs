@@ -581,6 +581,12 @@ namespace {classSymbol.BuilderNamespace}
         var classSymbols = new List<(ClassSymbol ClassSymbol, FluentData FluentData)>();
         foreach (var fluentDataItem in _items)
         {
+            // Skip invalid/default FluentData items (e.g. from failed transforms)
+            if (string.IsNullOrEmpty(fluentDataItem.MetadataName))
+            {
+                continue;
+            }
+
             if (_compilationHelper.TryGetNamedTypeSymbolByFullMetadataName(fluentDataItem, out var classSymbol))
             {
                 classSymbols.Add((classSymbol, fluentDataItem));
