@@ -16,6 +16,29 @@ internal static class AutoGenerateBuilderSyntaxReceiver
     private const string ModifierPublic = "public";
     private const string ModifierInternal = "internal";
 
+    /// <summary>
+    /// A fast syntax-only check to determine if a node is a candidate for processing.
+    /// This is used as the predicate in the incremental generator pipeline.
+    /// </summary>
+    public static bool IsSyntaxTarget(SyntaxNode syntaxNode)
+    {
+        TypeDeclarationSyntax typeDeclarationSyntax;
+        if (syntaxNode is ClassDeclarationSyntax classDeclarationSyntax)
+        {
+            typeDeclarationSyntax = classDeclarationSyntax;
+        }
+        else if (syntaxNode is RecordDeclarationSyntax recordDeclarationSyntax)
+        {
+            typeDeclarationSyntax = recordDeclarationSyntax;
+        }
+        else
+        {
+            return false;
+        }
+
+        return typeDeclarationSyntax.AttributeLists.Any(x => x.Attributes.Any(AttributeArgumentListParser.IsMatch));
+    }
+
     public static bool CheckSyntaxNode(SyntaxNode syntaxNode, out Diagnostic? diagnostic)
     {
         TypeDeclarationSyntax typeDeclarationSyntax;
@@ -53,12 +76,20 @@ internal static class AutoGenerateBuilderSyntaxReceiver
 
     public static FluentData HandleSyntaxNode(SyntaxNode syntaxNode, SemanticModel semanticModel, out Diagnostic? diagnostic)
     {
-        return syntaxNode switch
+        if (syntaxNode is ClassDeclarationSyntax classDeclarationSyntax)
         {
-            ClassDeclarationSyntax classDeclarationSyntax when TryGet(classDeclarationSyntax, semanticModel, out var data, out diagnostic) => data,
-            RecordDeclarationSyntax recordDeclarationSyntax when TryGet(recordDeclarationSyntax, semanticModel, out var data, out diagnostic) => data,
-            _ => throw new InvalidOperationException("Only classes or records are supported."),
-        };
+            TryGet(classDeclarationSyntax, semanticModel, out var data, out diagnostic);
+            return data;
+        }
+
+        if (syntaxNode is RecordDeclarationSyntax recordDeclarationSyntax)
+        {
+            TryGet(recordDeclarationSyntax, semanticModel, out var data, out diagnostic);
+            return data;
+        }
+
+        diagnostic = null;
+        return default;
     }
 
     private static bool TryGet(TypeDeclarationSyntax typeDeclarationSyntax, SemanticModel semanticModel, out FluentData data, out Diagnostic? diagnostic)

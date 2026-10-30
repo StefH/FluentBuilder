@@ -953,4 +953,45 @@ public class FluentBuilderSourceGeneratorTests
 
         data.Should().BeEquivalentTo(new { Type = StageType.Build, Name = "test" });
     }
+
+    /// <summary>
+    /// Regression test for: https://github.com/StefH/FluentBuilder/issues/XX
+    /// If more than 1 AutoGenerateBuilder class is defined with typeof(T) for external types, no classes are generated.
+    /// </summary>
+    [Fact]
+    public void GenerateFiles_For2CustomBuilders_UsingTypeof_Should_GenerateCorrectFiles()
+    {
+        // Arrange - both builder classes use typeof(X) syntax with external types (not in source files)
+        var pathUser = "./DTO2/MyUserTypeofBuilder.cs";
+        var sourceFileUser = new SourceFile
+        {
+            Path = pathUser,
+            Text = File.ReadAllText(pathUser),
+            AttributeToAddToClass = new ExtraAttribute
+            {
+                Name = "AutoGenerateBuilder",
+                ArgumentList = "typeof(FluentBuilderGeneratorTests.DTO.User)"
+            }
+        };
+
+        var pathOption = "./DTO2/MyOptionTypeofBuilder.cs";
+        var sourceFileOption = new SourceFile
+        {
+            Path = pathOption,
+            Text = File.ReadAllText(pathOption),
+            AttributeToAddToClass = new ExtraAttribute
+            {
+                Name = "AutoGenerateBuilder",
+                ArgumentList = "typeof(FluentBuilderGeneratorTests.DTO.Option)"
+            }
+        };
+
+        // Act
+        var result = _sut.Execute(Namespace, [sourceFileUser, sourceFileOption]);
+
+        // Assert - both builders should be generated, no error file
+        result.Valid.Should().BeTrue();
+        result.Files.Should().HaveCount(NumFiles + 2);
+        result.Files.Should().NotContain(r => r.Path.EndsWith("Error.g.cs"));
+    }
 }

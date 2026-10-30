@@ -71,16 +71,29 @@ internal class FluentBuilderSourceGenerator : IIncrementalGenerator
             }
         });
 
-        var diagnostics = new List<Diagnostic>();
-        
         var fluentBuilderClassesProvider = context.SyntaxProvider
             .CreateSyntaxProvider(
-                (syntaxNode, ct) => ShouldHandle(syntaxNode, ct, diagnostics),
-                (generatorSyntaxContext, ct) => Transform(generatorSyntaxContext, ct, diagnostics)
-            )
+                static (syntaxNode, _) => AutoGenerateBuilderSyntaxReceiver.IsSyntaxTarget(syntaxNode),
+                static (generatorSyntaxContext, _) => Transform(generatorSyntaxContext)
+            );
+
+        // Report diagnostics from the predicate/transform phase
+        var diagnosticsProvider = fluentBuilderClassesProvider
+            .Where(static x => x.Diagnostic != null)
+            .Select(static (x, _) => x.Diagnostic!);
+
+        context.RegisterSourceOutput(diagnosticsProvider, static (sourceProductionContext, diagnostic) =>
+        {
+            sourceProductionContext.ReportDiagnostic(diagnostic);
+        });
+
+        // Filter out invalid items and collect valid FluentData
+        var validItemsProvider = fluentBuilderClassesProvider
+            .Where(static x => x.Diagnostic == null && !string.IsNullOrEmpty(x.Data.MetadataName))
+            .Select(static (x, _) => x.Data)
             .Collect();
-        
-        var combined2 = fluentBuilderClassesProvider.Combine(combinedProvider).Select((x, _) => new
+
+        var combined2 = validItemsProvider.Combine(combinedProvider).Select((x, _) => new
         {
             Items = x.Left,
             LanguageData = x.Right.Left,
@@ -89,11 +102,6 @@ internal class FluentBuilderSourceGenerator : IIncrementalGenerator
 
         context.RegisterSourceOutput(combined2, (sourceProductionContext, data) =>
         {
-            foreach (var diagnostic in diagnostics)
-            {
-                sourceProductionContext.ReportDiagnostic(diagnostic);
-            }
-
             var generator = new FluentBuilderClassesGenerator(data.Items, data.CompilationHelper, data.LanguageData.SupportsNullable);
 
             try
@@ -113,25 +121,15 @@ internal class FluentBuilderSourceGenerator : IIncrementalGenerator
         });
     }
 
-    private static bool ShouldHandle(SyntaxNode syntaxNode, CancellationToken _, List<Diagnostic> diagnostics)
+    private static (FluentData Data, Diagnostic? Diagnostic) Transform(GeneratorSyntaxContext gsc)
     {
-        var result = AutoGenerateBuilderSyntaxReceiver.CheckSyntaxNode(syntaxNode, out var diagnostic);
-        if (diagnostic != null)
+        // Do the full validation check (including modifier check) in the transform
+        if (!AutoGenerateBuilderSyntaxReceiver.CheckSyntaxNode(gsc.Node, out var checkDiagnostic))
         {
-            diagnostics.Add(diagnostic);
+            return (default, checkDiagnostic);
         }
 
-        return result;
-    }
-
-    private static FluentData Transform(GeneratorSyntaxContext gsc, CancellationToken _, List<Diagnostic> diagnostics)
-    {
-        var result = AutoGenerateBuilderSyntaxReceiver.HandleSyntaxNode(gsc.Node, gsc.SemanticModel, out var diagnostic);
-        if (diagnostic != null)
-        {
-            diagnostics.Add(diagnostic);
-        }
-
-        return result;
+        var data = AutoGenerateBuilderSyntaxReceiver.HandleSyntaxNode(gsc.Node, gsc.SemanticModel, out var diagnostic);
+        return (data, diagnostic);
     }
 }
