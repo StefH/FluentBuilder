@@ -204,7 +204,9 @@ namespace {classSymbol.BuilderNamespace}
         foreach (var parameter in publicConstructor.Parameters)
         {
             // Use "params" in case it's an Array, else just use type-T.
-            var type = parameter.Type.GetFluentTypeKind() == FluentTypeKind.Array ? $"params {parameter.Type}" : parameter.Type.ToString();
+            // A parameter with a default value cannot be a "params" parameter (CS1751).
+            var useParams = parameter.Type.GetFluentTypeKind() == FluentTypeKind.Array && !parameter.HasExplicitDefaultValue;
+            var type = useParams ? $"params {parameter.Type}" : parameter.Type.ToString();
             constructorParameters.Add((parameter, type));
         }
 
