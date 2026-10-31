@@ -1,5 +1,7 @@
-# 0.15.0 (20 March 2026)
-- #77 Fix duplicate builder members when constructor parameter matches property [bug]
-- #76 Builder already contains a definition [bug]
+# 0.16.0 (31 October 2026)
+- #78 Fix: multiple AutoGenerateBuilder(typeof) classes produce no output [bug]
+- #80 Fix CS1751 for array constructor parameters with default value [bug]
+- #61 AutoGenerateBuilder for type doesn't generate classess [enhancement]
+- #79 Error CS1751 : Cannot specify a default value for a parameter collection [bug]
 
 The full release notes can be found here: https://github.com/StefH/FluentBuilder/blob/main/ReleaseNotes.md

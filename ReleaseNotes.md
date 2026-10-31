@@ -1,3 +1,9 @@
+# 0.16.0 (31 October 2026)
+- [#78](https://github.com/StefH/FluentBuilder/pull/78) - Fix: multiple AutoGenerateBuilder(typeof) classes produce no output [bug] contributed by [Copilot](https://github.com/apps/copilot-swe-agent)
+- [#80](https://github.com/StefH/FluentBuilder/pull/80) - Fix CS1751 for array constructor parameters with default value [bug] contributed by [StefH](https://github.com/StefH)
+- [#61](https://github.com/StefH/FluentBuilder/issues/61) - AutoGenerateBuilder for type doesn't generate classess [enhancement]
+- [#79](https://github.com/StefH/FluentBuilder/issues/79) - Error CS1751 : Cannot specify a default value for a parameter collection [bug]
+
 # 0.15.0 (20 March 2026)
 - [#77](https://github.com/StefH/FluentBuilder/pull/77) - Fix duplicate builder members when constructor parameter matches property [bug] contributed by [WojciechNagorski](https://github.com/WojciechNagorski)
 - [#76](https://github.com/StefH/FluentBuilder/issues/76) - Builder already contains a definition [bug]
