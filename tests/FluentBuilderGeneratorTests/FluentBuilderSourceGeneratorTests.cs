@@ -910,6 +910,32 @@ public class FluentBuilderSourceGeneratorTests
     }
 
     [Fact]
+    public void GenerateFiles_ForRecordWithArrayParameterWithDefaultValue_ShouldNotUseParams()
+    {
+        // Arrange (Issue #79: CS1751 - params parameter cannot have a default value)
+        var path = "./DTO/RecordWithArrayDefaultValue.cs";
+        var sourceFile = new SourceFile
+        {
+            Path = path,
+            Text = File.ReadAllText(path),
+            AttributeToAddToClass = new ExtraAttribute
+            {
+                Name = "FluentBuilder.AutoGenerateBuilder"
+            }
+        };
+
+        // Act
+        var result = _sut.Execute(Namespace, [sourceFile]);
+
+        // Assert
+        result.Valid.Should().BeTrue();
+
+        var text = result.Files[NumFiles - 1].Text;
+        text.Should().Contain("UsingConstructor(string[]? PropB = null)");
+        text.Should().NotContain("params string[]? PropB");
+    }
+
+    [Fact]
     public void GenerateFiles_ForClassWithConstructorParamMatchingProperty_ShouldNotDuplicate()
     {
         // Arrange (Issue #76: constructor parameter name matching a property name should not create duplicate members)
